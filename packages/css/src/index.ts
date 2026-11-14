@@ -34,3 +34,22 @@ export const MTH_UNUPGRADED_TAG_PRIMITIVES = [
 ] as const;
 
 export const MTH_TYPOGRAPHY_PRIMITIVES = ['mth-prose', 'mth-dl'] as const;
+
+export const MTH_MARKETING_PRIMITIVES = [
+  'mth-hero',
+  'mth-feature-grid',
+  'mth-testimonial',
+  'mth-logo-cloud',
+  'mth-footer',
+  'mth-faq',
+  'mth-article-layout',
+  'mth-pricing-table',
+  'mth-cta',
+  'mth-announcement-bar',
+] as const;
+
+export const MTH_CSS_PRIMITIVES = [
+  ...MTH_LAYOUT_PRIMITIVES,
+  ...MTH_TYPOGRAPHY_PRIMITIVES,
+  ...MTH_MARKETING_PRIMITIVES,
+] as const;

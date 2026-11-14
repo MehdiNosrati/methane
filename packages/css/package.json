@@ -22,7 +22,8 @@
     "./reset.css": "./dist/reset.css",
     "./defined-guard.css": "./dist/defined-guard.css",
     "./layout.css": "./dist/layout.css",
-    "./prose.css": "./dist/prose.css"
+    "./prose.css": "./dist/prose.css",
+    "./marketing.css": "./dist/marketing.css"
   },
   "files": [
     "dist"
