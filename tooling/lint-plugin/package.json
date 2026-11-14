@@ -1,0 +1,35 @@
+{
+  "name": "@methane/lint-plugin",
+  "version": "0.1.0",
+  "description": "ESLint and Stylelint architectural invariant rules for Methane UI (ADR-002, ADR-012, ADR-014)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint-rules.d.ts",
+      "default": "./dist/eslint-rules.js"
+    },
+    "./stylelint": {
+      "types": "./dist/stylelint-rules.d.ts",
+      "default": "./dist/stylelint-rules.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "eslint": "^10.15.0",
+    "postcss": "^8.5.0",
+    "stylelint": "^18.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

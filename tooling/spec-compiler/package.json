@@ -1,0 +1,25 @@
+{
+  "name": "@methane/spec-compiler",
+  "version": "0.1.0",
+  "description": "Validates ComponentBehaviorSpec and compiles spec tests, Markdown docs, CEM verification, and a11y checklists",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@methane/test-conformance": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

@@ -1,0 +1,524 @@
+import {
+  runDataConsumerSuite,
+  runFormControlSuite,
+  runListboxSuite,
+  runOverlaySuite,
+  runRovingFocusSuite,
+  runSatelliteEngineSuite,
+  scanSameRootAria,
+  type SuiteReport,
+} from '@methane/test-conformance';
+import type {
+  A11yChecklist,
+  A11yChecklistItem,
+  BehaviorSpecAdapter,
+  BehaviorSpecAssertionReport,
+  CemDeclaration,
+  CemVerificationResult,
+  CompileSpecTestsOptions,
+  CompiledSpecArtifacts,
+  ComponentBehaviorSpec,
+  CustomElementsManifest,
+} from './types.js';
+import { assertValidBehaviorSpec } from './validator.js';
+
+function toPascalCase(tag: string): string {
+  return tag
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
+const SUITE_RUNNER_MAP = {
+  'form-control': { runner: 'runFormControlSuite', adapterProp: 'formControl' },
+  overlay: { runner: 'runOverlaySuite', adapterProp: 'overlay' },
+  'roving-focus': { runner: 'runRovingFocusSuite', adapterProp: 'rovingFocus' },
+  listbox: { runner: 'runListboxSuite', adapterProp: 'listbox' },
+  'data-consumer': { runner: 'runDataConsumerSuite', adapterProp: 'dataConsumer' },
+  satellite: { runner: 'runSatelliteEngineSuite', adapterProp: 'satellite' },
+} as const;
+
+export function compileSpecTests(
+  spec: ComponentBehaviorSpec,
+  options?: CompileSpecTestsOptions,
+): string {
+  assertValidBehaviorSpec(spec);
+  const className = toPascalCase(spec.tag);
+
+  const usedRunners = spec.conformance
+    .map((s) => SUITE_RUNNER_MAP[s].runner)
+    .filter((v, idx, arr) => arr.indexOf(v) === idx);
+  const conformanceImports = ['scanSameRootAria', ...usedRunners].join(', ');
+
+  const optionalImports: string[] = [];
+  if (options?.elementImportPath) {
+    optionalImports.push(`import ${JSON.stringify(options.elementImportPath)};`);
+  }
+  if (options?.adapterImportPath) {
+    optionalImports.push(`import { specAdapter } from ${JSON.stringify(options.adapterImportPath)};`);
+  } else {
+    optionalImports.push(
+      `import type { BehaviorSpecAdapter } from '@methane/spec-compiler';`,
+      `const specAdapter: BehaviorSpecAdapter | undefined = undefined;`,
+    );
+  }
+
+  const focusAssertions =
+    spec.focusModel === 'delegates-focus'
+      ? [
+          `    const delegatesFocusEnabled =`,
+          `      el.shadowRoot && 'delegatesFocus' in el.shadowRoot`,
+          `        ? el.shadowRoot.delegatesFocus === true`,
+          `        : (el.constructor as { shadowRootOptions?: { delegatesFocus?: boolean } }).shadowRootOptions?.delegatesFocus === true;`,
+          `    expect(delegatesFocusEnabled).toBe(true);`,
+          `    expect(el.hasAttribute('role')).toBe(false);`,
+        ]
+      : spec.focusModel === 'host' && spec.role
+        ? [
+            `    const hostRole = el.getAttribute('role') ?? (el as HTMLElement & { role?: string | null }).role;`,
+            `    expect(hostRole).toBe(${JSON.stringify(spec.role)});`,
+          ]
+        : [`    expect(el.shadowRoot?.delegatesFocus ?? false).toBe(false);`];
+
+  const propChecks = spec.props
+    .map((prop) => {
+      const lines: string[] = [];
+      if (prop.default !== undefined) {
+        lines.push(
+          `    expect((el as unknown as Record<string, unknown>)[${JSON.stringify(prop.name)}]).toEqual(${JSON.stringify(prop.default)});`,
+        );
+      }
+      if (prop.attr === false) {
+        lines.push(`    expect(el.hasAttribute(${JSON.stringify(prop.name)})).toBe(false);`);
+      }
+      return lines.join('\n');
+    })
+    .filter(Boolean)
+    .join('\n');
+
+  const suiteAssertions = spec.conformance
+    .map((suite) => {
+      const { runner, adapterProp } = SUITE_RUNNER_MAP[suite];
+      return [
+        `  it('satisfies ${suite} conformance suite', async () => {`,
+        `    const adapter = specAdapter?.${adapterProp};`,
+        `    if (adapter) {`,
+        `      const report = await ${runner}(adapter);`,
+        `      expect(report.passed).toBe(true);`,
+        `    }`,
+        `  });`,
+      ].join('\n');
+    })
+    .join('\n\n');
+
+  const keyboardAssertions = spec.keyboard
+    .map((binding, idx) => {
+      const dir = binding.dir ?? 'ltr';
+      return [
+        `  it('keyboard[${idx}]: ${binding.key} (${dir}) when ${binding.when}', async () => {`,
+        `    const el = mountElement();`,
+        `    el.setAttribute('dir', ${JSON.stringify(dir)});`,
+        `    const event = new KeyboardEvent('keydown', {`,
+        `      key: ${JSON.stringify(binding.key)},`,
+        `      bubbles: true,`,
+        `      cancelable: true,`,
+        `      composed: true,`,
+        `    });`,
+        `    el.dispatchEvent(event);`,
+        `    if (specAdapter?.onKeyboardCheck) {`,
+        `      await specAdapter.onKeyboardCheck(el, ${JSON.stringify(binding)}, event);`,
+        `    }`,
+        `    expect(event.type).toBe('keydown');`,
+        `  });`,
+      ].join('\n');
+    })
+    .join('\n\n');
+
+  return [
+    `// Generated by @methane/spec-compiler for <${spec.tag}> (${className})`,
+    `import { afterEach, describe, expect, it } from 'vitest';`,
+    `import { ${conformanceImports} } from '@methane/test-conformance';`,
+    ...optionalImports,
+    '',
+    `describe('<${spec.tag}> behavior spec conformance', () => {`,
+    `  let mounted: HTMLElement | null = null;`,
+    '',
+    `  function mountElement(): HTMLElement {`,
+    `    const el = document.createElement(${JSON.stringify(spec.tag)});`,
+    `    document.body.appendChild(el);`,
+    `    mounted = el;`,
+    `    return el;`,
+    `  }`,
+    '',
+    `  afterEach(() => {`,
+    `    mounted?.remove();`,
+    `    mounted = null;`,
+    `  });`,
+    '',
+    `  it('registers <${spec.tag}>, enforces focusModel="${spec.focusModel}", and passes same-root ARIA', () => {`,
+    `    expect(customElements.get(${JSON.stringify(spec.tag)})).toBeDefined();`,
+    `    const el = mountElement();`,
+    `    const ariaReport = scanSameRootAria(el);`,
+    `    expect(ariaReport.valid).toBe(true);`,
+    ...focusAssertions,
+    `  });`,
+    propChecks
+      ? `\n  it('initializes declared props and respects attr: false non-reflection', () => {\n    const el = mountElement();\n${propChecks}\n  });`
+      : '',
+    suiteAssertions ? `\n${suiteAssertions}` : '',
+    keyboardAssertions ? `\n${keyboardAssertions}` : '',
+    `});`,
+    '',
+  ]
+    .filter((line) => line !== undefined)
+    .join('\n');
+}
+
+/**
+ * Executes behavior spec assertions directly in-memory against a registered `<spec.tag>` element.
+ */
+export async function runBehaviorSpecAssertions(
+  spec: ComponentBehaviorSpec,
+  adapter?: BehaviorSpecAdapter,
+): Promise<BehaviorSpecAssertionReport> {
+  assertValidBehaviorSpec(spec);
+
+  const failures: string[] = [];
+  const suiteReports: SuiteReport[] = [];
+
+  if (!customElements.get(spec.tag)) {
+    failures.push(`Custom element <${spec.tag}> is not registered in customElements.`);
+    return { tag: spec.tag, passed: false, suiteReports, failures };
+  }
+
+  const el = document.createElement(spec.tag);
+  document.body.appendChild(el);
+
+  try {
+    const ariaReport = scanSameRootAria(el);
+    if (!ariaReport.valid) {
+      failures.push(`Same-root ARIA issues: ${JSON.stringify(ariaReport.issues)}`);
+    }
+
+    if (spec.focusModel === 'delegates-focus') {
+      const delegatesFocusEnabled =
+        el.shadowRoot && 'delegatesFocus' in el.shadowRoot
+          ? el.shadowRoot.delegatesFocus === true
+          : (el.constructor as { shadowRootOptions?: { delegatesFocus?: boolean } })
+              .shadowRootOptions?.delegatesFocus === true;
+      if (!delegatesFocusEnabled) {
+        failures.push('Expected shadowRoot.delegatesFocus === true for focusModel="delegates-focus".');
+      }
+      if (el.hasAttribute('role')) {
+        failures.push('Host element must not carry `role` attribute when focusModel="delegates-focus".');
+      }
+    } else if (spec.focusModel === 'host' && spec.role) {
+      const hostRole = el.getAttribute('role') ?? (el as HTMLElement & { role?: string | null }).role;
+      if (hostRole !== spec.role) {
+        failures.push(`Expected host role "${spec.role}", received "${String(hostRole ?? null)}".`);
+      }
+    }
+
+    const record = el as unknown as Record<string, unknown>;
+    for (const prop of spec.props) {
+      if (prop.default !== undefined && record[prop.name] !== prop.default) {
+        failures.push(
+          `Prop "${prop.name}" default mismatch: expected ${JSON.stringify(prop.default)}, got ${JSON.stringify(record[prop.name])}.`,
+        );
+      }
+      if (prop.attr === false && el.hasAttribute(prop.name)) {
+        failures.push(`Prop "${prop.name}" has attr: false but reflected attribute "${prop.name}".`);
+      }
+    }
+
+    for (const binding of spec.keyboard) {
+      el.setAttribute('dir', binding.dir ?? 'ltr');
+      const event = new KeyboardEvent('keydown', {
+        key: binding.key,
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+      });
+      el.dispatchEvent(event);
+      if (adapter?.onKeyboardCheck) {
+        await adapter.onKeyboardCheck(el, binding, event);
+      }
+    }
+
+    if (spec.conformance.includes('form-control') && adapter?.formControl) {
+      suiteReports.push(await runFormControlSuite(adapter.formControl));
+    }
+    if (spec.conformance.includes('overlay') && adapter?.overlay) {
+      suiteReports.push(await runOverlaySuite(adapter.overlay));
+    }
+    if (spec.conformance.includes('roving-focus') && adapter?.rovingFocus) {
+      suiteReports.push(await runRovingFocusSuite(adapter.rovingFocus));
+    }
+    if (spec.conformance.includes('listbox') && adapter?.listbox) {
+      suiteReports.push(await runListboxSuite(adapter.listbox));
+    }
+    if (spec.conformance.includes('data-consumer') && adapter?.dataConsumer) {
+      suiteReports.push(await runDataConsumerSuite(adapter.dataConsumer));
+    }
+    if (spec.conformance.includes('satellite') && adapter?.satellite) {
+      suiteReports.push(await runSatelliteEngineSuite(adapter.satellite));
+    }
+  } finally {
+    el.remove();
+  }
+
+  return {
+    tag: spec.tag,
+    passed: failures.length === 0 && suiteReports.every((r) => r.passed),
+    suiteReports,
+    failures,
+  };
+}
+
+export function compileSpecDocs(spec: ComponentBehaviorSpec): string {
+  assertValidBehaviorSpec(spec);
+
+  const propsRows =
+    spec.props.length > 0
+      ? spec.props
+          .map((p) => {
+            const attr = p.attr === false ? '—' : `\`${p.attr ?? p.name}\``;
+            const def = p.default === undefined ? '—' : `\`${JSON.stringify(p.default)}\``;
+            return `| \`${p.name}\` | ${attr} | \`${p.type}\` | ${def} |`;
+          })
+          .join('\n')
+      : '| _None_ | — | — | — |';
+
+  const eventsRows =
+    spec.events.length > 0
+      ? spec.events
+          .map((e) => `| \`${e.name}\` | ${e.cancelable ? 'Yes' : 'No'} | \`${e.detailType}\` |`)
+          .join('\n')
+      : '| _None_ | — | — |';
+
+  const slotsRows =
+    spec.slots.length > 0
+      ? spec.slots.map((s) => `| \`${s.name || '(default)'}\` | ${s.description} |`).join('\n')
+      : '| _None_ | — |';
+
+  const partsRows =
+    spec.parts.length > 0
+      ? spec.parts.map((p) => `| \`${p.name}\` | ${p.description} |`).join('\n')
+      : '| _None_ | — |';
+
+  const keyboardRows =
+    spec.keyboard.length > 0
+      ? spec.keyboard
+          .map(
+            (k) =>
+              `| \`${k.key}\` | ${k.dir ?? 'ltr / rtl'} | ${k.when} | ${k.expect} |`,
+          )
+          .join('\n')
+      : '| _None_ | — | — | — |';
+
+  const statesList =
+    spec.states.length > 0 ? spec.states.map((s) => `\`:state(${s})\``).join(', ') : '_None_';
+
+  const messageKeys =
+    Object.keys(spec.messages).length > 0
+      ? Object.entries(spec.messages)
+          .map(([k, v]) => `- \`${k}\`: "${v}"`)
+          .join('\n')
+      : '_None_';
+
+  return [
+    `# \`<${spec.tag}>\``,
+    '',
+    `- **Package:** \`${spec.package}\``,
+    `- **Focus Model:** \`${spec.focusModel}\``,
+    `- **Host Role:** ${spec.role ? `\`${spec.role}\`` : '_Internal / none_'}`,
+    `- **Conformance Suites:** ${spec.conformance.length > 0 ? spec.conformance.map((c) => `\`${c}\``).join(', ') : '_None_'}`,
+    `- **Controllers:** ${spec.controllers.length > 0 ? spec.controllers.map((c) => `\`${c}\``).join(', ') : '_None_'}`,
+    `- **Custom States:** ${statesList}`,
+    '',
+    '## Properties & Attributes',
+    '',
+    '| Property | Attribute | Type | Default |',
+    '| :--- | :--- | :--- | :--- |',
+    propsRows,
+    '',
+    '## Events',
+    '',
+    '| Event | Cancelable | Detail |',
+    '| :--- | :--- | :--- |',
+    eventsRows,
+    '',
+    '## Slots',
+    '',
+    '| Slot | Description |',
+    '| :--- | :--- |',
+    slotsRows,
+    '',
+    '## CSS Parts (`::part()`)',
+    '',
+    '| Part | Description |',
+    '| :--- | :--- |',
+    partsRows,
+    '',
+    '## APG Keyboard Interactions',
+    '',
+    '| Key | Direction | When | Expected Behavior |',
+    '| :--- | :--- | :--- | :--- |',
+    keyboardRows,
+    '',
+    '## i18n Message Keys',
+    '',
+    messageKeys,
+    '',
+  ].join('\n');
+}
+
+export function verifyCustomElementsManifest(
+  spec: ComponentBehaviorSpec,
+  manifest: CustomElementsManifest,
+): CemVerificationResult {
+  assertValidBehaviorSpec(spec);
+
+  const declarations: CemDeclaration[] = [];
+  for (const mod of manifest.modules) {
+    if (mod.declarations) {
+      declarations.push(...mod.declarations);
+    }
+  }
+
+  const decl = declarations.find((d) => d.tagName === spec.tag);
+  if (!decl) {
+    return {
+      valid: false,
+      tag: spec.tag,
+      missing: [`custom-element declaration for <${spec.tag}>`],
+      mismatched: [],
+    };
+  }
+
+  const missing: string[] = [];
+  const mismatched: string[] = [];
+
+  const memberNames = new Set((decl.members ?? []).map((m) => m.name));
+  const attrNames = new Set((decl.attributes ?? []).map((a) => a.name));
+  const eventNames = new Set((decl.events ?? []).map((e) => e.name));
+  const slotNames = new Set((decl.slots ?? []).map((s) => s.name));
+  const partNames = new Set((decl.cssParts ?? []).map((p) => p.name));
+
+  for (const prop of spec.props) {
+    if (!memberNames.has(prop.name)) {
+      missing.push(`prop:${prop.name}`);
+    }
+    if (prop.attr !== false) {
+      const expectedAttr = prop.attr ?? prop.name;
+      if (!attrNames.has(expectedAttr)) {
+        missing.push(`attr:${expectedAttr}`);
+      }
+    } else if (attrNames.has(prop.name)) {
+      mismatched.push(`attr:${prop.name} declared in CEM despite spec attr: false`);
+    }
+  }
+
+  for (const ev of spec.events) {
+    if (!eventNames.has(ev.name)) {
+      missing.push(`event:${ev.name}`);
+    }
+  }
+
+  for (const slot of spec.slots) {
+    if (!slotNames.has(slot.name)) {
+      missing.push(`slot:${slot.name || '(default)'}`);
+    }
+  }
+
+  for (const part of spec.parts) {
+    if (!partNames.has(part.name)) {
+      missing.push(`cssPart:${part.name}`);
+    }
+  }
+
+  return {
+    valid: missing.length === 0 && mismatched.length === 0,
+    tag: spec.tag,
+    missing,
+    mismatched,
+  };
+}
+
+export function compileA11yChecklist(spec: ComponentBehaviorSpec): A11yChecklist {
+  assertValidBehaviorSpec(spec);
+
+  const items: A11yChecklistItem[] = [
+    {
+      id: 'same-root-aria',
+      category: 'aria',
+      requirement: 'All aria-* IDREFs resolve within the same DOM root (ADR-003).',
+      verifiedBy: 'scanSameRootAria',
+    },
+    {
+      id: 'focus-ownership',
+      category: 'focus',
+      requirement:
+        spec.focusModel === 'delegates-focus'
+          ? 'delegatesFocus: true with zero host internals.role (ADR-014).'
+          : `Focus ownership matches focusModel="${spec.focusModel}"${spec.role ? ` with host role="${spec.role}"` : ''}.`,
+      verifiedBy: 'lint-plugin & spec-compiler',
+    },
+    {
+      id: 'forced-colors',
+      category: 'contrast',
+      requirement: 'Renders legible borders, focus outlines, and selection indicators under forced-colors: active.',
+      verifiedBy: 'Playwright forced-colors matrix',
+    },
+  ];
+
+  if (spec.keyboard.length > 0) {
+    items.push({
+      id: 'apg-keyboard',
+      category: 'keyboard',
+      requirement: `Implements all ${spec.keyboard.length} APG keyboard transitions across LTR/RTL.`,
+      verifiedBy: `${spec.tag}.spec.test.ts`,
+    });
+  }
+
+  if (spec.states.length > 0) {
+    items.push({
+      id: 'custom-states',
+      category: 'states',
+      requirement: `Exposes ElementInternals CustomStateSet flags: ${spec.states.map((s) => `:state(${s})`).join(', ')}.`,
+      verifiedBy: 'Conformance suite',
+    });
+  }
+
+  if (Object.keys(spec.messages).length > 0) {
+    items.push({
+      id: 'i18n-catalog',
+      category: 'i18n',
+      requirement: `Routes ${Object.keys(spec.messages).length} UI/ARIA strings through @methane/core i18n catalog.`,
+      verifiedBy: 'Locale context test',
+    });
+  }
+
+  const markdown = [
+    `# Accessibility Checklist: \`<${spec.tag}>\``,
+    '',
+    ...items.map((item) => `- [ ] **[${item.category}]** ${item.requirement} _(${item.verifiedBy})_`),
+    '',
+  ].join('\n');
+
+  return {
+    tag: spec.tag,
+    items,
+    markdown,
+  };
+}
+
+export function compileSpec(spec: ComponentBehaviorSpec): CompiledSpecArtifacts {
+  assertValidBehaviorSpec(spec);
+  return {
+    spec,
+    tests: compileSpecTests(spec),
+    docs: compileSpecDocs(spec),
+    a11yChecklist: compileA11yChecklist(spec),
+  };
+}

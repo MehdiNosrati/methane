@@ -1,0 +1,25 @@
+{
+  "name": "@methane/bundle-budget",
+  "version": "0.1.0",
+  "description": "Cold standalone and marginal brotli bundle budget measurement via esbuild and zlib.brotliCompressSync",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

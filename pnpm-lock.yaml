@@ -59,6 +59,32 @@ importers:
 
   packages/tokens: {}
 
+  tooling/bundle-budget:
+    dependencies:
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
+
+  tooling/lint-plugin:
+    dependencies:
+      eslint:
+        specifier: ^10.15.0
+        version: 10.15.0
+      postcss:
+        specifier: ^8.5.0
+        version: 8.5.33
+      stylelint:
+        specifier: ^18.0.0
+        version: 18.0.0
+
+  tooling/spec-compiler:
+    dependencies:
+      '@methane/test-conformance':
+        specifier: workspace:*
+        version: link:../test-conformance
+
+  tooling/test-conformance: {}
+
 packages:
 
   '@cacheable/memory@2.2.0':

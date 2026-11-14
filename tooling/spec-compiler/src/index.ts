@@ -1,0 +1,30 @@
+export {
+  compileA11yChecklist,
+  compileSpec,
+  compileSpecDocs,
+  compileSpecTests,
+  runBehaviorSpecAssertions,
+  verifyCustomElementsManifest,
+} from './compiler.js';
+export type {
+  A11yChecklist,
+  A11yChecklistItem,
+  BehaviorSpecAdapter,
+  BehaviorSpecAssertionReport,
+  CemDeclaration,
+  CemVerificationResult,
+  CompileSpecTestsOptions,
+  CompiledSpecArtifacts,
+  ComponentBehaviorSpec,
+  ConformanceSuiteName,
+  CustomElementsManifest,
+  EventSpec,
+  FocusModel,
+  KeyboardBindingSpec,
+  PartSpec,
+  PropSpec,
+  SlotSpec,
+  SpecDiagnostic,
+  SpecValidationResult,
+} from './types.js';
+export { assertValidBehaviorSpec, validateBehaviorSpec } from './validator.js';
