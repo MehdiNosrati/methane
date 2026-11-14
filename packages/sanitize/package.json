@@ -1,0 +1,25 @@
+{
+  "name": "@methane/sanitize",
+  "version": "0.1.0",
+  "description": "HTML sanitization with native Element.prototype.setHTML and DOMPurify parity fallback for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.18"
+  }
+}
