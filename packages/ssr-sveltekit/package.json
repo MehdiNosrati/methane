@@ -1,0 +1,30 @@
+{
+  "name": "@methane/ssr-sveltekit",
+  "version": "0.1.0",
+  "description": "SvelteKit server handle DSD transform and client hydration adapter for Methane UI (ADR-009)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@methane/ssr": "workspace:*",
+    "lit": "^3.3.3"
+  }
+}

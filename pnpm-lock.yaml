@@ -134,6 +134,51 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/test-conformance
 
+  packages/ssr-angular:
+    dependencies:
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../ssr
+      lit:
+        specifier: ^3.3.3
+        version: 3.3.3
+
+  packages/ssr-astro:
+    dependencies:
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../ssr
+      lit:
+        specifier: ^3.3.3
+        version: 3.3.3
+
+  packages/ssr-next:
+    dependencies:
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../ssr
+      lit:
+        specifier: ^3.3.3
+        version: 3.3.3
+
+  packages/ssr-nuxt:
+    dependencies:
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../ssr
+      lit:
+        specifier: ^3.3.3
+        version: 3.3.3
+
+  packages/ssr-sveltekit:
+    dependencies:
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../ssr
+      lit:
+        specifier: ^3.3.3
+        version: 3.3.3
+
   packages/tokens: {}
 
   tooling/bundle-budget:
