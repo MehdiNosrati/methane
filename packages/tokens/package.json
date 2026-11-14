@@ -1,0 +1,32 @@
+{
+  "name": "@methane/tokens",
+  "version": "0.1.0",
+  "description": "W3C DTCG design tokens, oklch color ramps, light-dark themes, density, and forced-colors support for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./dist/tokens.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./compiler": {
+      "types": "./dist/compiler.d.ts",
+      "default": "./dist/compiler.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.json": "./src/tokens.dtcg.json"
+  },
+  "files": [
+    "dist",
+    "src/tokens.dtcg.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/build.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src && stylelint dist/tokens.css --allow-empty-input",
+    "test": "vitest run"
+  }
+}
