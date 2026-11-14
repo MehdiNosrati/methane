@@ -1,0 +1,208 @@
+@layer mth.primitives {
+  /* 12. .mth-prose: long-form typographic rhythm using logical CSS properties */
+  .mth-prose {
+    max-inline-size: var(--mth-prose-measure, 65ch);
+    color: var(--mth-color-fg, light-dark(oklch(0.145 0.01 255), oklch(0.985 0.005 255)));
+    font-family: var(--mth-font-sans, system-ui, sans-serif);
+    font-size: var(--mth-font-size-md, 1rem);
+    line-height: var(--mth-line-height-relaxed, 1.75);
+  }
+
+  .mth-prose > :where(* + *) {
+    margin-block-start: var(--mth-space-4, 1rem);
+  }
+
+  .mth-prose :where(h1, h2, h3, h4) {
+    color: var(--mth-color-fg, light-dark(oklch(0.145 0.01 255), oklch(0.985 0.005 255)));
+    font-weight: var(--mth-font-weight-semibold, 600);
+    line-height: var(--mth-line-height-tight, 1.25);
+    margin-block: var(--mth-space-8, 2rem) var(--mth-space-3, 0.75rem);
+  }
+
+  .mth-prose > :where(h1, h2, h3, h4):first-child {
+    margin-block-start: 0;
+  }
+
+  .mth-prose :where(h1) {
+    font-size: var(--mth-font-size-3xl, 1.875rem);
+    font-weight: var(--mth-font-weight-bold, 700);
+  }
+
+  .mth-prose :where(h2) {
+    font-size: var(--mth-font-size-2xl, 1.5rem);
+  }
+
+  .mth-prose :where(h3) {
+    font-size: var(--mth-font-size-xl, 1.25rem);
+  }
+
+  .mth-prose :where(h4) {
+    font-size: var(--mth-font-size-lg, 1.125rem);
+  }
+
+  .mth-prose :where(a) {
+    color: var(--mth-color-accent, light-dark(oklch(0.56 0.21 255), oklch(0.67 0.19 255)));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .mth-prose :where(a:hover) {
+    color: var(--mth-color-accent-hover, light-dark(oklch(0.48 0.21 255), oklch(0.77 0.15 255)));
+  }
+
+  .mth-prose :where(ul, ol) {
+    padding-inline-start: var(--mth-space-6, 1.5rem);
+    margin-block: var(--mth-space-4, 1rem);
+  }
+
+  .mth-prose :where(li + li) {
+    margin-block-start: var(--mth-space-1, 0.25rem);
+  }
+
+  .mth-prose :where(blockquote) {
+    margin-block: var(--mth-space-5, 1.25rem);
+    margin-inline: 0;
+    padding-block: var(--mth-space-3, 0.75rem);
+    padding-inline: var(--mth-space-4, 1rem);
+    border-inline-start: 3px solid
+      var(--mth-color-accent, light-dark(oklch(0.56 0.21 255), oklch(0.67 0.19 255)));
+    background-color: var(
+      --mth-color-bg-subtle,
+      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+    );
+    border-start-end-radius: var(--mth-radius-md, 0.375rem);
+    border-end-end-radius: var(--mth-radius-md, 0.375rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 255), oklch(0.7 0.015 255)));
+  }
+
+  .mth-prose :where(code) {
+    font-family: var(--mth-font-mono, ui-monospace, monospace);
+    font-size: 0.875em;
+    padding-block: 0.125em;
+    padding-inline: 0.375em;
+    background-color: var(
+      --mth-color-bg-subtle,
+      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+    );
+    border: 1px solid
+      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    border-radius: var(--mth-radius-sm, 0.25rem);
+  }
+
+  .mth-prose :where(pre) {
+    overflow-inline: auto;
+    padding: var(--mth-space-4, 1rem);
+    background-color: var(
+      --mth-color-bg-subtle,
+      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+    );
+    border: 1px solid
+      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    border-radius: var(--mth-radius-md, 0.375rem);
+    font-family: var(--mth-font-mono, ui-monospace, monospace);
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    line-height: var(--mth-line-height-normal, 1.5);
+  }
+
+  .mth-prose :where(pre code) {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    font-size: inherit;
+  }
+
+  .mth-prose :where(hr) {
+    border: 0;
+    border-block-start: 1px solid
+      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    margin-block: var(--mth-space-8, 2rem);
+  }
+
+  .mth-prose :where(table) {
+    inline-size: 100%;
+    border-collapse: collapse;
+    margin-block: var(--mth-space-5, 1.25rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
+  }
+
+  .mth-prose :where(th, td) {
+    padding-block: var(--mth-space-2, 0.5rem);
+    padding-inline: var(--mth-space-3, 0.75rem);
+    border-block-end: 1px solid
+      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    text-align: start;
+  }
+
+  .mth-prose :where(th) {
+    font-weight: var(--mth-font-weight-semibold, 600);
+    border-block-end: 2px solid
+      var(--mth-color-border-strong, light-dark(oklch(0.84 0.012 255), oklch(0.36 0.015 255)));
+  }
+
+  .mth-prose :where(figcaption) {
+    margin-block-start: var(--mth-space-2, 0.5rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 255), oklch(0.7 0.015 255)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
+  }
+
+  /* 13. .mth-dl: semantic description list for key-value metadata */
+  .mth-dl {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--mth-dl-gap, var(--mth-space-2, 0.5rem)) var(--mth-space-6, 1.5rem);
+    margin-block: 0;
+    margin-inline: 0;
+    container-type: inline-size;
+  }
+
+  .mth-dl > dt {
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 255), oklch(0.7 0.015 255)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    font-weight: var(--mth-font-weight-medium, 500);
+  }
+
+  .mth-dl > dd {
+    margin-inline-start: 0;
+    color: var(--mth-color-fg, light-dark(oklch(0.145 0.01 255), oklch(0.985 0.005 255)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
+  }
+
+  .mth-dl[data-variant='bordered'] > dd {
+    padding-block-end: var(--mth-space-3, 0.75rem);
+    border-block-end: 1px solid
+      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+  }
+
+  @container (inline-size >= 30rem) {
+    .mth-dl:not([data-layout='stacked']) {
+      grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
+    }
+
+    .mth-dl[data-variant='bordered']:not([data-layout='stacked']) > dt {
+      padding-block-end: var(--mth-space-3, 0.75rem);
+      border-block-end: 1px solid
+        var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    }
+  }
+
+  @media (forced-colors: active) {
+    .mth-prose,
+    .mth-prose :where(h1, h2, h3, h4),
+    .mth-dl > dd {
+      color: CanvasText;
+    }
+
+    .mth-prose :where(blockquote, code, pre) {
+      background-color: Canvas;
+      border-color: ButtonBorder;
+    }
+
+    .mth-prose :where(a) {
+      color: LinkText;
+    }
+
+    .mth-prose :where(blockquote) {
+      border-inline-start-color: Highlight;
+    }
+  }
+}
