@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "name": "methane-v1-migration",
+  "tagPrefix": {
+    "fromPrefix": "mth-",
+    "toPrefix": "app-"
+  },
+  "tokenPrefix": {
+    "fromPrefix": "--mth-",
+    "toPrefix": "--app-"
+  },
+  "tokenRenames": [
+    { "from": "--mth-color-primary", "to": "--mth-color-accent" }
+  ],
+  "attributes": [
+    {
+      "tag": "mth-button",
+      "from": "kind",
+      "to": "variant",
+      "valueMap": {
+        "primary": "solid",
+        "secondary": "soft"
+      }
+    },
+    {
+      "tag": "mth-input",
+      "from": "hint-text",
+      "to": "hint"
+    }
+  ],
+  "slots": [
+    {
+      "tag": "mth-dialog",
+      "from": "actions",
+      "to": "footer"
+    }
+  ],
+  "events": [
+    {
+      "tag": "mth-dialog",
+      "from": "mth-dismiss",
+      "to": "mth-close"
+    }
+  ]
+}
