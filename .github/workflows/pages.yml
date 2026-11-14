@@ -1,0 +1,82 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    outputs:
+      has_docs: ${{ steps.check_docs.outputs.has_docs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check docs app presence
+        id: check_docs
+        run: |
+          if [ -f apps/docs/package.json ]; then
+            echo "has_docs=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_docs=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup pnpm
+        if: steps.check_docs.outputs.has_docs == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        if: steps.check_docs.outputs.has_docs == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Setup Pages
+        if: steps.check_docs.outputs.has_docs == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        if: steps.check_docs.outputs.has_docs == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages & docs
+        if: steps.check_docs.outputs.has_docs == 'true'
+        run: pnpm build
+
+      - name: Verify docs output
+        if: steps.check_docs.outputs.has_docs == 'true'
+        run: test -d apps/docs/dist
+
+      - name: Upload Pages artifact
+        if: steps.check_docs.outputs.has_docs == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/docs/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.has_docs == 'true'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
