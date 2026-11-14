@@ -1,0 +1,177 @@
+{
+  "version": 1.1,
+  "tags": [
+    {
+      "name": "mth-button",
+      "description": "Action button with variant, size, and loading states.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "Visual button emphasis."
+        },
+        {
+          "name": "size",
+          "description": "Control size token scale."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables interaction."
+        },
+        {
+          "name": "loading",
+          "description": "Shows loading spinner and suppresses duplicate clicks."
+        }
+      ]
+    },
+    {
+      "name": "mth-checkbox",
+      "description": "Tri-state form-associated checkbox control.",
+      "attributes": [
+        {
+          "name": "checked",
+          "description": "Checked state."
+        },
+        {
+          "name": "indeterminate",
+          "description": "Mixed visual and ARIA state."
+        },
+        {
+          "name": "value",
+          "description": "Submitted form value when checked."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables checkbox interaction."
+        }
+      ]
+    },
+    {
+      "name": "mth-combobox",
+      "description": "Filterable combobox supporting async DataSource and declarative options.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Selected option value."
+        },
+        {
+          "name": "open",
+          "description": "Popup open state."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables the combobox."
+        }
+      ]
+    },
+    {
+      "name": "mth-dialog",
+      "description": "Top-layer modal dialog with focus trapping and exit transitions.",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Dialog open state."
+        },
+        {
+          "name": "modal",
+          "description": "Whether dialog traps focus and shows backdrop."
+        },
+        {
+          "name": "label",
+          "description": "Accessible dialog title."
+        }
+      ]
+    },
+    {
+      "name": "mth-field",
+      "description": "Layout wrapper and Context Protocol provider for form controls.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Field label propagated via Context Protocol."
+        },
+        {
+          "name": "hint",
+          "description": "Helper text."
+        },
+        {
+          "name": "error",
+          "description": "Validation error message."
+        },
+        {
+          "name": "required",
+          "description": "Propagates required flag."
+        },
+        {
+          "name": "disabled",
+          "description": "Propagates disabled flag."
+        }
+      ]
+    },
+    {
+      "name": "mth-input",
+      "description": "Form-associated text input supporting FACE validation and autofill.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current input value."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "type",
+          "description": "Input semantic type."
+        },
+        {
+          "name": "label",
+          "description": "Accessible label mirrored inside Shadow DOM."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables the input."
+        },
+        {
+          "name": "required",
+          "description": "Marks field required for constraint validation."
+        }
+      ]
+    },
+    {
+      "name": "mth-option",
+      "description": "Declarative listbox option item.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Option value."
+        },
+        {
+          "name": "disabled",
+          "description": "Marks option non-selectable."
+        },
+        {
+          "name": "selected",
+          "description": "Selected state."
+        }
+      ]
+    },
+    {
+      "name": "mth-switch",
+      "description": "Accessible binary toggle switch.",
+      "attributes": [
+        {
+          "name": "checked",
+          "description": "Toggle state."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables the switch."
+        }
+      ]
+    }
+  ]
+}

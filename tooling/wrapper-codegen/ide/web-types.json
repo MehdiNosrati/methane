@@ -1,0 +1,591 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json",
+  "name": "@methane/ui",
+  "version": "0.1.0",
+  "js-types-syntax": "typescript",
+  "description-markup": "markdown",
+  "contributions": {
+    "html": {
+      "elements": [
+        {
+          "name": "mth-button",
+          "description": "Action button with variant, size, and loading states.",
+          "attributes": [
+            {
+              "name": "variant",
+              "description": "Visual button emphasis.",
+              "value": {
+                "kind": "expression",
+                "type": "'solid' | 'outline' | 'ghost' | 'danger'"
+              },
+              "default": "'solid'"
+            },
+            {
+              "name": "size",
+              "description": "Control size token scale.",
+              "value": {
+                "kind": "expression",
+                "type": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "disabled",
+              "description": "Disables interaction.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "loading",
+              "description": "Shows loading spinner and suppresses duplicate clicks.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Button label content."
+            },
+            {
+              "name": "prefix",
+              "description": "Leading icon or indicator."
+            },
+            {
+              "name": "suffix",
+              "description": "Trailing icon or badge."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-press",
+              "description": "Fired when activated via pointer or keyboard."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Root button container."
+            },
+            {
+              "name": "control",
+              "description": "Native internal button element."
+            }
+          ],
+          "css-properties": [
+            {
+              "name": "--mth-button-bg",
+              "description": "Background color override."
+            }
+          ]
+        },
+        {
+          "name": "mth-checkbox",
+          "description": "Tri-state form-associated checkbox control.",
+          "attributes": [
+            {
+              "name": "checked",
+              "description": "Checked state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "indeterminate",
+              "description": "Mixed visual and ARIA state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "description": "Submitted form value when checked.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "'on'"
+            },
+            {
+              "name": "disabled",
+              "description": "Disables checkbox interaction.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Checkbox label content."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "description": "Emitted when checked state toggles."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Wrapper label."
+            },
+            {
+              "name": "control",
+              "description": "Checkbox indicator box."
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-combobox",
+          "description": "Filterable combobox supporting async DataSource and declarative options.",
+          "attributes": [
+            {
+              "name": "value",
+              "description": "Selected option value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "open",
+              "description": "Popup open state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Disables the combobox.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Declarative options"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-open",
+              "description": "Cancelable event fired before opening popup."
+            },
+            {
+              "name": "mth-close",
+              "description": "Cancelable event fired before closing popup."
+            },
+            {
+              "name": "mth-select",
+              "description": "Emitted when an option is selected."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Root container"
+            },
+            {
+              "name": "control",
+              "description": "Combobox input"
+            },
+            {
+              "name": "popup",
+              "description": "Listbox popover"
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-dialog",
+          "description": "Top-layer modal dialog with focus trapping and exit transitions.",
+          "attributes": [
+            {
+              "name": "open",
+              "description": "Dialog open state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "modal",
+              "description": "Whether dialog traps focus and shows backdrop.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "label",
+              "description": "Accessible dialog title.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Dialog body"
+            },
+            {
+              "name": "header",
+              "description": "Dialog header"
+            },
+            {
+              "name": "footer",
+              "description": "Dialog footer"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-open",
+              "description": "Cancelable pre-open event."
+            },
+            {
+              "name": "mth-after-open",
+              "description": "Fired after entry transition completes."
+            },
+            {
+              "name": "mth-close",
+              "description": "Cancelable pre-close event."
+            },
+            {
+              "name": "mth-after-close",
+              "description": "Fired after exit transition completes."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Dialog element"
+            },
+            {
+              "name": "popup",
+              "description": "Panel surface"
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-field",
+          "description": "Layout wrapper and Context Protocol provider for form controls.",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "Field label propagated via Context Protocol.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "hint",
+              "description": "Helper text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "error",
+              "description": "Validation error message.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "required",
+              "description": "Propagates required flag.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Propagates disabled flag.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Slotted Methane form control."
+            },
+            {
+              "name": "label",
+              "description": "Custom label slot."
+            },
+            {
+              "name": "hint",
+              "description": "Custom hint slot."
+            },
+            {
+              "name": "error",
+              "description": "Custom error slot."
+            }
+          ],
+          "events": [],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Field container."
+            },
+            {
+              "name": "label",
+              "description": "Label text."
+            },
+            {
+              "name": "hint",
+              "description": "Hint text."
+            },
+            {
+              "name": "error",
+              "description": "Error text."
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-input",
+          "description": "Form-associated text input supporting FACE validation and autofill.",
+          "attributes": [
+            {
+              "name": "value",
+              "description": "Current input value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "name",
+              "description": "Form field name.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "\"\""
+            },
+            {
+              "name": "type",
+              "description": "Input semantic type.",
+              "value": {
+                "kind": "expression",
+                "type": "'text' | 'email' | 'url' | 'search' | 'tel'"
+              },
+              "default": "'text'"
+            },
+            {
+              "name": "label",
+              "description": "Accessible label mirrored inside Shadow DOM.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "placeholder",
+              "description": "Placeholder text.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "disabled",
+              "description": "Disables the input.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "required",
+              "description": "Marks field required for constraint validation.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "label",
+              "description": "Label content"
+            },
+            {
+              "name": "hint",
+              "description": "Hint content"
+            },
+            {
+              "name": "error",
+              "description": "Error content"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "description": "Emitted on user value edit."
+            },
+            {
+              "name": "mth-change",
+              "description": "Emitted when value commits."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Outer shell"
+            },
+            {
+              "name": "control",
+              "description": "Native input"
+            },
+            {
+              "name": "label",
+              "description": "Label text element."
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-option",
+          "description": "Declarative listbox option item.",
+          "attributes": [
+            {
+              "name": "value",
+              "description": "Option value.",
+              "value": {
+                "kind": "expression",
+                "type": "string"
+              },
+              "default": "''"
+            },
+            {
+              "name": "disabled",
+              "description": "Marks option non-selectable.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "selected",
+              "description": "Selected state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Option text or rich content."
+            }
+          ],
+          "events": [],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Option row container."
+            }
+          ],
+          "css-properties": []
+        },
+        {
+          "name": "mth-switch",
+          "description": "Accessible binary toggle switch.",
+          "attributes": [
+            {
+              "name": "checked",
+              "description": "Toggle state.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "description": "Disables the switch.",
+              "value": {
+                "kind": "expression",
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Switch label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "description": "Emitted on toggle."
+            }
+          ],
+          "css-parts": [
+            {
+              "name": "base",
+              "description": "Root container."
+            },
+            {
+              "name": "control",
+              "description": "Switch track and thumb."
+            }
+          ],
+          "css-properties": []
+        }
+      ]
+    }
+  }
+}

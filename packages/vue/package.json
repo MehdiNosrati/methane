@@ -1,0 +1,28 @@
+{
+  "name": "@methane/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 Volar GlobalComponents, v-model wrappers, and compiler preset for Methane UI (ADR-009)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "vue": "^3.5.45"
+  }
+}

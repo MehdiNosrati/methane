@@ -1,0 +1,42 @@
+{
+  "name": "@methane/svelte",
+  "version": "0.1.0",
+  "description": "Svelte 5 typed wrappers supporting bind:value, bind:checked, and bind:open for Methane UI (ADR-009)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*.svelte": {
+      "svelte": "./src/components/*.svelte",
+      "default": "./src/components/*.svelte"
+    },
+    "./components/*.svelte": {
+      "svelte": "./src/components/*.svelte",
+      "default": "./src/components/*.svelte"
+    }
+  },
+  "files": [
+    "dist",
+    "src/components"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "svelte": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "svelte": "^5.57.3"
+  }
+}
