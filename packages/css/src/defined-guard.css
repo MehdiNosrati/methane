@@ -1,0 +1,23 @@
+@layer mth.reset {
+  @keyframes mth-defined-fallback {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  :where(:not(:defined)) {
+    opacity: 0;
+    animation: mth-defined-fallback var(--mth-motion-duration-normal, 200ms) ease-out 2s forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(:not(:defined)) {
+      animation: none;
+      opacity: 1;
+    }
+  }
+}

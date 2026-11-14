@@ -1,0 +1,96 @@
+@layer mth.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    text-size-adjust: 100%;
+    tab-size: 4;
+    line-height: var(--mth-line-height-normal, 1.5);
+    font-family: var(--mth-font-sans, system-ui, sans-serif);
+    color: var(--mth-color-fg, CanvasText);
+    background-color: var(--mth-color-bg, Canvas);
+  }
+
+  body {
+    margin-block: 0;
+    margin-inline: 0;
+    min-block-size: 100dvb;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin-block: 0;
+    margin-inline: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    line-height: var(--mth-line-height-tight, 1.25);
+  }
+
+  p {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  ul[class],
+  ol[class] {
+    list-style: none;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--mth-color-border-focus, Highlight);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@methane/css",
+  "version": "0.1.0",
+  "description": "Cascade layers, CSS logical-property reset, and fail-open :not(:defined) guard for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./dist/*.css"
+  ],
+  "dependencies": {
+    "@methane/tokens": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./base.css": "./dist/base.css",
+    "./layers.css": "./dist/layers.css",
+    "./reset.css": "./dist/reset.css",
+    "./defined-guard.css": "./dist/defined-guard.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/build.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src && stylelint 'src/**/*.css' 'dist/**/*.css' --allow-empty-input",
+    "test": "vitest run"
+  }
+}
