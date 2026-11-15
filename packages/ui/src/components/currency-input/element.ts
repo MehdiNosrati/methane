@@ -3,7 +3,7 @@ import { MthCurrencyInput } from './currency-input.js';
 
 export { MthCurrencyInput } from './currency-input.js';
 export { currencyInputMessages } from './currency-input.messages.js';
-export { currencyInputSpec, CEM_METADATA } from './currency-input.spec.js';
+export { currencyInputSpec } from './currency-input.spec.js';
 export { currencyInputStyles } from './currency-input.styles.js';
 
 export function registerMthCurrencyInput(prefix?: string): ReadonlyArray<string> {

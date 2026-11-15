@@ -7,7 +7,7 @@ export {
   type RepeaterRow,
 } from './form-repeater.js';
 export { formRepeaterMessages } from './form-repeater.messages.js';
-export { formRepeaterSpec, CEM_METADATA } from './form-repeater.spec.js';
+export { formRepeaterSpec } from './form-repeater.spec.js';
 export { formRepeaterStyles } from './form-repeater.styles.js';
 
 export function registerMthFormRepeater(prefix?: string): ReadonlyArray<string> {

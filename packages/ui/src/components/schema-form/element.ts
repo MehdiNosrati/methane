@@ -9,7 +9,7 @@ export {
   type SchemaStringFormat,
 } from './schema-form.js';
 export { schemaFormMessages } from './schema-form.messages.js';
-export { schemaFormSpec, CEM_METADATA } from './schema-form.spec.js';
+export { schemaFormSpec } from './schema-form.spec.js';
 export { schemaFormStyles } from './schema-form.styles.js';
 
 export function registerMthSchemaForm(prefix?: string): ReadonlyArray<string> {

@@ -3,7 +3,7 @@ import { MthAddressInput } from './address-input.js';
 
 export { MthAddressInput, type AddressValue } from './address-input.js';
 export { addressInputMessages } from './address-input.messages.js';
-export { addressInputSpec, CEM_METADATA } from './address-input.spec.js';
+export { addressInputSpec } from './address-input.spec.js';
 export { addressInputStyles } from './address-input.styles.js';
 
 export function registerMthAddressInput(prefix?: string): ReadonlyArray<string> {

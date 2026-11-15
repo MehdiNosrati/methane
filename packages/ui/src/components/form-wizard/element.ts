@@ -3,7 +3,7 @@ import { MthFormWizard } from './form-wizard.js';
 
 export { MthFormWizard, type StepValidator } from './form-wizard.js';
 export { formWizardMessages } from './form-wizard.messages.js';
-export { formWizardSpec, CEM_METADATA } from './form-wizard.spec.js';
+export { formWizardSpec } from './form-wizard.spec.js';
 export { formWizardStyles } from './form-wizard.styles.js';
 
 export function registerMthFormWizard(prefix?: string): ReadonlyArray<string> {
