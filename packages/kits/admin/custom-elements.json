@@ -1,0 +1,2502 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/audit-log/audit-log.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAuditLog",
+          "tagName": "mth-audit-log",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Chronological virtualized audit log (`<mth-audit-log>`) powered by DataController and VirtualizerController with actor/action/resource/severity filtering.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "entries",
+              "type": {
+                "text": "ReadonlyArray<AuditLogEntry>"
+              },
+              "description": "Static array of audit log entries."
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource<AuditLogEntry, AuditLogFilter> | null"
+              },
+              "description": "Async DataSource<AuditLogEntry, AuditLogFilter> adapter."
+            },
+            {
+              "kind": "field",
+              "name": "severity",
+              "attribute": "severity",
+              "reflect": true,
+              "type": {
+                "text": "'all' | 'info' | 'warning' | 'critical'"
+              },
+              "default": "\"all\"",
+              "description": "Severity filter (`all`, `info`, `warning`, `critical`)."
+            },
+            {
+              "kind": "field",
+              "name": "search",
+              "attribute": "search",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Actor/action/resource search string."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "56",
+              "description": "Estimated row height in pixels for VirtualizerController."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "severity",
+              "fieldName": "severity",
+              "type": {
+                "text": "'all' | 'info' | 'warning' | 'critical'"
+              },
+              "default": "\"all\"",
+              "description": "Severity filter (`all`, `info`, `warning`, `critical`)."
+            },
+            {
+              "name": "search",
+              "fieldName": "search",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Actor/action/resource search string."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "56",
+              "description": "Estimated row height in pixels for VirtualizerController."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-entry-select",
+              "type": {
+                "text": "CustomEvent<{ entry: AuditLogEntry }>"
+              },
+              "description": "Emitted when an audit entry is activated."
+            },
+            {
+              "name": "mth-filter-change",
+              "type": {
+                "text": "CustomEvent<{ search: string; severity: AuditSeverityFilter }>"
+              },
+              "description": "Emitted when search or severity filter changes."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer audit log container."
+            },
+            {
+              "name": "filters",
+              "description": "Search and severity filter toolbar."
+            },
+            {
+              "name": "viewport",
+              "description": "Virtualized scrollable timeline viewport."
+            },
+            {
+              "name": "row",
+              "description": "Audit log entry row."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-audit-log",
+            "package": "@methane/admin",
+            "conformance": [
+              "data-consumer"
+            ],
+            "controllers": [
+              "DataController",
+              "VirtualizerController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "loading",
+              "empty",
+              "error"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "entries",
+                "attr": false,
+                "type": "ReadonlyArray<AuditLogEntry>"
+              },
+              {
+                "name": "dataSource",
+                "attr": false,
+                "type": "DataSource<AuditLogEntry, AuditLogFilter> | null"
+              },
+              {
+                "name": "severity",
+                "attr": "severity",
+                "type": "'all' | 'info' | 'warning' | 'critical'",
+                "default": "all"
+              },
+              {
+                "name": "search",
+                "attr": "search",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 56
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-entry-select",
+                "cancelable": false,
+                "detailType": "{ entry: AuditLogEntry }"
+              },
+              {
+                "name": "mth-filter-change",
+                "cancelable": false,
+                "detailType": "{ search: string; severity: AuditSeverityFilter }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer audit log container."
+              },
+              {
+                "name": "filters",
+                "description": "Search and severity filter toolbar."
+              },
+              {
+                "name": "viewport",
+                "description": "Virtualized scrollable timeline viewport."
+              },
+              {
+                "name": "row",
+                "description": "Audit log entry row."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Security audit log",
+              "actorFilterLabel": "Filter by actor or resource",
+              "actorFilterPlaceholder": "Filter actor, action, resource...",
+              "severityLabel": "Severity filter",
+              "severityAll": "All severities",
+              "severityInfo": "Info",
+              "severityWarning": "Warning",
+              "severityCritical": "Critical",
+              "loadingLabel": "Loading audit entries...",
+              "emptyLabel": "No matching audit entries.",
+              "errorLabel": "Failed to load audit log."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAuditLog",
+          "declaration": {
+            "name": "MthAuditLog",
+            "module": "src/components/audit-log/audit-log.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-audit-log",
+          "declaration": {
+            "name": "MthAuditLog",
+            "module": "src/components/audit-log/audit-log.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/bulk-action-bar/bulk-action-bar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthBulkActionBar",
+          "tagName": "mth-bulk-action-bar",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Contextual selection toolbar (`<mth-bulk-action-bar>`) with Intl.PluralRules count formatting, select-all/clear triggers, and RTL-aware RovingFocusController.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "selectedCount",
+              "attribute": "selected-count",
+              "reflect": true,
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Number of currently selected rows/items."
+            },
+            {
+              "kind": "field",
+              "name": "totalCount",
+              "attribute": "total-count",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total available item count for select-all state."
+            },
+            {
+              "kind": "field",
+              "name": "actions",
+              "type": {
+                "text": "ReadonlyArray<BulkActionItem>"
+              },
+              "description": "Bulk action buttons rendered in the toolbar."
+            },
+            {
+              "kind": "field",
+              "name": "showWhenEmpty",
+              "attribute": "show-when-empty",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Keeps the toolbar visible when selectedCount is 0."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "selected-count",
+              "fieldName": "selectedCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Number of currently selected rows/items."
+            },
+            {
+              "name": "total-count",
+              "fieldName": "totalCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total available item count for select-all state."
+            },
+            {
+              "name": "show-when-empty",
+              "fieldName": "showWhenEmpty",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Keeps the toolbar visible when selectedCount is 0."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-select-all",
+              "type": {
+                "text": "CustomEvent<{ totalCount: number }>"
+              },
+              "description": "Emitted when select-all is clicked."
+            },
+            {
+              "name": "mth-clear-selection",
+              "type": {
+                "text": "CustomEvent<{}>"
+              },
+              "description": "Emitted when clear-selection is clicked."
+            },
+            {
+              "name": "mth-action",
+              "type": {
+                "text": "CustomEvent<{ id: string; selectedCount: number }>"
+              },
+              "description": "Emitted when a bulk action button is clicked."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer bulk action toolbar."
+            },
+            {
+              "name": "count",
+              "description": "Pluralized selected item readout."
+            },
+            {
+              "name": "actions",
+              "description": "Action button group."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "active",
+              "description": "Custom element state :state(active)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-bulk-action-bar",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "active"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "bulk toolbar has focus",
+                "expect": "moves focus to next action button"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "bulk toolbar has focus in RTL",
+                "expect": "moves focus to next action button"
+              }
+            ],
+            "props": [
+              {
+                "name": "selectedCount",
+                "attr": "selected-count",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "totalCount",
+                "attr": "total-count",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "actions",
+                "attr": false,
+                "type": "ReadonlyArray<BulkActionItem>"
+              },
+              {
+                "name": "showWhenEmpty",
+                "attr": "show-when-empty",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-select-all",
+                "cancelable": false,
+                "detailType": "{ totalCount: number }"
+              },
+              {
+                "name": "mth-clear-selection",
+                "cancelable": false,
+                "detailType": "{}"
+              },
+              {
+                "name": "mth-action",
+                "cancelable": false,
+                "detailType": "{ id: string; selectedCount: number }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer bulk action toolbar."
+              },
+              {
+                "name": "count",
+                "description": "Pluralized selected item readout."
+              },
+              {
+                "name": "actions",
+                "description": "Action button group."
+              }
+            ],
+            "messages": {
+              "toolbarLabel": "Bulk actions",
+              "selectedZero": "No items selected",
+              "selectedOne": "{count} item selected",
+              "selectedOther": "{count} items selected",
+              "selectAll": "Select all",
+              "clearSelection": "Clear selection"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthBulkActionBar",
+          "declaration": {
+            "name": "MthBulkActionBar",
+            "module": "src/components/bulk-action-bar/bulk-action-bar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-bulk-action-bar",
+          "declaration": {
+            "name": "MthBulkActionBar",
+            "module": "src/components/bulk-action-bar/bulk-action-bar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/column-chooser/column-chooser.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthColumnChooser",
+          "tagName": "mth-column-chooser",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Column visibility & reorder panel (`<mth-column-chooser>`) composing DragSortController, SelectionController, and RovingFocusController.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "columns",
+              "type": {
+                "text": "ReadonlyArray<ColumnChooserItem>"
+              },
+              "description": "Ordered list of column definitions with visibility and lock flags."
+            },
+            {
+              "kind": "field",
+              "name": "allowReorder",
+              "attribute": "allow-reorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables drag/keyboard/button column reordering."
+            },
+            {
+              "kind": "field",
+              "name": "allowReset",
+              "attribute": "allow-reset",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays reset-defaults button."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "allow-reorder",
+              "fieldName": "allowReorder",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables drag/keyboard/button column reordering."
+            },
+            {
+              "name": "allow-reset",
+              "fieldName": "allowReset",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays reset-defaults button."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ columns: ReadonlyArray<ColumnChooserItem> }>"
+              },
+              "description": "Emitted when visibility or column order changes."
+            },
+            {
+              "name": "mth-reset",
+              "type": {
+                "text": "CustomEvent<{}>"
+              },
+              "description": "Emitted when defaults are restored."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer column chooser container."
+            },
+            {
+              "name": "header",
+              "description": "Title and reset button header."
+            },
+            {
+              "name": "list",
+              "description": "Reorderable column list."
+            },
+            {
+              "name": "item",
+              "description": "Single column toggle and reorder row."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-column-chooser",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "DragSortController",
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "column list has focus",
+                "expect": "moves focus to next column row"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "column list has focus",
+                "expect": "moves focus to previous column row"
+              },
+              {
+                "key": "Space",
+                "when": "drag-sort row has focus",
+                "expect": "grabs/drops column for arrow reorder"
+              }
+            ],
+            "props": [
+              {
+                "name": "columns",
+                "attr": false,
+                "type": "ReadonlyArray<ColumnChooserItem>"
+              },
+              {
+                "name": "allowReorder",
+                "attr": "allow-reorder",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowReset",
+                "attr": "allow-reset",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ columns: ReadonlyArray<ColumnChooserItem> }"
+              },
+              {
+                "name": "mth-reset",
+                "cancelable": false,
+                "detailType": "{}"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer column chooser container."
+              },
+              {
+                "name": "header",
+                "description": "Title and reset button header."
+              },
+              {
+                "name": "list",
+                "description": "Reorderable column list."
+              },
+              {
+                "name": "item",
+                "description": "Single column toggle and reorder row."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Column chooser",
+              "heading": "Columns",
+              "resetDefaults": "Reset defaults",
+              "moveUp": "Move column up",
+              "moveDown": "Move column down",
+              "toggleColumn": "Toggle column visibility"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthColumnChooser",
+          "declaration": {
+            "name": "MthColumnChooser",
+            "module": "src/components/column-chooser/column-chooser.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-column-chooser",
+          "declaration": {
+            "name": "MthColumnChooser",
+            "module": "src/components/column-chooser/column-chooser.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/file-explorer/file-explorer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFileExplorer",
+          "tagName": "mth-file-explorer",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "File and folder explorer (`<mth-file-explorer>`) with hierarchical folder tree, clickable path breadcrumbs, list/grid views, multi-select, and 2D RTL-aware keyboard navigation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "ReadonlyArray<FileExplorerItem>"
+              },
+              "description": "Flat list of files and folders linked via `parentId`."
+            },
+            {
+              "kind": "field",
+              "name": "currentFolderId",
+              "attribute": "current-folder-id",
+              "type": {
+                "text": "string | null"
+              },
+              "description": "Active directory ID (`null` for root)."
+            },
+            {
+              "kind": "field",
+              "name": "viewMode",
+              "attribute": "view-mode",
+              "reflect": true,
+              "type": {
+                "text": "'list' | 'grid'"
+              },
+              "default": "\"list\"",
+              "description": "Layout mode (`list` or `grid`)."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "attribute": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "3",
+              "description": "Number of grid columns when `viewMode=\"grid\"`."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "current-folder-id",
+              "fieldName": "currentFolderId",
+              "type": {
+                "text": "string | null"
+              },
+              "description": "Active directory ID (`null` for root)."
+            },
+            {
+              "name": "view-mode",
+              "fieldName": "viewMode",
+              "type": {
+                "text": "'list' | 'grid'"
+              },
+              "default": "\"list\"",
+              "description": "Layout mode (`list` or `grid`)."
+            },
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "3",
+              "description": "Number of grid columns when `viewMode=\"grid\"`."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-navigate",
+              "type": {
+                "text": "CustomEvent<{ folderId: string | null }>"
+              },
+              "description": "Emitted when navigating to another folder."
+            },
+            {
+              "name": "mth-file-open",
+              "type": {
+                "text": "CustomEvent<{ item: FileExplorerItem }>"
+              },
+              "description": "Emitted when opening a file."
+            },
+            {
+              "name": "mth-selection-change",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string> }>"
+              },
+              "description": "Emitted when the selected item IDs change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional toolbar actions slot."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer file explorer shell."
+            },
+            {
+              "name": "toolbar",
+              "description": "Breadcrumb navigation and view switcher bar."
+            },
+            {
+              "name": "tree",
+              "description": "Folder hierarchy sidebar."
+            },
+            {
+              "name": "entries",
+              "description": "Main list or grid container of folder entries."
+            },
+            {
+              "name": "entry",
+              "description": "Individual selectable file or folder item."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for explorer container."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Subtle background for sidebar and selected hover."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Secondary metadata text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Border color across panes and items."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Keyboard focus ring color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected item and active view highlight."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Text color on accented controls."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-file-explorer",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "an entry has focus",
+                "expect": "moves focus to next entry (or previous in RTL)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "an entry has focus",
+                "expect": "moves focus to previous entry (or next in RTL)"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "an entry has focus",
+                "expect": "moves focus down in list or grid"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "an entry has focus",
+                "expect": "moves focus up in list or grid"
+              },
+              {
+                "key": "Home",
+                "when": "an entry has focus",
+                "expect": "focuses the first entry"
+              },
+              {
+                "key": "End",
+                "when": "an entry has focus",
+                "expect": "focuses the last entry"
+              }
+            ],
+            "props": [
+              {
+                "name": "items",
+                "attr": false,
+                "type": "ReadonlyArray<FileExplorerItem>"
+              },
+              {
+                "name": "currentFolderId",
+                "attr": "current-folder-id",
+                "type": "string | null"
+              },
+              {
+                "name": "viewMode",
+                "attr": "view-mode",
+                "type": "'list' | 'grid'",
+                "default": "list"
+              },
+              {
+                "name": "columns",
+                "attr": "columns",
+                "type": "number",
+                "default": 3
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-navigate",
+                "cancelable": false,
+                "detailType": "{ folderId: string | null }"
+              },
+              {
+                "name": "mth-file-open",
+                "cancelable": false,
+                "detailType": "{ item: FileExplorerItem }"
+              },
+              {
+                "name": "mth-selection-change",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string> }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional toolbar actions slot."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer file explorer shell."
+              },
+              {
+                "name": "toolbar",
+                "description": "Breadcrumb navigation and view switcher bar."
+              },
+              {
+                "name": "tree",
+                "description": "Folder hierarchy sidebar."
+              },
+              {
+                "name": "entries",
+                "description": "Main list or grid container of folder entries."
+              },
+              {
+                "name": "entry",
+                "description": "Individual selectable file or folder item."
+              }
+            ],
+            "messages": {
+              "explorerLabel": "File explorer",
+              "folderTreeLabel": "Folders",
+              "breadcrumbLabel": "Current path",
+              "rootLabel": "Root",
+              "viewList": "List view",
+              "viewGrid": "Grid view",
+              "emptyFolder": "This folder is empty",
+              "folderKind": "Folder",
+              "fileKind": "File",
+              "selectedOne": "1 item selected",
+              "selectedOther": "{count} items selected"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFileExplorer",
+          "declaration": {
+            "name": "MthFileExplorer",
+            "module": "src/components/file-explorer/file-explorer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-file-explorer",
+          "declaration": {
+            "name": "MthFileExplorer",
+            "module": "src/components/file-explorer/file-explorer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/filter-builder/filter-builder.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFilterBuilder",
+          "tagName": "mth-filter-builder",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Interactive AND/OR filter rule builder (`<mth-filter-builder>`) for admin tables and search views.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "combinator",
+              "attribute": "combinator",
+              "reflect": true,
+              "type": {
+                "text": "'and' | 'or'"
+              },
+              "default": "\"and\"",
+              "description": "Logical combinator joining rules (`and` or `or`)."
+            },
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "ReadonlyArray<FilterFieldDef>"
+              },
+              "description": "Available filterable field definitions."
+            },
+            {
+              "kind": "field",
+              "name": "rules",
+              "type": {
+                "text": "ReadonlyArray<FilterRule>"
+              },
+              "description": "Active filter rules array."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all interactive rule controls."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "combinator",
+              "fieldName": "combinator",
+              "type": {
+                "text": "'and' | 'or'"
+              },
+              "default": "\"and\"",
+              "description": "Logical combinator joining rules (`and` or `or`)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all interactive rule controls."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ combinator: 'and' | 'or'; rules: ReadonlyArray<FilterRule> }>"
+              },
+              "description": "Emitted when rules or combinator change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "actions",
+              "description": "Optional extra toolbar actions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer filter builder container."
+            },
+            {
+              "name": "header",
+              "description": "Combinator selector and actions bar."
+            },
+            {
+              "name": "rules",
+              "description": "List of filter rule rows."
+            },
+            {
+              "name": "row",
+              "description": "Single filter rule row."
+            },
+            {
+              "name": "add-btn",
+              "description": "Button to append a filter rule."
+            },
+            {
+              "name": "clear-btn",
+              "description": "Button to clear all filter rules."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-filter-builder",
+            "package": "@methane/admin",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "focus is on add/remove rule controls",
+                "expect": "adds or removes the target filter rule"
+              }
+            ],
+            "props": [
+              {
+                "name": "combinator",
+                "attr": "combinator",
+                "type": "'and' | 'or'",
+                "default": "and"
+              },
+              {
+                "name": "fields",
+                "attr": false,
+                "type": "ReadonlyArray<FilterFieldDef>"
+              },
+              {
+                "name": "rules",
+                "attr": false,
+                "type": "ReadonlyArray<FilterRule>"
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ combinator: 'and' | 'or'; rules: ReadonlyArray<FilterRule> }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "actions",
+                "description": "Optional extra toolbar actions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer filter builder container."
+              },
+              {
+                "name": "header",
+                "description": "Combinator selector and actions bar."
+              },
+              {
+                "name": "rules",
+                "description": "List of filter rule rows."
+              },
+              {
+                "name": "row",
+                "description": "Single filter rule row."
+              },
+              {
+                "name": "add-btn",
+                "description": "Button to append a filter rule."
+              },
+              {
+                "name": "clear-btn",
+                "description": "Button to clear all filter rules."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Filter builder",
+              "combinatorLabel": "Match condition",
+              "combinatorAnd": "All rules (AND)",
+              "combinatorOr": "Any rule (OR)",
+              "fieldLabel": "Field",
+              "operatorLabel": "Operator",
+              "valueLabel": "Value",
+              "valuePlaceholder": "Enter value...",
+              "addRule": "Add rule",
+              "removeRule": "Remove rule",
+              "clearRules": "Clear filters",
+              "emptyLabel": "No filter rules applied."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFilterBuilder",
+          "declaration": {
+            "name": "MthFilterBuilder",
+            "module": "src/components/filter-builder/filter-builder.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-filter-builder",
+          "declaration": {
+            "name": "MthFilterBuilder",
+            "module": "src/components/filter-builder/filter-builder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/kanban/kanban.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthKanban",
+          "tagName": "mth-kanban",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Multi-lane Kanban board (`<mth-kanban>`) with drag/keyboard card reordering, cross-lane moves, WIP limit badges, and async DataSource card loading.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "lanes",
+              "type": {
+                "text": "ReadonlyArray<KanbanLane>"
+              },
+              "description": "Ordered lane definitions with optional WIP limits."
+            },
+            {
+              "kind": "field",
+              "name": "cards",
+              "type": {
+                "text": "ReadonlyArray<KanbanCard>"
+              },
+              "description": "Cards rendered across lanes."
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource<KanbanCard, string> | null"
+              },
+              "description": "Optional async DataSource<KanbanCard, string> adapter."
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "attribute": "filter",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Filter string passed when querying dataSource."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "filter",
+              "fieldName": "filter",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Filter string passed when querying dataSource."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-card-move",
+              "type": {
+                "text": "CustomEvent<{ cardId: string; fromLaneId: string; toLaneId: string; toIndex: number; cards: ReadonlyArray<KanbanCard> }>"
+              },
+              "description": "Emitted when a card moves across lanes or reorders."
+            },
+            {
+              "name": "mth-card-select",
+              "type": {
+                "text": "CustomEvent<{ card: KanbanCard }>"
+              },
+              "description": "Emitted when a card is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional board header controls."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer board container."
+            },
+            {
+              "name": "lane",
+              "description": "Individual lane column container."
+            },
+            {
+              "name": "lane-header",
+              "description": "Lane title and WIP badge header."
+            },
+            {
+              "name": "wip-badge",
+              "description": "Lane count and WIP indicator badge."
+            },
+            {
+              "name": "card",
+              "description": "Interactive draggable Kanban card."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for cards and WIP badges."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Subtle background for lane columns."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted metadata text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Lane and card border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Grabbed card accent border color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Over-WIP limit border and badge color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-kanban",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus",
+              "data-consumer"
+            ],
+            "controllers": [
+              "DataController",
+              "RovingFocusController",
+              "DragSortController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "loading",
+              "empty",
+              "error"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "a board card has focus",
+                "expect": "moves focus to the next card (or previous in RTL)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "a board card has focus",
+                "expect": "moves focus to the previous card (or next in RTL)"
+              },
+              {
+                "key": "Home",
+                "when": "a board card has focus",
+                "expect": "focuses the first card on the board"
+              },
+              {
+                "key": "End",
+                "when": "a board card has focus",
+                "expect": "focuses the last card on the board"
+              },
+              {
+                "key": "Space",
+                "when": "a board card has focus",
+                "expect": "grabs/drops the card for keyboard reordering"
+              }
+            ],
+            "props": [
+              {
+                "name": "lanes",
+                "attr": false,
+                "type": "ReadonlyArray<KanbanLane>"
+              },
+              {
+                "name": "cards",
+                "attr": false,
+                "type": "ReadonlyArray<KanbanCard>"
+              },
+              {
+                "name": "dataSource",
+                "attr": false,
+                "type": "DataSource<KanbanCard, string> | null"
+              },
+              {
+                "name": "filter",
+                "attr": "filter",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-card-move",
+                "cancelable": false,
+                "detailType": "{ cardId: string; fromLaneId: string; toLaneId: string; toIndex: number; cards: ReadonlyArray<KanbanCard> }"
+              },
+              {
+                "name": "mth-card-select",
+                "cancelable": false,
+                "detailType": "{ card: KanbanCard }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional board header controls."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer board container."
+              },
+              {
+                "name": "lane",
+                "description": "Individual lane column container."
+              },
+              {
+                "name": "lane-header",
+                "description": "Lane title and WIP badge header."
+              },
+              {
+                "name": "wip-badge",
+                "description": "Lane count and WIP indicator badge."
+              },
+              {
+                "name": "card",
+                "description": "Interactive draggable Kanban card."
+              }
+            ],
+            "messages": {
+              "boardLabel": "Kanban board",
+              "wipLimit": "{count} / {limit}",
+              "overWipBadge": "Over WIP limit ({count}/{limit})",
+              "emptyLane": "No cards in lane",
+              "loadingLabel": "Loading board cards…",
+              "errorLabel": "Failed to load board cards.",
+              "movePrevLane": "Move card to previous lane",
+              "moveNextLane": "Move card to next lane"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthKanban",
+          "declaration": {
+            "name": "MthKanban",
+            "module": "src/components/kanban/kanban.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-kanban",
+          "declaration": {
+            "name": "MthKanban",
+            "module": "src/components/kanban/kanban.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/query-builder/query-builder.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthQueryBuilder",
+          "tagName": "mth-query-builder",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated nested boolean query builder (`<mth-query-builder>`) with JSON/SQL-style preview and FormControlController validation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name for FormData submission."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"{\\\"combinator\\\":\\\"and\\\",\\\"items\\\":[]}\"",
+              "description": "Serialized JSON string of the query AST."
+            },
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "ReadonlyArray<QueryFieldDef>"
+              },
+              "description": "Available field definitions."
+            },
+            {
+              "kind": "field",
+              "name": "showPreview",
+              "attribute": "show-preview",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays serialized JSON query preview."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all query controls."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one leaf rule."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents edits while allowing inspection."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error message."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name for FormData submission."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"{\\\"combinator\\\":\\\"and\\\",\\\"items\\\":[]}\"",
+              "description": "Serialized JSON string of the query AST."
+            },
+            {
+              "name": "show-preview",
+              "fieldName": "showPreview",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays serialized JSON query preview."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all query controls."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one leaf rule."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents edits while allowing inspection."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error message."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; query: QueryGroup }>"
+              },
+              "description": "Emitted when the nested query structure changes."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer query builder container."
+            },
+            {
+              "name": "group",
+              "description": "Boolean query group container."
+            },
+            {
+              "name": "preview",
+              "description": "Serialized JSON query preview."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-query-builder",
+            "package": "@methane/admin",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "focus is on group/rule controls",
+                "expect": "adds or updates query structure"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": "{\"combinator\":\"and\",\"items\":[]}"
+              },
+              {
+                "name": "fields",
+                "attr": false,
+                "type": "ReadonlyArray<QueryFieldDef>"
+              },
+              {
+                "name": "showPreview",
+                "attr": "show-preview",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; query: QueryGroup }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer query builder container."
+              },
+              {
+                "name": "group",
+                "description": "Boolean query group container."
+              },
+              {
+                "name": "preview",
+                "description": "Serialized JSON query preview."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Query builder",
+              "groupCombinator": "Group operator",
+              "combinatorAnd": "AND",
+              "combinatorOr": "OR",
+              "addRule": "Add rule",
+              "addGroup": "Add group",
+              "removeGroup": "Remove group",
+              "removeRule": "Remove rule",
+              "fieldLabel": "Field",
+              "operatorLabel": "Operator",
+              "valueLabel": "Value",
+              "previewLabel": "Serialized query preview",
+              "requiredError": "At least one query rule is required."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthQueryBuilder",
+          "declaration": {
+            "name": "MthQueryBuilder",
+            "module": "src/components/query-builder/query-builder.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-query-builder",
+          "declaration": {
+            "name": "MthQueryBuilder",
+            "module": "src/components/query-builder/query-builder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/saved-views/saved-views.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSavedViews",
+          "tagName": "mth-saved-views",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Saved table/board view tabs (`<mth-saved-views>`) with create, duplicate, pin, and delete actions powered by SelectionController and RTL-aware RovingFocusController.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "views",
+              "type": {
+                "text": "ReadonlyArray<SavedViewItem>"
+              },
+              "description": "Array of saved view definitions."
+            },
+            {
+              "kind": "field",
+              "name": "activeViewId",
+              "attribute": "active-view-id",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected saved view ID."
+            },
+            {
+              "kind": "field",
+              "name": "allowCreate",
+              "attribute": "allow-create",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows create view trigger."
+            },
+            {
+              "kind": "field",
+              "name": "allowManage",
+              "attribute": "allow-manage",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows duplicate, pin, and delete controls for the active view."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-view-id",
+              "fieldName": "activeViewId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected saved view ID."
+            },
+            {
+              "name": "allow-create",
+              "fieldName": "allowCreate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows create view trigger."
+            },
+            {
+              "name": "allow-manage",
+              "fieldName": "allowManage",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows duplicate, pin, and delete controls for the active view."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-view-select",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted when the active saved view changes."
+            },
+            {
+              "name": "mth-view-create",
+              "type": {
+                "text": "CustomEvent<{ view: SavedViewItem }>"
+              },
+              "description": "Emitted when a new saved view is created."
+            },
+            {
+              "name": "mth-view-duplicate",
+              "type": {
+                "text": "CustomEvent<{ id: string; copy: SavedViewItem }>"
+              },
+              "description": "Emitted when the active view is duplicated."
+            },
+            {
+              "name": "mth-view-pin",
+              "type": {
+                "text": "CustomEvent<{ id: string; pinned: boolean }>"
+              },
+              "description": "Emitted when the active view pin state toggles."
+            },
+            {
+              "name": "mth-view-delete",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted when a saved view is deleted."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer saved-views toolbar."
+            },
+            {
+              "name": "tablist",
+              "description": "Horizontal list of saved view tabs."
+            },
+            {
+              "name": "tab",
+              "description": "Individual saved view tab."
+            },
+            {
+              "name": "actions",
+              "description": "Create/duplicate/pin/delete view actions."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-saved-views",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "tablist has focus",
+                "expect": "moves focus to next saved view tab"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "tablist has focus in RTL",
+                "expect": "moves focus to next saved view tab"
+              },
+              {
+                "key": "Home",
+                "when": "tablist has focus",
+                "expect": "moves focus to first saved view tab"
+              },
+              {
+                "key": "End",
+                "when": "tablist has focus",
+                "expect": "moves focus to last saved view tab"
+              }
+            ],
+            "props": [
+              {
+                "name": "views",
+                "attr": false,
+                "type": "ReadonlyArray<SavedViewItem>"
+              },
+              {
+                "name": "activeViewId",
+                "attr": "active-view-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "allowCreate",
+                "attr": "allow-create",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowManage",
+                "attr": "allow-manage",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-view-select",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              },
+              {
+                "name": "mth-view-create",
+                "cancelable": false,
+                "detailType": "{ view: SavedViewItem }"
+              },
+              {
+                "name": "mth-view-duplicate",
+                "cancelable": false,
+                "detailType": "{ id: string; copy: SavedViewItem }"
+              },
+              {
+                "name": "mth-view-pin",
+                "cancelable": false,
+                "detailType": "{ id: string; pinned: boolean }"
+              },
+              {
+                "name": "mth-view-delete",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer saved-views toolbar."
+              },
+              {
+                "name": "tablist",
+                "description": "Horizontal list of saved view tabs."
+              },
+              {
+                "name": "tab",
+                "description": "Individual saved view tab."
+              },
+              {
+                "name": "actions",
+                "description": "Create/duplicate/pin/delete view actions."
+              }
+            ],
+            "messages": {
+              "tablistLabel": "Saved views",
+              "createView": "New view",
+              "duplicateView": "Duplicate view",
+              "pinView": "Pin view",
+              "unpinView": "Unpin view",
+              "deleteView": "Delete view",
+              "defaultViewName": "Untitled view"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSavedViews",
+          "declaration": {
+            "name": "MthSavedViews",
+            "module": "src/components/saved-views/saved-views.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-saved-views",
+          "declaration": {
+            "name": "MthSavedViews",
+            "module": "src/components/saved-views/saved-views.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/settings-shell/settings-shell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSettingsShell",
+          "tagName": "mth-settings-shell",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Admin settings shell (`<mth-settings-shell>`) combining a roving-focus section rail, active content pane, and dirty-state save/discard bar.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "sections",
+              "type": {
+                "text": "ReadonlyArray<SettingsSectionItem>"
+              },
+              "description": "Section definitions displayed in the navigation rail."
+            },
+            {
+              "kind": "field",
+              "name": "activeSectionId",
+              "attribute": "active-section-id",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently active section ID."
+            },
+            {
+              "kind": "field",
+              "name": "dirty",
+              "attribute": "dirty",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reveals the unsaved-changes save/discard action bar."
+            },
+            {
+              "kind": "field",
+              "name": "saving",
+              "attribute": "saving",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indicates an in-flight save operation."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-section-id",
+              "fieldName": "activeSectionId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently active section ID."
+            },
+            {
+              "name": "dirty",
+              "fieldName": "dirty",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Reveals the unsaved-changes save/discard action bar."
+            },
+            {
+              "name": "saving",
+              "fieldName": "saving",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indicates an in-flight save operation."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-section-change",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted when the user selects another settings section."
+            },
+            {
+              "name": "mth-save",
+              "type": {
+                "text": "CustomEvent<{ activeSectionId: string }>"
+              },
+              "description": "Emitted when Save changes is activated."
+            },
+            {
+              "name": "mth-discard",
+              "type": {
+                "text": "CustomEvent<{ activeSectionId: string }>"
+              },
+              "description": "Emitted when Discard is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Active settings form or pane content."
+            },
+            {
+              "name": "header",
+              "description": "Optional top header slot."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer settings layout grid."
+            },
+            {
+              "name": "nav",
+              "description": "Section navigation rail."
+            },
+            {
+              "name": "nav-item",
+              "description": "Section navigation button."
+            },
+            {
+              "name": "content",
+              "description": "Active settings pane container."
+            },
+            {
+              "name": "save-bar",
+              "description": "Dirty-state save/discard action bar."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "saving",
+              "description": "Custom element state :state(saving)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-settings-shell",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "dirty",
+              "saving"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "section rail has focus",
+                "expect": "moves focus to next settings section"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "section rail has focus",
+                "expect": "moves focus to previous settings section"
+              }
+            ],
+            "props": [
+              {
+                "name": "sections",
+                "attr": false,
+                "type": "ReadonlyArray<SettingsSectionItem>"
+              },
+              {
+                "name": "activeSectionId",
+                "attr": "active-section-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "dirty",
+                "attr": "dirty",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "saving",
+                "attr": "saving",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-section-change",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              },
+              {
+                "name": "mth-save",
+                "cancelable": false,
+                "detailType": "{ activeSectionId: string }"
+              },
+              {
+                "name": "mth-discard",
+                "cancelable": false,
+                "detailType": "{ activeSectionId: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Active settings form or pane content."
+              },
+              {
+                "name": "header",
+                "description": "Optional top header slot."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer settings layout grid."
+              },
+              {
+                "name": "nav",
+                "description": "Section navigation rail."
+              },
+              {
+                "name": "nav-item",
+                "description": "Section navigation button."
+              },
+              {
+                "name": "content",
+                "description": "Active settings pane container."
+              },
+              {
+                "name": "save-bar",
+                "description": "Dirty-state save/discard action bar."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Settings workspace",
+              "navLabel": "Settings sections",
+              "dirtyMessage": "You have unsaved changes",
+              "saveLabel": "Save changes",
+              "discardLabel": "Discard",
+              "savingLabel": "Saving..."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSettingsShell",
+          "declaration": {
+            "name": "MthSettingsShell",
+            "module": "src/components/settings-shell/settings-shell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-settings-shell",
+          "declaration": {
+            "name": "MthSettingsShell",
+            "module": "src/components/settings-shell/settings-shell.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
