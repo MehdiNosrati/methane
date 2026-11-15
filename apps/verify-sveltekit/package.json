@@ -12,6 +12,7 @@
     "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
+    "@methane/core": "workspace:^",
     "@methane/css": "workspace:^",
     "@methane/primitives": "workspace:^",
     "@methane/ssr-sveltekit": "workspace:^",

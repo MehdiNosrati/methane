@@ -4,6 +4,9 @@
   "description": "Two-way Figma Variables REST API <-> W3C DTCG token sync and multi-framework @figma/code-connect generator",
   "license": "MIT",
   "type": "module",
+  "bin": {
+    "methane-figma-sync": "./dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

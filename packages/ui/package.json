@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "@lit/context": "^1.1.4",
-    "@methane/core": "workspace:^",
     "@methane/css": "workspace:^",
     "@methane/primitives": "workspace:^",
     "@methane/tokens": "workspace:^",
@@ -50,11 +49,12 @@
     "@lit-labs/ssr": "^4.1.0",
     "@lit-labs/ssr-client": "^1.1.8",
     "@lit-labs/ssr-dom-shim": "^1.6.0",
+    "@methane/core": "workspace:^",
     "@methane/spec-compiler": "workspace:^",
     "@methane/test-conformance": "workspace:^",
     "@methane/wrapper-codegen": "workspace:^"
   },
   "peerDependencies": {
-    "@methane/core": "^0.1.0 || ^1.0.0"
+    "@methane/core": "^0.1.0"
   }
 }

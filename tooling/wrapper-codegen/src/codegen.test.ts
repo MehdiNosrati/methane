@@ -43,36 +43,48 @@ describe('@methane/wrapper-codegen', () => {
       { write: false },
     );
 
-    const reactIndex = output.reactFiles.find((f) => f.path === 'index.ts')!.content;
-    const reactLegacy = output.reactFiles.find((f) => f.path === 'legacy.ts')!.content;
-    expect(reactIndex).toContain('interface IntrinsicElements');
-    expect(reactIndex).toContain('"mth-input": MthInputProps;');
-    expect(reactIndex).toContain('"onmth-input"');
-    expect(reactLegacy).toContain("from '@lit/react'");
-    expect(reactLegacy).toContain('onMthInput: "mth-input"');
+    const reactIndex = output.reactFiles.find((f) => f.path === 'generated/index.ts')!.content;
+    const reactInput = output.reactFiles.find((f) => f.path === 'generated/components/mth-input.ts')!.content;
+    const reactLegacy = output.reactFiles.find((f) => f.path === 'generated/legacy.ts')!.content;
+    const reactLegacyInput = output.reactFiles.find((f) => f.path === 'generated/legacy/mth-input.ts')!.content;
+    expect(reactIndex).toContain("export * from './components/mth-input.js';");
+    expect(reactIndex).toContain('MethaneReactTagNameMap');
+    expect(reactInput).toContain('interface IntrinsicElements');
+    expect(reactInput).toContain('"mth-input": MthInputProps;');
+    expect(reactInput).toContain('"onmth-input"');
+    expect(reactLegacy).toContain("export { MthInput } from './legacy/mth-input.js';");
+    expect(reactLegacyInput).toContain("from '@lit/react'");
+    expect(reactLegacyInput).toContain('onMthInput: "mth-input"');
 
-    const vueIndex = output.vueFiles.find((f) => f.path === 'index.ts')!.content;
-    expect(vueIndex).toContain("declare module 'vue'");
-    expect(vueIndex).toContain('defineComponent');
-    expect(vueIndex).toContain('interface GlobalComponents');
-    expect(vueIndex).toContain('modelValue?: string | undefined');
+    const vueIndex = output.vueFiles.find((f) => f.path === 'generated/index.ts')!.content;
+    const vueRuntime = output.vueFiles.find((f) => f.path === 'generated/runtime.ts')!.content;
+    const vueInput = output.vueFiles.find((f) => f.path === 'generated/components/mth-input.ts')!.content;
+    expect(vueIndex).toContain("export * from './components/mth-input.js';");
     expect(vueIndex).toContain('METHANE_VUE_COMPILER_OPTIONS');
+    expect(vueRuntime).toContain('defineComponent');
+    expect(vueInput).toContain("declare module 'vue'");
+    expect(vueInput).toContain('interface GlobalComponents');
+    expect(vueInput).toContain('modelValue?: string | undefined');
 
-    const angularIndex = output.angularFiles.find((f) => f.path === 'index.ts')!.content;
-    expect(output.angularFiles.some((f) => f.path === 'runtime.ts')).toBe(false);
-    expect(angularIndex).toContain("from '@angular/core'");
-    expect(angularIndex).toContain("from '@angular/forms'");
-    expect(angularIndex).toContain('standalone: true');
-    expect(angularIndex).toContain('@HostListener');
-    expect(angularIndex).toContain('implements ControlValueAccessor, OnDestroy');
-    expect(angularIndex).toContain('NG_VALUE_ACCESSOR');
-    expect(angularIndex).toContain('export class MthButtonDirective {');
-    expect(angularIndex).toContain('export class MthInputDirective implements ControlValueAccessor, OnDestroy');
+    const angularIndex = output.angularFiles.find((f) => f.path === 'generated/index.ts')!.content;
+    const angularButton = output.angularFiles.find((f) => f.path === 'generated/components/mth-button.ts')!.content;
+    const angularInput = output.angularFiles.find((f) => f.path === 'generated/components/mth-input.ts')!.content;
+    expect(angularIndex).toContain('METHANE_ANGULAR_DIRECTIVES');
+    expect(angularButton).toContain("from '@angular/core'");
+    expect(angularButton).toContain('standalone: true');
+    expect(angularButton).toContain('export class MthButtonDirective {');
+    expect(angularInput).toContain("from '@angular/forms'");
+    expect(angularInput).toContain('@HostListener');
+    expect(angularInput).toContain('implements ControlValueAccessor, OnDestroy');
+    expect(angularInput).toContain('NG_VALUE_ACCESSOR');
+    expect(angularInput).toContain('export class MthInputDirective implements ControlValueAccessor, OnDestroy');
 
-    const svelteIndex = output.svelteFiles.find((f) => f.path === 'index.ts')!.content;
-    const svelteInput = output.svelteFiles.find((f) => f.path === 'components/MthInput.svelte')!.content;
-    const svelteDialog = output.svelteFiles.find((f) => f.path === 'components/MthDialog.svelte')!.content;
-    expect(svelteIndex).toContain("declare module 'svelte/elements'");
+    const svelteIndex = output.svelteFiles.find((f) => f.path === 'generated/index.ts')!.content;
+    const svelteInputTs = output.svelteFiles.find((f) => f.path === 'generated/components/mth-input.ts')!.content;
+    const svelteInput = output.svelteFiles.find((f) => f.path === 'generated/svelte/MthInput.svelte')!.content;
+    const svelteDialog = output.svelteFiles.find((f) => f.path === 'generated/svelte/MthDialog.svelte')!.content;
+    expect(svelteIndex).toContain("export * from './components/mth-input.js';");
+    expect(svelteInputTs).toContain("declare module 'svelte/elements'");
     expect(svelteInput).toContain('$bindable');
     expect(svelteInput).toContain('value = $bindable("")');
     expect(svelteInput).toContain('onmth-input=');
@@ -193,6 +205,11 @@ describe('@methane/wrapper-codegen', () => {
         ideDir: resolve(tmp, 'ide'),
       });
       expect(fullResult.models.length).toBeGreaterThanOrEqual(230);
+      for (const file of [...fullResult.reactFiles, ...fullResult.vueFiles]) {
+        expect(Buffer.byteLength(file.content, 'utf8'), `${file.path} exceeds 15 KB`).toBeLessThanOrEqual(
+          15 * 1024,
+        );
+      }
       const domMapsPath = resolve(tmp, 'ide/dom-maps.d.ts');
       const tscBin = resolve(repoRoot, 'node_modules/.bin/tsc');
       execFileSync(

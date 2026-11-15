@@ -39,7 +39,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/core": "workspace:^",
     "@methane/css": "workspace:^",
     "@methane/primitives": "workspace:^",
     "@methane/sanitize": "workspace:^",
@@ -51,11 +50,12 @@
     "@lit-labs/ssr": "^4.1.0",
     "@lit-labs/ssr-client": "^1.1.8",
     "@lit-labs/ssr-dom-shim": "^1.6.0",
+    "@methane/core": "workspace:^",
     "@methane/spec-compiler": "workspace:^",
     "@methane/test-conformance": "workspace:^",
     "@types/three": "^0.187.0"
   },
   "peerDependencies": {
-    "@methane/core": "^0.1.0 || ^1.0.0"
+    "@methane/core": "^0.1.0"
   }
 }

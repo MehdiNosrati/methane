@@ -27,6 +27,8 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    pool: 'vmThreads',
+    setupFiles: [resolve(__dirname, 'vitest.setup.ts')],
     include: ['src/**/*.test.ts'],
   },
 });

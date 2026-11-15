@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   auditDsdHtmlForCsp,
   auditWorkspaceLicenses,
+  auditWorkspacePackages,
   evaluateLicenseExpression,
   runStrictCspSuite,
 } from './index.js';
@@ -125,5 +126,34 @@ describe('@methane/security-gate', () => {
     expect(fakeAudit.passed).toBe(false);
     expect(fakeAudit.violations).toHaveLength(1);
     expect(fakeAudit.violations[0]?.name).toBe('hyperformula');
+  });
+
+  it('enforces ADR-007 workspace package hygiene (no dual dep+peerDep, strict ^0.1.0 peers, uniform 0.1.0 versions)', () => {
+    const realAudit = auditWorkspacePackages();
+    expect(realAudit.totalManifests).toBeGreaterThanOrEqual(45);
+    expect(realAudit.violations).toEqual([]);
+    expect(realAudit.passed).toBe(true);
+
+    const fakeWs = makeTempDir();
+    writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n", 'utf8');
+    mkdirSync(join(fakeWs, 'packages/bad-pkg'), { recursive: true });
+    writeFileSync(
+      join(fakeWs, 'packages/bad-pkg/package.json'),
+      JSON.stringify({
+        name: '@methane/bad-pkg',
+        version: '1.0.0',
+        dependencies: { '@methane/core': 'workspace:^' },
+        peerDependencies: { '@methane/core': '^0.1.0 || ^1.0.0' },
+      }),
+      'utf8',
+    );
+
+    const badAudit = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    expect(badAudit.passed).toBe(false);
+    expect(badAudit.violations.map((v) => v.rule).sort()).toEqual([
+      'duplicate-dep-and-peer',
+      'invalid-methane-peer-range',
+      'version-skew',
+    ]);
   });
 });

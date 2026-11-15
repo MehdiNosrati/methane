@@ -364,4 +364,193 @@ describe('<mth-combobox>', () => {
       ),
     ).toEqual(['lit', 'wc']);
   });
+
+  it('supports keyboard navigation (ArrowDown/ArrowUp skipping disabled, wrap-around, Tab dismiss)', async () => {
+    const el = document.createElement('mth-combobox') as MthCombobox;
+    el.options = [
+      { value: 'first', label: 'First' },
+      { value: 'disabled', label: 'Disabled', disabled: true },
+      { value: 'last', label: 'Last' },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const input = el.shadowRoot!.querySelector<HTMLInputElement>('#mth-cb-input')!;
+
+    // ArrowUp when closed opens and activates last enabled option
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    await vi.waitFor(async () => {
+      await el.updateComplete;
+      expect(el.open).toBe(true);
+      const id = input.getAttribute('aria-activedescendant');
+      expect(id).toBeTruthy();
+      expect(el.shadowRoot!.getElementById(id!)?.getAttribute('data-value')).toBe('last');
+    });
+    let activeId: string | null;
+
+    // ArrowDown wraps to first enabled, skipping disabled
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await el.updateComplete;
+    activeId = input.getAttribute('aria-activedescendant');
+    expect(el.shadowRoot!.getElementById(activeId!)?.getAttribute('data-value')).toBe('first');
+
+    // ArrowDown skips disabled middle option to 'last'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await el.updateComplete;
+    activeId = input.getAttribute('aria-activedescendant');
+    expect(el.shadowRoot!.getElementById(activeId!)?.getAttribute('data-value')).toBe('last');
+
+    // ArrowUp skips disabled back to 'first'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    await el.updateComplete;
+    activeId = input.getAttribute('aria-activedescendant');
+    expect(el.shadowRoot!.getElementById(activeId!)?.getAttribute('data-value')).toBe('first');
+
+    // Tab closes open popup
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    await el.updateComplete;
+    expect(el.open).toBe(false);
+  });
+
+  it('filters options locally, renders empty state on no match, and respects filterable=false', async () => {
+    const el = document.createElement('mth-combobox') as MthCombobox;
+    el.options = [
+      { value: 'us', label: 'United States' },
+      { value: 'ca', label: 'Canada' },
+      { value: 'jp', label: 'Japan' },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    await el.query('can');
+    await el.updateComplete;
+    let rendered = Array.from(el.shadowRoot!.querySelectorAll('[role="option"]'));
+    expect(rendered.map((r) => r.getAttribute('data-value'))).toEqual(['ca']);
+
+    await el.query('zzz-nonexistent');
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelectorAll('[role="option"]')).toHaveLength(0);
+    expect(el.shadowRoot!.querySelector('[part="empty"]')).not.toBeNull();
+
+    el.filterable = false;
+    await el.query('can');
+    await el.updateComplete;
+    rendered = Array.from(el.shadowRoot!.querySelectorAll('[role="option"]'));
+    expect(rendered).toHaveLength(3);
+  });
+
+  it('supports multiple selection, toggle-off, clearable events, and disabled option groups', async () => {
+    const el = document.createElement('mth-combobox') as MthCombobox;
+    el.multiple = true;
+    el.clearable = true;
+
+    const disabledGroup = document.createElement('mth-option-group');
+    disabledGroup.setAttribute('label', 'Archived');
+    disabledGroup.setAttribute('disabled', '');
+    const archivedOpt = document.createElement('mth-option');
+    archivedOpt.setAttribute('value', 'legacy');
+    archivedOpt.textContent = 'Legacy';
+    disabledGroup.appendChild(archivedOpt);
+
+    const activeOpt1 = document.createElement('mth-option');
+    activeOpt1.setAttribute('value', 'alpha');
+    activeOpt1.textContent = 'Alpha';
+    const activeOpt2 = document.createElement('mth-option');
+    activeOpt2.setAttribute('value', 'beta');
+    activeOpt2.textContent = 'Beta';
+
+    el.append(disabledGroup, activeOpt1, activeOpt2);
+    document.body.appendChild(el);
+    await el.updateComplete;
+    await el.show();
+    await el.updateComplete;
+
+    const changePayloads: Array<{ value: string; selectedValues: ReadonlyArray<string> }> = [];
+    let clearCount = 0;
+    el.addEventListener('mth-change', (ev) => {
+      changePayloads.push((ev as CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>).detail);
+    });
+    el.addEventListener('mth-clear', () => {
+      clearCount += 1;
+    });
+
+    // Disabled group child cannot be selected
+    el.selectValue('legacy');
+    await el.updateComplete;
+    expect(el.value).toBe('');
+
+    // Selecting multiple options keeps popup open and joins values
+    el.selectValue('alpha');
+    el.selectValue('beta');
+    await el.updateComplete;
+    expect(el.open).toBe(true);
+    expect(el.value).toBe('alpha,beta');
+    expect(changePayloads.at(-1)).toEqual({
+      value: 'alpha,beta',
+      selectedValues: ['alpha', 'beta'],
+    });
+
+    // Toggling an already-selected option removes it
+    el.selectValue('alpha');
+    await el.updateComplete;
+    expect(el.value).toBe('beta');
+
+    // Clear resets value and emits mth-clear + mth-change
+    el.clear();
+    await el.updateComplete;
+    expect(el.value).toBe('');
+    expect(clearCount).toBe(1);
+    expect(changePayloads.at(-1)).toEqual({ value: '', selectedValues: [] });
+  });
+
+  it('handles FACE form reset, fieldset disabled, Escape dismiss, and outside light dismiss', async () => {
+    const form = document.createElement('form');
+    const fieldset = document.createElement('fieldset');
+    const el = document.createElement('mth-combobox') as MthCombobox;
+    el.name = 'country';
+    el.defaultValue = 'us';
+    el.value = 'us';
+    el.options = [
+      { value: 'us', label: 'United States' },
+      { value: 'fr', label: 'France' },
+    ];
+    fieldset.appendChild(el);
+    form.appendChild(fieldset);
+    document.body.appendChild(form);
+    await el.updateComplete;
+
+    el.selectValue('fr');
+    await el.updateComplete;
+    expect(el.value).toBe('fr');
+
+    form.reset();
+    await el.updateComplete;
+    expect(el.value).toBe('us');
+
+    // Escape closes popup
+    await el.show();
+    await el.updateComplete;
+    expect(el.open).toBe(true);
+    const input = el.shadowRoot!.querySelector<HTMLInputElement>('#mth-cb-input')!;
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await el.updateComplete;
+    expect(el.open).toBe(false);
+
+    // Outside pointerdown closes popup
+    await el.show();
+    await el.updateComplete;
+    expect(el.open).toBe(true);
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(el.open).toBe(false);
+
+    // FACE formDisabledCallback disables internal input and toggle
+    (el as unknown as { formDisabledCallback(disabled: boolean): void }).formDisabledCallback(true);
+    await el.updateComplete;
+    expect(el.isEffectivelyDisabled).toBe(true);
+    expect(input.disabled).toBe(true);
+    expect(el.shadowRoot!.querySelector<HTMLButtonElement>('[part="toggle-button"]')?.disabled).toBe(true);
+  });
 });

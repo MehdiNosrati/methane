@@ -21,6 +21,12 @@ export {
   type LicenseAuditResult,
 } from './license-audit.js';
 export {
+  auditWorkspacePackages,
+  type PackageAuditOptions,
+  type PackageAuditResult,
+  type PackageAuditViolation,
+} from './package-audit.js';
+export {
   auditWorkflowFiles,
   type WorkflowAuditResult,
   type WorkflowFinding,
