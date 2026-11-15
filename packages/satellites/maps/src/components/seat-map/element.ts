@@ -1,0 +1,21 @@
+import { defineComponents } from '@methane/core';
+import { MthSeatMap } from './seat-map.js';
+import { seatMapMessages } from './seat-map.messages.js';
+import { seatMapSpec } from './seat-map.spec.js';
+import { seatMapStyles } from './seat-map.styles.js';
+
+export { MthSeatMap, seatMapMessages, seatMapSpec, seatMapStyles };
+export type { SeatDefinition, SeatStatus } from './seat-map.js';
+
+export function registerMthSeatMap(prefix?: string): string {
+  return defineComponents({
+    ...(prefix ? { prefix } : {}),
+    components: { 'mth-seat-map': MthSeatMap },
+  })[0]!;
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-seat-map': MthSeatMap;
+  }
+}

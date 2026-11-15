@@ -1,0 +1,2664 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/floor-plan/floor-plan.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFloorPlan",
+          "tagName": "mth-floor-plan",
+          "customElement": true,
+          "description": "Interactive indoor vector floor plan with zoom/pan controls and roving accessible room directory.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rooms",
+              "type": {
+                "text": "ReadonlyArray<FloorPlanRoom>"
+              },
+              "description": "Array of `FloorPlanRoom` definitions."
+            },
+            {
+              "kind": "field",
+              "name": "selectedIds",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Currently selected room identifiers."
+            },
+            {
+              "kind": "field",
+              "name": "level",
+              "attribute": "level",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"1\"",
+              "description": "Active building floor/level identifier."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Viewport zoom multiplier (`0.5` to `4`)."
+            },
+            {
+              "kind": "field",
+              "name": "panX",
+              "attribute": "pan-x",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal pan offset in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "panY",
+              "attribute": "pan-y",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Vertical pan offset in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows selecting multiple rooms concurrently."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "level",
+              "fieldName": "level",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"1\"",
+              "description": "Active building floor/level identifier."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Viewport zoom multiplier (`0.5` to `4`)."
+            },
+            {
+              "name": "pan-x",
+              "fieldName": "panX",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal pan offset in pixels."
+            },
+            {
+              "name": "pan-y",
+              "fieldName": "panY",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Vertical pan offset in pixels."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows selecting multiple rooms concurrently."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-room-select",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string>; room: FloorPlanRoom }>"
+              },
+              "description": "Fired when an enabled room is selected or toggled."
+            },
+            {
+              "name": "mth-floor-zoom",
+              "type": {
+                "text": "CustomEvent<{ zoom: number; panX: number; panY: number }>"
+              },
+              "description": "Fired when viewport zoom or pan changes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "viewport",
+              "description": "Pannable and zoomable SVG container."
+            },
+            {
+              "name": "svg",
+              "description": "Vector indoor floor plan."
+            },
+            {
+              "name": "rooms",
+              "description": "Accessible roving room directory."
+            },
+            {
+              "name": "room-button",
+              "description": "Interactive room selector button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Floor plan surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Viewport and room button border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected room highlight accent color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "multiple",
+              "description": "Custom element state :state(multiple)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-floor-plan",
+            "package": "@methane/maps",
+            "conformance": [
+              "roving-focus",
+              "satellite"
+            ],
+            "controllers": [
+              "RovingFocusController",
+              "SelectionController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "multiple"
+            ],
+            "props": [
+              {
+                "name": "rooms",
+                "attr": false,
+                "type": "ReadonlyArray<FloorPlanRoom>"
+              },
+              {
+                "name": "selectedIds",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "level",
+                "attr": "level",
+                "type": "string",
+                "default": "1"
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "panX",
+                "attr": "pan-x",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "panY",
+                "attr": "pan-y",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-room-select",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string>; room: FloorPlanRoom }"
+              },
+              {
+                "name": "mth-floor-zoom",
+                "cancelable": false,
+                "detailType": "{ zoom: number; panX: number; panY: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "viewport",
+                "description": "Pannable and zoomable SVG container."
+              },
+              {
+                "name": "svg",
+                "description": "Vector indoor floor plan."
+              },
+              {
+                "name": "rooms",
+                "description": "Accessible roving room directory."
+              },
+              {
+                "name": "room-button",
+                "description": "Interactive room selector button."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "room directory focused",
+                "expect": "Moves focus to previous room"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "room directory focused",
+                "expect": "Moves focus to next room"
+              },
+              {
+                "key": "Enter",
+                "when": "room focused",
+                "expect": "Selects or toggles room"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Interactive floor plan",
+              "levelLabel": "Level {level}",
+              "roomsLabel": "Rooms",
+              "zoomIn": "Zoom in floor plan",
+              "zoomOut": "Zoom out floor plan",
+              "resetPanZoom": "Reset floor plan view",
+              "roomSelected": "{name} (selected)",
+              "roomUnavailable": "{name} (unavailable)"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFloorPlan",
+          "declaration": {
+            "name": "MthFloorPlan",
+            "module": "src/components/floor-plan/floor-plan.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-floor-plan",
+          "declaration": {
+            "name": "MthFloorPlan",
+            "module": "src/components/floor-plan/floor-plan.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/location-picker/location-picker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthLocationPicker",
+          "tagName": "mth-location-picker",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated geographic coordinate picker (`lat,lng`) with keyboard nudging and validation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Selected `lat,lng` string value."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Default reset `lat,lng` string value."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "attribute": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.01",
+              "description": "Keyboard and button coordinate nudge step in degrees."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks a coordinate selection as required."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and form submission."
+            },
+            {
+              "kind": "field",
+              "name": "readOnly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents changing the coordinate value."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Selected `lat,lng` string value."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Default reset `lat,lng` string value."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.01",
+              "description": "Keyboard and button coordinate nudge step in degrees."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks a coordinate selection as required."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and form submission."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents changing the coordinate value."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Native composed event fired when coordinate changes."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Native composed event fired when coordinate commits."
+            },
+            {
+              "name": "mth-location-select",
+              "type": {
+                "text": "CustomEvent<{ lat: number; lng: number; value: string }>"
+              },
+              "description": "Fired with parsed `lat`, `lng`, and formatted `value`."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer form field container."
+            },
+            {
+              "name": "label",
+              "description": "Field label text."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "pin-target",
+              "description": "Interactive keyboard coordinate selector."
+            },
+            {
+              "name": "readout",
+              "description": "Coordinate readout display."
+            },
+            {
+              "name": "clear-button",
+              "description": "Clears the selected location."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Picker surface background."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Pin target accent color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Validation error text and invalid border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-location-picker",
+            "package": "@methane/maps",
+            "conformance": [
+              "form-control",
+              "satellite"
+            ],
+            "controllers": [
+              "FormControlController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched"
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "step",
+                "attr": "step",
+                "type": "number",
+                "default": 0.01
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readOnly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "input",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "change",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-location-select",
+                "cancelable": false,
+                "detailType": "{ lat: number; lng: number; value: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer form field container."
+              },
+              {
+                "name": "label",
+                "description": "Field label text."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "pin-target",
+                "description": "Interactive keyboard coordinate selector."
+              },
+              {
+                "name": "readout",
+                "description": "Coordinate readout display."
+              },
+              {
+                "name": "clear-button",
+                "description": "Clears the selected location."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "pin target focused",
+                "expect": "Nudges longitude west"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "rtl",
+                "when": "pin target focused",
+                "expect": "Nudges longitude west in RTL"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "pin target focused",
+                "expect": "Nudges latitude north"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "pin target focused",
+                "expect": "Nudges latitude south"
+              },
+              {
+                "key": "Delete",
+                "when": "pin target focused",
+                "expect": "Clears the selected coordinate"
+              }
+            ],
+            "messages": {
+              "defaultLabel": "Location",
+              "pinInstructions": "Move location pin",
+              "nudgeWest": "Move west",
+              "nudgeEast": "Move east",
+              "nudgeNorth": "Move north",
+              "nudgeSouth": "Move south",
+              "clearLabel": "Clear location",
+              "noLocationSelected": "No coordinates selected",
+              "coordinateSummary": "{lat}, {lng}",
+              "requiredError": "Please select a location.",
+              "invalidFormatError": "Location must be formatted as latitude,longitude."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthLocationPicker",
+          "declaration": {
+            "name": "MthLocationPicker",
+            "module": "src/components/location-picker/location-picker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-location-picker",
+          "declaration": {
+            "name": "MthLocationPicker",
+            "module": "src/components/location-picker/location-picker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map/map.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMap",
+          "tagName": "mth-map",
+          "customElement": true,
+          "description": "Interactive MapLibre GL JS map canvas with RTL-aware panning, zoom controls, markers, and SSR fallback.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "centerLat",
+              "attribute": "center-lat",
+              "type": {
+                "text": "number"
+              },
+              "default": "37.7749",
+              "description": "Viewport center latitude in decimal degrees."
+            },
+            {
+              "kind": "field",
+              "name": "centerLng",
+              "attribute": "center-lng",
+              "type": {
+                "text": "number"
+              },
+              "default": "-122.4194",
+              "description": "Viewport center longitude in decimal degrees."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "11",
+              "description": "Current map zoom level."
+            },
+            {
+              "kind": "field",
+              "name": "minZoom",
+              "attribute": "min-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Minimum allowed zoom level."
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "attribute": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "22",
+              "description": "Maximum allowed zoom level."
+            },
+            {
+              "kind": "field",
+              "name": "bearing",
+              "attribute": "bearing",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Map bearing rotation in degrees."
+            },
+            {
+              "kind": "field",
+              "name": "pitch",
+              "attribute": "pitch",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Map tilt pitch in degrees."
+            },
+            {
+              "kind": "field",
+              "name": "interactive",
+              "attribute": "interactive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables interactive pan/zoom controls and keyboard navigation."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the map."
+            },
+            {
+              "kind": "field",
+              "name": "mapStyle",
+              "type": {
+                "text": "string | StyleSpecification | undefined"
+              },
+              "description": "Safe HTTP/HTTPS/relative style URL or MapLibre StyleSpecification object."
+            },
+            {
+              "kind": "field",
+              "name": "markers",
+              "type": {
+                "text": "ReadonlyArray<MapMarker>"
+              },
+              "description": "Array of interactive markers plotted inside the map viewport."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "center-lat",
+              "fieldName": "centerLat",
+              "type": {
+                "text": "number"
+              },
+              "default": "37.7749",
+              "description": "Viewport center latitude in decimal degrees."
+            },
+            {
+              "name": "center-lng",
+              "fieldName": "centerLng",
+              "type": {
+                "text": "number"
+              },
+              "default": "-122.4194",
+              "description": "Viewport center longitude in decimal degrees."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "11",
+              "description": "Current map zoom level."
+            },
+            {
+              "name": "min-zoom",
+              "fieldName": "minZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Minimum allowed zoom level."
+            },
+            {
+              "name": "max-zoom",
+              "fieldName": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "22",
+              "description": "Maximum allowed zoom level."
+            },
+            {
+              "name": "bearing",
+              "fieldName": "bearing",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Map bearing rotation in degrees."
+            },
+            {
+              "name": "pitch",
+              "fieldName": "pitch",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Map tilt pitch in degrees."
+            },
+            {
+              "name": "interactive",
+              "fieldName": "interactive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables interactive pan/zoom controls and keyboard navigation."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the map."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-map-move",
+              "type": {
+                "text": "CustomEvent<{ center: readonly [number, number]; zoom: number }>"
+              },
+              "description": "Fired after programmatic, button, or keyboard pan/zoom view changes."
+            },
+            {
+              "name": "mth-marker-select",
+              "type": {
+                "text": "CustomEvent<{ id: string; lng: number; lat: number; label: string }>"
+              },
+              "description": "Fired when an interactive map marker is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Overlay widgets placed inside the map viewport."
+            },
+            {
+              "name": "fallback",
+              "description": "SSR or non-WebGL fallback content displayed when WebGL is unavailable."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre WebGL canvas host element."
+            },
+            {
+              "name": "controls",
+              "description": "Zoom and reset controls group."
+            },
+            {
+              "name": "marker",
+              "description": "Interactive marker button."
+            },
+            {
+              "name": "status",
+              "description": "Accessible coordinate and zoom readout."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Map container surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Map container border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Interactive marker accent background."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Interactive marker foreground text color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "interactive",
+              "description": "Custom element state :state(interactive)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-map",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [
+              "interactive"
+            ],
+            "props": [
+              {
+                "name": "centerLat",
+                "attr": "center-lat",
+                "type": "number",
+                "default": 37.7749
+              },
+              {
+                "name": "centerLng",
+                "attr": "center-lng",
+                "type": "number",
+                "default": -122.4194
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 11
+              },
+              {
+                "name": "minZoom",
+                "attr": "min-zoom",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "maxZoom",
+                "attr": "max-zoom",
+                "type": "number",
+                "default": 22
+              },
+              {
+                "name": "bearing",
+                "attr": "bearing",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "pitch",
+                "attr": "pitch",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "interactive",
+                "attr": "interactive",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "mapStyle",
+                "attr": false,
+                "type": "string | StyleSpecification | undefined"
+              },
+              {
+                "name": "markers",
+                "attr": false,
+                "type": "ReadonlyArray<MapMarker>"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-map-move",
+                "cancelable": false,
+                "detailType": "{ center: readonly [number, number]; zoom: number }"
+              },
+              {
+                "name": "mth-marker-select",
+                "cancelable": false,
+                "detailType": "{ id: string; lng: number; lat: number; label: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Overlay widgets placed inside the map viewport."
+              },
+              {
+                "name": "fallback",
+                "description": "SSR or non-WebGL fallback content displayed when WebGL is unavailable."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre WebGL canvas host element."
+              },
+              {
+                "name": "controls",
+                "description": "Zoom and reset controls group."
+              },
+              {
+                "name": "marker",
+                "description": "Interactive marker button."
+              },
+              {
+                "name": "status",
+                "description": "Accessible coordinate and zoom readout."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "viewport focused",
+                "expect": "Pans map west"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "rtl",
+                "when": "viewport focused",
+                "expect": "Pans map west in RTL"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "viewport focused",
+                "expect": "Pans map north"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "viewport focused",
+                "expect": "Pans map south"
+              },
+              {
+                "key": "+",
+                "when": "viewport focused",
+                "expect": "Zooms in by 1 level"
+              },
+              {
+                "key": "-",
+                "when": "viewport focused",
+                "expect": "Zooms out by 1 level"
+              },
+              {
+                "key": "Home",
+                "when": "viewport focused",
+                "expect": "Resets map view"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Interactive map",
+              "zoomIn": "Zoom in",
+              "zoomOut": "Zoom out",
+              "resetView": "Reset map view",
+              "controlsLabel": "Map controls",
+              "statusSummary": "Center {lat}, {lng} at zoom {zoom}",
+              "markerLabel": "Marker: {label}",
+              "unnamedMarker": "Map marker {id}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMap",
+          "declaration": {
+            "name": "MthMap",
+            "module": "src/components/map/map.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map",
+          "declaration": {
+            "name": "MthMap",
+            "module": "src/components/map/map.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-cluster/map-cluster.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapCluster",
+          "tagName": "mth-map-cluster",
+          "customElement": true,
+          "description": "Spatial point clustering layer over MapLibre with accessible cluster controls and zoom expansion.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "points",
+              "type": {
+                "text": "ReadonlyArray<ClusterPoint>"
+              },
+              "description": "Array of spatial cluster points (`id`, `lng`, `lat`, optional `label`)."
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "attribute": "radius",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Spatial clustering bucket radius in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Initial zoom level used for spatial bucketing."
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "attribute": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "18",
+              "description": "Zoom threshold above which individual points are rendered unclustered."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "radius",
+              "fieldName": "radius",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Spatial clustering bucket radius in pixels."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Initial zoom level used for spatial bucketing."
+            },
+            {
+              "name": "max-zoom",
+              "fieldName": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "18",
+              "description": "Zoom threshold above which individual points are rendered unclustered."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-cluster-expand",
+              "type": {
+                "text": "CustomEvent<{ clusterId: string; count: number; center: readonly [number, number]; zoom: number }>"
+              },
+              "description": "Fired when a multi-point cluster is expanded."
+            },
+            {
+              "name": "mth-cluster-select",
+              "type": {
+                "text": "CustomEvent<{ point: ClusterPoint }>"
+              },
+              "description": "Fired when a single point cluster item is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region container."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "clusters",
+              "description": "Accessible cluster list."
+            },
+            {
+              "name": "cluster-item",
+              "description": "Interactive cluster or point button."
+            },
+            {
+              "name": "summary",
+              "description": "Cluster count summary."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Cluster panel surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Cluster panel and button border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary cluster highlight accent color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-map-cluster",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [],
+            "props": [
+              {
+                "name": "points",
+                "attr": false,
+                "type": "ReadonlyArray<ClusterPoint>"
+              },
+              {
+                "name": "radius",
+                "attr": "radius",
+                "type": "number",
+                "default": 48
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "maxZoom",
+                "attr": "max-zoom",
+                "type": "number",
+                "default": 18
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-cluster-expand",
+                "cancelable": false,
+                "detailType": "{ clusterId: string; count: number; center: readonly [number, number]; zoom: number }"
+              },
+              {
+                "name": "mth-cluster-select",
+                "cancelable": false,
+                "detailType": "{ point: ClusterPoint }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region container."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "clusters",
+                "description": "Accessible cluster list."
+              },
+              {
+                "name": "cluster-item",
+                "description": "Interactive cluster or point button."
+              },
+              {
+                "name": "summary",
+                "description": "Cluster count summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "cluster toolbar focused",
+                "expect": "Moves focus to previous cluster item"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "cluster toolbar focused",
+                "expect": "Moves focus to next cluster item"
+              },
+              {
+                "key": "Enter",
+                "when": "cluster item focused",
+                "expect": "Expands focused cluster or selects point"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Clustered map layer",
+              "clusterListLabel": "Map clusters",
+              "clusterItemLabel": "Cluster of {count} locations",
+              "pointItemLabel": "Location: {label}",
+              "summaryText": "{clusters} clusters from {total} points at zoom {zoom}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapCluster",
+          "declaration": {
+            "name": "MthMapCluster",
+            "module": "src/components/map-cluster/map-cluster.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-cluster",
+          "declaration": {
+            "name": "MthMapCluster",
+            "module": "src/components/map-cluster/map-cluster.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-draw/map-draw.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapDraw",
+          "tagName": "mth-map-draw",
+          "customElement": true,
+          "description": "Interactive GeoJSON drawing surface supporting points, lines, polygons, keyboard drawing, and undo/redo.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'select' | 'point' | 'line' | 'polygon'"
+              },
+              "default": "\"point\"",
+              "description": "Active drawing mode (`select`, `point`, `line`, `polygon`)."
+            },
+            {
+              "kind": "field",
+              "name": "features",
+              "type": {
+                "text": "MapGeoJsonFeatureCollection"
+              },
+              "description": "Current GeoJSON FeatureCollection."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables toolbar controls and drawing input."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'select' | 'point' | 'line' | 'polygon'"
+              },
+              "default": "\"point\"",
+              "description": "Active drawing mode (`select`, `point`, `line`, `polygon`)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables toolbar controls and drawing input."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-draw-change",
+              "type": {
+                "text": "CustomEvent<{ features: MapGeoJsonFeatureCollection }>"
+              },
+              "description": "Fired when features are added, undone, redone, or cleared."
+            },
+            {
+              "name": "mth-draw-mode",
+              "type": {
+                "text": "CustomEvent<{ mode: DrawMode }>"
+              },
+              "description": "Fired when the active drawing mode changes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "toolbar",
+              "description": "Drawing mode and history toolbar."
+            },
+            {
+              "name": "surface",
+              "description": "Interactive SVG drawing surface."
+            },
+            {
+              "name": "status",
+              "description": "Feature count and vertex summary."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Drawing container surface background."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active drawing mode and shape stroke/fill accent color."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Pressed mode button foreground color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-map-draw",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "disabled"
+            ],
+            "props": [
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'select' | 'point' | 'line' | 'polygon'",
+                "default": "point"
+              },
+              {
+                "name": "features",
+                "attr": false,
+                "type": "MapGeoJsonFeatureCollection"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-draw-change",
+                "cancelable": false,
+                "detailType": "{ features: MapGeoJsonFeatureCollection }"
+              },
+              {
+                "name": "mth-draw-mode",
+                "cancelable": false,
+                "detailType": "{ mode: DrawMode }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "toolbar",
+                "description": "Drawing mode and history toolbar."
+              },
+              {
+                "name": "surface",
+                "description": "Interactive SVG drawing surface."
+              },
+              {
+                "name": "status",
+                "description": "Feature count and vertex summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "toolbar focused",
+                "expect": "Moves focus to previous tool"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar focused",
+                "expect": "Moves focus to next tool"
+              },
+              {
+                "key": "Enter",
+                "when": "tool focused",
+                "expect": "Activates focused drawing tool"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Map drawing editor",
+              "toolbarLabel": "Drawing tools",
+              "modeSelect": "Select",
+              "modePoint": "Point",
+              "modeLine": "Line",
+              "modePolygon": "Polygon",
+              "finishDraft": "Finish shape",
+              "undoAction": "Undo",
+              "redoAction": "Redo",
+              "clearAction": "Clear",
+              "surfaceLabel": "Drawing canvas",
+              "statusSummary": "{count} features drawn ({vertices} draft vertices)"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapDraw",
+          "declaration": {
+            "name": "MthMapDraw",
+            "module": "src/components/map-draw/map-draw.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-draw",
+          "declaration": {
+            "name": "MthMapDraw",
+            "module": "src/components/map-draw/map-draw.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-route/map-route.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapRoute",
+          "tagName": "mth-map-route",
+          "customElement": true,
+          "description": "Route path visualizer computing Haversine distance and interactive bounds fitting across ordered stops.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "origin",
+              "type": {
+                "text": "RouteWaypoint | null"
+              },
+              "default": "null",
+              "description": "Starting route waypoint (`lng`, `lat`, optional `label`)."
+            },
+            {
+              "kind": "field",
+              "name": "destination",
+              "type": {
+                "text": "RouteWaypoint | null"
+              },
+              "default": "null",
+              "description": "Ending route waypoint (`lng`, `lat`, optional `label`)."
+            },
+            {
+              "kind": "field",
+              "name": "waypoints",
+              "type": {
+                "text": "ReadonlyArray<RouteWaypoint>"
+              },
+              "description": "Intermediate ordered route waypoints."
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "attribute": "unit",
+              "type": {
+                "text": "'km' | 'mi'"
+              },
+              "default": "\"km\"",
+              "description": "Distance unit displayed in the summary (`km` or `mi`)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "unit",
+              "fieldName": "unit",
+              "type": {
+                "text": "'km' | 'mi'"
+              },
+              "default": "\"km\"",
+              "description": "Distance unit displayed in the summary (`km` or `mi`)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-route-fit",
+              "type": {
+                "text": "CustomEvent<{ bounds: BoundsTuple; distanceKm: number }>"
+              },
+              "description": "Fired when bounds are fitted across route stops."
+            },
+            {
+              "name": "mth-waypoint-select",
+              "type": {
+                "text": "CustomEvent<{ waypoint: RouteWaypoint; index: number }>"
+              },
+              "description": "Fired when a route stop button is selected."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "polyline",
+              "description": "SVG route visualization."
+            },
+            {
+              "name": "stops",
+              "description": "Accessible ordered stop list."
+            },
+            {
+              "name": "summary",
+              "description": "Total route distance summary."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Route card surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Container and stop button border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Route polyline and active stop accent color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-map-route",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [],
+            "props": [
+              {
+                "name": "origin",
+                "attr": false,
+                "type": "RouteWaypoint | null",
+                "default": null
+              },
+              {
+                "name": "destination",
+                "attr": false,
+                "type": "RouteWaypoint | null",
+                "default": null
+              },
+              {
+                "name": "waypoints",
+                "attr": false,
+                "type": "ReadonlyArray<RouteWaypoint>"
+              },
+              {
+                "name": "unit",
+                "attr": "unit",
+                "type": "'km' | 'mi'",
+                "default": "km"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-route-fit",
+                "cancelable": false,
+                "detailType": "{ bounds: BoundsTuple; distanceKm: number }"
+              },
+              {
+                "name": "mth-waypoint-select",
+                "cancelable": false,
+                "detailType": "{ waypoint: RouteWaypoint; index: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "polyline",
+                "description": "SVG route visualization."
+              },
+              {
+                "name": "stops",
+                "description": "Accessible ordered stop list."
+              },
+              {
+                "name": "summary",
+                "description": "Total route distance summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "stop button focused",
+                "expect": "Centers map on selected route stop"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Map route",
+              "fitBounds": "Fit route",
+              "stopsLabel": "Route stops",
+              "originDefault": "Origin",
+              "destinationDefault": "Destination",
+              "waypointDefault": "Stop {index}",
+              "distanceKm": "{distance} km ({stops} stops)",
+              "distanceMi": "{distance} mi ({stops} stops)",
+              "emptyRoute": "No route configured"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapRoute",
+          "declaration": {
+            "name": "MthMapRoute",
+            "module": "src/components/map-route/map-route.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-route",
+          "declaration": {
+            "name": "MthMapRoute",
+            "module": "src/components/map-route/map-route.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/seat-map/seat-map.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSeatMap",
+          "tagName": "mth-seat-map",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated 2D ARIA grid seat picker supporting multi-select, seat tiers, and validation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Comma-separated selected seat identifiers."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Default reset seat value."
+            },
+            {
+              "kind": "field",
+              "name": "seats",
+              "type": {
+                "text": "ReadonlyArray<SeatDefinition>"
+              },
+              "description": "Array of `SeatDefinition` entries."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "attribute": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Number of grid columns used for row layout."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows selecting multiple seats."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one selected seat."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and submission."
+            },
+            {
+              "kind": "field",
+              "name": "readOnly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents changing seat selection."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Comma-separated selected seat identifiers."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Default reset seat value."
+            },
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Number of grid columns used for row layout."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows selecting multiple seats."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one selected seat."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and submission."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents changing seat selection."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Native composed event fired when selection changes."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Native composed event fired when selection commits."
+            },
+            {
+              "name": "mth-seat-select",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string>; seat: SeatDefinition }>"
+              },
+              "description": "Fired when an available seat is toggled."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer form control container."
+            },
+            {
+              "name": "label",
+              "description": "Field label."
+            },
+            {
+              "name": "stage",
+              "description": "Venue stage / front orientation indicator."
+            },
+            {
+              "name": "grid",
+              "description": "2D roving ARIA seat grid."
+            },
+            {
+              "name": "seat",
+              "description": "Individual seat gridcell button."
+            },
+            {
+              "name": "legend",
+              "description": "Seat status and tier legend."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Seat map surface background."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected seat accent background."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Validation error color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus-visible outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "multiple",
+              "description": "Custom element state :state(multiple)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-seat-map",
+            "package": "@methane/maps",
+            "conformance": [
+              "form-control",
+              "roving-focus",
+              "satellite"
+            ],
+            "controllers": [
+              "FormControlController",
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched",
+              "multiple"
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "seats",
+                "attr": false,
+                "type": "ReadonlyArray<SeatDefinition>"
+              },
+              {
+                "name": "columns",
+                "attr": "columns",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readOnly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "input",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "change",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-seat-select",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string>; seat: SeatDefinition }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer form control container."
+              },
+              {
+                "name": "label",
+                "description": "Field label."
+              },
+              {
+                "name": "stage",
+                "description": "Venue stage / front orientation indicator."
+              },
+              {
+                "name": "grid",
+                "description": "2D roving ARIA seat grid."
+              },
+              {
+                "name": "seat",
+                "description": "Individual seat gridcell button."
+              },
+              {
+                "name": "legend",
+                "description": "Seat status and tier legend."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus left by 1 seat"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus right by 1 seat"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus up by 1 row"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus down by 1 row"
+              },
+              {
+                "key": "Enter",
+                "when": "seat gridcell focused",
+                "expect": "Toggles or selects focused available seat"
+              }
+            ],
+            "messages": {
+              "defaultLabel": "Seat selection",
+              "stageLabel": "Stage / Front",
+              "legendAvailable": "Available",
+              "legendSelected": "Selected",
+              "legendOccupied": "Occupied",
+              "seatAvailableLabel": "Seat {label}, {tier}, available",
+              "seatSelectedLabel": "Seat {label}, {tier}, selected",
+              "seatOccupiedLabel": "Seat {label}, {tier}, occupied",
+              "seatDisabledLabel": "Seat {label}, unavailable",
+              "defaultTier": "Standard",
+              "selectedCount": "{count} selected",
+              "requiredError": "Please select at least one seat."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSeatMap",
+          "declaration": {
+            "name": "MthSeatMap",
+            "module": "src/components/seat-map/seat-map.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-seat-map",
+          "declaration": {
+            "name": "MthSeatMap",
+            "module": "src/components/seat-map/seat-map.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
