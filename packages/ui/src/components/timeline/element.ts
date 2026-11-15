@@ -1,0 +1,19 @@
+import { defineComponents } from '@methane/core';
+import { MthTimeline } from './timeline.js';
+
+export {
+  MthTimeline,
+  type MthTimelineAlign,
+  type MthTimelineOrientation,
+  type TimelineItemData,
+} from './timeline.js';
+export { timelineMessages } from './timeline.messages.js';
+export { timelineSpec } from './timeline.spec.js';
+export { timelineStyles } from './timeline.styles.js';
+
+export function registerMthTimeline(prefix?: string): ReadonlyArray<string> {
+  return defineComponents({
+    ...(prefix !== undefined ? { prefix } : {}),
+    components: { 'mth-timeline': MthTimeline },
+  });
+}

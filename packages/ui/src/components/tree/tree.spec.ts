@@ -1,0 +1,110 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+
+export const treeSpec: ComponentBehaviorSpec = {
+  tag: 'mth-tree',
+  package: '@methane/ui',
+  conformance: ['roving-focus', 'data-consumer'],
+  controllers: [
+    'SlotCollectionController',
+    'RovingFocusController',
+    'SelectionController',
+    'DataController',
+    'VirtualizerController',
+  ],
+  focusModel: 'none',
+  role: 'tree',
+  states: ['loading', 'empty', 'error', 'virtualized'],
+  keyboard: [
+    { key: 'ArrowDown', when: 'A treeitem has focus', expect: 'Moves focus to next visible enabled treeitem' },
+    { key: 'ArrowUp', when: 'A treeitem has focus', expect: 'Moves focus to previous visible enabled treeitem' },
+    { key: 'ArrowRight', dir: 'ltr', when: 'A treeitem has focus in LTR', expect: 'Expands closed branch or moves focus to first child' },
+    { key: 'ArrowLeft', dir: 'ltr', when: 'A treeitem has focus in LTR', expect: 'Collapses open branch or moves focus to parent' },
+    { key: 'ArrowLeft', dir: 'rtl', when: 'A treeitem has focus in RTL', expect: 'Expands closed branch or moves focus to first child' },
+    { key: 'ArrowRight', dir: 'rtl', when: 'A treeitem has focus in RTL', expect: 'Collapses open branch or moves focus to parent' },
+    { key: 'Home', when: 'A treeitem has focus', expect: 'Moves focus to first visible enabled treeitem' },
+    { key: 'End', when: 'A treeitem has focus', expect: 'Moves focus to last visible enabled treeitem' },
+    { key: 'Enter', when: 'A treeitem has focus', expect: 'Selects focused treeitem and emits mth-change' },
+    { key: ' ', when: 'A treeitem has focus', expect: 'Selects focused treeitem and emits mth-change' },
+    { key: '*', when: 'A treeitem has focus', expect: 'Expands all sibling branch items at the current level' },
+  ],
+  props: [
+    { name: 'selectionMode', attr: 'selection-mode', type: "'none' | 'single' | 'multiple'", default: 'single' },
+    { name: 'value', attr: 'value', type: 'string', default: '' },
+    { name: 'values', attr: false, type: 'ReadonlyArray<string>' },
+    { name: 'items', attr: false, type: 'ReadonlyArray<TreeNodeData> | null', default: null },
+    { name: 'dataSource', attr: false, type: 'DataSource<TreeNodeData, string> | null', default: null },
+    { name: 'expandedValues', attr: false, type: 'ReadonlyArray<string>' },
+    { name: 'virtualized', attr: 'virtualized', type: 'boolean', default: false },
+    { name: 'itemHeight', attr: 'item-height', type: 'number', default: 32 },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+  ],
+  events: [
+    {
+      name: 'mth-change',
+      cancelable: false,
+      detailType: '{ value: string; values: ReadonlyArray<string> }',
+    },
+    {
+      name: 'mth-expand',
+      cancelable: false,
+      detailType: '{ value: string }',
+    },
+    {
+      name: 'mth-collapse',
+      cancelable: false,
+      detailType: '{ value: string }',
+    },
+    {
+      name: 'mth-data-state',
+      cancelable: false,
+      detailType: '{ status: DataControllerStatus; count: number }',
+    },
+  ],
+  slots: [
+    { name: '', description: 'Declarative `<mth-tree-item>` hierarchy.' },
+    { name: 'loading', description: 'Custom loading state template.' },
+    { name: 'empty', description: 'Custom empty state template.' },
+    { name: 'error', description: 'Custom error state template.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Outer `role="tree"` container.' },
+    { name: 'viewport', description: 'Scroll viewport used for virtualized tree rendering.' },
+    { name: 'spacer', description: 'Virtual height container.' },
+    { name: 'window', description: 'Translated slice of visible virtualized treeitems.' },
+    { name: 'item', description: 'Rendered `role="treeitem"` row in data/virtualized mode.' },
+    { name: 'status', description: 'Loading, empty, or error status container.' },
+  ],
+  messages: {
+    treeLabel: 'Tree view',
+    loadingText: 'Loading tree…',
+    emptyText: 'No tree items',
+    errorText: 'Failed to load tree items',
+    retryLabel: 'Retry',
+  },
+};
+
+export const CEM_METADATA = {
+  description: 'WAI-ARIA APG hierarchical treeview (`role="tree"`) with LTR/RTL arrow expand/collapse, typeahead, `SelectionController`, `DataController`, `SlotCollectionController`, and `VirtualizerController`.',
+  propDescriptions: {
+    selectionMode: 'Selection behavior (`none`, `single`, or `multiple`).',
+    value: 'Currently selected node value in single-selection mode.',
+    values: 'Array of selected node values.',
+    items: 'Hierarchical `TreeNodeData[]` array for data-driven or virtualized trees.',
+    dataSource: 'Async `DataSource<TreeNodeData, string>` backing the tree.',
+    expandedValues: 'Array of expanded node IDs in data-driven mode.',
+    virtualized: 'Enables windowed rendering via `VirtualizerController`.',
+    itemHeight: 'Estimated row height in pixels for virtualization.',
+    label: 'Accessible label for the `role="tree"` landmark.',
+  },
+  eventDescriptions: {
+    'mth-change': 'Emitted when tree selection changes.',
+    'mth-expand': 'Emitted when a branch node expands.',
+    'mth-collapse': 'Emitted when a branch node collapses.',
+    'mth-data-state': 'Emitted when `DataController` transitions state.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Tree container background.' },
+    { name: '--mth-color-accent-subtle', description: 'Selected treeitem background.' },
+    { name: '--mth-color-border-focus', description: 'Focused treeitem outline color.' },
+  ],
+};
