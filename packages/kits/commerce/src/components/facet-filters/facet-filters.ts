@@ -92,6 +92,11 @@ export class MthFacetFilters extends UIElement {
     this.syncSwatchSheet();
   }
 
+  protected override onMoveBefore(): void {
+    super.onMoveBefore();
+    this.syncSwatchSheet();
+  }
+
   protected override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
     if (changed.has('facets')) {

@@ -91,7 +91,7 @@ export const cartStyles = css`
     border: 1px solid var(--mth-color-border, light-dark(oklch(0.86 0.008 260), oklch(0.36 0.015 260)));
     border-radius: var(--mth-radius-md, 0.5rem);
     background: transparent;
-    color: var(--mth-color-danger, oklch(0.55 0.22 25));
+    color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
     padding-inline: var(--mth-space-2, 0.5rem);
     padding-block: var(--mth-space-1, 0.25rem);
     font-family: inherit;
@@ -137,7 +137,7 @@ export const cartStyles = css`
   }
 
   .remove-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 

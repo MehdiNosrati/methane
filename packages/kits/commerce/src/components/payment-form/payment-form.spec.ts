@@ -5,7 +5,7 @@ export const paymentFormSpec: ComponentBehaviorSpec = {
   tag: 'mth-payment-form',
   package: '@methane/commerce',
   conformance: ['form-control'],
-  controllers: ['FormControlController', 'MaskAndFormatEngine'],
+  controllers: ['FormControlController', 'InputController', 'MaskAndFormatEngine'],
   focusModel: 'none',
   states: ['disabled', 'invalid'],
   keyboard: [{ key: 'Enter', when: 'input focused', expect: 'Validate and submit payment form.' }],

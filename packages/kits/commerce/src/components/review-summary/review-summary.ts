@@ -53,6 +53,11 @@ export class MthReviewSummary extends UIElement {
     this.syncBarSheet();
   }
 
+  protected override onMoveBefore(): void {
+    super.onMoveBefore();
+    this.syncBarSheet();
+  }
+
   protected override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
     this.setCustomState('filtered', typeof this.activeStar === 'number' && Number.isFinite(this.activeStar));

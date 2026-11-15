@@ -45,7 +45,7 @@ export const checkoutStepsStyles = css`
   }
 
   .step-btn[aria-current='step'] {
-    border-color: var(--mth-color-accent, oklch(0.55 0.22 260));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     background-color: var(--mth-color-accent-subtle, light-dark(oklch(0.95 0.03 260), oklch(0.27 0.07 260)));
   }
 
@@ -69,13 +69,13 @@ export const checkoutStepsStyles = css`
   }
 
   .step-btn[aria-current='step'] .indicator {
-    background-color: var(--mth-color-accent, oklch(0.55 0.22 260));
-    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    background-color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.68 0.18 260)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
   }
 
   .step-btn[data-completed='true'] .indicator {
-    background-color: var(--mth-color-success, oklch(0.56 0.16 145));
-    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    background-color: var(--mth-color-success, light-dark(oklch(0.56 0.16 145), oklch(0.68 0.15 145)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
   }
 
   .text {
@@ -97,11 +97,11 @@ export const checkoutStepsStyles = css`
 
   .error {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-danger, oklch(0.55 0.22 25));
+    color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
   }
 
   .step-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -111,6 +111,7 @@ export const checkoutStepsStyles = css`
     }
 
     .step-btn[aria-current='step'] {
+      forced-color-adjust: none;
       border: 2px solid Highlight;
     }
 

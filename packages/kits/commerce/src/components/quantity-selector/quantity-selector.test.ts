@@ -98,4 +98,25 @@ describe('<mth-quantity-selector>', () => {
     });
     expect(purity.passed).toBe(true);
   });
+
+  it('restores clampedValue on empty input and preserves fractional steps', async () => {
+    const el = document.createElement('mth-quantity-selector') as MthQuantitySelector;
+    el.min = 0.5;
+    el.max = 5;
+    el.step = 0.5;
+    el.value = 1.5;
+    document.body.append(el);
+    await el.updateComplete;
+
+    const inputEl = el.shadowRoot!.querySelector<HTMLInputElement>('[part="input"]')!;
+    inputEl.value = '';
+    inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.value).toBe(1.5);
+    expect(inputEl.value).toBe('1.5');
+
+    el.shadowRoot!.querySelector<HTMLButtonElement>('[part="increment"]')!.click();
+    await el.updateComplete;
+    expect(el.value).toBe(2);
+  });
 });

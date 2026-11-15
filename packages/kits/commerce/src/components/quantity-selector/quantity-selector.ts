@@ -121,8 +121,9 @@ export class MthQuantitySelector extends UIElement {
   }
 
   private clamp(raw: number): number {
-    const base = Number.isFinite(raw) ? Math.round(raw) : this.safeMin;
-    return Math.min(this.safeMax, Math.max(this.safeMin, base));
+    const base = Number.isFinite(raw) ? raw : this.safeMin;
+    const clamped = Math.min(this.safeMax, Math.max(this.safeMin, base));
+    return Number.isInteger(this.safeStep) ? Math.round(clamped) : Number(clamped.toFixed(6));
   }
 
   private commitValue(nextRaw: number, emitChange = true): void {
@@ -147,8 +148,9 @@ export class MthQuantitySelector extends UIElement {
 
   private handleInputChange = (e: Event): void => {
     const target = e.target as HTMLInputElement;
-    const parsed = Number(target.value.trim());
-    if (!Number.isFinite(parsed)) {
+    const trimmed = target.value.trim();
+    const parsed = Number(trimmed);
+    if (!trimmed || !Number.isFinite(parsed)) {
       target.value = String(this.clampedValue);
       return;
     }

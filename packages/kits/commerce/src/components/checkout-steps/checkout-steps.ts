@@ -1,7 +1,8 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { RovingFocusController } from '@methane/primitives';
 import { html, nothing } from 'lit';
-import { property, queryAll } from 'lit/decorators.js';
+import { property, query, queryAll } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { checkoutStepsMessages } from './checkout-steps.messages.js';
 import { checkoutStepsStyles } from './checkout-steps.styles.js';
 
@@ -37,9 +38,13 @@ export class MthCheckoutSteps extends UIElement {
   @property({ type: String })
   label = '';
 
+  @query('.list')
+  private listEl!: HTMLElement | null;
+
   @queryAll('.step-btn')
   private stepButtons!: NodeListOf<HTMLButtonElement>;
 
+  private rovingContainer: HTMLElement | null = null;
   private readonly rovingCtrl: RovingFocusController;
 
   constructor() {
@@ -48,6 +53,7 @@ export class MthCheckoutSteps extends UIElement {
       orientation: 'horizontal',
       dir: 'auto',
       loop: false,
+      container: () => this.rovingContainer,
       getItems: () => Array.from(this.stepButtons ?? []),
     });
   }
@@ -86,13 +92,36 @@ export class MthCheckoutSteps extends UIElement {
 
   protected override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
-    if (changed.has('orientation')) {
-      this.rovingCtrl.updateOptions({
-        orientation: this.orientation === 'vertical' ? 'vertical' : 'horizontal',
-      });
-    }
+    this.rovingCtrl.updateOptions({
+      dir: resolveEffectiveDir(this, this.resolvedDir),
+      ...(changed.has('orientation')
+        ? { orientation: this.orientation === 'vertical' ? 'vertical' : 'horizontal' }
+        : {}),
+    });
     this.setCustomState('vertical', this.orientation === 'vertical');
     this.setCustomState('linear', this.linear);
+  }
+
+  protected override firstUpdated(): void {
+    if (this.listEl && this.rovingContainer !== this.listEl) {
+      this.rovingCtrl.hostDisconnected();
+      this.rovingContainer = this.listEl;
+      this.rovingCtrl.hostConnected();
+    }
+    const activeIdx = this.steps.findIndex((s) => s.id === this.effectiveActiveId);
+    if (activeIdx >= 0) {
+      this.rovingCtrl.setActiveIndex(activeIdx, false);
+    }
+  }
+
+  protected override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+    if (changed.has('activeStep')) {
+      const activeIdx = this.steps.findIndex((s) => s.id === this.effectiveActiveId);
+      if (activeIdx >= 0) {
+        this.rovingCtrl.setActiveIndex(activeIdx, false);
+      }
+    }
   }
 
   protected override render() {
@@ -100,7 +129,7 @@ export class MthCheckoutSteps extends UIElement {
     const list = this.steps ?? [];
 
     return html`
-      <nav part="base" dir=${this.resolvedDir} aria-label=${this.label || this.t('navLabel')}>
+      <nav part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)} aria-label=${this.label || this.t('navLabel')}>
         <ol class="list" data-orientation=${this.orientation === 'vertical' ? 'vertical' : 'horizontal'}>
           ${list.map((step, idx) => {
             const isActive = step.id === activeId;
@@ -111,7 +140,6 @@ export class MthCheckoutSteps extends UIElement {
                   type="button"
                   class="step-btn"
                   part="step-button"
-                  tabindex=${isActive || (idx === 0 && !activeId) ? '0' : '-1'}
                   aria-current=${isActive ? 'step' : 'false'}
                   data-completed=${step.completed ? 'true' : 'false'}
                   ?disabled=${locked}

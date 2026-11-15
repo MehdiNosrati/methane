@@ -133,7 +133,7 @@ export class MthProductCard extends UIElement {
           ${showBadge
             ? html`<div class="badge-slot">
                 <slot name="badge">
-                  <mth-badge part="badge" variant=${this.inStock ? 'primary' : 'neutral'} size="sm" pill>
+                  <mth-badge part="badge" variant=${this.inStock ? 'accent' : 'neutral'} size="sm" pill>
                     ${showBadge}
                   </mth-badge>
                 </slot>

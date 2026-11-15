@@ -66,7 +66,7 @@ export const planPickerStyles = css`
   }
 
   .plan-card[aria-checked='true'] {
-    border: 2px solid var(--mth-color-accent, oklch(0.55 0.22 260));
+    border: 2px solid var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     background-color: var(--mth-color-accent-subtle, light-dark(oklch(0.96 0.02 260), oklch(0.26 0.06 260)));
   }
 
@@ -123,7 +123,7 @@ export const planPickerStyles = css`
 
   .cycle-btn:focus-visible,
   .plan-card:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -133,7 +133,14 @@ export const planPickerStyles = css`
       border: 1px solid CanvasText;
     }
 
+    .cycle-btn[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+    }
+
     .plan-card[aria-checked='true'] {
+      forced-color-adjust: none;
       border: 2px solid Highlight;
     }
 

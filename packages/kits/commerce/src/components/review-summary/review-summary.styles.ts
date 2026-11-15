@@ -34,7 +34,7 @@ export const reviewSummaryStyles = css`
   }
 
   .stars {
-    color: var(--mth-color-warning, oklch(0.75 0.16 75));
+    color: var(--mth-color-warning, light-dark(oklch(0.68 0.16 75), oklch(0.78 0.14 75)));
     font-size: var(--mth-font-size-sm, 0.875rem);
   }
 
@@ -68,7 +68,7 @@ export const reviewSummaryStyles = css`
   }
 
   .row[aria-pressed='true'] {
-    border-color: var(--mth-color-accent, oklch(0.55 0.22 260));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     background-color: var(--mth-color-accent-subtle, light-dark(oklch(0.95 0.03 260), oklch(0.27 0.07 260)));
   }
 
@@ -85,7 +85,7 @@ export const reviewSummaryStyles = css`
     block-size: 100%;
     inline-size: var(--_rs-pct, 0%);
     border-radius: inherit;
-    background-color: var(--mth-color-warning, oklch(0.75 0.16 75));
+    background-color: var(--mth-color-warning, light-dark(oklch(0.68 0.16 75), oklch(0.78 0.14 75)));
   }
 
   .count {
@@ -95,7 +95,7 @@ export const reviewSummaryStyles = css`
   }
 
   .row:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -110,6 +110,7 @@ export const reviewSummaryStyles = css`
     }
 
     .row[aria-pressed='true'] {
+      forced-color-adjust: none;
       border: 1px solid Highlight;
     }
   }

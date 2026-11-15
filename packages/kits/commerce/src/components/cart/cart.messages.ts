@@ -6,6 +6,8 @@ export const cartMessages = {
   taxLabel: 'Estimated tax',
   discountLabel: 'Discount',
   totalLabel: 'Total',
+  decreaseLabel: 'Decrease quantity of {title}',
+  increaseLabel: 'Increase quantity of {title}',
   removeLabel: 'Remove {title}',
   checkoutLabel: 'Proceed to checkout',
   itemCountLabel: '{count} items',

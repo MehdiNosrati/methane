@@ -2,7 +2,8 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController, RovingFocusController, SelectionController } from '@methane/primitives';
 import { registerMthBadge } from '@methane/ui/badge';
 import { html, nothing } from 'lit';
-import { property, queryAll } from 'lit/decorators.js';
+import { property, query, queryAll } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { planPickerMessages } from './plan-picker.messages.js';
 import { planPickerStyles } from './plan-picker.styles.js';
 
@@ -53,10 +54,14 @@ export class MthPlanPicker extends UIElement {
   @property({ type: Boolean, reflect: true })
   required = false;
 
+  @query('.grid')
+  private gridEl!: HTMLElement | null;
+
   @queryAll('.plan-card')
   private planCards!: NodeListOf<HTMLButtonElement>;
 
   private initializedDefault = false;
+  private rovingContainer: HTMLElement | null = null;
   private readonly formCtrl: FormControlController;
   private readonly selectionCtrl: SelectionController;
   private readonly rovingCtrl: RovingFocusController;
@@ -73,6 +78,7 @@ export class MthPlanPicker extends UIElement {
       orientation: 'horizontal',
       dir: 'auto',
       loop: true,
+      container: () => this.rovingContainer,
       getItems: () => Array.from(this.planCards ?? []),
     });
 
@@ -179,6 +185,9 @@ export class MthPlanPicker extends UIElement {
 
   protected override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
+    this.rovingCtrl.updateOptions({
+      dir: resolveEffectiveDir(this, this.resolvedDir),
+    });
     if (changed.has('plans')) {
       this.selectionCtrl.setItems(
         (this.plans ?? []).map((p) => ({
@@ -198,17 +207,35 @@ export class MthPlanPicker extends UIElement {
     }
   }
 
+  protected override firstUpdated(): void {
+    if (this.gridEl && this.rovingContainer !== this.gridEl) {
+      this.rovingCtrl.hostDisconnected();
+      this.rovingContainer = this.gridEl;
+      this.rovingCtrl.hostConnected();
+    }
+    const activeIdx = (this.plans ?? []).findIndex((p) => p.id === this.value);
+    if (activeIdx >= 0) {
+      this.rovingCtrl.setActiveIndex(activeIdx, false);
+    }
+  }
+
+  protected override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+    if (changed.has('value')) {
+      const activeIdx = (this.plans ?? []).findIndex((p) => p.id === this.value);
+      if (activeIdx >= 0) {
+        this.rovingCtrl.setActiveIndex(activeIdx, false);
+      }
+    }
+  }
+
   protected override render() {
     const isDisabled = this.effectiveDisabled;
     const isAnnual = this.billingCycle === 'annual';
     const list = this.plans ?? [];
-    const activeIdx = Math.max(
-      0,
-      list.findIndex((p) => p.id === this.value),
-    );
 
     return html`
-      <section class="root" part="base" dir=${this.resolvedDir} aria-label=${this.label || this.t('regionLabel')}>
+      <section class="root" part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)} aria-label=${this.label || this.t('regionLabel')}>
         <div
           class="cycle-bar"
           part="cycle-toggle"
@@ -237,7 +264,7 @@ export class MthPlanPicker extends UIElement {
         </div>
 
         <div class="grid" part="grid" role="radiogroup" aria-label=${this.label || this.t('selectPlanLabel')}>
-          ${list.map((plan, idx) => {
+          ${list.map((plan) => {
             const selected = this.value === plan.id;
             const cardDisabled = isDisabled || Boolean(plan.disabled);
             const price = isAnnual ? plan.annualPrice : plan.monthlyPrice;
@@ -250,7 +277,6 @@ export class MthPlanPicker extends UIElement {
                 part="plan"
                 role="radio"
                 aria-checked=${selected ? 'true' : 'false'}
-                tabindex=${idx === activeIdx ? '0' : '-1'}
                 ?disabled=${cardDisabled}
                 @click=${() => this.selectPlan(plan.id)}
               >

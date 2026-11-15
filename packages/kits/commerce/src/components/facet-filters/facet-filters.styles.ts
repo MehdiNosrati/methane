@@ -35,7 +35,7 @@ export const facetFiltersStyles = css`
     appearance: none;
     border: none;
     background: transparent;
-    color: var(--mth-color-accent, oklch(0.55 0.22 260));
+    color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     font-family: inherit;
     font-size: var(--mth-font-size-xs, 0.75rem);
     font-weight: var(--mth-font-weight-medium, 500);
@@ -85,12 +85,12 @@ export const facetFiltersStyles = css`
     block-size: 1.75rem;
     border-radius: var(--mth-radius-full, 9999px);
     border: 2px solid var(--mth-color-border, light-dark(oklch(0.84 0.008 260), oklch(0.4 0.015 260)));
-    background-color: var(--_ff-swatch, var(--mth-color-bg-subtle, oklch(0.85 0.01 260)));
+    background-color: var(--_ff-swatch, var(--mth-color-bg-subtle, light-dark(oklch(0.85 0.01 260), oklch(0.32 0.012 260))));
     cursor: pointer;
   }
 
   .swatch[aria-pressed='true'] {
-    outline: 2px solid var(--mth-color-accent, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -130,7 +130,7 @@ export const facetFiltersStyles = css`
   .group-toggle:focus-visible,
   .swatch:focus-visible,
   .range-input:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -141,6 +141,7 @@ export const facetFiltersStyles = css`
     }
 
     .swatch[aria-pressed='true'] {
+      forced-color-adjust: none;
       outline: 2px solid Highlight;
     }
   }

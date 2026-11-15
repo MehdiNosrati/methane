@@ -1,8 +1,13 @@
 import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, MaskAndFormatEngine, validateLuhn } from '@methane/primitives';
+import {
+  FormControlController,
+  InputController,
+  MaskAndFormatEngine,
+  validateLuhn,
+} from '@methane/primitives';
 import { registerMthButton } from '@methane/ui/button';
 import { html, nothing } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { paymentFormMessages } from './payment-form.messages.js';
 import { paymentFormStyles } from './payment-form.styles.js';
@@ -63,14 +68,29 @@ export class MthPaymentForm extends UIElement {
   @state()
   private validationError = '';
 
+  @query('#cc-name')
+  private nameInputEl!: HTMLInputElement | null;
+
   private initializedDefault = false;
+  private boundInputEl: HTMLInputElement | null = null;
   private readonly formCtrl: FormControlController;
+  private readonly inputCtrl: InputController;
   private readonly cardMask: MaskAndFormatEngine;
 
   constructor() {
     super();
     registerMthButton();
     this.cardMask = new MaskAndFormatEngine({ mode: 'card' }, this);
+    this.inputCtrl = new InputController(this, {
+      onCommitValue: (committed) => {
+        if (this.inputCtrl.element?.id === 'cc-name') {
+          this.value = committed;
+          this.formCtrl.markTouched();
+          this.formCtrl.setValue(this.value, { markDirty: true });
+          this.emitChange();
+        }
+      },
+    });
     this.formCtrl = new FormControlController(this, {
       internals: this.internals,
       defaultValue: '',
@@ -155,6 +175,7 @@ export class MthPaymentForm extends UIElement {
   }
 
   private handleNameInput = (e: Event): void => {
+    if (this.inputCtrl.isComposing) return;
     this.value = (e.target as HTMLInputElement).value;
     this.formCtrl.markTouched();
     this.formCtrl.setValue(this.value, { markDirty: true });
@@ -162,6 +183,7 @@ export class MthPaymentForm extends UIElement {
   };
 
   private handleCardInput = (e: Event): void => {
+    if (this.inputCtrl.isComposing) return;
     const raw = (e.target as HTMLInputElement).value;
     const result = this.cardMask.format(raw);
     this.cardDisplay = result.formatted;
@@ -170,14 +192,24 @@ export class MthPaymentForm extends UIElement {
   };
 
   private handleExpiryInput = (e: Event): void => {
+    if (this.inputCtrl.isComposing) return;
     const digits = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 4);
     this.expiry = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
     this.emitChange();
   };
 
   private handleCvcInput = (e: Event): void => {
+    if (this.inputCtrl.isComposing) return;
     this.cvc = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 4);
     this.emitChange();
+  };
+
+  private handleInputFocusIn = (e: FocusEvent): void => {
+    const target = e.target;
+    if (target instanceof HTMLInputElement && this.boundInputEl !== target) {
+      this.boundInputEl = target;
+      this.inputCtrl.bind(target);
+    }
   };
 
   private emitChange(): void {
@@ -240,9 +272,23 @@ export class MthPaymentForm extends UIElement {
     }
   }
 
+  protected override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+    if (this.nameInputEl && !this.boundInputEl) {
+      this.boundInputEl = this.nameInputEl;
+      this.inputCtrl.bind(this.nameInputEl);
+    }
+  }
+
+  override disconnectedCallback(): void {
+    this.boundInputEl = null;
+    super.disconnectedCallback();
+  }
+
   protected override render() {
     const isDisabled = this.effectiveDisabled;
     const hasError = Boolean(this.validationError);
+    const errorId = 'mth-pf-error';
 
     return html`
       <form
@@ -251,6 +297,7 @@ export class MthPaymentForm extends UIElement {
         dir=${this.resolvedDir}
         aria-label=${this.t('regionLabel')}
         novalidate
+        @focusin=${this.handleInputFocusIn}
         @submit=${this.handleFormSubmit}
       >
         <div class="field">
@@ -265,6 +312,7 @@ export class MthPaymentForm extends UIElement {
             ?disabled=${isDisabled}
             ?required=${this.required}
             aria-invalid=${hasError && !this.value.trim() ? 'true' : 'false'}
+            aria-describedby=${hasError ? errorId : nothing}
             @input=${this.handleNameInput}
           />
         </div>
@@ -280,7 +328,8 @@ export class MthPaymentForm extends UIElement {
             autocomplete="cc-number"
             .value=${live(this.cardDisplay)}
             ?disabled=${isDisabled}
-            aria-invalid=${hasError && !validateLuhn(this.cardDigits) ? 'true' : 'false'}
+            aria-invalid=${hasError && (this.cardDigits.length < 13 || !validateLuhn(this.cardDigits)) ? 'true' : 'false'}
+            aria-describedby=${hasError ? errorId : nothing}
             @input=${this.handleCardInput}
           />
         </div>
@@ -298,6 +347,8 @@ export class MthPaymentForm extends UIElement {
               placeholder="MM/YY"
               .value=${live(this.expiry)}
               ?disabled=${isDisabled}
+              aria-invalid=${hasError && !isValidExpiry(this.expiry) ? 'true' : 'false'}
+              aria-describedby=${hasError ? errorId : nothing}
               @input=${this.handleExpiryInput}
             />
           </div>
@@ -313,13 +364,15 @@ export class MthPaymentForm extends UIElement {
               autocomplete="cc-csc"
               .value=${live(this.cvc)}
               ?disabled=${isDisabled}
+              aria-invalid=${hasError && !/^\d{3,4}$/.test(this.cvc.trim()) ? 'true' : 'false'}
+              aria-describedby=${hasError ? errorId : nothing}
               @input=${this.handleCvcInput}
             />
           </div>
         </div>
 
         ${hasError
-          ? html`<p class="error" part="error" role="alert">${this.validationError}</p>`
+          ? html`<p id=${errorId} class="error" part="error" role="alert">${this.validationError}</p>`
           : nothing}
 
         <mth-button

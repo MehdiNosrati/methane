@@ -107,4 +107,33 @@ describe('<mth-payment-form>', () => {
     });
     expect(purity.passed).toBe(true);
   });
+
+  it('wires aria-invalid and aria-describedby to error element for invalid expiry and CVC', async () => {
+    const el = document.createElement('mth-payment-form') as MthPaymentForm;
+    document.body.append(el);
+    await el.updateComplete;
+
+    const nameInput = el.shadowRoot!.querySelector<HTMLInputElement>('#cc-name')!;
+    const numInput = el.shadowRoot!.querySelector<HTMLInputElement>('#cc-number')!;
+    const expInput = el.shadowRoot!.querySelector<HTMLInputElement>('#cc-exp')!;
+    const cscInput = el.shadowRoot!.querySelector<HTMLInputElement>('#cc-csc')!;
+
+    nameInput.value = 'Ada Lovelace';
+    nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+    numInput.value = '4242424242424242';
+    numInput.dispatchEvent(new Event('input', { bubbles: true }));
+    expInput.value = '13/99';
+    expInput.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+
+    expect(el.submitPayment()).toBe(false);
+    await el.updateComplete;
+
+    const errEl = el.shadowRoot!.querySelector('#mth-pf-error');
+    expect(errEl?.textContent?.trim().length).toBeGreaterThan(0);
+    expect(expInput.getAttribute('aria-invalid')).toBe('true');
+    expect(expInput.getAttribute('aria-describedby')).toBe('mth-pf-error');
+    expect(cscInput.getAttribute('aria-invalid')).toBe('true');
+    expect(cscInput.getAttribute('aria-describedby')).toBe('mth-pf-error');
+  });
 });

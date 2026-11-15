@@ -139,7 +139,7 @@ export class MthCart extends UIElement {
                           <button
                             type="button"
                             class="qty-btn"
-                            aria-label=${`${item.title} -`}
+                            aria-label=${this.t('decreaseLabel', { title: item.title })}
                             ?disabled=${this.disabled || qty <= (item.min ?? 1)}
                             @click=${() =>
                               this.emitEvent('mth-quantity-change', {
@@ -152,7 +152,7 @@ export class MthCart extends UIElement {
                           <button
                             type="button"
                             class="qty-btn"
-                            aria-label=${`${item.title} +`}
+                            aria-label=${this.t('increaseLabel', { title: item.title })}
                             ?disabled=${this.disabled || qty >= (item.max ?? 99)}
                             @click=${() =>
                               this.emitEvent('mth-quantity-change', {
