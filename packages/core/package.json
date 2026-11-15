@@ -1,0 +1,45 @@
+{
+  "name": "@methane/core",
+  "version": "1.0.0",
+  "description": "Lit 3 UIElement base class, single versioned global runtime, i18n catalog, and Community Context Protocol for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "default": "./dist/runtime.js"
+    },
+    "./i18n": {
+      "types": "./dist/i18n.d.ts",
+      "default": "./dist/i18n.js"
+    },
+    "./context": {
+      "types": "./dist/context.d.ts",
+      "default": "./dist/context.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@lit-labs/ssr-client": "^1.1.7",
+    "@lit/context": "^1.1.4",
+    "@methane/sanitize": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@methane/test-conformance": "workspace:*",
+    "fast-check": "^4.10.2"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}
