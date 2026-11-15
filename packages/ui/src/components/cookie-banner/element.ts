@@ -1,0 +1,20 @@
+import { defineComponents } from '@methane/core';
+import { MthCookieBanner } from './cookie-banner.js';
+
+export {
+  MthCookieBanner,
+  type CookieBannerPosition,
+  type CookieConsentDetail,
+} from './cookie-banner.js';
+export { cookieBannerMessages } from './cookie-banner.messages.js';
+export { CEM_METADATA, cookieBannerSpec } from './cookie-banner.spec.js';
+export { cookieBannerStyles } from './cookie-banner.styles.js';
+
+export function registerMthCookieBanner(prefix?: string): ReadonlyArray<string> {
+  return defineComponents({
+    ...(prefix !== undefined ? { prefix } : {}),
+    components: {
+      'mth-cookie-banner': MthCookieBanner,
+    },
+  });
+}
