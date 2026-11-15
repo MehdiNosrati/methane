@@ -154,28 +154,71 @@ export interface MthCheckboxProps {
 }
 
 export interface MthComboboxProps {
-  /** Selected option value. */
+  /** Form field name submitted via ElementInternals. */
+  readonly name?: string | undefined;
+  /** Current selected value (comma-separated when `multiple` is true). */
   readonly value?: string | undefined;
-  /** Popup open state. */
+  /** Initial value restored when the enclosing form resets. */
+  readonly defaultValue?: string | undefined;
+  /** Visible and accessible label for the combobox input. */
+  readonly label?: string | undefined;
+  /** Helper text describing expected input or options. */
+  readonly hint?: string | undefined;
+  /** Explicit error message marking the combobox invalid. */
+  readonly error?: string | undefined;
+  /** Input placeholder text. */
+  readonly placeholder?: string | undefined;
+  /** Controls visibility of the floating options popup. */
   readonly open?: boolean | undefined;
-  /** Disables the combobox. */
+  /** Enables multi-value selection without dismissing on selection. */
+  readonly multiple?: boolean | undefined;
+  /** Disables interaction and excludes from form submission. */
   readonly disabled?: boolean | undefined;
+  /** Marks combobox selection as required for constraint validation. */
+  readonly required?: boolean | undefined;
+  /** Prevents typing or changing selection while remaining focusable. */
+  readonly readonly?: boolean | undefined;
+  /** Shows a clear button when text or value is non-empty. */
+  readonly clearable?: boolean | undefined;
+  /** Filters local options dynamically as the user types. */
+  readonly filterable?: boolean | undefined;
+  /** Preferred popup placement relative to the combobox control. */
+  readonly placement?: string | undefined;
+  /** Forces JS fallback positioning instead of native CSS Anchor Positioning. */
+  readonly forceFallback?: boolean | undefined;
+  /** Imperative option array overriding declarative slotted children. */
+  readonly options?: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null | undefined;
+  /** Async DataSource<T> queried on filter changes with stale-request abort protection. */
+  readonly dataSource?: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null | undefined;
   readonly modelValue?: string | undefined;
   readonly 'onUpdate:modelValue'?: ((value: string) => void) | undefined;
   readonly "onUpdate:value"?: ((value: string) => void) | undefined;
   readonly "onUpdate:open"?: ((value: boolean) => void) | undefined;
+  readonly "onMthInput"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
+  readonly "onMthChange"?: ((event: CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>) => void) | undefined;
   readonly "onMthOpen"?: ((event: CustomEvent<void>) => void) | undefined;
-  readonly "onMthClose"?: ((event: CustomEvent<void>) => void) | undefined;
-  readonly "onMthSelect"?: ((event: CustomEvent<{ value: string; label: string }>) => void) | undefined;
+  readonly "onMthAfterOpen"?: ((event: CustomEvent<void>) => void) | undefined;
+  readonly "onMthClose"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  readonly "onMthAfterClose"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  readonly "onMthClear"?: ((event: CustomEvent<void>) => void) | undefined;
+  readonly "onMthInvalid"?: ((event: CustomEvent<{ validity: ValidityState }>) => void) | undefined;
 }
 
 export interface MthDialogProps {
-  /** Dialog open state. */
+  /** Controls open visibility of the dialog. */
   readonly open?: boolean | undefined;
-  /** Whether dialog traps focus and shows backdrop. */
+  /** Opens as modal top-layer dialog with backdrop and focus trap when true. */
   readonly modal?: boolean | undefined;
-  /** Accessible dialog title. */
+  /** Built-in semantic dialog preset (`default | alert | confirm | prompt`). */
+  readonly variant?: 'default' | 'alert' | 'confirm' | 'prompt' | undefined;
+  /** Accessible dialog title rendered in header. */
   readonly label?: string | undefined;
+  /** Optional descriptive copy for alert/confirm/prompt dialogs. */
+  readonly description?: string | undefined;
+  /** Current input value when `variant="prompt"`. */
+  readonly promptValue?: string | undefined;
+  /** Allows dismissing the dialog via the Escape key. */
+  readonly closeOnEscape?: boolean | undefined;
   readonly modelValue?: boolean | undefined;
   readonly 'onUpdate:modelValue'?: ((value: boolean) => void) | undefined;
   readonly "onUpdate:open"?: ((value: boolean) => void) | undefined;
@@ -183,36 +226,57 @@ export interface MthDialogProps {
   readonly "onMthAfterOpen"?: ((event: CustomEvent<void>) => void) | undefined;
   readonly "onMthClose"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
   readonly "onMthAfterClose"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  readonly "onMthConfirm"?: ((event: CustomEvent<{ variant: string; value?: string }>) => void) | undefined;
+  readonly "onMthCancel"?: ((event: CustomEvent<{ variant: string }>) => void) | undefined;
+}
+
+export interface MthErrorBoundaryProps {
+  /** fallbackMessage */
+  readonly fallbackMessage?: string | undefined | undefined;
+  readonly "onMthErrorCaptured"?: ((event: CustomEvent<{ error: unknown }>) => void) | undefined;
+  readonly "onMthReset"?: ((event: CustomEvent<void>) => void) | undefined;
 }
 
 export interface MthFieldProps {
-  /** Field label propagated via Context Protocol. */
+  /** Field label text propagated to child controls via FieldContext. */
   readonly label?: string | undefined;
-  /** Helper text. */
+  /** Helper description text propagated via FieldContext. */
   readonly hint?: string | undefined;
-  /** Validation error message. */
+  /** Validation error message propagated via FieldContext. */
   readonly error?: string | undefined;
-  /** Propagates required flag. */
+  /** Marks the field required and propagates via FieldContext. */
   readonly required?: boolean | undefined;
-  /** Propagates disabled flag. */
+  /** Disables descendant Methane controls via FieldContext. */
   readonly disabled?: boolean | undefined;
+  /** Density scale override for layout spacing. */
+  readonly density?: 'compact' | 'default' | 'comfortable' | undefined;
 }
 
 export interface MthInputProps {
-  /** Current input value. */
+  /** Current string value. */
   readonly value?: string | undefined;
-  /** Form field name. */
+  /** Form submission field name. */
   readonly name?: string | undefined;
-  /** Input semantic type. */
-  readonly type?: 'text' | 'email' | 'url' | 'search' | 'tel' | undefined;
-  /** Accessible label mirrored inside Shadow DOM. */
+  /** Semantic input type (`text | email | url | search | tel`). */
+  readonly type?: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password' | undefined;
+  /** Accessible label rendered inside shadow root. */
   readonly label?: string | undefined;
-  /** Placeholder text. */
+  /** Helper text displayed and linked via aria-describedby inside shadow root. */
+  readonly hint?: string | undefined;
+  /** Explicit custom error message displayed inside shadow root. */
+  readonly error?: string | undefined;
+  /** Hint displayed when empty. */
   readonly placeholder?: string | undefined;
-  /** Disables the input. */
+  /** HTML autocomplete token passed through to the underlying `<input>`. */
+  readonly autocomplete?: string | undefined;
+  /** Virtual keyboard hint passed through to the underlying `<input>`. */
+  readonly inputmode?: string | undefined;
+  /** Disables user interaction. */
   readonly disabled?: boolean | undefined;
-  /** Marks field required for constraint validation. */
+  /** Marks input required for constraint validation. */
   readonly required?: boolean | undefined;
+  /** Prevents edits while remaining focusable and submittable. */
+  readonly readonly?: boolean | undefined;
   readonly modelValue?: string | undefined;
   readonly 'onUpdate:modelValue'?: ((value: string) => void) | undefined;
   readonly "onUpdate:value"?: ((value: string) => void) | undefined;
@@ -221,15 +285,31 @@ export interface MthInputProps {
 }
 
 export interface MthOptionProps {
-  /** Option value. */
+  /** Machine-readable value submitted when selected. */
   readonly value?: string | undefined;
-  /** Marks option non-selectable. */
+  /** Optional explicit display label overriding slotted text content. */
+  readonly label?: string | undefined;
+  /** Prevents the option from being activated or selected. */
   readonly disabled?: boolean | undefined;
-  /** Selected state. */
+  /** Marks whether the option is currently selected. */
   readonly selected?: boolean | undefined;
+  /** Marks whether the option is currently highlighted via keyboard or pointer. */
+  readonly active?: boolean | undefined;
   readonly modelValue?: string | undefined;
   readonly 'onUpdate:modelValue'?: ((value: string) => void) | undefined;
   readonly "onUpdate:value"?: ((value: string) => void) | undefined;
+}
+
+export interface MthOptionGroupProps {
+  /** Visible and accessible group heading label. */
+  readonly label?: string | undefined;
+  /** Disables all options nested inside the group. */
+  readonly disabled?: boolean | undefined;
+}
+
+export interface MthSkipLinkProps {
+  /** href */
+  readonly href?: string | undefined;
 }
 
 export interface MthSwitchProps {
@@ -242,6 +322,8 @@ export interface MthSwitchProps {
   readonly "onUpdate:checked"?: ((value: boolean) => void) | undefined;
   readonly "onMthChange"?: ((event: CustomEvent<{ checked: boolean }>) => void) | undefined;
 }
+
+export type MthVisuallyHiddenProps = Record<never, never>;
 
 export const MthButton: DefineComponent<MthButtonProps> = createMethaneVueComponent<MthButtonProps>({
   name: "MthButton",
@@ -266,9 +348,9 @@ export const MthCheckbox: DefineComponent<MthCheckboxProps> = createMethaneVueCo
 export const MthCombobox: DefineComponent<MthComboboxProps> = createMethaneVueComponent<MthComboboxProps>({
   name: "MthCombobox",
   tagName: "mth-combobox",
-  propNames: ["value", "open", "disabled"],
-  emits: ["mth-open", "mth-close", "mth-select", "update:modelValue", "update:value", "update:open"],
-  eventNames: ["mth-open", "mth-close", "mth-select"],
+  propNames: ["name", "value", "defaultValue", "label", "hint", "error", "placeholder", "open", "multiple", "disabled", "required", "readonly", "clearable", "filterable", "placement", "forceFallback", "options", "dataSource"],
+  emits: ["mth-input", "mth-change", "mth-open", "mth-after-open", "mth-close", "mth-after-close", "mth-clear", "mth-invalid", "update:modelValue", "update:value", "update:open"],
+  eventNames: ["mth-input", "mth-change", "mth-open", "mth-after-open", "mth-close", "mth-after-close", "mth-clear", "mth-invalid"],
   primaryModelProp: "value",
   bindableProps: ["value", "open"],
 });
@@ -276,17 +358,27 @@ export const MthCombobox: DefineComponent<MthComboboxProps> = createMethaneVueCo
 export const MthDialog: DefineComponent<MthDialogProps> = createMethaneVueComponent<MthDialogProps>({
   name: "MthDialog",
   tagName: "mth-dialog",
-  propNames: ["open", "modal", "label"],
-  emits: ["mth-open", "mth-after-open", "mth-close", "mth-after-close", "update:modelValue", "update:open"],
-  eventNames: ["mth-open", "mth-after-open", "mth-close", "mth-after-close"],
+  propNames: ["open", "modal", "variant", "label", "description", "promptValue", "closeOnEscape"],
+  emits: ["mth-open", "mth-after-open", "mth-close", "mth-after-close", "mth-confirm", "mth-cancel", "update:modelValue", "update:open"],
+  eventNames: ["mth-open", "mth-after-open", "mth-close", "mth-after-close", "mth-confirm", "mth-cancel"],
   primaryModelProp: "open",
   bindableProps: ["open"],
+});
+
+export const MthErrorBoundary: DefineComponent<MthErrorBoundaryProps> = createMethaneVueComponent<MthErrorBoundaryProps>({
+  name: "MthErrorBoundary",
+  tagName: "mth-error-boundary",
+  propNames: ["fallbackMessage"],
+  emits: ["mth-error-captured", "mth-reset"],
+  eventNames: ["mth-error-captured", "mth-reset"],
+  primaryModelProp: null,
+  bindableProps: [],
 });
 
 export const MthField: DefineComponent<MthFieldProps> = createMethaneVueComponent<MthFieldProps>({
   name: "MthField",
   tagName: "mth-field",
-  propNames: ["label", "hint", "error", "required", "disabled"],
+  propNames: ["label", "hint", "error", "required", "disabled", "density"],
   emits: [],
   eventNames: [],
   primaryModelProp: null,
@@ -296,7 +388,7 @@ export const MthField: DefineComponent<MthFieldProps> = createMethaneVueComponen
 export const MthInput: DefineComponent<MthInputProps> = createMethaneVueComponent<MthInputProps>({
   name: "MthInput",
   tagName: "mth-input",
-  propNames: ["value", "name", "type", "label", "placeholder", "disabled", "required"],
+  propNames: ["value", "name", "type", "label", "hint", "error", "placeholder", "autocomplete", "inputmode", "disabled", "required", "readonly"],
   emits: ["mth-input", "mth-change", "update:modelValue", "update:value"],
   eventNames: ["mth-input", "mth-change"],
   primaryModelProp: "value",
@@ -306,11 +398,31 @@ export const MthInput: DefineComponent<MthInputProps> = createMethaneVueComponen
 export const MthOption: DefineComponent<MthOptionProps> = createMethaneVueComponent<MthOptionProps>({
   name: "MthOption",
   tagName: "mth-option",
-  propNames: ["value", "disabled", "selected"],
+  propNames: ["value", "label", "disabled", "selected", "active"],
   emits: ["update:modelValue", "update:value"],
   eventNames: [],
   primaryModelProp: "value",
   bindableProps: ["value"],
+});
+
+export const MthOptionGroup: DefineComponent<MthOptionGroupProps> = createMethaneVueComponent<MthOptionGroupProps>({
+  name: "MthOptionGroup",
+  tagName: "mth-option-group",
+  propNames: ["label", "disabled"],
+  emits: [],
+  eventNames: [],
+  primaryModelProp: null,
+  bindableProps: [],
+});
+
+export const MthSkipLink: DefineComponent<MthSkipLinkProps> = createMethaneVueComponent<MthSkipLinkProps>({
+  name: "MthSkipLink",
+  tagName: "mth-skip-link",
+  propNames: ["href"],
+  emits: [],
+  eventNames: [],
+  primaryModelProp: null,
+  bindableProps: [],
 });
 
 export const MthSwitch: DefineComponent<MthSwitchProps> = createMethaneVueComponent<MthSwitchProps>({
@@ -323,6 +435,16 @@ export const MthSwitch: DefineComponent<MthSwitchProps> = createMethaneVueCompon
   bindableProps: ["checked"],
 });
 
+export const MthVisuallyHidden: DefineComponent<MthVisuallyHiddenProps> = createMethaneVueComponent<MthVisuallyHiddenProps>({
+  name: "MthVisuallyHidden",
+  tagName: "mth-visually-hidden",
+  propNames: [],
+  emits: [],
+  eventNames: [],
+  primaryModelProp: null,
+  bindableProps: [],
+});
+
 declare module 'vue' {
   export interface GlobalComponents {
     MthButton: DefineComponent<MthButtonProps>;
@@ -333,13 +455,21 @@ declare module 'vue' {
     "mth-combobox": DefineComponent<MthComboboxProps>;
     MthDialog: DefineComponent<MthDialogProps>;
     "mth-dialog": DefineComponent<MthDialogProps>;
+    MthErrorBoundary: DefineComponent<MthErrorBoundaryProps>;
+    "mth-error-boundary": DefineComponent<MthErrorBoundaryProps>;
     MthField: DefineComponent<MthFieldProps>;
     "mth-field": DefineComponent<MthFieldProps>;
     MthInput: DefineComponent<MthInputProps>;
     "mth-input": DefineComponent<MthInputProps>;
     MthOption: DefineComponent<MthOptionProps>;
     "mth-option": DefineComponent<MthOptionProps>;
+    MthOptionGroup: DefineComponent<MthOptionGroupProps>;
+    "mth-option-group": DefineComponent<MthOptionGroupProps>;
+    MthSkipLink: DefineComponent<MthSkipLinkProps>;
+    "mth-skip-link": DefineComponent<MthSkipLinkProps>;
     MthSwitch: DefineComponent<MthSwitchProps>;
     "mth-switch": DefineComponent<MthSwitchProps>;
+    MthVisuallyHidden: DefineComponent<MthVisuallyHiddenProps>;
+    "mth-visually-hidden": DefineComponent<MthVisuallyHiddenProps>;
   }
 }

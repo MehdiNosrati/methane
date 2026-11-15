@@ -4,9 +4,10 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { describe, expect, it } from 'vitest';
 import {
   METHANE_ANGULAR_DIRECTIVES,
-  MthButtonDirective,
-  MthCheckboxDirective,
+  MthComboboxDirective,
+  MthDialogDirective,
   MthInputDirective,
+  MthSkipLinkDirective,
 } from './index.js';
 
 interface AngularDirectiveAnnotation {
@@ -22,18 +23,25 @@ function getAnnotations(target: unknown): ReadonlyArray<AngularDirectiveAnnotati
 
 describe('@methane/angular', () => {
   it('emits real @angular/core standalone directives with NG_VALUE_ACCESSOR for formAssociated controls', () => {
-    expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthButtonDirective);
+    expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthDialogDirective);
     expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthInputDirective);
+    expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthComboboxDirective);
+    expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthSkipLinkDirective);
 
-    const [btnMeta] = getAnnotations(MthButtonDirective);
-    expect(btnMeta?.standalone).toBe(true);
-    expect(btnMeta?.selector).toBe('mth-button');
-    expect(btnMeta?.providers).toBeUndefined();
+    const [dialogMeta] = getAnnotations(MthDialogDirective);
+    expect(dialogMeta?.standalone).toBe(true);
+    expect(dialogMeta?.selector).toBe('mth-dialog');
+    expect(dialogMeta?.providers).toBeUndefined();
 
     const [inputMeta] = getAnnotations(MthInputDirective);
     expect(inputMeta?.standalone).toBe(true);
     expect(inputMeta?.selector).toBe('mth-input');
     expect(inputMeta?.providers?.[0]?.provide).toBe(NG_VALUE_ACCESSOR);
+
+    const [comboMeta] = getAnnotations(MthComboboxDirective);
+    expect(comboMeta?.standalone).toBe(true);
+    expect(comboMeta?.selector).toBe('mth-combobox');
+    expect(comboMeta?.providers?.[0]?.provide).toBe(NG_VALUE_ACCESSOR);
   });
 
   it('wires ControlValueAccessor to real CustomEvent and FocusEvent on nativeElement', () => {
@@ -64,17 +72,17 @@ describe('@methane/angular', () => {
     inputEl.dispatchEvent(new CustomEvent('mth-input', { detail: { value: 'after-destroy' } }));
     expect(changes).toEqual(['xyz']);
 
-    const checkboxEl = document.createElement('mth-checkbox') as HTMLElement & Record<string, unknown>;
-    const checkboxDir = new MthCheckboxDirective({
-      nativeElement: checkboxEl,
+    const comboEl = document.createElement('mth-combobox') as HTMLElement & Record<string, unknown>;
+    const comboDir = new MthComboboxDirective({
+      nativeElement: comboEl,
     } as ElementRef<HTMLElement & Record<string, unknown>>);
-    const checkedChanges: unknown[] = [];
-    checkboxDir.registerOnChange((val) => checkedChanges.push(val));
-    checkboxDir.writeValue(true);
-    expect(checkboxEl['checked']).toBe(true);
+    const comboChanges: unknown[] = [];
+    comboDir.registerOnChange((val) => comboChanges.push(val));
+    comboDir.writeValue('apple');
+    expect(comboEl['value']).toBe('apple');
 
-    checkboxEl.dispatchEvent(new CustomEvent('mth-change', { detail: { checked: false } }));
-    expect(checkedChanges).toEqual([false]);
-    checkboxDir.ngOnDestroy();
+    comboEl.dispatchEvent(new CustomEvent('mth-change', { detail: { value: 'banana' } }));
+    expect(comboChanges).toEqual(['banana']);
+    comboDir.ngOnDestroy();
   });
 });

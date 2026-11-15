@@ -119,17 +119,37 @@ export class MthCheckboxDirective implements ControlValueAccessor, OnDestroy {
 @Directive({
   selector: "mth-combobox",
   standalone: true,
-  inputs: ["value", "open", "disabled"],
-  outputs: ["mthOpen", "mthClose", "mthSelect"],
+  inputs: ["name", "value", "defaultValue", "label", "hint", "error", "placeholder", "open", "multiple", "disabled", "required", "readonly", "clearable", "filterable", "placement", "forceFallback", "options", "dataSource"],
+  outputs: ["mthInput", "mthChange", "mthOpen", "mthAfterOpen", "mthClose", "mthAfterClose", "mthClear", "mthInvalid"],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MthComboboxDirective), multi: true }],
 })
 export class MthComboboxDirective implements ControlValueAccessor, OnDestroy {
+  @Input() name?: string | undefined;
   @Input() value?: string | undefined;
+  @Input() defaultValue?: string | undefined;
+  @Input() label?: string | undefined;
+  @Input() hint?: string | undefined;
+  @Input() error?: string | undefined;
+  @Input() placeholder?: string | undefined;
   @Input() open?: boolean | undefined;
+  @Input() multiple?: boolean | undefined;
   @Input() disabled?: boolean | undefined;
+  @Input() required?: boolean | undefined;
+  @Input() readonly?: boolean | undefined;
+  @Input() clearable?: boolean | undefined;
+  @Input() filterable?: boolean | undefined;
+  @Input() placement?: string | undefined;
+  @Input() forceFallback?: boolean | undefined;
+  @Input() options?: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null | undefined;
+  @Input() dataSource?: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null | undefined;
+  @Output("mth-input") readonly mthInput = new EventEmitter<CustomEvent<{ value: string }>>();
+  @Output("mth-change") readonly mthChange = new EventEmitter<CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>>();
   @Output("mth-open") readonly mthOpen = new EventEmitter<CustomEvent<void>>();
-  @Output("mth-close") readonly mthClose = new EventEmitter<CustomEvent<void>>();
-  @Output("mth-select") readonly mthSelect = new EventEmitter<CustomEvent<{ value: string; label: string }>>();
+  @Output("mth-after-open") readonly mthAfterOpen = new EventEmitter<CustomEvent<void>>();
+  @Output("mth-close") readonly mthClose = new EventEmitter<CustomEvent<{ reason: string }>>();
+  @Output("mth-after-close") readonly mthAfterClose = new EventEmitter<CustomEvent<{ reason: string }>>();
+  @Output("mth-clear") readonly mthClear = new EventEmitter<CustomEvent<void>>();
+  @Output("mth-invalid") readonly mthInvalid = new EventEmitter<CustomEvent<{ validity: ValidityState }>>();
   private readonly destroyController = new AbortController();
   private onChange: (value: unknown) => void = () => undefined;
   private onTouched: () => void = () => undefined;
@@ -198,23 +218,41 @@ export class MthComboboxDirective implements ControlValueAccessor, OnDestroy {
 @Directive({
   selector: "mth-dialog",
   standalone: true,
-  inputs: ["open", "modal", "label"],
-  outputs: ["mthOpen", "mthAfterOpen", "mthClose", "mthAfterClose"],
+  inputs: ["open", "modal", "variant", "label", "description", "promptValue", "closeOnEscape"],
+  outputs: ["mthOpen", "mthAfterOpen", "mthClose", "mthAfterClose", "mthConfirm", "mthCancel"],
 })
 export class MthDialogDirective {
   @Input() open?: boolean | undefined;
   @Input() modal?: boolean | undefined;
+  @Input() variant?: 'default' | 'alert' | 'confirm' | 'prompt' | undefined;
   @Input() label?: string | undefined;
+  @Input() description?: string | undefined;
+  @Input() promptValue?: string | undefined;
+  @Input() closeOnEscape?: boolean | undefined;
   @Output("mth-open") readonly mthOpen = new EventEmitter<CustomEvent<void>>();
   @Output("mth-after-open") readonly mthAfterOpen = new EventEmitter<CustomEvent<void>>();
   @Output("mth-close") readonly mthClose = new EventEmitter<CustomEvent<{ reason: string }>>();
   @Output("mth-after-close") readonly mthAfterClose = new EventEmitter<CustomEvent<{ reason: string }>>();
+  @Output("mth-confirm") readonly mthConfirm = new EventEmitter<CustomEvent<{ variant: string; value?: string }>>();
+  @Output("mth-cancel") readonly mthCancel = new EventEmitter<CustomEvent<{ variant: string }>>();
+}
+
+@Directive({
+  selector: "mth-error-boundary",
+  standalone: true,
+  inputs: ["fallbackMessage"],
+  outputs: ["mthErrorCaptured", "mthReset"],
+})
+export class MthErrorBoundaryDirective {
+  @Input() fallbackMessage?: string | undefined | undefined;
+  @Output("mth-error-captured") readonly mthErrorCaptured = new EventEmitter<CustomEvent<{ error: unknown }>>();
+  @Output("mth-reset") readonly mthReset = new EventEmitter<CustomEvent<void>>();
 }
 
 @Directive({
   selector: "mth-field",
   standalone: true,
-  inputs: ["label", "hint", "error", "required", "disabled"],
+  inputs: ["label", "hint", "error", "required", "disabled", "density"],
   outputs: [],
 })
 export class MthFieldDirective {
@@ -223,23 +261,29 @@ export class MthFieldDirective {
   @Input() error?: string | undefined;
   @Input() required?: boolean | undefined;
   @Input() disabled?: boolean | undefined;
+  @Input() density?: 'compact' | 'default' | 'comfortable' | undefined;
 }
 
 @Directive({
   selector: "mth-input",
   standalone: true,
-  inputs: ["value", "name", "type", "label", "placeholder", "disabled", "required"],
+  inputs: ["value", "name", "type", "label", "hint", "error", "placeholder", "autocomplete", "inputmode", "disabled", "required", "readonly"],
   outputs: ["mthInput", "mthChange"],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MthInputDirective), multi: true }],
 })
 export class MthInputDirective implements ControlValueAccessor, OnDestroy {
   @Input() value?: string | undefined;
   @Input() name?: string | undefined;
-  @Input() type?: 'text' | 'email' | 'url' | 'search' | 'tel' | undefined;
+  @Input() type?: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password' | undefined;
   @Input() label?: string | undefined;
+  @Input() hint?: string | undefined;
+  @Input() error?: string | undefined;
   @Input() placeholder?: string | undefined;
+  @Input() autocomplete?: string | undefined;
+  @Input() inputmode?: string | undefined;
   @Input() disabled?: boolean | undefined;
   @Input() required?: boolean | undefined;
+  @Input() readonly?: boolean | undefined;
   @Output("mth-input") readonly mthInput = new EventEmitter<CustomEvent<{ value: string }>>();
   @Output("mth-change") readonly mthChange = new EventEmitter<CustomEvent<{ value: string }>>();
   private readonly destroyController = new AbortController();
@@ -310,13 +354,36 @@ export class MthInputDirective implements ControlValueAccessor, OnDestroy {
 @Directive({
   selector: "mth-option",
   standalone: true,
-  inputs: ["value", "disabled", "selected"],
+  inputs: ["value", "label", "disabled", "selected", "active"],
   outputs: [],
 })
 export class MthOptionDirective {
   @Input() value?: string | undefined;
+  @Input() label?: string | undefined;
   @Input() disabled?: boolean | undefined;
   @Input() selected?: boolean | undefined;
+  @Input() active?: boolean | undefined;
+}
+
+@Directive({
+  selector: "mth-option-group",
+  standalone: true,
+  inputs: ["label", "disabled"],
+  outputs: [],
+})
+export class MthOptionGroupDirective {
+  @Input() label?: string | undefined;
+  @Input() disabled?: boolean | undefined;
+}
+
+@Directive({
+  selector: "mth-skip-link",
+  standalone: true,
+  inputs: ["href"],
+  outputs: [],
+})
+export class MthSkipLinkDirective {
+  @Input() href?: string | undefined;
 }
 
 @Directive({
@@ -395,13 +462,27 @@ export class MthSwitchDirective implements ControlValueAccessor, OnDestroy {
   }
 }
 
+@Directive({
+  selector: "mth-visually-hidden",
+  standalone: true,
+  inputs: [],
+  outputs: [],
+})
+export class MthVisuallyHiddenDirective {
+
+}
+
 export const METHANE_ANGULAR_DIRECTIVES = [
   MthButtonDirective,
   MthCheckboxDirective,
   MthComboboxDirective,
   MthDialogDirective,
+  MthErrorBoundaryDirective,
   MthFieldDirective,
   MthInputDirective,
   MthOptionDirective,
+  MthOptionGroupDirective,
+  MthSkipLinkDirective,
   MthSwitchDirective,
+  MthVisuallyHiddenDirective,
 ] as const;

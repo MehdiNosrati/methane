@@ -1,6 +1,9 @@
 import type { GeneratedFile, NormalizedComponentModel } from '../types.js';
 
 function emitElementInterface(model: NormalizedComponentModel): string {
+  if (model.props.length === 0) {
+    return `export type ${model.elementInterfaceName} = HTMLElement;`;
+  }
   const propLines = model.props.map(
     (p) => `  /** ${p.description || p.name} */\n  ${p.name}: ${p.type};`,
   );

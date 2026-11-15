@@ -30,82 +30,174 @@ export interface MthCheckboxProps {
 }
 
 export interface MthComboboxProps {
-  /** Selected option value. */
+  /** Form field name submitted via ElementInternals. */
+  name?: string | undefined;
+  /** Current selected value (comma-separated when `multiple` is true). */
   value?: string | undefined;
-  /** Popup open state. */
+  /** Initial value restored when the enclosing form resets. */
+  defaultValue?: string | undefined;
+  /** Visible and accessible label for the combobox input. */
+  label?: string | undefined;
+  /** Helper text describing expected input or options. */
+  hint?: string | undefined;
+  /** Explicit error message marking the combobox invalid. */
+  error?: string | undefined;
+  /** Input placeholder text. */
+  placeholder?: string | undefined;
+  /** Controls visibility of the floating options popup. */
   open?: boolean | undefined;
-  /** Disables the combobox. */
+  /** Enables multi-value selection without dismissing on selection. */
+  multiple?: boolean | undefined;
+  /** Disables interaction and excludes from form submission. */
   disabled?: boolean | undefined;
-  /** Cancelable event fired before opening popup. */
+  /** Marks combobox selection as required for constraint validation. */
+  required?: boolean | undefined;
+  /** Prevents typing or changing selection while remaining focusable. */
+  readonly?: boolean | undefined;
+  /** Shows a clear button when text or value is non-empty. */
+  clearable?: boolean | undefined;
+  /** Filters local options dynamically as the user types. */
+  filterable?: boolean | undefined;
+  /** Preferred popup placement relative to the combobox control. */
+  placement?: string | undefined;
+  /** Forces JS fallback positioning instead of native CSS Anchor Positioning. */
+  forceFallback?: boolean | undefined;
+  /** Imperative option array overriding declarative slotted children. */
+  options?: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null | undefined;
+  /** Async DataSource<T> queried on filter changes with stale-request abort protection. */
+  dataSource?: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null | undefined;
+  /** Fired as the user types in the combobox input. */
+  "onmth-input"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
+  /** Fired when selection changes. */
+  "onmth-change"?: ((event: CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>) => void) | undefined;
+  /** Cancelable event fired before opening the popup. */
   "onmth-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Cancelable event fired before closing popup. */
-  "onmth-close"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Emitted when an option is selected. */
-  "onmth-select"?: ((event: CustomEvent<{ value: string; label: string }>) => void) | undefined;
+  /** Fired after the popup opens and positions. */
+  "onmth-after-open"?: ((event: CustomEvent<void>) => void) | undefined;
+  /** Cancelable event fired before closing the popup. */
+  "onmth-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired after the popup closes. */
+  "onmth-after-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired when the clear action resets query and selection. */
+  "onmth-clear"?: ((event: CustomEvent<void>) => void) | undefined;
+  /** Fired when form constraint validation fails. */
+  "onmth-invalid"?: ((event: CustomEvent<{ validity: ValidityState }>) => void) | undefined;
   children?: unknown;
 }
 
 export interface MthDialogProps {
-  /** Dialog open state. */
+  /** Controls open visibility of the dialog. */
   open?: boolean | undefined;
-  /** Whether dialog traps focus and shows backdrop. */
+  /** Opens as modal top-layer dialog with backdrop and focus trap when true. */
   modal?: boolean | undefined;
-  /** Accessible dialog title. */
+  /** Built-in semantic dialog preset (`default | alert | confirm | prompt`). */
+  variant?: 'default' | 'alert' | 'confirm' | 'prompt' | undefined;
+  /** Accessible dialog title rendered in header. */
   label?: string | undefined;
-  /** Cancelable pre-open event. */
+  /** Optional descriptive copy for alert/confirm/prompt dialogs. */
+  description?: string | undefined;
+  /** Current input value when `variant="prompt"`. */
+  promptValue?: string | undefined;
+  /** Allows dismissing the dialog via the Escape key. */
+  closeOnEscape?: boolean | undefined;
+  /** Cancelable event fired before opening the dialog. */
   "onmth-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Fired after entry transition completes. */
+  /** Fired once the entry transition settles. */
   "onmth-after-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Cancelable pre-close event. */
+  /** Cancelable event fired before closing the dialog. */
   "onmth-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
-  /** Fired after exit transition completes. */
+  /** Fired once exit transition settles and focus restores. */
   "onmth-after-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired when the primary confirm/ok action button is clicked. */
+  "onmth-confirm"?: ((event: CustomEvent<{ variant: string; value?: string }>) => void) | undefined;
+  /** Fired when the secondary cancel action button is clicked. */
+  "onmth-cancel"?: ((event: CustomEvent<{ variant: string }>) => void) | undefined;
+  children?: unknown;
+}
+
+export interface MthErrorBoundaryProps {
+  /** fallbackMessage */
+  fallbackMessage?: string | undefined | undefined;
+  /** mth-error-captured */
+  "onmth-error-captured"?: ((event: CustomEvent<{ error: unknown }>) => void) | undefined;
+  /** mth-reset */
+  "onmth-reset"?: ((event: CustomEvent<void>) => void) | undefined;
   children?: unknown;
 }
 
 export interface MthFieldProps {
-  /** Field label propagated via Context Protocol. */
+  /** Field label text propagated to child controls via FieldContext. */
   label?: string | undefined;
-  /** Helper text. */
+  /** Helper description text propagated via FieldContext. */
   hint?: string | undefined;
-  /** Validation error message. */
+  /** Validation error message propagated via FieldContext. */
   error?: string | undefined;
-  /** Propagates required flag. */
+  /** Marks the field required and propagates via FieldContext. */
   required?: boolean | undefined;
-  /** Propagates disabled flag. */
+  /** Disables descendant Methane controls via FieldContext. */
   disabled?: boolean | undefined;
+  /** Density scale override for layout spacing. */
+  density?: 'compact' | 'default' | 'comfortable' | undefined;
   children?: unknown;
 }
 
 export interface MthInputProps {
-  /** Current input value. */
+  /** Current string value. */
   value?: string | undefined;
-  /** Form field name. */
+  /** Form submission field name. */
   name?: string | undefined;
-  /** Input semantic type. */
-  type?: 'text' | 'email' | 'url' | 'search' | 'tel' | undefined;
-  /** Accessible label mirrored inside Shadow DOM. */
+  /** Semantic input type (`text | email | url | search | tel`). */
+  type?: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password' | undefined;
+  /** Accessible label rendered inside shadow root. */
   label?: string | undefined;
-  /** Placeholder text. */
+  /** Helper text displayed and linked via aria-describedby inside shadow root. */
+  hint?: string | undefined;
+  /** Explicit custom error message displayed inside shadow root. */
+  error?: string | undefined;
+  /** Hint displayed when empty. */
   placeholder?: string | undefined;
-  /** Disables the input. */
+  /** HTML autocomplete token passed through to the underlying `<input>`. */
+  autocomplete?: string | undefined;
+  /** Virtual keyboard hint passed through to the underlying `<input>`. */
+  inputmode?: string | undefined;
+  /** Disables user interaction. */
   disabled?: boolean | undefined;
-  /** Marks field required for constraint validation. */
+  /** Marks input required for constraint validation. */
   required?: boolean | undefined;
-  /** Emitted on user value edit. */
+  /** Prevents edits while remaining focusable and submittable. */
+  readonly?: boolean | undefined;
+  /** Fired synchronously on user input edits. */
   "onmth-input"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
-  /** Emitted when value commits. */
+  /** Fired when edited value commits. */
   "onmth-change"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
   children?: unknown;
 }
 
 export interface MthOptionProps {
-  /** Option value. */
+  /** Machine-readable value submitted when selected. */
   value?: string | undefined;
-  /** Marks option non-selectable. */
+  /** Optional explicit display label overriding slotted text content. */
+  label?: string | undefined;
+  /** Prevents the option from being activated or selected. */
   disabled?: boolean | undefined;
-  /** Selected state. */
+  /** Marks whether the option is currently selected. */
   selected?: boolean | undefined;
+  /** Marks whether the option is currently highlighted via keyboard or pointer. */
+  active?: boolean | undefined;
+  children?: unknown;
+}
+
+export interface MthOptionGroupProps {
+  /** Visible and accessible group heading label. */
+  label?: string | undefined;
+  /** Disables all options nested inside the group. */
+  disabled?: boolean | undefined;
+  children?: unknown;
+}
+
+export interface MthSkipLinkProps {
+  /** href */
+  href?: string | undefined;
   children?: unknown;
 }
 
@@ -116,6 +208,10 @@ export interface MthSwitchProps {
   disabled?: boolean | undefined;
   /** Emitted on toggle. */
   "onmth-change"?: ((event: CustomEvent<{ checked: boolean }>) => void) | undefined;
+  children?: unknown;
+}
+
+export interface MthVisuallyHiddenProps {
   children?: unknown;
 }
 
@@ -171,6 +267,19 @@ export const MthDialog: MthDialogSvelteWrapper = {
   bindableProps: ["open"],
 };
 
+export interface MthErrorBoundarySvelteWrapper {
+  readonly name: "MthErrorBoundary";
+  readonly tagName: "mth-error-boundary";
+  readonly bindableProps: ReadonlyArray<'value' | 'checked' | 'open'>;
+  readonly __props?: MthErrorBoundaryProps;
+}
+
+export const MthErrorBoundary: MthErrorBoundarySvelteWrapper = {
+  name: "MthErrorBoundary",
+  tagName: "mth-error-boundary",
+  bindableProps: [],
+};
+
 export interface MthFieldSvelteWrapper {
   readonly name: "MthField";
   readonly tagName: "mth-field";
@@ -210,6 +319,32 @@ export const MthOption: MthOptionSvelteWrapper = {
   bindableProps: ["value"],
 };
 
+export interface MthOptionGroupSvelteWrapper {
+  readonly name: "MthOptionGroup";
+  readonly tagName: "mth-option-group";
+  readonly bindableProps: ReadonlyArray<'value' | 'checked' | 'open'>;
+  readonly __props?: MthOptionGroupProps;
+}
+
+export const MthOptionGroup: MthOptionGroupSvelteWrapper = {
+  name: "MthOptionGroup",
+  tagName: "mth-option-group",
+  bindableProps: [],
+};
+
+export interface MthSkipLinkSvelteWrapper {
+  readonly name: "MthSkipLink";
+  readonly tagName: "mth-skip-link";
+  readonly bindableProps: ReadonlyArray<'value' | 'checked' | 'open'>;
+  readonly __props?: MthSkipLinkProps;
+}
+
+export const MthSkipLink: MthSkipLinkSvelteWrapper = {
+  name: "MthSkipLink",
+  tagName: "mth-skip-link",
+  bindableProps: [],
+};
+
 export interface MthSwitchSvelteWrapper {
   readonly name: "MthSwitch";
   readonly tagName: "mth-switch";
@@ -223,15 +358,32 @@ export const MthSwitch: MthSwitchSvelteWrapper = {
   bindableProps: ["checked"],
 };
 
+export interface MthVisuallyHiddenSvelteWrapper {
+  readonly name: "MthVisuallyHidden";
+  readonly tagName: "mth-visually-hidden";
+  readonly bindableProps: ReadonlyArray<'value' | 'checked' | 'open'>;
+  readonly __props?: MthVisuallyHiddenProps;
+}
+
+export const MthVisuallyHidden: MthVisuallyHiddenSvelteWrapper = {
+  name: "MthVisuallyHidden",
+  tagName: "mth-visually-hidden",
+  bindableProps: [],
+};
+
 declare module 'svelte/elements' {
   export interface SvelteHTMLElements {
     "mth-button": MthButtonProps;
     "mth-checkbox": MthCheckboxProps;
     "mth-combobox": MthComboboxProps;
     "mth-dialog": MthDialogProps;
+    "mth-error-boundary": MthErrorBoundaryProps;
     "mth-field": MthFieldProps;
     "mth-input": MthInputProps;
     "mth-option": MthOptionProps;
+    "mth-option-group": MthOptionGroupProps;
+    "mth-skip-link": MthSkipLinkProps;
     "mth-switch": MthSwitchProps;
+    "mth-visually-hidden": MthVisuallyHiddenProps;
   }
 }

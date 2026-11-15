@@ -47,115 +47,249 @@
     },
     {
       "name": "mth-combobox",
-      "description": "Filterable combobox supporting async DataSource and declarative options.",
+      "description": "Form-associated accessible combobox reconciling declarative `<mth-option>`/`<mth-option-group>`, `.options` JS arrays, and async `DataSource<T>` queries with same-root shadow ARIA and dual CSS Anchor / JS positioning.",
       "attributes": [
         {
+          "name": "name",
+          "description": "Form field name submitted via ElementInternals."
+        },
+        {
           "name": "value",
-          "description": "Selected option value."
+          "description": "Current selected value (comma-separated when `multiple` is true)."
+        },
+        {
+          "name": "default-value",
+          "description": "Initial value restored when the enclosing form resets."
+        },
+        {
+          "name": "label",
+          "description": "Visible and accessible label for the combobox input."
+        },
+        {
+          "name": "hint",
+          "description": "Helper text describing expected input or options."
+        },
+        {
+          "name": "error",
+          "description": "Explicit error message marking the combobox invalid."
+        },
+        {
+          "name": "placeholder",
+          "description": "Input placeholder text."
         },
         {
           "name": "open",
-          "description": "Popup open state."
+          "description": "Controls visibility of the floating options popup."
+        },
+        {
+          "name": "multiple",
+          "description": "Enables multi-value selection without dismissing on selection."
         },
         {
           "name": "disabled",
-          "description": "Disables the combobox."
+          "description": "Disables interaction and excludes from form submission."
+        },
+        {
+          "name": "required",
+          "description": "Marks combobox selection as required for constraint validation."
+        },
+        {
+          "name": "readonly",
+          "description": "Prevents typing or changing selection while remaining focusable."
+        },
+        {
+          "name": "clearable",
+          "description": "Shows a clear button when text or value is non-empty."
+        },
+        {
+          "name": "filterable",
+          "description": "Filters local options dynamically as the user types."
+        },
+        {
+          "name": "placement",
+          "description": "Preferred popup placement relative to the combobox control."
+        },
+        {
+          "name": "force-fallback",
+          "description": "Forces JS fallback positioning instead of native CSS Anchor Positioning."
         }
       ]
     },
     {
       "name": "mth-dialog",
-      "description": "Top-layer modal dialog with focus trapping and exit transitions.",
+      "description": "Top-layer modal and non-modal dialog wrapping native `<dialog>` with default, alert, confirm, and prompt variants.",
       "attributes": [
         {
           "name": "open",
-          "description": "Dialog open state."
+          "description": "Controls open visibility of the dialog."
         },
         {
           "name": "modal",
-          "description": "Whether dialog traps focus and shows backdrop."
+          "description": "Opens as modal top-layer dialog with backdrop and focus trap when true."
+        },
+        {
+          "name": "variant",
+          "description": "Built-in semantic dialog preset (`default | alert | confirm | prompt`)."
         },
         {
           "name": "label",
-          "description": "Accessible dialog title."
+          "description": "Accessible dialog title rendered in header."
+        },
+        {
+          "name": "description",
+          "description": "Optional descriptive copy for alert/confirm/prompt dialogs."
+        },
+        {
+          "name": "prompt-value",
+          "description": "Current input value when `variant=\"prompt\"`."
+        },
+        {
+          "name": "close-on-escape",
+          "description": "Allows dismissing the dialog via the Escape key."
+        }
+      ]
+    },
+    {
+      "name": "mth-error-boundary",
+      "description": "Captures errors / mth-error events from slotted subtree and presents a fallback with retry.",
+      "attributes": [
+        {
+          "name": "fallback-message",
+          "description": "fallbackMessage"
         }
       ]
     },
     {
       "name": "mth-field",
-      "description": "Layout wrapper and Context Protocol provider for form controls.",
+      "description": "Layout wrapper and Community Context Protocol provider for Methane form controls.",
       "attributes": [
         {
           "name": "label",
-          "description": "Field label propagated via Context Protocol."
+          "description": "Field label text propagated to child controls via FieldContext."
         },
         {
           "name": "hint",
-          "description": "Helper text."
+          "description": "Helper description text propagated via FieldContext."
         },
         {
           "name": "error",
-          "description": "Validation error message."
+          "description": "Validation error message propagated via FieldContext."
         },
         {
           "name": "required",
-          "description": "Propagates required flag."
+          "description": "Marks the field required and propagates via FieldContext."
         },
         {
           "name": "disabled",
-          "description": "Propagates disabled flag."
+          "description": "Disables descendant Methane controls via FieldContext."
+        },
+        {
+          "name": "density",
+          "description": "Density scale override for layout spacing."
         }
       ]
     },
     {
       "name": "mth-input",
-      "description": "Form-associated text input supporting FACE validation and autofill.",
+      "description": "Form-associated textual input supporting FACE validation, same-root ARIA, FieldContext, and progressive Light-DOM autofill slot.",
       "attributes": [
         {
           "name": "value",
-          "description": "Current input value."
+          "description": "Current string value."
         },
         {
           "name": "name",
-          "description": "Form field name."
+          "description": "Form submission field name."
         },
         {
           "name": "type",
-          "description": "Input semantic type."
+          "description": "Semantic input type (`text | email | url | search | tel`)."
         },
         {
           "name": "label",
-          "description": "Accessible label mirrored inside Shadow DOM."
+          "description": "Accessible label rendered inside shadow root."
+        },
+        {
+          "name": "hint",
+          "description": "Helper text displayed and linked via aria-describedby inside shadow root."
+        },
+        {
+          "name": "error",
+          "description": "Explicit custom error message displayed inside shadow root."
         },
         {
           "name": "placeholder",
-          "description": "Placeholder text."
+          "description": "Hint displayed when empty."
+        },
+        {
+          "name": "autocomplete",
+          "description": "HTML autocomplete token passed through to the underlying `<input>`."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint passed through to the underlying `<input>`."
         },
         {
           "name": "disabled",
-          "description": "Disables the input."
+          "description": "Disables user interaction."
         },
         {
           "name": "required",
-          "description": "Marks field required for constraint validation."
+          "description": "Marks input required for constraint validation."
+        },
+        {
+          "name": "readonly",
+          "description": "Prevents edits while remaining focusable and submittable."
         }
       ]
     },
     {
       "name": "mth-option",
-      "description": "Declarative listbox option item.",
+      "description": "Selectable option item for `<mth-combobox>` and list containers.",
       "attributes": [
         {
           "name": "value",
-          "description": "Option value."
+          "description": "Machine-readable value submitted when selected."
+        },
+        {
+          "name": "label",
+          "description": "Optional explicit display label overriding slotted text content."
         },
         {
           "name": "disabled",
-          "description": "Marks option non-selectable."
+          "description": "Prevents the option from being activated or selected."
         },
         {
           "name": "selected",
-          "description": "Selected state."
+          "description": "Marks whether the option is currently selected."
+        },
+        {
+          "name": "active",
+          "description": "Marks whether the option is currently highlighted via keyboard or pointer."
+        }
+      ]
+    },
+    {
+      "name": "mth-option-group",
+      "description": "Semantic option group container with heading label for `<mth-combobox>`.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Visible and accessible group heading label."
+        },
+        {
+          "name": "disabled",
+          "description": "Disables all options nested inside the group."
+        }
+      ]
+    },
+    {
+      "name": "mth-skip-link",
+      "description": "Accessible skip-navigation link revealing on :focus-visible.",
+      "attributes": [
+        {
+          "name": "href",
+          "description": "href"
         }
       ]
     },
@@ -172,6 +306,11 @@
           "description": "Disables the switch."
         }
       ]
+    },
+    {
+      "name": "mth-visually-hidden",
+      "description": "Screen-reader-only utility element using logical CSS properties.",
+      "attributes": []
     }
   ]
 }

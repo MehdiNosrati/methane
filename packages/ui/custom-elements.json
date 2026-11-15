@@ -1,0 +1,3021 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/combobox/combobox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCombobox",
+          "tagName": "mth-combobox",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated accessible combobox reconciling declarative `<mth-option>`/`<mth-option-group>`, `.options` JS arrays, and async `DataSource<T>` queries with same-root shadow ARIA and dual CSS Anchor / JS positioning.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current selected value (comma-separated when `multiple` is true)."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Initial value restored when the enclosing form resets."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible label for the combobox input."
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "attribute": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper text describing expected input or options."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error message marking the combobox invalid."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Input placeholder text."
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls visibility of the floating options popup."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables multi-value selection without dismissing on selection."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and excludes from form submission."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks combobox selection as required for constraint validation."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents typing or changing selection while remaining focusable."
+            },
+            {
+              "kind": "field",
+              "name": "clearable",
+              "attribute": "clearable",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows a clear button when text or value is non-empty."
+            },
+            {
+              "kind": "field",
+              "name": "filterable",
+              "attribute": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Filters local options dynamically as the user types."
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "attribute": "placement",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"bottom-start\"",
+              "description": "Preferred popup placement relative to the combobox control."
+            },
+            {
+              "kind": "field",
+              "name": "forceFallback",
+              "attribute": "force-fallback",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Forces JS fallback positioning instead of native CSS Anchor Positioning."
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null"
+              },
+              "default": "null",
+              "description": "Imperative option array overriding declarative slotted children."
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "{ query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null"
+              },
+              "default": "null",
+              "description": "Async DataSource<T> queried on filter changes with stale-request abort protection."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current selected value (comma-separated when `multiple` is true)."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Initial value restored when the enclosing form resets."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible label for the combobox input."
+            },
+            {
+              "name": "hint",
+              "fieldName": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper text describing expected input or options."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error message marking the combobox invalid."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Input placeholder text."
+            },
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls visibility of the floating options popup."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables multi-value selection without dismissing on selection."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction and excludes from form submission."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks combobox selection as required for constraint validation."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents typing or changing selection while remaining focusable."
+            },
+            {
+              "name": "clearable",
+              "fieldName": "clearable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows a clear button when text or value is non-empty."
+            },
+            {
+              "name": "filterable",
+              "fieldName": "filterable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Filters local options dynamically as the user types."
+            },
+            {
+              "name": "placement",
+              "fieldName": "placement",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"bottom-start\"",
+              "description": "Preferred popup placement relative to the combobox control."
+            },
+            {
+              "name": "force-fallback",
+              "fieldName": "forceFallback",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Forces JS fallback positioning instead of native CSS Anchor Positioning."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired as the user types in the combobox input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>"
+              },
+              "description": "Fired when selection changes."
+            },
+            {
+              "name": "mth-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Cancelable event fired before opening the popup."
+            },
+            {
+              "name": "mth-after-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired after the popup opens and positions."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Cancelable event fired before closing the popup."
+            },
+            {
+              "name": "mth-after-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Fired after the popup closes."
+            },
+            {
+              "name": "mth-clear",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired when the clear action resets query and selection."
+            },
+            {
+              "name": "mth-invalid",
+              "type": {
+                "text": "CustomEvent<{ validity: ValidityState }>"
+              },
+              "description": "Fired when form constraint validation fails."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Declarative `<mth-option>` and `<mth-option-group>` items."
+            },
+            {
+              "name": "prefix",
+              "description": "Leading adornment inside the combobox input control."
+            },
+            {
+              "name": "empty",
+              "description": "Custom empty-state content when no options match."
+            },
+            {
+              "name": "loading",
+              "description": "Custom loading indicator when querying async DataSource."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "Optional label rendered above the combobox control."
+            },
+            {
+              "name": "control",
+              "description": "Interactive combobox wrapper housing input and action buttons."
+            },
+            {
+              "name": "input",
+              "description": "Native `<input role=\"combobox\">` element."
+            },
+            {
+              "name": "clear-button",
+              "description": "Button clearing selected values and query text."
+            },
+            {
+              "name": "toggle-button",
+              "description": "Chevron button toggling the options popup."
+            },
+            {
+              "name": "popup",
+              "description": "Positioned floating popup surface."
+            },
+            {
+              "name": "listbox",
+              "description": "Scrollable `[role=\"listbox\"]` option list container."
+            },
+            {
+              "name": "option",
+              "description": "Individual shadow-projected `[role=\"option\"]` row."
+            },
+            {
+              "name": "group-label",
+              "description": "Section heading inside `[role=\"group\"]`."
+            },
+            {
+              "name": "status",
+              "description": "Loading or error announcement container inside popup."
+            },
+            {
+              "name": "empty",
+              "description": "Empty state container when zero options match."
+            },
+            {
+              "name": "hint",
+              "description": "Helper text rendered below the combobox control."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message rendered below the control."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Input control surface background."
+            },
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Floating popup surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Control and popup border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Accent highlight color."
+            },
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "Selected option background highlight."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Active option background highlight."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted hint and group label foreground color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Invalid border and error text color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Control and popup corner radius."
+            },
+            {
+              "name": "--mth-shadow-lg",
+              "description": "Floating popup elevation shadow."
+            },
+            {
+              "name": "--mth-z-index-popover",
+              "description": "Popup stacking z-index layer."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "user-invalid",
+              "description": "Custom element state :state(user-invalid)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "required",
+              "description": "Custom element state :state(required)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-combobox",
+            "package": "@methane/ui",
+            "conformance": [
+              "form-control",
+              "listbox",
+              "overlay",
+              "data-consumer"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController",
+              "ListboxController",
+              "SlotCollectionController",
+              "DataController",
+              "OverlayController",
+              "PositioningController",
+              "ContextProtocol"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "open",
+              "dirty",
+              "touched",
+              "user-invalid",
+              "disabled",
+              "readonly",
+              "required",
+              "invalid",
+              "loading",
+              "empty",
+              "error"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "closed",
+                "expect": "opens popup and activates first enabled option"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "open",
+                "expect": "moves active option highlight to next enabled option"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "open",
+                "expect": "moves active option highlight to previous enabled option"
+              },
+              {
+                "key": "Enter",
+                "when": "open and not composing IME",
+                "expect": "selects active option and updates value"
+              },
+              {
+                "key": "Escape",
+                "when": "open",
+                "expect": "dismisses popup and restores focus"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hint",
+                "attr": "hint",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "clearable",
+                "attr": "clearable",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "filterable",
+                "attr": "filterable",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "placement",
+                "attr": "placement",
+                "type": "string",
+                "default": "bottom-start"
+              },
+              {
+                "name": "forceFallback",
+                "attr": "force-fallback",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "options",
+                "attr": false,
+                "type": "ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null",
+                "default": null
+              },
+              {
+                "name": "dataSource",
+                "attr": false,
+                "type": "{ query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null",
+                "default": null
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; selectedValues: ReadonlyArray<string> }"
+              },
+              {
+                "name": "mth-open",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-open",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": true,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-after-close",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-clear",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-invalid",
+                "cancelable": false,
+                "detailType": "{ validity: ValidityState }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Declarative `<mth-option>` and `<mth-option-group>` items."
+              },
+              {
+                "name": "prefix",
+                "description": "Leading adornment inside the combobox input control."
+              },
+              {
+                "name": "empty",
+                "description": "Custom empty-state content when no options match."
+              },
+              {
+                "name": "loading",
+                "description": "Custom loading indicator when querying async DataSource."
+              }
+            ],
+            "parts": [
+              {
+                "name": "label",
+                "description": "Optional label rendered above the combobox control."
+              },
+              {
+                "name": "control",
+                "description": "Interactive combobox wrapper housing input and action buttons."
+              },
+              {
+                "name": "input",
+                "description": "Native `<input role=\"combobox\">` element."
+              },
+              {
+                "name": "clear-button",
+                "description": "Button clearing selected values and query text."
+              },
+              {
+                "name": "toggle-button",
+                "description": "Chevron button toggling the options popup."
+              },
+              {
+                "name": "popup",
+                "description": "Positioned floating popup surface."
+              },
+              {
+                "name": "listbox",
+                "description": "Scrollable `[role=\"listbox\"]` option list container."
+              },
+              {
+                "name": "option",
+                "description": "Individual shadow-projected `[role=\"option\"]` row."
+              },
+              {
+                "name": "group-label",
+                "description": "Section heading inside `[role=\"group\"]`."
+              },
+              {
+                "name": "status",
+                "description": "Loading or error announcement container inside popup."
+              },
+              {
+                "name": "empty",
+                "description": "Empty state container when zero options match."
+              },
+              {
+                "name": "hint",
+                "description": "Helper text rendered below the combobox control."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message rendered below the control."
+              }
+            ],
+            "messages": {
+              "comboboxLabel": "Combobox",
+              "clearLabel": "Clear selection",
+              "toggleLabel": "Toggle options",
+              "loadingLabel": "Loading options…",
+              "emptyLabel": "No matching options",
+              "errorLabel": "Failed to load options"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCombobox",
+          "declaration": {
+            "name": "MthCombobox",
+            "module": "src/components/combobox/combobox.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-combobox",
+          "declaration": {
+            "name": "MthCombobox",
+            "module": "src/components/combobox/combobox.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/dialog/dialog.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthDialog",
+          "tagName": "mth-dialog",
+          "customElement": true,
+          "description": "Top-layer modal and non-modal dialog wrapping native `<dialog>` with default, alert, confirm, and prompt variants.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls open visibility of the dialog."
+            },
+            {
+              "kind": "field",
+              "name": "modal",
+              "attribute": "modal",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Opens as modal top-layer dialog with backdrop and focus trap when true."
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "attribute": "variant",
+              "reflect": true,
+              "type": {
+                "text": "'default' | 'alert' | 'confirm' | 'prompt'"
+              },
+              "default": "\"default\"",
+              "description": "Built-in semantic dialog preset (`default | alert | confirm | prompt`)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible dialog title rendered in header."
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "attribute": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional descriptive copy for alert/confirm/prompt dialogs."
+            },
+            {
+              "kind": "field",
+              "name": "promptValue",
+              "attribute": "prompt-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current input value when `variant=\"prompt\"`."
+            },
+            {
+              "kind": "field",
+              "name": "closeOnEscape",
+              "attribute": "close-on-escape",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows dismissing the dialog via the Escape key."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls open visibility of the dialog."
+            },
+            {
+              "name": "modal",
+              "fieldName": "modal",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Opens as modal top-layer dialog with backdrop and focus trap when true."
+            },
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'default' | 'alert' | 'confirm' | 'prompt'"
+              },
+              "default": "\"default\"",
+              "description": "Built-in semantic dialog preset (`default | alert | confirm | prompt`)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible dialog title rendered in header."
+            },
+            {
+              "name": "description",
+              "fieldName": "description",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional descriptive copy for alert/confirm/prompt dialogs."
+            },
+            {
+              "name": "prompt-value",
+              "fieldName": "promptValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current input value when `variant=\"prompt\"`."
+            },
+            {
+              "name": "close-on-escape",
+              "fieldName": "closeOnEscape",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows dismissing the dialog via the Escape key."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Cancelable event fired before opening the dialog."
+            },
+            {
+              "name": "mth-after-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired once the entry transition settles."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Cancelable event fired before closing the dialog."
+            },
+            {
+              "name": "mth-after-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Fired once exit transition settles and focus restores."
+            },
+            {
+              "name": "mth-confirm",
+              "type": {
+                "text": "CustomEvent<{ variant: string; value?: string }>"
+              },
+              "description": "Fired when the primary confirm/ok action button is clicked."
+            },
+            {
+              "name": "mth-cancel",
+              "type": {
+                "text": "CustomEvent<{ variant: string }>"
+              },
+              "description": "Fired when the secondary cancel action button is clicked."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Main dialog body content."
+            },
+            {
+              "name": "header",
+              "description": "Optional custom header replacing default title text."
+            },
+            {
+              "name": "footer",
+              "description": "Dialog footer actions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Native internal `<dialog>` element."
+            },
+            {
+              "name": "popup",
+              "description": "Visual dialog panel surface."
+            },
+            {
+              "name": "header",
+              "description": "Dialog header row."
+            },
+            {
+              "name": "title",
+              "description": "Dialog heading element."
+            },
+            {
+              "name": "close-button",
+              "description": "Dismiss button in dialog header."
+            },
+            {
+              "name": "body",
+              "description": "Dialog body content region."
+            },
+            {
+              "name": "prompt-input",
+              "description": "Text input field rendered for `variant=\"prompt\"`."
+            },
+            {
+              "name": "footer",
+              "description": "Dialog footer action bar."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Dialog panel background."
+            },
+            {
+              "name": "--mth-color-backdrop",
+              "description": "Backdrop color behind modal dialogs."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Dialog panel corner radius."
+            },
+            {
+              "name": "--mth-shadow-lg",
+              "description": "Dialog panel elevation shadow."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "modal",
+              "description": "Custom element state :state(modal)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-dialog",
+            "package": "@methane/ui",
+            "conformance": [
+              "overlay"
+            ],
+            "controllers": [
+              "OverlayController",
+              "FocusTrapController",
+              "MotionController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "open",
+              "modal"
+            ],
+            "keyboard": [
+              {
+                "key": "Escape",
+                "when": "open and closeOnEscape is true",
+                "expect": "dismisses dialog and restores focus"
+              }
+            ],
+            "props": [
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "modal",
+                "attr": "modal",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "variant",
+                "attr": "variant",
+                "type": "'default' | 'alert' | 'confirm' | 'prompt'",
+                "default": "default"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "description",
+                "attr": "description",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "promptValue",
+                "attr": "prompt-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "closeOnEscape",
+                "attr": "close-on-escape",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-open",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-open",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": true,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-after-close",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-confirm",
+                "cancelable": false,
+                "detailType": "{ variant: string; value?: string }"
+              },
+              {
+                "name": "mth-cancel",
+                "cancelable": false,
+                "detailType": "{ variant: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Main dialog body content."
+              },
+              {
+                "name": "header",
+                "description": "Optional custom header replacing default title text."
+              },
+              {
+                "name": "footer",
+                "description": "Dialog footer actions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Native internal `<dialog>` element."
+              },
+              {
+                "name": "popup",
+                "description": "Visual dialog panel surface."
+              },
+              {
+                "name": "header",
+                "description": "Dialog header row."
+              },
+              {
+                "name": "title",
+                "description": "Dialog heading element."
+              },
+              {
+                "name": "close-button",
+                "description": "Dismiss button in dialog header."
+              },
+              {
+                "name": "body",
+                "description": "Dialog body content region."
+              },
+              {
+                "name": "prompt-input",
+                "description": "Text input field rendered for `variant=\"prompt\"`."
+              },
+              {
+                "name": "footer",
+                "description": "Dialog footer action bar."
+              }
+            ],
+            "messages": {
+              "close": "Close dialog",
+              "confirm": "Confirm",
+              "cancel": "Cancel",
+              "ok": "OK",
+              "promptLabel": "Response"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthDialog",
+          "declaration": {
+            "name": "MthDialog",
+            "module": "src/components/dialog/dialog.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-dialog",
+          "declaration": {
+            "name": "MthDialog",
+            "module": "src/components/dialog/dialog.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/field/field.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthField",
+          "tagName": "mth-field",
+          "customElement": true,
+          "description": "Layout wrapper and Community Context Protocol provider for Methane form controls.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Field label text propagated to child controls via FieldContext."
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "attribute": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper description text propagated via FieldContext."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Validation error message propagated via FieldContext."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the field required and propagates via FieldContext."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables descendant Methane controls via FieldContext."
+            },
+            {
+              "kind": "field",
+              "name": "density",
+              "attribute": "density",
+              "reflect": true,
+              "type": {
+                "text": "'compact' | 'default' | 'comfortable'"
+              },
+              "default": "\"default\"",
+              "description": "Density scale override for layout spacing."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Field label text propagated to child controls via FieldContext."
+            },
+            {
+              "name": "hint",
+              "fieldName": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper description text propagated via FieldContext."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Validation error message propagated via FieldContext."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the field required and propagates via FieldContext."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables descendant Methane controls via FieldContext."
+            },
+            {
+              "name": "density",
+              "fieldName": "density",
+              "type": {
+                "text": "'compact' | 'default' | 'comfortable'"
+              },
+              "default": "\"default\"",
+              "description": "Density scale override for layout spacing."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Slotted Methane form control."
+            },
+            {
+              "name": "label",
+              "description": "Optional custom label content propagated via Context Protocol."
+            },
+            {
+              "name": "hint",
+              "description": "Optional helper text propagated via Context Protocol."
+            },
+            {
+              "name": "error",
+              "description": "Optional error text propagated via Context Protocol."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer field layout container."
+            },
+            {
+              "name": "label",
+              "description": "Field label wrapper."
+            },
+            {
+              "name": "control",
+              "description": "Slotted control container."
+            },
+            {
+              "name": "hint",
+              "description": "Field hint wrapper."
+            },
+            {
+              "name": "error",
+              "description": "Field error wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-space-control-gap",
+              "description": "Gap between label, control, hint, and error."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Label text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Hint text color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Error text color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "required",
+              "description": "Custom element state :state(required)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-field",
+            "package": "@methane/ui",
+            "conformance": [],
+            "controllers": [
+              "ContextProtocol"
+            ],
+            "focusModel": "none",
+            "states": [
+              "required",
+              "disabled",
+              "invalid"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hint",
+                "attr": "hint",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "density",
+                "attr": "density",
+                "type": "'compact' | 'default' | 'comfortable'",
+                "default": "default"
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "",
+                "description": "Slotted Methane form control."
+              },
+              {
+                "name": "label",
+                "description": "Optional custom label content propagated via Context Protocol."
+              },
+              {
+                "name": "hint",
+                "description": "Optional helper text propagated via Context Protocol."
+              },
+              {
+                "name": "error",
+                "description": "Optional error text propagated via Context Protocol."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer field layout container."
+              },
+              {
+                "name": "label",
+                "description": "Field label wrapper."
+              },
+              {
+                "name": "control",
+                "description": "Slotted control container."
+              },
+              {
+                "name": "hint",
+                "description": "Field hint wrapper."
+              },
+              {
+                "name": "error",
+                "description": "Field error wrapper."
+              }
+            ],
+            "messages": {
+              "requiredIndicator": "*"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthField",
+          "declaration": {
+            "name": "MthField",
+            "module": "src/components/field/field.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-field",
+          "declaration": {
+            "name": "MthField",
+            "module": "src/components/field/field.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/input/input.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthInput",
+          "tagName": "mth-input",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated textual input supporting FACE validation, same-root ARIA, FieldContext, and progressive Light-DOM autofill slot.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current string value."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form submission field name."
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "attribute": "type",
+              "reflect": true,
+              "type": {
+                "text": "'text' | 'email' | 'url' | 'search' | 'tel' | 'password'"
+              },
+              "default": "\"text\"",
+              "description": "Semantic input type (`text | email | url | search | tel`)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label rendered inside shadow root."
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "attribute": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper text displayed and linked via aria-describedby inside shadow root."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit custom error message displayed inside shadow root."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Hint displayed when empty."
+            },
+            {
+              "kind": "field",
+              "name": "autocomplete",
+              "attribute": "autocomplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "HTML autocomplete token passed through to the underlying `<input>`."
+            },
+            {
+              "kind": "field",
+              "name": "inputmode",
+              "attribute": "inputmode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Virtual keyboard hint passed through to the underlying `<input>`."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables user interaction."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks input required for constraint validation."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents edits while remaining focusable and submittable."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current string value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form submission field name."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "'text' | 'email' | 'url' | 'search' | 'tel' | 'password'"
+              },
+              "default": "\"text\"",
+              "description": "Semantic input type (`text | email | url | search | tel`)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label rendered inside shadow root."
+            },
+            {
+              "name": "hint",
+              "fieldName": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper text displayed and linked via aria-describedby inside shadow root."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit custom error message displayed inside shadow root."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Hint displayed when empty."
+            },
+            {
+              "name": "autocomplete",
+              "fieldName": "autocomplete",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "HTML autocomplete token passed through to the underlying `<input>`."
+            },
+            {
+              "name": "inputmode",
+              "fieldName": "inputmode",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Virtual keyboard hint passed through to the underlying `<input>`."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables user interaction."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks input required for constraint validation."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents edits while remaining focusable and submittable."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired synchronously on user input edits."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired when edited value commits."
+            }
+          ],
+          "slots": [
+            {
+              "name": "label",
+              "description": "Optional label slot mirrored inside shadow root."
+            },
+            {
+              "name": "hint",
+              "description": "Helper text slot mirrored inside shadow root."
+            },
+            {
+              "name": "error",
+              "description": "Validation error slot mirrored inside shadow root."
+            },
+            {
+              "name": "prefix",
+              "description": "Leading adornment inside the input container."
+            },
+            {
+              "name": "suffix",
+              "description": "Trailing adornment inside the input container."
+            },
+            {
+              "name": "input",
+              "description": "Progressive Light-DOM `<input>` slot override for password-manager and autofill compatibility."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer field stack wrapper."
+            },
+            {
+              "name": "label",
+              "description": "Internal same-root shadow `<label>` element."
+            },
+            {
+              "name": "wrapper",
+              "description": "Input box chrome containing prefix, control, and suffix."
+            },
+            {
+              "name": "control",
+              "description": "Internal `<input>` control element."
+            },
+            {
+              "name": "hint",
+              "description": "Hint message container."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Input background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Default border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focused ring color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Invalid border and error color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Input corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "user-invalid",
+              "description": "Custom element state :state(user-invalid)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "required",
+              "description": "Custom element state :state(required)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-input",
+            "package": "@methane/ui",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController",
+              "ContextProtocol"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "dirty",
+              "touched",
+              "user-invalid",
+              "disabled",
+              "required",
+              "readonly"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "inside a form and not composing IME",
+                "expect": "requests submission of owning form"
+              }
+            ],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "type",
+                "attr": "type",
+                "type": "'text' | 'email' | 'url' | 'search' | 'tel' | 'password'",
+                "default": "text"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hint",
+                "attr": "hint",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "autocomplete",
+                "attr": "autocomplete",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "inputmode",
+                "attr": "inputmode",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "label",
+                "description": "Optional label slot mirrored inside shadow root."
+              },
+              {
+                "name": "hint",
+                "description": "Helper text slot mirrored inside shadow root."
+              },
+              {
+                "name": "error",
+                "description": "Validation error slot mirrored inside shadow root."
+              },
+              {
+                "name": "prefix",
+                "description": "Leading adornment inside the input container."
+              },
+              {
+                "name": "suffix",
+                "description": "Trailing adornment inside the input container."
+              },
+              {
+                "name": "input",
+                "description": "Progressive Light-DOM `<input>` slot override for password-manager and autofill compatibility."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer field stack wrapper."
+              },
+              {
+                "name": "label",
+                "description": "Internal same-root shadow `<label>` element."
+              },
+              {
+                "name": "wrapper",
+                "description": "Input box chrome containing prefix, control, and suffix."
+              },
+              {
+                "name": "control",
+                "description": "Internal `<input>` control element."
+              },
+              {
+                "name": "hint",
+                "description": "Hint message container."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message container."
+              }
+            ],
+            "messages": {
+              "valueMissing": "Please fill out this field.",
+              "typeMismatchEmail": "Please enter a valid email address.",
+              "typeMismatchUrl": "Please enter a valid URL.",
+              "tooShort": "Value is too short.",
+              "patternMismatch": "Please match the requested format.",
+              "requiredIndicator": "*"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthInput",
+          "declaration": {
+            "name": "MthInput",
+            "module": "src/components/input/input.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-input",
+          "declaration": {
+            "name": "MthInput",
+            "module": "src/components/input/input.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/option/option.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthOption",
+          "tagName": "mth-option",
+          "customElement": true,
+          "role": "option",
+          "description": "Selectable option item for `<mth-combobox>` and list containers.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Machine-readable value submitted when selected."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional explicit display label overriding slotted text content."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents the option from being activated or selected."
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "attribute": "selected",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks whether the option is currently selected."
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "attribute": "active",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks whether the option is currently highlighted via keyboard or pointer."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Machine-readable value submitted when selected."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional explicit display label overriding slotted text content."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents the option from being activated or selected."
+            },
+            {
+              "name": "selected",
+              "fieldName": "selected",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks whether the option is currently selected."
+            },
+            {
+              "name": "active",
+              "fieldName": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks whether the option is currently highlighted via keyboard or pointer."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Primary option label content."
+            },
+            {
+              "name": "prefix",
+              "description": "Optional leading icon or visual indicator."
+            },
+            {
+              "name": "suffix",
+              "description": "Optional trailing hint, shortcut, or metadata."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root layout container inside shadow DOM."
+            },
+            {
+              "name": "check",
+              "description": "Selected state checkmark indicator."
+            },
+            {
+              "name": "label",
+              "description": "Option text wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "Selected option background highlight."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Active option background highlight."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Option label foreground color."
+            },
+            {
+              "name": "--mth-radius-sm",
+              "description": "Option item corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "selected",
+              "description": "Custom element state :state(selected)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "active",
+              "description": "Custom element state :state(active)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-option",
+            "package": "@methane/ui",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "role": "option",
+            "states": [
+              "selected",
+              "disabled",
+              "active"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "selected",
+                "attr": "selected",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "active",
+                "attr": "active",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "",
+                "description": "Primary option label content."
+              },
+              {
+                "name": "prefix",
+                "description": "Optional leading icon or visual indicator."
+              },
+              {
+                "name": "suffix",
+                "description": "Optional trailing hint, shortcut, or metadata."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root layout container inside shadow DOM."
+              },
+              {
+                "name": "check",
+                "description": "Selected state checkmark indicator."
+              },
+              {
+                "name": "label",
+                "description": "Option text wrapper."
+              }
+            ],
+            "messages": {}
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthOption",
+          "declaration": {
+            "name": "MthOption",
+            "module": "src/components/option/option.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-option",
+          "declaration": {
+            "name": "MthOption",
+            "module": "src/components/option/option.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/option-group/option-group.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthOptionGroup",
+          "tagName": "mth-option-group",
+          "customElement": true,
+          "role": "group",
+          "description": "Semantic option group container with heading label for `<mth-combobox>`.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible group heading label."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all options nested inside the group."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible group heading label."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all options nested inside the group."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Grouped `<mth-option>` child elements."
+            },
+            {
+              "name": "label",
+              "description": "Optional custom group header replacing `label`."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root group container."
+            },
+            {
+              "name": "label",
+              "description": "Group heading label element."
+            },
+            {
+              "name": "options",
+              "description": "Container for grouped option elements."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Group heading foreground color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Divider color between option groups."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-option-group",
+            "package": "@methane/ui",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "role": "group",
+            "states": [
+              "disabled"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "",
+                "description": "Grouped `<mth-option>` child elements."
+              },
+              {
+                "name": "label",
+                "description": "Optional custom group header replacing `label`."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root group container."
+              },
+              {
+                "name": "label",
+                "description": "Group heading label element."
+              },
+              {
+                "name": "options",
+                "description": "Container for grouped option elements."
+              }
+            ],
+            "messages": {}
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthOptionGroup",
+          "declaration": {
+            "name": "MthOptionGroup",
+            "module": "src/components/option-group/option-group.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-option-group",
+          "declaration": {
+            "name": "MthOptionGroup",
+            "module": "src/components/option-group/option-group.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/button/mth-button.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthButton",
+          "tagName": "mth-button",
+          "customElement": true,
+          "description": "Action button with variant, size, and loading states.",
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "attribute": "variant",
+              "reflect": true,
+              "type": {
+                "text": "'solid' | 'outline' | 'ghost' | 'danger'"
+              },
+              "default": "'solid'",
+              "description": "Visual button emphasis."
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "attribute": "size",
+              "reflect": true,
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'",
+              "description": "Control size token scale."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interaction."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Shows loading spinner and suppresses duplicate clicks."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "variant",
+              "fieldName": "variant",
+              "type": {
+                "text": "'solid' | 'outline' | 'ghost' | 'danger'"
+              },
+              "default": "'solid'"
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-press",
+              "type": {
+                "text": "CustomEvent<{ originalEvent: Event }>"
+              },
+              "description": "Fired when activated via pointer or keyboard."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Button label content."
+            },
+            {
+              "name": "prefix",
+              "description": "Leading icon or indicator."
+            },
+            {
+              "name": "suffix",
+              "description": "Trailing icon or badge."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root button container."
+            },
+            {
+              "name": "control",
+              "description": "Native internal button element."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-button-bg",
+              "description": "Background color override."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/checkbox/mth-checkbox.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCheckbox",
+          "tagName": "mth-checkbox",
+          "customElement": true,
+          "formAssociated": true,
+          "description": "Tri-state form-associated checkbox control.",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "attribute": "checked",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Checked state."
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate",
+              "attribute": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Mixed visual and ARIA state."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "'on'",
+              "description": "Submitted form value when checked."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables checkbox interaction."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checked",
+              "fieldName": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "indeterminate",
+              "fieldName": "indeterminate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "'on'"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ checked: boolean; indeterminate: boolean }>"
+              },
+              "description": "Emitted when checked state toggles."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Checkbox label content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Wrapper label."
+            },
+            {
+              "name": "control",
+              "description": "Checkbox indicator box."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/switch/mth-switch.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSwitch",
+          "tagName": "mth-switch",
+          "customElement": true,
+          "formAssociated": true,
+          "description": "Accessible binary toggle switch.",
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked",
+              "attribute": "checked",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Toggle state."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables the switch."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "checked",
+              "fieldName": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ checked: boolean }>"
+              },
+              "description": "Emitted on toggle."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Switch label."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root container."
+            },
+            {
+              "name": "control",
+              "description": "Switch track and thumb."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

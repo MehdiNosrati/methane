@@ -24,60 +24,131 @@ export interface MthCheckboxElement extends HTMLElement {
 }
 
 export interface MthComboboxElement extends HTMLElement {
-  /** Selected option value. */
+  /** Form field name submitted via ElementInternals. */
+  name: string;
+  /** Current selected value (comma-separated when `multiple` is true). */
   value: string;
-  /** Popup open state. */
+  /** Initial value restored when the enclosing form resets. */
+  defaultValue: string;
+  /** Visible and accessible label for the combobox input. */
+  label: string;
+  /** Helper text describing expected input or options. */
+  hint: string;
+  /** Explicit error message marking the combobox invalid. */
+  error: string;
+  /** Input placeholder text. */
+  placeholder: string;
+  /** Controls visibility of the floating options popup. */
   open: boolean;
-  /** Disables the combobox. */
+  /** Enables multi-value selection without dismissing on selection. */
+  multiple: boolean;
+  /** Disables interaction and excludes from form submission. */
   disabled: boolean;
+  /** Marks combobox selection as required for constraint validation. */
+  required: boolean;
+  /** Prevents typing or changing selection while remaining focusable. */
+  readonly: boolean;
+  /** Shows a clear button when text or value is non-empty. */
+  clearable: boolean;
+  /** Filters local options dynamically as the user types. */
+  filterable: boolean;
+  /** Preferred popup placement relative to the combobox control. */
+  placement: string;
+  /** Forces JS fallback positioning instead of native CSS Anchor Positioning. */
+  forceFallback: boolean;
+  /** Imperative option array overriding declarative slotted children. */
+  options: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null;
+  /** Async DataSource<T> queried on filter changes with stale-request abort protection. */
+  dataSource: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null;
 }
 
 export interface MthDialogElement extends HTMLElement {
-  /** Dialog open state. */
+  /** Controls open visibility of the dialog. */
   open: boolean;
-  /** Whether dialog traps focus and shows backdrop. */
+  /** Opens as modal top-layer dialog with backdrop and focus trap when true. */
   modal: boolean;
-  /** Accessible dialog title. */
+  /** Built-in semantic dialog preset (`default | alert | confirm | prompt`). */
+  variant: 'default' | 'alert' | 'confirm' | 'prompt';
+  /** Accessible dialog title rendered in header. */
   label: string;
+  /** Optional descriptive copy for alert/confirm/prompt dialogs. */
+  description: string;
+  /** Current input value when `variant="prompt"`. */
+  promptValue: string;
+  /** Allows dismissing the dialog via the Escape key. */
+  closeOnEscape: boolean;
+}
+
+export interface MthErrorBoundaryElement extends HTMLElement {
+  /** fallbackMessage */
+  fallbackMessage: string | undefined;
 }
 
 export interface MthFieldElement extends HTMLElement {
-  /** Field label propagated via Context Protocol. */
+  /** Field label text propagated to child controls via FieldContext. */
   label: string;
-  /** Helper text. */
+  /** Helper description text propagated via FieldContext. */
   hint: string;
-  /** Validation error message. */
+  /** Validation error message propagated via FieldContext. */
   error: string;
-  /** Propagates required flag. */
+  /** Marks the field required and propagates via FieldContext. */
   required: boolean;
-  /** Propagates disabled flag. */
+  /** Disables descendant Methane controls via FieldContext. */
   disabled: boolean;
+  /** Density scale override for layout spacing. */
+  density: 'compact' | 'default' | 'comfortable';
 }
 
 export interface MthInputElement extends HTMLElement {
-  /** Current input value. */
+  /** Current string value. */
   value: string;
-  /** Form field name. */
+  /** Form submission field name. */
   name: string;
-  /** Input semantic type. */
-  type: 'text' | 'email' | 'url' | 'search' | 'tel';
-  /** Accessible label mirrored inside Shadow DOM. */
+  /** Semantic input type (`text | email | url | search | tel`). */
+  type: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password';
+  /** Accessible label rendered inside shadow root. */
   label: string;
-  /** Placeholder text. */
+  /** Helper text displayed and linked via aria-describedby inside shadow root. */
+  hint: string;
+  /** Explicit custom error message displayed inside shadow root. */
+  error: string;
+  /** Hint displayed when empty. */
   placeholder: string;
-  /** Disables the input. */
+  /** HTML autocomplete token passed through to the underlying `<input>`. */
+  autocomplete: string;
+  /** Virtual keyboard hint passed through to the underlying `<input>`. */
+  inputmode: string;
+  /** Disables user interaction. */
   disabled: boolean;
-  /** Marks field required for constraint validation. */
+  /** Marks input required for constraint validation. */
   required: boolean;
+  /** Prevents edits while remaining focusable and submittable. */
+  readonly: boolean;
 }
 
 export interface MthOptionElement extends HTMLElement {
-  /** Option value. */
+  /** Machine-readable value submitted when selected. */
   value: string;
-  /** Marks option non-selectable. */
+  /** Optional explicit display label overriding slotted text content. */
+  label: string;
+  /** Prevents the option from being activated or selected. */
   disabled: boolean;
-  /** Selected state. */
+  /** Marks whether the option is currently selected. */
   selected: boolean;
+  /** Marks whether the option is currently highlighted via keyboard or pointer. */
+  active: boolean;
+}
+
+export interface MthOptionGroupElement extends HTMLElement {
+  /** Visible and accessible group heading label. */
+  label: string;
+  /** Disables all options nested inside the group. */
+  disabled: boolean;
+}
+
+export interface MthSkipLinkElement extends HTMLElement {
+  /** href */
+  href: string;
 }
 
 export interface MthSwitchElement extends HTMLElement {
@@ -86,6 +157,8 @@ export interface MthSwitchElement extends HTMLElement {
   /** Disables the switch. */
   disabled: boolean;
 }
+
+export type MthVisuallyHiddenElement = HTMLElement;
 
 export interface MthButtonEvents {
   /** Fired when activated via pointer or keyboard. */
@@ -98,40 +171,67 @@ export interface MthCheckboxEvents {
 }
 
 export interface MthComboboxEvents {
-  /** Cancelable event fired before opening popup. */
+  /** Fired as the user types in the combobox input. */
+  "onmth-input"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
+  /** Fired when selection changes. */
+  "onmth-change"?: ((event: CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>) => void) | undefined;
+  /** Cancelable event fired before opening the popup. */
   "onmth-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Cancelable event fired before closing popup. */
-  "onmth-close"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Emitted when an option is selected. */
-  "onmth-select"?: ((event: CustomEvent<{ value: string; label: string }>) => void) | undefined;
+  /** Fired after the popup opens and positions. */
+  "onmth-after-open"?: ((event: CustomEvent<void>) => void) | undefined;
+  /** Cancelable event fired before closing the popup. */
+  "onmth-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired after the popup closes. */
+  "onmth-after-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired when the clear action resets query and selection. */
+  "onmth-clear"?: ((event: CustomEvent<void>) => void) | undefined;
+  /** Fired when form constraint validation fails. */
+  "onmth-invalid"?: ((event: CustomEvent<{ validity: ValidityState }>) => void) | undefined;
 }
 
 export interface MthDialogEvents {
-  /** Cancelable pre-open event. */
+  /** Cancelable event fired before opening the dialog. */
   "onmth-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Fired after entry transition completes. */
+  /** Fired once the entry transition settles. */
   "onmth-after-open"?: ((event: CustomEvent<void>) => void) | undefined;
-  /** Cancelable pre-close event. */
+  /** Cancelable event fired before closing the dialog. */
   "onmth-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
-  /** Fired after exit transition completes. */
+  /** Fired once exit transition settles and focus restores. */
   "onmth-after-close"?: ((event: CustomEvent<{ reason: string }>) => void) | undefined;
+  /** Fired when the primary confirm/ok action button is clicked. */
+  "onmth-confirm"?: ((event: CustomEvent<{ variant: string; value?: string }>) => void) | undefined;
+  /** Fired when the secondary cancel action button is clicked. */
+  "onmth-cancel"?: ((event: CustomEvent<{ variant: string }>) => void) | undefined;
+}
+
+export interface MthErrorBoundaryEvents {
+  /** mth-error-captured */
+  "onmth-error-captured"?: ((event: CustomEvent<{ error: unknown }>) => void) | undefined;
+  /** mth-reset */
+  "onmth-reset"?: ((event: CustomEvent<void>) => void) | undefined;
 }
 
 export type MthFieldEvents = Record<never, never>;
 
 export interface MthInputEvents {
-  /** Emitted on user value edit. */
+  /** Fired synchronously on user input edits. */
   "onmth-input"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
-  /** Emitted when value commits. */
+  /** Fired when edited value commits. */
   "onmth-change"?: ((event: CustomEvent<{ value: string }>) => void) | undefined;
 }
 
 export type MthOptionEvents = Record<never, never>;
 
+export type MthOptionGroupEvents = Record<never, never>;
+
+export type MthSkipLinkEvents = Record<never, never>;
+
 export interface MthSwitchEvents {
   /** Emitted on toggle. */
   "onmth-change"?: ((event: CustomEvent<{ checked: boolean }>) => void) | undefined;
 }
+
+export type MthVisuallyHiddenEvents = Record<never, never>;
 
 export type MthButtonProps = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<MthButtonElement>, MthButtonElement>,
@@ -171,12 +271,42 @@ export type MthComboboxProps = Omit<
 > & MthComboboxCustomProps & MthComboboxEvents;
 
 export interface MthComboboxCustomProps {
-  /** Selected option value. */
+  /** Form field name submitted via ElementInternals. */
+  name?: string | undefined;
+  /** Current selected value (comma-separated when `multiple` is true). */
   value?: string | undefined;
-  /** Popup open state. */
+  /** Initial value restored when the enclosing form resets. */
+  defaultValue?: string | undefined;
+  /** Visible and accessible label for the combobox input. */
+  label?: string | undefined;
+  /** Helper text describing expected input or options. */
+  hint?: string | undefined;
+  /** Explicit error message marking the combobox invalid. */
+  error?: string | undefined;
+  /** Input placeholder text. */
+  placeholder?: string | undefined;
+  /** Controls visibility of the floating options popup. */
   open?: boolean | undefined;
-  /** Disables the combobox. */
+  /** Enables multi-value selection without dismissing on selection. */
+  multiple?: boolean | undefined;
+  /** Disables interaction and excludes from form submission. */
   disabled?: boolean | undefined;
+  /** Marks combobox selection as required for constraint validation. */
+  required?: boolean | undefined;
+  /** Prevents typing or changing selection while remaining focusable. */
+  readonly?: boolean | undefined;
+  /** Shows a clear button when text or value is non-empty. */
+  clearable?: boolean | undefined;
+  /** Filters local options dynamically as the user types. */
+  filterable?: boolean | undefined;
+  /** Preferred popup placement relative to the combobox control. */
+  placement?: string | undefined;
+  /** Forces JS fallback positioning instead of native CSS Anchor Positioning. */
+  forceFallback?: boolean | undefined;
+  /** Imperative option array overriding declarative slotted children. */
+  options?: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null | undefined;
+  /** Async DataSource<T> queried on filter changes with stale-request abort protection. */
+  dataSource?: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null | undefined;
 }
 
 export type MthDialogProps = Omit<
@@ -185,12 +315,30 @@ export type MthDialogProps = Omit<
 > & MthDialogCustomProps & MthDialogEvents;
 
 export interface MthDialogCustomProps {
-  /** Dialog open state. */
+  /** Controls open visibility of the dialog. */
   open?: boolean | undefined;
-  /** Whether dialog traps focus and shows backdrop. */
+  /** Opens as modal top-layer dialog with backdrop and focus trap when true. */
   modal?: boolean | undefined;
-  /** Accessible dialog title. */
+  /** Built-in semantic dialog preset (`default | alert | confirm | prompt`). */
+  variant?: 'default' | 'alert' | 'confirm' | 'prompt' | undefined;
+  /** Accessible dialog title rendered in header. */
   label?: string | undefined;
+  /** Optional descriptive copy for alert/confirm/prompt dialogs. */
+  description?: string | undefined;
+  /** Current input value when `variant="prompt"`. */
+  promptValue?: string | undefined;
+  /** Allows dismissing the dialog via the Escape key. */
+  closeOnEscape?: boolean | undefined;
+}
+
+export type MthErrorBoundaryProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<MthErrorBoundaryElement>, MthErrorBoundaryElement>,
+  keyof MthErrorBoundaryCustomProps | keyof MthErrorBoundaryEvents
+> & MthErrorBoundaryCustomProps & MthErrorBoundaryEvents;
+
+export interface MthErrorBoundaryCustomProps {
+  /** fallbackMessage */
+  fallbackMessage?: string | undefined | undefined;
 }
 
 export type MthFieldProps = Omit<
@@ -199,16 +347,18 @@ export type MthFieldProps = Omit<
 > & MthFieldCustomProps & MthFieldEvents;
 
 export interface MthFieldCustomProps {
-  /** Field label propagated via Context Protocol. */
+  /** Field label text propagated to child controls via FieldContext. */
   label?: string | undefined;
-  /** Helper text. */
+  /** Helper description text propagated via FieldContext. */
   hint?: string | undefined;
-  /** Validation error message. */
+  /** Validation error message propagated via FieldContext. */
   error?: string | undefined;
-  /** Propagates required flag. */
+  /** Marks the field required and propagates via FieldContext. */
   required?: boolean | undefined;
-  /** Propagates disabled flag. */
+  /** Disables descendant Methane controls via FieldContext. */
   disabled?: boolean | undefined;
+  /** Density scale override for layout spacing. */
+  density?: 'compact' | 'default' | 'comfortable' | undefined;
 }
 
 export type MthInputProps = Omit<
@@ -217,20 +367,30 @@ export type MthInputProps = Omit<
 > & MthInputCustomProps & MthInputEvents;
 
 export interface MthInputCustomProps {
-  /** Current input value. */
+  /** Current string value. */
   value?: string | undefined;
-  /** Form field name. */
+  /** Form submission field name. */
   name?: string | undefined;
-  /** Input semantic type. */
-  type?: 'text' | 'email' | 'url' | 'search' | 'tel' | undefined;
-  /** Accessible label mirrored inside Shadow DOM. */
+  /** Semantic input type (`text | email | url | search | tel`). */
+  type?: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password' | undefined;
+  /** Accessible label rendered inside shadow root. */
   label?: string | undefined;
-  /** Placeholder text. */
+  /** Helper text displayed and linked via aria-describedby inside shadow root. */
+  hint?: string | undefined;
+  /** Explicit custom error message displayed inside shadow root. */
+  error?: string | undefined;
+  /** Hint displayed when empty. */
   placeholder?: string | undefined;
-  /** Disables the input. */
+  /** HTML autocomplete token passed through to the underlying `<input>`. */
+  autocomplete?: string | undefined;
+  /** Virtual keyboard hint passed through to the underlying `<input>`. */
+  inputmode?: string | undefined;
+  /** Disables user interaction. */
   disabled?: boolean | undefined;
-  /** Marks field required for constraint validation. */
+  /** Marks input required for constraint validation. */
   required?: boolean | undefined;
+  /** Prevents edits while remaining focusable and submittable. */
+  readonly?: boolean | undefined;
 }
 
 export type MthOptionProps = Omit<
@@ -239,12 +399,38 @@ export type MthOptionProps = Omit<
 > & MthOptionCustomProps & MthOptionEvents;
 
 export interface MthOptionCustomProps {
-  /** Option value. */
+  /** Machine-readable value submitted when selected. */
   value?: string | undefined;
-  /** Marks option non-selectable. */
+  /** Optional explicit display label overriding slotted text content. */
+  label?: string | undefined;
+  /** Prevents the option from being activated or selected. */
   disabled?: boolean | undefined;
-  /** Selected state. */
+  /** Marks whether the option is currently selected. */
   selected?: boolean | undefined;
+  /** Marks whether the option is currently highlighted via keyboard or pointer. */
+  active?: boolean | undefined;
+}
+
+export type MthOptionGroupProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<MthOptionGroupElement>, MthOptionGroupElement>,
+  keyof MthOptionGroupCustomProps | keyof MthOptionGroupEvents
+> & MthOptionGroupCustomProps & MthOptionGroupEvents;
+
+export interface MthOptionGroupCustomProps {
+  /** Visible and accessible group heading label. */
+  label?: string | undefined;
+  /** Disables all options nested inside the group. */
+  disabled?: boolean | undefined;
+}
+
+export type MthSkipLinkProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<MthSkipLinkElement>, MthSkipLinkElement>,
+  keyof MthSkipLinkCustomProps | keyof MthSkipLinkEvents
+> & MthSkipLinkCustomProps & MthSkipLinkEvents;
+
+export interface MthSkipLinkCustomProps {
+  /** href */
+  href?: string | undefined;
 }
 
 export type MthSwitchProps = Omit<
@@ -259,15 +445,26 @@ export interface MthSwitchCustomProps {
   disabled?: boolean | undefined;
 }
 
+export type MthVisuallyHiddenProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<MthVisuallyHiddenElement>, MthVisuallyHiddenElement>,
+  keyof MthVisuallyHiddenCustomProps | keyof MthVisuallyHiddenEvents
+> & MthVisuallyHiddenCustomProps & MthVisuallyHiddenEvents;
+
+export type MthVisuallyHiddenCustomProps = Record<never, never>;
+
 export interface MethaneReactTagNameMap {
   "mth-button": MthButtonElement;
   "mth-checkbox": MthCheckboxElement;
   "mth-combobox": MthComboboxElement;
   "mth-dialog": MthDialogElement;
+  "mth-error-boundary": MthErrorBoundaryElement;
   "mth-field": MthFieldElement;
   "mth-input": MthInputElement;
   "mth-option": MthOptionElement;
+  "mth-option-group": MthOptionGroupElement;
+  "mth-skip-link": MthSkipLinkElement;
   "mth-switch": MthSwitchElement;
+  "mth-visually-hidden": MthVisuallyHiddenElement;
 }
 
 declare module 'react' {
@@ -278,10 +475,14 @@ declare module 'react' {
       "mth-checkbox": MthCheckboxProps;
       "mth-combobox": MthComboboxProps;
       "mth-dialog": MthDialogProps;
+      "mth-error-boundary": MthErrorBoundaryProps;
       "mth-field": MthFieldProps;
       "mth-input": MthInputProps;
       "mth-option": MthOptionProps;
+      "mth-option-group": MthOptionGroupProps;
+      "mth-skip-link": MthSkipLinkProps;
       "mth-switch": MthSwitchProps;
+      "mth-visually-hidden": MthVisuallyHiddenProps;
     }
   }
 }

@@ -3,31 +3,36 @@ import { createApp, createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import {
   METHANE_VUE_COMPILER_OPTIONS,
-  MthCheckbox,
+  MthCombobox,
   MthDialog,
+  MthField,
   MthInput,
+  MthSkipLink,
   isMethaneVueTag,
 } from './index.js';
 
 describe('@methane/vue', () => {
   it('provides Volar GlobalComponents and isCustomElement preset', () => {
-    expect(METHANE_VUE_COMPILER_OPTIONS.isCustomElement('mth-button')).toBe(true);
+    expect(METHANE_VUE_COMPILER_OPTIONS.isCustomElement('mth-combobox')).toBe(true);
     expect(isMethaneVueTag('mth-input')).toBe(true);
+    expect(isMethaneVueTag('mth-skip-link')).toBe(true);
     expect(isMethaneVueTag('span')).toBe(false);
   });
 
   it('renders custom elements in Vue SSR via renderToString', async () => {
     const app = createSSRApp({
       render: () =>
-        h(MthInput, {
-          modelValue: 'hello',
-          variant: 'filled',
-        }),
+        h(MthField, { label: 'Email' }, () =>
+          h(MthInput, {
+            modelValue: 'hello',
+            type: 'email',
+          }),
+        ),
     });
 
     const html = await renderToString(app);
+    expect(html).toContain('<mth-field');
     expect(html).toContain('<mth-input');
-    expect(html).toContain('variant="filled"');
     expect(html).toContain('value="hello"');
   });
 
@@ -38,7 +43,7 @@ describe('@methane/vue', () => {
     const modelValues: unknown[] = [];
     const valueUpdates: unknown[] = [];
     const inputEvents: Event[] = [];
-    const checkedUpdates: unknown[] = [];
+    const comboboxUpdates: unknown[] = [];
     const openUpdates: unknown[] = [];
 
     const app = createApp({
@@ -50,16 +55,17 @@ describe('@methane/vue', () => {
             'onUpdate:value': (val: unknown) => valueUpdates.push(val),
             onMthInput: (ev: CustomEvent<{ value: string }>) => inputEvents.push(ev),
           }),
-          h(MthCheckbox, {
-            modelValue: false,
-            'onUpdate:modelValue': (val: unknown) => checkedUpdates.push(val),
-            'onUpdate:checked': (val: unknown) => checkedUpdates.push(val),
+          h(MthCombobox, {
+            modelValue: 'apple',
+            'onUpdate:modelValue': (val: unknown) => comboboxUpdates.push(val),
+            'onUpdate:value': (val: unknown) => comboboxUpdates.push(val),
           }),
           h(MthDialog, {
             modelValue: false,
             'onUpdate:modelValue': (val: unknown) => openUpdates.push(val),
             'onUpdate:open': (val: unknown) => openUpdates.push(val),
           }),
+          h(MthSkipLink, { href: '#main' }),
         ]),
     });
 
@@ -75,10 +81,10 @@ describe('@methane/vue', () => {
     expect(valueUpdates).toEqual(['typed']);
     expect(inputEvents).toHaveLength(1);
 
-    const checkboxEl = container.querySelector('mth-checkbox');
-    expect(checkboxEl).not.toBeNull();
-    checkboxEl?.dispatchEvent(new CustomEvent('mth-change', { detail: { checked: true } }));
-    expect(checkedUpdates).toEqual([true, true]);
+    const comboboxEl = container.querySelector('mth-combobox');
+    expect(comboboxEl).not.toBeNull();
+    comboboxEl?.dispatchEvent(new CustomEvent('mth-change', { detail: { value: 'banana' } }));
+    expect(comboboxUpdates).toEqual(['banana', 'banana']);
 
     const dialogEl = container.querySelector('mth-dialog');
     expect(dialogEl).not.toBeNull();

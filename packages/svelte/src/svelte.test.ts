@@ -3,15 +3,16 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compile } from 'svelte/compiler';
 import { describe, expect, it } from 'vitest';
-import { MthButton, MthCheckbox, MthCombobox, MthDialog, MthInput } from './index.js';
+import { MthCombobox, MthDialog, MthField, MthInput, MthOption, MthSkipLink } from './index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe('@methane/svelte', () => {
-  it('exposes Svelte 5 typed wrappers supporting bind:value, bind:checked, and bind:open', () => {
-    expect(MthButton.bindableProps).toEqual([]);
+  it('exposes Svelte 5 typed wrappers supporting bind:value and bind:open', () => {
+    expect(MthField.bindableProps).toEqual([]);
+    expect(MthSkipLink.bindableProps).toEqual([]);
     expect(MthInput.bindableProps).toEqual(['value']);
-    expect(MthCheckbox.bindableProps).toEqual(['value', 'checked']);
+    expect(MthOption.bindableProps).toEqual(['value']);
     expect(MthDialog.bindableProps).toEqual(['open']);
     expect(MthCombobox.bindableProps).toEqual(['value', 'open']);
 
@@ -20,12 +21,8 @@ describe('@methane/svelte', () => {
     expect(inputSvelte).toContain('onmth-input=');
     expect(inputSvelte).toContain('<mth-input');
 
-    const checkboxSvelte = readFileSync(resolve(__dirname, 'components/MthCheckbox.svelte'), 'utf8');
-    expect(checkboxSvelte).toContain('onmth-change=');
-    expect(checkboxSvelte).toContain('checked = $bindable(false)');
-
     const comboboxSvelte = readFileSync(resolve(__dirname, 'components/MthCombobox.svelte'), 'utf8');
-    expect(comboboxSvelte).toContain('onmth-select=');
+    expect(comboboxSvelte).toContain('onmth-change=');
     expect(comboboxSvelte).toContain('onmth-open=');
 
     const dialogSvelte = readFileSync(resolve(__dirname, 'components/MthDialog.svelte'), 'utf8');

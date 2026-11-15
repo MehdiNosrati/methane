@@ -24,6 +24,9 @@ function emitVuePropsInterface(model: NormalizedComponentModel): string {
   );
 
   const allLines = [...propLines, ...vModelLines, ...eventLines];
+  if (allLines.length === 0) {
+    return `export type ${model.className}Props = Record<never, never>;`;
+  }
   return `export interface ${model.className}Props {\n${allLines.join('\n')}\n}`;
 }
 
