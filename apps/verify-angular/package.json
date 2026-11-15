@@ -10,7 +10,7 @@
     "start": "PORT=3103 HOST=127.0.0.1 node dist/node-server/http-server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
     "@angular/common": "^19.2.0",

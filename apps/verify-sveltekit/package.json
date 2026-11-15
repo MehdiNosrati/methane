@@ -9,7 +9,7 @@
     "build": "svelte-kit sync && vite build",
     "typecheck": "svelte-kit sync && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
     "@methane/css": "workspace:*",

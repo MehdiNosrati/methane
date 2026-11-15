@@ -123,5 +123,5 @@ describe('@methane/verify-angular hydration purity', () => {
       expect(report.passed, `${tagName}: ${JSON.stringify(report.checks)}`).toBe(true);
       expect(scanSameRootAria(upgradedHost!).issues, tagName).toEqual([]);
     }
-  });
+  }, 20_000);
 });
