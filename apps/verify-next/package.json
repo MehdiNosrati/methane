@@ -21,6 +21,7 @@
     "@methane/ssr": "workspace:*",
     "@methane/ssr-next": "workspace:*",
     "@methane/tokens": "workspace:*",
+    "@methane/ui": "workspace:*",
     "next": "^15.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

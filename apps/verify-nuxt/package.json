@@ -19,6 +19,7 @@
     "@methane/ssr": "workspace:*",
     "@methane/ssr-nuxt": "workspace:*",
     "@methane/tokens": "workspace:*",
+    "@methane/ui": "workspace:*",
     "@methane/vue": "workspace:*",
     "nuxt": "^3.16.0",
     "vue": "^3.5.45"

@@ -17,6 +17,7 @@
     "@methane/ssr-sveltekit": "workspace:*",
     "@methane/svelte": "workspace:*",
     "@methane/tokens": "workspace:*",
+    "@methane/ui": "workspace:*",
     "svelte": "^5.57.3"
   },
   "devDependencies": {

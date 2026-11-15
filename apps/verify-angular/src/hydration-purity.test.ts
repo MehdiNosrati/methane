@@ -14,7 +14,13 @@ import {
   isAngularHydrationReady,
   upgradeMethaneAngularElements,
 } from '@methane/ssr-angular/client';
-import { HydrationPuritySuite } from '@methane/test-conformance';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { MthCombobox } from '@methane/ui/combobox/element';
+import { MthDialog } from '@methane/ui/dialog/element';
+import { MthField } from '@methane/ui/field/element';
+import { MthInput } from '@methane/ui/input/element';
+import { MthOption } from '@methane/ui/option/element';
+import { MthOptionGroup } from '@methane/ui/option-group/element';
 import { describe, expect, it } from 'vitest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -46,10 +52,22 @@ function renderAngularSsrHtmlInNode(): string {
   });
 }
 
+function materializeDescendantDsd(root: Element): void {
+  for (const tpl of Array.from(root.querySelectorAll('template[shadowrootmode]'))) {
+    const host = tpl.parentElement;
+    if (host && !host.shadowRoot) {
+      const sr = host.attachShadow({ mode: 'open' });
+      sr.appendChild((tpl as HTMLTemplateElement).content.cloneNode(true));
+      tpl.remove();
+    }
+  }
+}
+
 function extractFirstElementSnippet(html: string, tagName: string): string {
-  const start = html.indexOf(`<${tagName}`);
+  const match = new RegExp(`<${tagName}(?=[\\s>])`).exec(html);
+  const start = match ? match.index : -1;
   const endTag = `</${tagName}>`;
-  const end = html.indexOf(endTag, start);
+  const end = start === -1 ? -1 : html.indexOf(endTag, start);
   if (start === -1 || end === -1) {
     throw new Error(`Could not find <${tagName}> in SSR HTML`);
   }
@@ -60,24 +78,39 @@ const ELEMENT_CLASSES = {
   'mth-skip-link': MthSkipLinkElement,
   'mth-visually-hidden': MthVisuallyHiddenElement,
   'mth-error-boundary': MthErrorBoundaryElement,
+  'mth-field': MthField,
+  'mth-input': MthInput,
+  'mth-dialog': MthDialog,
+  'mth-combobox': MthCombobox,
+  'mth-option-group': MthOptionGroup,
+  'mth-option': MthOption,
 } as const;
 
 describe('@methane/verify-angular hydration purity', () => {
   it('passes HydrationPuritySuite with 0 shadow-DOM node replacements on Angular client upgrade', async () => {
     const fullHtml = renderAngularSsrHtmlInNode();
     expect(fullHtml).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);
-    expect(fullHtml).toContain('angular-ssr@methane.dev|true|true');
+    expect(fullHtml).toContain('angular-ssr@methane.dev|lit|true|true');
 
     for (const tagName of [
       'mth-skip-link',
       'mth-visually-hidden',
       'mth-error-boundary',
+      'mth-field',
+      'mth-input',
+      'mth-dialog',
+      'mth-combobox',
+      'mth-option-group',
+      'mth-option',
     ] as const) {
       const snippet = extractFirstElementSnippet(fullHtml, tagName);
       const ElementClass = ELEMENT_CLASSES[tagName];
+      let upgradedHost: HTMLElement | null = null;
       const report = await HydrationPuritySuite.run({
         ssrHtml: snippet,
         upgradeElement: async (host) => {
+          upgradedHost = host;
+          materializeDescendantDsd(host);
           initAngularHydration();
           expect(isAngularHydrationReady()).toBe(true);
           if (!customElements.get(tagName)) {
@@ -87,7 +120,8 @@ describe('@methane/verify-angular hydration purity', () => {
           await (host as { updateComplete?: Promise<boolean> }).updateComplete;
         },
       });
-      expect(report.passed, JSON.stringify(report.checks)).toBe(true);
+      expect(report.passed, `${tagName}: ${JSON.stringify(report.checks)}`).toBe(true);
+      expect(scanSameRootAria(upgradedHost!).issues, tagName).toEqual([]);
     }
   });
 });

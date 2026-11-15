@@ -11,6 +11,7 @@ const vuePkgUrl = pathToFileURL(resolve(appRoot, '../../packages/vue/dist/index.
 const primitivesUrl = pathToFileURL(
   resolve(appRoot, '../../packages/primitives/dist/index.js'),
 ).href;
+const uiUrl = pathToFileURL(resolve(appRoot, '../../packages/ui/dist/index.js')).href;
 
 function runNuxtSsrInNode(): {
   fullHtml: string;
@@ -21,10 +22,20 @@ function runNuxtSsrInNode(): {
     import { createSSRApp, h } from 'vue';
     import { renderToString } from 'vue/server-renderer';
     import { registerUtilityElements } from ${JSON.stringify(primitivesUrl)};
+    import { registerAllComponents } from ${JSON.stringify(uiUrl)};
     import { createMethaneNitroPlugin } from ${JSON.stringify(ssrNuxtUrl)};
-    import { MthButton, MthInput } from ${JSON.stringify(vuePkgUrl)};
+    import {
+      MthButton,
+      MthCombobox,
+      MthDialog,
+      MthField,
+      MthInput,
+      MthOption,
+      MthOptionGroup,
+    } from ${JSON.stringify(vuePkgUrl)};
 
     registerUtilityElements();
+    registerAllComponents();
     const app = createSSRApp({
       render: () =>
         h('div', [
@@ -32,8 +43,52 @@ function runNuxtSsrInNode(): {
           h('main', { id: 'main' }, [
             h('mth-visually-hidden', null, 'Nuxt landmark'),
             h('mth-error-boundary', { 'fallback-message': 'Nuxt fallback' }, [
-              h(MthInput, { modelValue: 'nuxt-ssr', name: 'canary-input', label: 'Canary Input' }),
-              h(MthButton, { variant: 'primary' }, { default: () => 'Verify' }),
+              h(
+                MthField,
+                { label: 'Canary Email Field', hint: 'Work or personal email', required: true },
+                {
+                  default: () =>
+                    h(MthInput, {
+                      modelValue: 'nuxt-ssr@methane.dev',
+                      name: 'canary-input',
+                      type: 'email',
+                      label: 'Canary Input',
+                    }),
+                },
+              ),
+              h(
+                MthCombobox,
+                {
+                  modelValue: 'lit',
+                  name: 'canary-framework',
+                  label: 'Framework Target',
+                  clearable: true,
+                },
+                {
+                  default: () =>
+                    h(
+                      MthOptionGroup,
+                      { label: 'Web Standards' },
+                      {
+                        default: () => [
+                          h(MthOption, { value: 'lit' }, { default: () => 'Lit 3' }),
+                          h(MthOption, { value: 'wc' }, { default: () => 'Custom Elements' }),
+                        ],
+                      },
+                    ),
+                },
+              ),
+              h(
+                MthDialog,
+                {
+                  open: false,
+                  label: 'Canary Dialog',
+                  description: 'Nuxt top-layer modal verification',
+                  variant: 'confirm',
+                },
+                { default: () => 'Confirm Nuxt verification' },
+              ),
+              h(MthButton, { variant: 'solid' }, { default: () => 'Verify' }),
             ]),
           ]),
         ]),
@@ -91,8 +146,13 @@ describe('@methane/verify-nuxt', () => {
 
   it('renders Vue SSR custom elements with Nitro DSD expansion and <head> link hoisting', () => {
     const result = runNuxtSsrInNode();
+    expect(result.fullHtml).toContain('<mth-field');
     expect(result.fullHtml).toContain('<mth-input');
-    expect(result.fullHtml).toContain('value="nuxt-ssr"');
+    expect(result.fullHtml).toContain('value="nuxt-ssr@methane.dev"');
+    expect(result.fullHtml).toContain('<mth-dialog');
+    expect(result.fullHtml).toContain('<mth-combobox');
+    expect(result.fullHtml).toContain('<mth-option-group');
+    expect(result.fullHtml).toContain('<mth-option');
     expect(result.fullHtml).toContain('<mth-button');
     expect(result.fullHtml).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);
     expect(result.headTags.some((h) => h.includes('rel="preload" as="style"'))).toBe(true);

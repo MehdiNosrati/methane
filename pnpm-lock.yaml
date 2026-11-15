@@ -113,6 +113,9 @@ importers:
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      '@methane/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       rxjs:
         specifier: ^7.8.0
         version: 7.8.2
@@ -174,6 +177,9 @@ importers:
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      '@methane/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       next:
         specifier: ^15.5.0
         version: 15.5.29(@playwright/test@1.65.1)(@types/node@26.6.6)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.85.0)
@@ -214,6 +220,9 @@ importers:
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      '@methane/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@methane/vue':
         specifier: workspace:*
         version: link:../../packages/vue
@@ -245,6 +254,9 @@ importers:
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      '@methane/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       svelte:
         specifier: ^5.57.3
         version: 5.57.3(@typescript-eslint/types@8.72.2)
