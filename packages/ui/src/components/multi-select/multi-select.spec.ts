@@ -1,0 +1,95 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { multiSelectMessages } from './multi-select.messages.js';
+
+export const multiSelectSpec: ComponentBehaviorSpec = {
+  tag: 'mth-multi-select',
+  package: '@methane/ui',
+  conformance: ['form-control', 'overlay', 'listbox'],
+  controllers: [
+    'FormControlController',
+    'OverlayController',
+    'PositioningController',
+    'ListboxController',
+    'SelectionController',
+  ],
+  focusModel: 'delegates-focus',
+  states: ['dirty', 'touched', 'user-invalid', 'disabled', 'required'],
+  keyboard: [
+    { key: 'ArrowDown / ArrowUp', when: 'combobox open', expect: 'navigates active option' },
+    { key: 'Enter', when: 'option active', expect: 'toggles active option selection' },
+    { key: 'Backspace', when: 'search input empty and tags exist', expect: 'removes last selected tag' },
+    { key: 'Escape', when: 'listbox open', expect: 'closes listbox and restores focus' },
+  ],
+  props: [
+    { name: 'name', attr: 'name', type: 'string', default: '' },
+    { name: 'value', attr: 'value', type: 'string', default: '' },
+    { name: 'defaultValue', attr: 'default-value', type: 'string', default: '' },
+    { name: 'options', attr: false, type: 'ReadonlyArray<MultiSelectOption> | null', default: null },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Select options...' },
+    { name: 'hint', attr: 'hint', type: 'string', default: '' },
+    { name: 'error', attr: 'error', type: 'string', default: '' },
+    { name: 'open', attr: 'open', type: 'boolean', default: false },
+    { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
+    { name: 'required', attr: 'required', type: 'boolean', default: false },
+    { name: 'maxSelections', attr: 'max-selections', type: 'number', default: 0 },
+  ],
+  events: [
+    { name: 'mth-change', cancelable: false, detailType: '{ value: string; values: ReadonlyArray<string> }' },
+    { name: 'mth-open', cancelable: true, detailType: 'undefined' },
+    { name: 'mth-after-open', cancelable: false, detailType: 'undefined' },
+    { name: 'mth-close', cancelable: true, detailType: 'undefined' },
+    { name: 'mth-after-close', cancelable: false, detailType: 'undefined' },
+  ],
+  slots: [
+    { name: 'label', description: 'Visible field label.' },
+    { name: 'hint', description: 'Helper text.' },
+    { name: 'error', description: 'Validation error message.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Outer wrapper.' },
+    { name: 'label', description: 'Field label.' },
+    { name: 'control', description: 'Interactive combobox box with tags and input.' },
+    { name: 'tag', description: 'Selected value chip.' },
+    { name: 'tag-remove', description: 'Chip remove button.' },
+    { name: 'input', description: 'Filter input.' },
+    { name: 'clear', description: 'Clear all selections button.' },
+    { name: 'listbox', description: 'Popover listbox container.' },
+    { name: 'option', description: 'Selectable listbox option.' },
+    { name: 'hint', description: 'Helper text container.' },
+    { name: 'error', description: 'Error message container.' },
+  ],
+  messages: { ...multiSelectMessages },
+};
+
+export const CEM_METADATA = {
+  description:
+    'Form-associated multi-select combobox with removable tag chips, search filtering, keyboard navigation, and top-layer popover listbox.',
+  propDescriptions: {
+    name: 'Form field name.',
+    value: 'Comma-separated string of selected option values.',
+    defaultValue: 'Default comma-separated value restored on form reset.',
+    values: 'Array representation of selected values.',
+    options: 'Available selectable options.',
+    label: 'Field label.',
+    placeholder: 'Placeholder shown when no options are selected.',
+    hint: 'Helper message.',
+    error: 'Validation error message.',
+    open: 'Controls dropdown visibility.',
+    disabled: 'Disables interaction.',
+    required: 'Requires at least one selected value.',
+    maxSelections: 'Maximum number of allowed selections (0 means unlimited).',
+  },
+  eventDescriptions: {
+    'mth-change': 'Fired when selected values change.',
+    'mth-open': 'Fired before opening the listbox overlay (cancelable).',
+    'mth-after-open': 'Fired after opening the listbox overlay.',
+    'mth-close': 'Fired before closing the listbox overlay (cancelable).',
+    'mth-after-close': 'Fired after closing the listbox overlay.',
+  },
+  cssProperties: [
+    { name: '--mth-multi-select-bg', description: 'Control surface background.', default: 'var(--mth-color-surface)' },
+    { name: '--mth-multi-select-border', description: 'Control border color.', default: 'var(--mth-color-border)' },
+    { name: '--mth-multi-select-tag-bg', description: 'Selected chip background.', default: 'var(--mth-color-accent-subtle)' },
+  ],
+};
