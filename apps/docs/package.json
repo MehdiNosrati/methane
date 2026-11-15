@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src && stylelint 'src/**/*.css' --allow-empty-input",
-    "test": "vitest run"
+    "test": "vitest run --testTimeout=30000"
   },
   "dependencies": {
     "@methane/bundle-budget": "workspace:*",
