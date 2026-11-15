@@ -5,13 +5,13 @@ export const codeTabsStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_ct-bg: var(--mth-color-surface, #fff);
-    --_ct-header-bg: var(--mth-color-bg-subtle, #f4f4f5);
-    --_ct-border: var(--mth-color-border, #e4e4e7);
-    --_ct-fg: var(--mth-color-fg, #18181b);
-    --_ct-fg-muted: var(--mth-color-fg-muted, #52525b);
-    --_ct-accent: var(--mth-color-accent, #2563eb);
-    --_ct-focus: var(--mth-color-border-focus, #2563eb);
+    --_ct-bg: var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.18 0.01 260)));
+    --_ct-header-bg: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.24 0.01 260)));
+    --_ct-border: var(--mth-color-border, light-dark(oklch(0.9 0.008 260), oklch(0.32 0.015 260)));
+    --_ct-fg: var(--mth-color-fg, light-dark(oklch(0.21 0.01 260), oklch(0.96 0.005 260)));
+    --_ct-fg-muted: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 260), oklch(0.74 0.012 260)));
+    --_ct-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
+    --_ct-focus: var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     --_ct-radius: var(--mth-radius-md, 0.5rem);
   }
 

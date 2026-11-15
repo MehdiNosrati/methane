@@ -88,24 +88,27 @@ export class MthCodeTabs extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (typeof window !== 'undefined' && this.children && this.children.length > 0) {
+    if (typeof window !== 'undefined' && (this.children?.length ?? 0) > 0) {
       this.syncSlottedTabs();
     }
   }
 
   override disconnectedCallback(): void {
-    super.disconnectedCallback();
     if (this.copyResetTimer !== null) {
       clearTimeout(this.copyResetTimer);
       this.copyResetTimer = null;
     }
+    super.disconnectedCallback();
   }
 
   private syncSlottedTabs(): void {
     const rawChildren = Array.from(this.children ?? []).filter(isSlottedCodeItem);
     const items = rawChildren.length > 0 ? rawChildren : this.slotCollection.items;
     this.slottedTabs = items.map((el, index) => {
-      const itemLabel = el.getAttribute('label') ?? el.getAttribute('data-label') ?? `Tab ${index + 1}`;
+      const itemLabel =
+        el.getAttribute('label') ??
+        el.getAttribute('data-label') ??
+        this.t('tabLabel', { index: index + 1 });
       const itemValue = el.getAttribute('value') ?? itemLabel.toLowerCase().replaceAll(/\s+/g, '-');
       const language = el.getAttribute('language') ?? undefined;
       const code = (el.textContent ?? '').replace(/^\n+|\n+$/g, '');
@@ -177,9 +180,9 @@ export class MthCodeTabs extends UIElement {
         this.copied = false;
         this.copyResetTimer = null;
       }, 2000);
-      LiveAnnouncer.announce(codeTabsMessages.copiedAnnouncement, 'polite');
+      LiveAnnouncer.announce(this.t('copiedAnnouncement'), 'polite');
     } else {
-      LiveAnnouncer.announce(codeTabsMessages.copyFailedAnnouncement, 'polite');
+      LiveAnnouncer.announce(this.t('copyFailedAnnouncement'), 'polite');
     }
 
     this.dispatchEvent(
@@ -196,7 +199,7 @@ export class MthCodeTabs extends UIElement {
     const activeValue = this.getEffectiveValue(items);
     const activeIndex = Math.max(0, items.findIndex((item) => item.value === activeValue));
     const activeItem = items[activeIndex] ?? null;
-    const tablistLabel = this.label || codeTabsMessages.tablistLabel;
+    const tablistLabel = this.label || this.t('tablistLabel');
 
     return html`
       <div part="base">
@@ -230,10 +233,10 @@ export class MthCodeTabs extends UIElement {
                 <button
                   part="copy-button"
                   type="button"
-                  aria-label=${this.copied ? codeTabsMessages.copiedLabel : codeTabsMessages.copyLabel}
+                  aria-label=${this.copied ? this.t('copiedLabel') : this.t('copyLabel')}
                   @click=${() => void this.handleCopyClick()}
                 >
-                  ${this.copied ? codeTabsMessages.copiedLabel : codeTabsMessages.copyLabel}
+                  ${this.copied ? this.t('copiedLabel') : this.t('copyLabel')}
                 </button>
               `
             : nothing}
@@ -246,7 +249,7 @@ export class MthCodeTabs extends UIElement {
         >
           ${activeItem
             ? html`<pre><code part="code" data-language=${activeItem.language ?? nothing}>${activeItem.code}</code></pre>`
-            : html`<pre><code part="code">${codeTabsMessages.emptyLabel}</code></pre>`}
+            : html`<pre><code part="code">${this.t('emptyLabel')}</code></pre>`}
         </div>
         <div class="mth-code-tabs__slot" hidden>
           <slot @slotchange=${() => this.syncSlottedTabs()}></slot>

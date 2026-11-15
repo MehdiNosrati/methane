@@ -148,7 +148,7 @@ export class MthZoomPan extends UIElement {
 
   private handleKeyDown = (e: KeyboardEvent): void => {
     const panStep = 24;
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
     if (e.key === '+' || e.key === '=') {
       e.preventDefault();
       this.zoomIn();
@@ -178,19 +178,21 @@ export class MthZoomPan extends UIElement {
     const max = this.maxScale || 4;
     const percent = Math.round(this.scale * 100);
 
+    const viewportAria = this.label || this.t('viewportLabel');
+
     return html`
       <div
         class="base"
         part="base"
         role="region"
-        aria-label=${this.label || zoomPanMessages.viewportLabel}
+        aria-label=${viewportAria}
       >
         <div
           class="viewport"
           part="viewport"
           tabindex="0"
           role="application"
-          aria-label=${this.label || zoomPanMessages.viewportLabel}
+          aria-label=${viewportAria}
           data-dragging=${this.dragging ? 'true' : 'false'}
           @wheel=${this.handleWheel}
           @pointerdown=${this.handlePointerDown}
@@ -211,7 +213,7 @@ export class MthZoomPan extends UIElement {
                   type="button"
                   class="btn"
                   part="zoom-out"
-                  aria-label=${zoomPanMessages.zoomOut}
+                  aria-label=${this.t('zoomOut')}
                   ?disabled=${this.scale <= min}
                   @click=${() => this.zoomOut()}
                 >
@@ -221,7 +223,7 @@ export class MthZoomPan extends UIElement {
                   type="button"
                   class="btn"
                   part="reset"
-                  aria-label=${zoomPanMessages.reset}
+                  aria-label=${this.t('reset')}
                   @click=${() => this.reset()}
                 >
                   ${`${percent}%`}
@@ -230,7 +232,7 @@ export class MthZoomPan extends UIElement {
                   type="button"
                   class="btn"
                   part="zoom-in"
-                  aria-label=${zoomPanMessages.zoomIn}
+                  aria-label=${this.t('zoomIn')}
                   ?disabled=${this.scale >= max}
                   @click=${() => this.zoomIn()}
                 >

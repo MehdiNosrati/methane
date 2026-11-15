@@ -158,7 +158,7 @@ export class MthGallery extends UIElement {
 
   protected override render() {
     const safeItems = this.getSafeItems();
-    const galleryLabel = this.label || galleryMessages.galleryLabel;
+    const galleryLabel = this.label || this.t('galleryLabel');
 
     return html`
       <div class="base" part="base" role="region" aria-label=${galleryLabel}>
@@ -172,20 +172,23 @@ export class MthGallery extends UIElement {
           @mth-change=${this.handleCarouselChange}
         >
           ${safeItems.map(
-            (item, idx) => html`
-              <mth-carousel-item label=${item.alt || `Item ${idx + 1}`}>
+            (item, idx) => {
+              const itemLabel = item.alt || this.t('itemLabel', { index: idx + 1 });
+              return html`
+              <mth-carousel-item label=${itemLabel}>
                 <button
                   type="button"
                   class="slide-button"
                   part="slide-button"
-                  aria-label=${`${galleryMessages.openLightboxLabel} ${item.alt || `Item ${idx + 1}`}`}
+                  aria-label=${`${this.t('openLightboxLabel')} ${itemLabel}`}
                   @click=${() => this.openLightbox(idx)}
                 >
                   <img class="slide-image" part="slide-image" src=${item.src} alt=${item.alt} />
                 </button>
                 ${item.caption ? html`<div class="caption" part="caption">${item.caption}</div>` : nothing}
               </mth-carousel-item>
-            `,
+            `;
+            },
           )}
         </mth-carousel>
 
@@ -195,7 +198,7 @@ export class MthGallery extends UIElement {
                 class="thumbnails"
                 part="thumbnails"
                 role="group"
-                aria-label=${galleryMessages.thumbnailsLabel}
+                aria-label=${this.t('thumbnailsLabel')}
               >
                 ${safeItems.map(
                   (item, idx) => html`
@@ -203,7 +206,7 @@ export class MthGallery extends UIElement {
                       type="button"
                       class="thumbnail"
                       part="thumbnail"
-                      aria-label=${item.alt || `Thumbnail ${idx + 1}`}
+                      aria-label=${item.alt || this.t('thumbnailLabel', { index: idx + 1 })}
                       aria-pressed=${this.activeIndex === idx ? 'true' : 'false'}
                       @click=${() => this.selectIndex(idx)}
                     >

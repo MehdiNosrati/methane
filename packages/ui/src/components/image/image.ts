@@ -8,6 +8,15 @@ export type MthImageFit = 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
 export type MthImageLoading = 'lazy' | 'eager';
 export type MthImageDecoding = 'async' | 'sync' | 'auto';
 
+const SAFE_ASPECT_RATIO_RE = /^(auto|\d+(\.\d+)?(\s*\/\s*\d+(\.\d+)?)?)$/;
+const VALID_IMAGE_FITS: ReadonlySet<string> = new Set([
+  'cover',
+  'contain',
+  'fill',
+  'none',
+  'scale-down',
+]);
+
 function isSafeImageSrc(raw: string): boolean {
   const trimmed = raw.trim();
   if (!trimmed) return false;
@@ -100,8 +109,14 @@ export class MthImage extends UIElement {
       this.layoutSheet = new CSSStyleSheet();
     }
     if (typeof this.layoutSheet.replaceSync === 'function') {
-      const ratioRule = this.aspectRatio ? `--_aspect-ratio: ${this.aspectRatio};` : '';
-      const fitRule = `--_fit: ${this.fit || 'cover'};`;
+      const trimmedRatio = this.aspectRatio.trim();
+      const safeRatio = trimmedRatio && SAFE_ASPECT_RATIO_RE.test(trimmedRatio) ? trimmedRatio : '';
+      if (trimmedRatio && !safeRatio) {
+        devWarn(`<mth-image> rejected unsafe aspect-ratio "${trimmedRatio}".`);
+      }
+      const safeFit = VALID_IMAGE_FITS.has(this.fit) ? this.fit : 'cover';
+      const ratioRule = safeRatio ? `--_aspect-ratio: ${safeRatio};` : '';
+      const fitRule = `--_fit: ${safeFit};`;
       this.layoutSheet.replaceSync(`:host { ${ratioRule} ${fitRule} }`);
       if (!root.adoptedStyleSheets.includes(this.layoutSheet)) {
         root.adoptedStyleSheets = [...root.adoptedStyleSheets, this.layoutSheet];
@@ -177,8 +192,8 @@ export class MthImage extends UIElement {
           <slot name="placeholder"></slot>
         </div>
 
-        <div class="fallback" part="fallback" ?hidden=${!showFallback} role=${showFallback ? 'img' : nothing} aria-label=${showFallback ? this.alt || imageMessages.loadError : nothing}>
-          <slot name="fallback">${imageMessages.loadError}</slot>
+        <div class="fallback" part="fallback" ?hidden=${!showFallback} role=${showFallback ? 'img' : nothing} aria-label=${showFallback ? this.alt || this.t('loadError') : nothing}>
+          <slot name="fallback">${this.t('loadError')}</slot>
         </div>
       </div>
     `;

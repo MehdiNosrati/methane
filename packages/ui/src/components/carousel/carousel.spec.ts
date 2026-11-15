@@ -5,7 +5,7 @@ export const carouselSpec: ComponentBehaviorSpec = {
   tag: 'mth-carousel',
   package: '@methane/ui',
   conformance: ['roving-focus'],
-  controllers: ['SlotCollectionController', 'RovingFocusController', 'ObserverPoolController'],
+  controllers: ['SlotCollectionController', 'RovingFocusController', 'ObserverPoolController', 'MotionController'],
   focusModel: 'delegates-focus',
   states: ['autoplay'],
   keyboard: [

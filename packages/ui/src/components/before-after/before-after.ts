@@ -24,10 +24,10 @@ export class MthBeforeAfter extends UIElement {
   label = '';
 
   @property({ type: String, attribute: 'before-label' })
-  beforeLabel: string = beforeAfterMessages.beforeLabel;
+  beforeLabel = '';
 
   @property({ type: String, attribute: 'after-label' })
-  afterLabel: string = beforeAfterMessages.afterLabel;
+  afterLabel = '';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -112,7 +112,7 @@ export class MthBeforeAfter extends UIElement {
     const rect = this.baseEl?.getBoundingClientRect();
     if (!rect || rect.width <= 0) return;
     const ratio = (clientX - rect.left) / rect.width;
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
     const percent = (isRtl ? 1 - ratio : ratio) * 100;
     this.setPosition(percent);
   }
@@ -145,7 +145,7 @@ export class MthBeforeAfter extends UIElement {
 
   private handleKeyDown = (e: KeyboardEvent): void => {
     if (this.disabled) return;
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
     const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight';
     const backKey = isRtl ? 'ArrowRight' : 'ArrowLeft';
     const small = Math.max(1, this.step || 2);
@@ -174,23 +174,25 @@ export class MthBeforeAfter extends UIElement {
 
   protected override render() {
     const clamped = this.clampPosition(this.position);
+    const beforeAria = this.beforeLabel || this.t('beforeLabel');
+    const afterAria = this.afterLabel || this.t('afterLabel');
 
     return html`
       <div
         class="base"
         part="base"
         role="region"
-        aria-label=${this.label || beforeAfterMessages.comparisonLabel}
+        aria-label=${this.label || this.t('comparisonLabel')}
         @pointerdown=${this.handlePointerDown}
         @pointermove=${this.handlePointerMove}
         @pointerup=${this.handlePointerUp}
         @pointercancel=${this.handlePointerUp}
       >
-        <div class="after" part="after" aria-label=${this.afterLabel}>
+        <div class="after" part="after" aria-label=${afterAria}>
           <slot name="after"></slot>
         </div>
 
-        <div class="before" part="before" aria-label=${this.beforeLabel}>
+        <div class="before" part="before" aria-label=${beforeAria}>
           <slot name="before"></slot>
         </div>
 
@@ -201,7 +203,7 @@ export class MthBeforeAfter extends UIElement {
           class="handle"
           part="handle"
           role="slider"
-          aria-label=${this.label || beforeAfterMessages.dividerLabel}
+          aria-label=${this.label || this.t('dividerLabel')}
           aria-valuemin="0"
           aria-valuemax="100"
           aria-valuenow=${String(clamped)}

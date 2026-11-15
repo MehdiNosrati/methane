@@ -117,15 +117,15 @@ export class MthBarcode extends UIElement {
     const trimmed = this.value;
     if (!trimmed) {
       return html`
-        <div class="base" part="base" role="img" aria-label=${this.label || barcodeMessages.emptyLabel}>
-          <span class="empty">${barcodeMessages.emptyLabel}</span>
+        <div class="base" part="base" role="img" aria-label=${this.label || this.t('emptyLabel')}>
+          <span class="empty">${this.t('emptyLabel')}</span>
         </div>
       `;
     }
 
     const { totalWidth, bars } = encodeCode128B(trimmed);
     const viewHeight = Math.max(24, Math.round(Number.isFinite(this.height) ? this.height : 56));
-    const accessibleLabel = this.label || `${barcodeMessages.defaultLabel}: ${trimmed}`;
+    const accessibleLabel = this.label || `${this.t('defaultLabel')}: ${trimmed}`;
     const d = bars.map((bar) => `M${bar.x},0h${bar.width}v${viewHeight}h-${bar.width}z`).join('');
 
     return html`

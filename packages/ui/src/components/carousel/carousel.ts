@@ -1,5 +1,6 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import {
+  MotionController,
   ObserverPoolController,
   RovingFocusController,
   SlotCollectionController,
@@ -64,9 +65,11 @@ export class MthCarousel extends UIElement {
   private autoplayTimer: ReturnType<typeof setInterval> | null = null;
   private isPaused = false;
   private layoutSheet: CSSStyleSheet | null = null;
+  private observedTrack: HTMLElement | null = null;
   private readonly slotCtrl: SlotCollectionController<CarouselSlideElement>;
   private readonly rovingCtrl: RovingFocusController;
   private readonly observerCtrl: ObserverPoolController;
+  private readonly motionCtrl: MotionController;
 
   constructor() {
     super();
@@ -93,6 +96,7 @@ export class MthCarousel extends UIElement {
     });
 
     this.observerCtrl = new ObserverPoolController(this);
+    this.motionCtrl = new MotionController(this);
   }
 
   get slideCount(): number {
@@ -101,6 +105,11 @@ export class MthCarousel extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    const existing = Array.from(this.children ?? []).filter(isCarouselSlide);
+    if (existing.length > 0 && this.slides.length === 0) {
+      this.slides = existing;
+      this.syncSlideAttributes();
+    }
     this.syncLayoutSheet();
     this.setCustomState('autoplay', this.autoplay);
     if (this.autoplay) {
@@ -109,25 +118,19 @@ export class MthCarousel extends UIElement {
   }
 
   override disconnectedCallback(): void {
+    this.observedTrack = null;
     this.stopAutoplay();
     super.disconnectedCallback();
   }
 
-  protected override firstUpdated(): void {
-    if (this.trackEl) {
+  protected override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+    if (this.trackEl && this.observedTrack !== this.trackEl) {
+      this.observedTrack = this.trackEl;
       this.observerCtrl.observeResize(this.trackEl, () => {
         this.scrollToActiveSlide(false);
       });
     }
-    const existing = Array.from(this.children ?? []).filter(isCarouselSlide);
-    if (existing.length > 0 && this.slides.length === 0) {
-      this.slides = existing;
-      this.syncSlideAttributes();
-    }
-  }
-
-  protected override updated(changed: PropertyValues<this>): void {
-    super.updated(changed);
     if (changed.has('slidesPerView')) {
       this.syncLayoutSheet();
     }
@@ -216,17 +219,19 @@ export class MthCarousel extends UIElement {
     if (width <= 0) return;
     const spv = Math.max(1, Math.trunc(this.slidesPerView || 1));
     const slideWidth = width / spv;
+    const dirSign = this.resolvedDir === 'rtl' ? -1 : 1;
+    const useSmooth = smooth && !this.motionCtrl.isReducedMotion;
     track.scrollTo({
-      left: slideWidth * this.currentIndex,
-      behavior: smooth ? 'smooth' : 'auto',
+      left: dirSign * slideWidth * this.currentIndex,
+      behavior: useSmooth ? 'smooth' : 'auto',
     });
   }
 
   private startAutoplay(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || this.motionCtrl.isReducedMotion) return;
     const delay = Math.max(500, this.interval || 5000);
     this.autoplayTimer = setInterval(() => {
-      if (this.isPaused || this.slides.length <= 1) return;
+      if (this.isPaused || this.slides.length <= 1 || this.motionCtrl.isReducedMotion) return;
       if (this.currentIndex >= this.slides.length - 1) {
         this.goTo(0);
       } else {
@@ -244,7 +249,7 @@ export class MthCarousel extends UIElement {
 
   protected override render() {
     const total = this.slides.length;
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
     const prevDisabled = total <= 1 || (!this.loop && this.currentIndex <= 0);
     const nextDisabled = total <= 1 || (!this.loop && this.currentIndex >= total - 1);
 
@@ -254,7 +259,7 @@ export class MthCarousel extends UIElement {
         part="base"
         role="region"
         aria-roledescription="carousel"
-        aria-label=${this.label || carouselMessages.carouselLabel}
+        aria-label=${this.label || this.t('carouselLabel')}
         @mouseenter=${() => {
           this.isPaused = true;
         }}
@@ -280,7 +285,7 @@ export class MthCarousel extends UIElement {
                     type="button"
                     class="nav-btn"
                     part="prev-button"
-                    aria-label=${carouselMessages.previousSlide}
+                    aria-label=${this.t('previousSlide')}
                     ?disabled=${prevDisabled}
                     @click=${() => this.previous()}
                   >
@@ -290,7 +295,7 @@ export class MthCarousel extends UIElement {
                     type="button"
                     class="nav-btn"
                     part="next-button"
-                    aria-label=${carouselMessages.nextSlide}
+                    aria-label=${this.t('nextSlide')}
                     ?disabled=${nextDisabled}
                     @click=${() => this.next()}
                   >
@@ -307,10 +312,10 @@ export class MthCarousel extends UIElement {
                 class="indicators"
                 part="indicators"
                 role="group"
-                aria-label=${carouselMessages.slidePaginationLabel}
+                aria-label=${this.t('slidePaginationLabel')}
               >
                 ${this.slides.map((slide, idx) => {
-                  const slideName = slide.label || `${carouselMessages.goToSlide} ${idx + 1}`;
+                  const slideName = slide.label || `${this.t('goToSlide')} ${idx + 1}`;
                   return html`
                     <button
                       type="button"

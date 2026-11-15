@@ -43,7 +43,7 @@ export class MthCarouselItem extends UIElement {
         part="base"
         role="group"
         aria-roledescription="slide"
-        aria-label=${this.label || carouselItemMessages.slideLabel}
+        aria-label=${this.label || this.t('slideLabel')}
       >
         <slot></slot>
       </div>

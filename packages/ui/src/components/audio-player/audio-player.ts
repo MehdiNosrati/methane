@@ -182,7 +182,7 @@ export class MthAudioPlayer extends UIElement {
         class="base"
         part="base"
         role="region"
-        aria-label=${this.label || this.title || audioPlayerMessages.playerLabel}
+        aria-label=${this.label || this.title || this.t('playerLabel')}
       >
         ${safeSrc
           ? html`
@@ -222,7 +222,7 @@ export class MthAudioPlayer extends UIElement {
           type="button"
           class="btn"
           part="play-button"
-          aria-label=${this.playing ? audioPlayerMessages.pause : audioPlayerMessages.play}
+          aria-label=${this.playing ? this.t('pause') : this.t('play')}
           ?disabled=${!safeSrc}
           @click=${() => this.togglePlay()}
         >
@@ -242,7 +242,7 @@ export class MthAudioPlayer extends UIElement {
           type="range"
           class="seek"
           part="seek"
-          aria-label=${audioPlayerMessages.seekLabel}
+          aria-label=${this.t('seekLabel')}
           min="0"
           max=${String(maxDuration)}
           step="1"
@@ -261,7 +261,7 @@ export class MthAudioPlayer extends UIElement {
           type="button"
           class="btn"
           part="mute-button"
-          aria-label=${this.muted ? audioPlayerMessages.unmute : audioPlayerMessages.mute}
+          aria-label=${this.muted ? this.t('unmute') : this.t('mute')}
           ?disabled=${!safeSrc}
           @click=${() => this.toggleMute()}
         >
@@ -272,7 +272,7 @@ export class MthAudioPlayer extends UIElement {
           type="button"
           class="btn"
           part="rate-button"
-          aria-label=${audioPlayerMessages.playbackRateLabel}
+          aria-label=${this.t('playbackRateLabel')}
           ?disabled=${!safeSrc}
           @click=${() => this.cyclePlaybackRate()}
         >

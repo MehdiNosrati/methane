@@ -335,8 +335,8 @@ export class MthQrCode extends UIElement {
     const trimmed = this.value.trim();
     if (!trimmed) {
       return html`
-        <div class="base" part="base" role="img" aria-label=${this.label || qrCodeMessages.emptyLabel}>
-          <span class="empty">${qrCodeMessages.emptyLabel}</span>
+        <div class="base" part="base" role="img" aria-label=${this.label || this.t('emptyLabel')}>
+          <span class="empty">${this.t('emptyLabel')}</span>
         </div>
       `;
     }
@@ -344,7 +344,7 @@ export class MthQrCode extends UIElement {
     const matrix = encodeQrMatrix(trimmed, this.errorCorrection);
     const pad = Math.max(0, Math.min(8, Math.trunc(this.quietZone)));
     const total = matrix.length + pad * 2;
-    const accessibleLabel = this.label || `${qrCodeMessages.defaultLabel}: ${trimmed}`;
+    const accessibleLabel = this.label || `${this.t('defaultLabel')}: ${trimmed}`;
 
     const commands: string[] = [];
     for (let r = 0; r < matrix.length; r++) {

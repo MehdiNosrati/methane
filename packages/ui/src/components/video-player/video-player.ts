@@ -201,7 +201,7 @@ export class MthVideoPlayer extends UIElement {
         class="base"
         part="base"
         role="region"
-        aria-label=${this.label || videoPlayerMessages.playerLabel}
+        aria-label=${this.label || this.t('playerLabel')}
         @keydown=${this.handleKeyDown}
       >
         ${safeSrc
@@ -240,14 +240,14 @@ export class MthVideoPlayer extends UIElement {
                 <slot></slot>
               </video>
             `
-          : html`<div class="invalid">${videoPlayerMessages.invalidSource}</div>`}
+          : html`<div class="invalid">${this.t('invalidSource')}</div>`}
 
         <div class="controls" part="controls">
           <button
             type="button"
             class="btn"
             part="play-button"
-            aria-label=${this.playing ? videoPlayerMessages.pause : videoPlayerMessages.play}
+            aria-label=${this.playing ? this.t('pause') : this.t('play')}
             @click=${() => this.togglePlay()}
           >
             ${this.playing ? '❚❚' : '▶'}
@@ -257,7 +257,7 @@ export class MthVideoPlayer extends UIElement {
             type="range"
             class="seek"
             part="seek"
-            aria-label=${videoPlayerMessages.seekLabel}
+            aria-label=${this.t('seekLabel')}
             min="0"
             max=${String(maxDuration)}
             step="1"
@@ -275,7 +275,7 @@ export class MthVideoPlayer extends UIElement {
             type="button"
             class="btn"
             part="mute-button"
-            aria-label=${this.muted ? videoPlayerMessages.unmute : videoPlayerMessages.mute}
+            aria-label=${this.muted ? this.t('unmute') : this.t('mute')}
             @click=${() => this.toggleMute()}
           >
             ${this.muted ? '🔇' : '🔊'}
@@ -285,7 +285,7 @@ export class MthVideoPlayer extends UIElement {
             type="range"
             class="volume"
             part="volume"
-            aria-label=${videoPlayerMessages.volumeLabel}
+            aria-label=${this.t('volumeLabel')}
             min="0"
             max="1"
             step="0.1"
@@ -306,7 +306,7 @@ export class MthVideoPlayer extends UIElement {
             type="button"
             class="btn"
             part="rate-button"
-            aria-label=${videoPlayerMessages.playbackRateLabel}
+            aria-label=${this.t('playbackRateLabel')}
             @click=${() => this.cyclePlaybackRate()}
           >
             ${`${this.playbackRate}x`}
@@ -316,7 +316,7 @@ export class MthVideoPlayer extends UIElement {
             type="button"
             class="btn"
             part="fullscreen-button"
-            aria-label=${videoPlayerMessages.fullscreen}
+            aria-label=${this.t('fullscreen')}
             @click=${() => {
               if (typeof document !== 'undefined' && document.fullscreenElement) {
                 void document.exitFullscreen?.();

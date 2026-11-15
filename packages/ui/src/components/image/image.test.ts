@@ -59,6 +59,29 @@ describe('<mth-image>', () => {
     expect(loadedEvents).toEqual(['https://example.com/fallback.png']);
   });
 
+  it('rejects unsafe aspectRatio and fit payloads before writing adopted CSS', async () => {
+    const el = document.createElement('mth-image') as MthImage;
+    el.src = 'https://example.com/photo.jpg';
+    el.alt = 'CSS guard check';
+    el.aspectRatio = '16/9; background: url(https://evil.example/x)';
+    (el as unknown as { fit: string }).fit = 'cover; color: red';
+    document.body.append(el);
+    await el.updateComplete;
+
+    const sheets = el.shadowRoot!.adoptedStyleSheets ?? [];
+    const cssText = sheets
+      .map((sheet) =>
+        Array.from(sheet.cssRules ?? [])
+          .map((rule) => rule.cssText)
+          .join('\n'),
+      )
+      .join('\n');
+    expect(cssText).not.toContain('evil.example');
+    expect(cssText).not.toContain('color: red');
+    expect(cssText).not.toContain('--_aspect-ratio');
+    expect(cssText).toContain('--_fit: cover');
+  });
+
   it('passes HydrationPuritySuite without mutating SSR DOM', async () => {
     registerMthImage();
     const rawSsr = await renderLitDsdHtml(
