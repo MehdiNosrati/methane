@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-167 accessible, form-associated, RTL-ready Lit 3 Web Components spanning core controls, forms, navigation, overlays, data display, and feedback — built on `@methane/core` and `@methane/tokens`.
+Accessible, form-associated, RTL-ready Lit 3 Web Components spanning core controls, forms, navigation, overlays, data display, and feedback — built on `@methane/core` and `@methane/tokens`.
 
 - **Per-component tree shaking** via `@methane/ui/<slug>` (auto-registers `<mth-*>`) and `@methane/ui/<slug>/element` (unregistered class + `registerMth*(prefix?)` for white-label prefixes).
 - **Same-root ARIA & FACE**: `<mth-field>` and `<mth-form>` coordinate labels, descriptions, errors, and native `ElementInternals` constraint validation without cross-shadow ARIA mismatches.
@@ -22,12 +22,12 @@ npm install @methane/ui @methane/core @methane/tokens
 
 | Export | Description |
 | --- | --- |
-| `@methane/ui` | Barrel export registering and re-exporting all 167 core UI custom elements |
+| `@methane/ui` | Barrel export registering and re-exporting all core UI custom elements |
 | `@methane/ui/<slug>` | Per-component auto-registering entrypoint (e.g. `@methane/ui/button`, `@methane/ui/dialog`) |
 | `@methane/ui/<slug>/element` | Exports class, spec, styles, messages, and `registerMth<Name>(prefix?)` without side-effect registration |
 | `@methane/ui/custom-elements.json` | Custom Elements Manifest (CEM) JSON metadata |
 
-## Component Catalog (167 Custom Elements)
+## Component Catalog
 
 | Domain | Custom Elements |
 | --- | --- |

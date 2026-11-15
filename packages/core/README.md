@@ -64,7 +64,7 @@ export class AcmeBadge extends UIElement {
   }
 }
 
-// Prefix-safe registration (supports custom prefixes via ADR-015)
+// Prefix-safe registration (supports custom white-label prefixes)
 defineComponents({
   prefix: 'acme',
   components: { 'mth-badge': AcmeBadge },

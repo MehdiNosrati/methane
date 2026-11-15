@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Svelte 5 runes (`$props()` / `$bindable()`) wrapper components (`@methane/svelte/<Name>.svelte`) and `svelte/elements` JSX/template `HTMLElements` type definitions covering **all 251 `@methane/*` custom elements**.
+Svelte 5 runes (`$props()` / `$bindable()`) wrapper components (`@methane/svelte/<Name>.svelte`) and `svelte/elements` JSX/template `HTMLElements` type definitions for `@methane/*` custom elements.
 
 ## Installation
 
@@ -19,7 +19,7 @@ npm install @methane/svelte @methane/ui @methane/core
 | Export | Description |
 | --- | --- |
 | `@methane/svelte` | Side-effect `svelte/elements` `HTMLElements` type augmentation (`"mth-button": MthButtonProps`, etc.) and exported `Mth*Props` TypeScript interfaces |
-| `@methane/svelte/<ComponentName>.svelte` | 251 Svelte 5 runes wrapper components (e.g. `@methane/svelte/MthButton.svelte`, `@methane/svelte/MthDialog.svelte`) with `$bindable()` state |
+| `@methane/svelte/<ComponentName>.svelte` | Svelte 5 runes wrapper components (e.g. `@methane/svelte/MthButton.svelte`, `@methane/svelte/MthDialog.svelte`) with `$bindable()` state |
 | `@methane/svelte/components/<ComponentName>.svelte` | Explicit path alias for individual `.svelte` wrappers |
 
 ## Usage Examples

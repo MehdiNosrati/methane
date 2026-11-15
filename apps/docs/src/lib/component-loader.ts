@@ -613,7 +613,7 @@ export async function loadComponentDocs(
         a11yChecklist,
         whenNotToUse:
           WHEN_NOT_TO_USE_MAP[model.tagName] ??
-          'Do not use a Shadow-DOM custom element when a 0 B JS Light-DOM @methane/css primitive suffices.',
+          'Use a lightweight @methane/css layout class instead of a custom element when static CSS suffices.',
         bundleBadge: buildBundleBadge(packageGroup, controllerCount, isSatelliteConformance),
         snippets: buildComponentSnippets(model, packageName, packageRegistry),
       };

@@ -6,15 +6,15 @@ import { CSS_PRIMITIVE_CATALOG } from '../lib/css-catalog.js';
 const categories = ['Layout', 'Typography & Surface', 'Content & Marketing'] as const;
 ---
 
-<DocsLayout title="23 CSS Primitives">
+<DocsLayout title="CSS Layouts">
   <mth-stack data-gap="6">
     <div class="mth-prose">
-      <h1>23 Light-DOM CSS Primitives (<code>@methane/css</code>)</h1>
+      <h1>CSS Layouts &amp; Typography (<code>@methane/css</code>)</h1>
       <p>
-        <strong>Rule #1 — Earned Shadow DOM:</strong> Structural, typographic, and static marketing
-        blocks ship as 0 B JS Light-DOM CSS primitives in <code>@layer mth.primitives</code>,
-        using CSS Logical Properties only and adapting automatically to light, dark, density, and
-        <code>forced-colors: active</code>.
+        Structural layout containers, editorial prose styles, and landing sections written in pure
+        CSS inside <code>@layer mth.primitives</code>. They work immediately on HTML and custom
+        tags without JavaScript and adapt automatically to light, dark, density, and high-contrast
+        modes.
       </p>
     </div>
 
@@ -33,9 +33,7 @@ const categories = ['Layout', 'Typography & Surface', 'Content & Marketing'] as 
         const items = CSS_PRIMITIVE_CATALOG.filter((entry) => entry.category === category);
         return (
           <section class="mth-stack" data-gap="5">
-            <h2>
-              {category} ({items.length})
-            </h2>
+            <h2>{category}</h2>
             {items.map((item) => (
               <article class="docs-card" id={item.id}>
                 <mth-stack data-gap="4">
@@ -44,10 +42,7 @@ const categories = ['Layout', 'Typography & Surface', 'Content & Marketing'] as 
                       <h3 style="margin-block:0">{item.title}</h3>
                       <code>{item.selector}</code>
                     </mth-flex>
-                    <mth-flex data-gap="2">
-                      <span class="docs-badge">0 B JS</span>
-                      <span class="docs-badge">{item.subpath}</span>
-                    </mth-flex>
+                    <span class="docs-badge">{item.subpath}</span>
                   </mth-flex>
 
                   <p style="margin-block:0;color:var(--mth-color-fg-muted)">{item.description}</p>

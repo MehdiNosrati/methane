@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Standalone Angular 17+ `@Directive` wrappers, `ControlValueAccessor` form bindings, and strongly-typed `@Input()` / `@Output()` bindings for **all 251 `@methane/*` custom elements**.
+Standalone Angular 17+ `@Directive` wrappers, `ControlValueAccessor` form bindings, and strongly-typed `@Input()` / `@Output()` bindings for `@methane/*` custom elements.
 
 ## Installation
 
@@ -18,9 +18,9 @@ npm install @methane/angular @methane/ui @methane/core
 
 | Export | Description |
 | --- | --- |
-| `Mth*Directive` (251 standalone directives) | Selector-matched Angular directives (e.g. `MthButtonDirective` for `mth-button`, `MthInputDirective` for `mth-input`) with typed inputs and `mth-*` custom event `@Output()`s |
+| `Mth*Directive` | Selector-matched Angular directives (e.g. `MthButtonDirective` for `mth-button`, `MthInputDirective` for `mth-input`) with typed inputs and `mth-*` custom event `@Output()`s |
 | `ControlValueAccessor` integration | Form-capable directives (`mth-input`, `mth-checkbox`, `mth-select`, `mth-date-picker`, etc.) implement `NG_VALUE_ACCESSOR` for `[(ngModel)]` and `formControlName` |
-| `METHANE_ANGULAR_DIRECTIVES` | Readonly array containing all 251 standalone directives for bulk import |
+| `METHANE_ANGULAR_DIRECTIVES` | Readonly array containing all standalone directives for bulk import |
 
 ## Usage Examples
 

@@ -7,9 +7,9 @@ import { withBase } from '../lib/links.js';
   <article class="mth-prose">
     <h1>Methane Architecture</h1>
     <p>
-      Methane achieves ~250+ UI capabilities across 5 deliverables layers without collapsing under
-      runtime weight by enforcing <strong>Rule #1 — Earned Shadow DOM</strong> and a strictly acyclic
-      dependency DAG (enforced statically by <code>@methane/lint-plugin</code>).
+      Methane separates pure-CSS layouts from interactive custom elements and enforces a strictly
+      layered dependency graph (verified statically by <code>@methane/lint-plugin</code>) so
+      packages stay modular and tree-shakeable.
     </p>
 
     <h2>Layered Package Graph</h2>
@@ -18,7 +18,7 @@ import { withBase } from '../lib/links.js';
       <dd>W3C DTCG JSON compiled into <code>--mth-*</code> CSS custom properties using <code>oklch()</code>, <code>light-dark()</code>, density scaling, and <code>forced-colors</code>.</dd>
 
       <dt>Layer 0b — @methane/css</dt>
-      <dd>23 Light-DOM 0 B JS CSS primitives wrapped in <code>@layer mth.primitives</code> using CSS Logical Properties only.</dd>
+      <dd>Pure-CSS layout, prose, form, and marketing classes wrapped in <code>@layer mth.primitives</code> using CSS Logical Properties only.</dd>
 
       <dt>Layer 0c — @methane/sanitize</dt>
       <dd>Native <code>Element.prototype.setHTML()</code> with bundled DOMPurify parity fallback and Trusted Types support (ADR-012).</dd>
@@ -27,16 +27,16 @@ import { withBase } from '../lib/links.js';
       <dd>Lit 3 + human-owned <code>UIElement</code> base class, versioned <code>globalThis[Symbol.for('@methane/runtime')]</code> singleton, i18n message catalog, and Community Context Protocol.</dd>
 
       <dt>Layer 1b — @methane/primitives</dt>
-      <dd>24 shared behavioral controllers, headless cores (<code>TableCore</code>, <code>CalendarCore</code>), stores, and utilities.</dd>
+      <dd>Shared behavioral controllers, headless cores (<code>TableCore</code>, <code>CalendarCore</code>), stores, and accessibility utilities.</dd>
 
       <dt>Layer 2 — @methane/ui</dt>
-      <dd>148 declarative-first custom elements exported as per-tag subpaths and side-effect-free element classes.</dd>
+      <dd>Declarative-first core UI custom elements exported as per-tag subpaths and side-effect-free element classes.</dd>
 
       <dt>Layer 3a — Domain Kits</dt>
-      <dd>46 composite domain elements across <code>@methane/ai</code>, <code>auth</code>, <code>admin</code>, <code>chat</code>, and <code>commerce</code>.</dd>
+      <dd>Composite domain elements across <code>@methane/ai</code>, <code>auth</code>, <code>admin</code>, <code>chat</code>, and <code>commerce</code>.</dd>
 
       <dt>Layer 3b — Satellites</dt>
-      <dd>11 wrap-first heavy packages (TanStack Table/Virtual, Apache ECharts, ProseMirror, CodeMirror 6, MapLibre, pdf.js, Three.js) with SemVer-exempt <code>.engine</code>.</dd>
+      <dd>Wrap-first heavy packages (TanStack Table/Virtual, Apache ECharts, ProseMirror, CodeMirror 6, MapLibre, pdf.js, Three.js) with lazy client engines.</dd>
     </dl>
 
     <h2>Quality Gates</h2>

@@ -9,7 +9,7 @@ interface Props {
 
 const {
   title,
-  description = 'Methane (@methane/*) — layered, spec-first Web Component & 0 B JS CSS design system.',
+  description = 'Methane UI — Accessible Web Components, CSS layouts, adaptive OKLCH themes, and streaming SSR for every framework.',
 } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 ---
@@ -41,8 +41,9 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
           <span class="docs-brand-badge">@methane/*</span>
         </a>
         <div class="docs-controls">
-          <a class="docs-btn" href={withBase('/css')}>23 CSS Primitives</a>
+          <a class="docs-btn" href={withBase('/css')}>CSS Layouts</a>
           <a class="docs-btn" href={withBase('/components')}>Components</a>
+          <a class="docs-btn" href={withBase('/guides/skills')}>Skills</a>
           <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>Theme Builder</a>
           <a
             class="docs-btn"
@@ -129,9 +130,10 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
       <footer class="mth-app-shell-footer mth-footer">
         <div class="mth-container">
           <div class="mth-footer-bottom" style="margin-block-start:0;padding-block-start:0;border-block-start:0">
-            <span>Methane UI · MIT License · Astro + @methane/ssr-astro + @methane/css + @methane/tokens</span>
+            <span>Methane UI · MIT License</span>
             <mth-flex data-gap="3">
-              <a href={withBase('/adrs')}>ADRs 001–015</a>
+              <a href={withBase('/quickstart')}>Quickstart</a>
+              <a href={withBase('/guides/skills')}>Agent Skills</a>
               <a href={withBase('/guides/security')}>Security</a>
               <a href={withBase('/theme-builder')}>Theme Builder</a>
             </mth-flex>
