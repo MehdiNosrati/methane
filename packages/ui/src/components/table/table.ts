@@ -137,6 +137,7 @@ export class MthTable extends UIElement {
       filter: isColumnElement,
       attributeFilter: ['field', 'header', 'sortable', 'filterable', 'pin', 'align'],
       onItemsChange: () => {
+        if (this.hydratingFirstPass) return;
         this.syncColumns();
       },
     });
@@ -184,14 +185,12 @@ export class MthTable extends UIElement {
   protected override firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
     if (this.hydratingFirstPass) {
-      this.hydratingFirstPass = false;
-      if (this.slotCtrl.slottedElements.length > 0) {
-        this.hydrationTimer = setTimeout(() => {
-          this.hydrationTimer = null;
-          this.syncColumns();
-          this.requestUpdate();
-        }, 0);
-      }
+      this.hydrationTimer = setTimeout(() => {
+        this.hydrationTimer = null;
+        this.hydratingFirstPass = false;
+        this.syncColumns();
+        this.requestUpdate();
+      }, 0);
     }
   }
 

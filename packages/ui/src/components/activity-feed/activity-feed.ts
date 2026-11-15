@@ -86,6 +86,10 @@ export class MthActivityFeed extends UIElement {
     }
   }
 
+  getSlottedItems(): ReadonlyArray<HTMLElement> {
+    return this.slotCtrl.slottedElements;
+  }
+
   getDataStatus(): DataControllerStatus {
     return this.dataCtrl.status;
   }
@@ -183,8 +187,6 @@ export class MthActivityFeed extends UIElement {
       }
     } else if (this.items !== null) {
       content = this.renderEntries(this.items);
-    } else if (this.slotCtrl.slottedElements.length > 0) {
-      content = html`<slot></slot>`;
     } else {
       content = html`<slot></slot>`;
     }
