@@ -4,7 +4,7 @@ export const cronBuilderStyles = css`
   :host {
     display: block;
     font-family: var(--mth-font-sans);
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
   }
 
   .base {
@@ -26,9 +26,9 @@ export const cronBuilderStyles = css`
   }
 
   .label {
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: 600;
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
   }
 
   .presets {
@@ -40,18 +40,18 @@ export const cronBuilderStyles = css`
   .preset {
     cursor: pointer;
     font: inherit;
-    font-size: var(--mth-text-xs, 0.75rem);
+    font-size: var(--mth-font-size-xs, 0.75rem);
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-2, 0.5rem);
     border: 1px solid var(--mth-color-border);
     border-radius: var(--mth-radius-sm, 0.25rem);
-    background: var(--mth-color-surface-subtle, var(--mth-color-surface));
-    color: var(--mth-color-text);
+    background: var(--mth-color-bg-subtle, var(--mth-color-surface));
+    color: var(--mth-color-fg);
   }
 
   .preset[aria-pressed='true'] {
     background: var(--mth-color-accent);
-    color: var(--mth-color-accent-contrast);
+    color: var(--mth-color-accent-fg);
     border-color: var(--mth-color-accent);
   }
 
@@ -71,27 +71,27 @@ export const cronBuilderStyles = css`
   }
 
   .field-label {
-    font-size: var(--mth-text-xs, 0.75rem);
-    color: var(--mth-color-text-muted);
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    color: var(--mth-color-fg-muted);
   }
 
   .field-input {
     inline-size: 100%;
     box-sizing: border-box;
     font-family: var(--mth-font-mono, monospace);
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
     text-align: center;
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-2, 0.5rem);
     border: 1px solid var(--mth-color-border);
     border-radius: var(--mth-radius-sm, 0.25rem);
     background: var(--mth-color-surface);
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
   }
 
   .summary {
-    font-size: var(--mth-text-xs, 0.75rem);
-    color: var(--mth-color-text-muted);
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    color: var(--mth-color-fg-muted);
   }
 
   @media (forced-colors: active) {

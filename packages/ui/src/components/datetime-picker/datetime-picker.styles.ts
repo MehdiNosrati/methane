@@ -42,7 +42,7 @@ export const datetimePickerStyles = css`
   [part='input'] {
     flex: 1 1 auto;
     min-inline-size: 11rem;
-    min-block-size: var(--mth-space-control-md);
+    min-block-size: var(--mth-space-control-block);
     padding-block: var(--mth-space-1);
     padding-inline: var(--mth-space-3);
     border: 0;
@@ -57,8 +57,8 @@ export const datetimePickerStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-inline-size: var(--mth-space-control-md);
-    min-block-size: var(--mth-space-control-md);
+    min-inline-size: var(--mth-space-control-block);
+    min-block-size: var(--mth-space-control-block);
     padding-inline: var(--mth-space-2);
     border: 0;
     border-inline-start: 1px solid var(--mth-color-border);

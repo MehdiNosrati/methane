@@ -5,7 +5,7 @@ export const colorPickerStyles = css`
     display: inline-block;
     position: relative;
     font-family: var(--mth-font-sans);
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
   }
 
   .base {
@@ -14,9 +14,9 @@ export const colorPickerStyles = css`
   }
 
   .label {
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: 600;
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
   }
 
   .control {
@@ -52,9 +52,9 @@ export const colorPickerStyles = css`
     border: 0;
     outline: none;
     background: transparent;
-    color: var(--mth-color-text);
+    color: var(--mth-color-fg);
     font-family: var(--mth-font-mono, monospace);
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
   }
 
   .trigger,
@@ -62,19 +62,19 @@ export const colorPickerStyles = css`
     cursor: pointer;
     border: 1px solid var(--mth-color-border);
     border-radius: var(--mth-radius-sm, 0.25rem);
-    background: var(--mth-color-surface-subtle, var(--mth-color-surface));
-    color: var(--mth-color-text);
+    background: var(--mth-color-bg-subtle, var(--mth-color-surface));
+    color: var(--mth-color-fg);
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-2, 0.5rem);
     font: inherit;
-    font-size: var(--mth-text-xs, 0.75rem);
+    font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
   .popover {
     position: fixed;
     inset-block-start: 0;
     inset-inline-start: 0;
-    z-index: var(--mth-z-popover, 30);
+    z-index: var(--mth-z-index-popover, 30);
     min-inline-size: 15rem;
     display: grid;
     gap: var(--mth-space-3, 0.75rem);
@@ -100,7 +100,7 @@ export const colorPickerStyles = css`
     grid-template-columns: 5rem 1fr;
     align-items: center;
     gap: var(--mth-space-2, 0.5rem);
-    font-size: var(--mth-text-xs, 0.75rem);
+    font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
   .swatches {

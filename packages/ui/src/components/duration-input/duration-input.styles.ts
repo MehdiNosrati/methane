@@ -48,7 +48,7 @@ export const durationInputStyles = css`
 
   .seg-input {
     inline-size: 3.25rem;
-    min-block-size: var(--mth-space-control-sm);
+    min-block-size: var(--mth-space-control-block);
     padding-block: 2px;
     padding-inline: var(--mth-space-1);
     border: 1px solid var(--mth-color-border);
