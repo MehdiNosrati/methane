@@ -121,6 +121,7 @@ export class MthPdfViewer extends UIElement {
   private _tokenCache: Map<string, string> = new Map();
   private _loadTimer: ReturnType<typeof setTimeout> | undefined;
   private _observedViewportEl: HTMLElement | null = null;
+  private _lastSearchedQuery: string | undefined;
   private _disposed = false;
 
   get engine(): MthPdfEngineHandle | null {
@@ -190,12 +191,17 @@ export class MthPdfViewer extends UIElement {
     ) {
       void this._renderActivePage();
     }
-    if (changed.has('searchQuery') && changed.get('searchQuery') !== undefined) {
+    if (
+      changed.has('searchQuery') &&
+      changed.get('searchQuery') !== undefined &&
+      this.searchQuery !== this._lastSearchedQuery
+    ) {
       void this.search(this.searchQuery);
     }
   }
 
   goToPage(nextPage: number): void {
+    if (!Number.isFinite(nextPage)) return;
     const maxPage = Math.max(1, this.totalPages || 1);
     const clamped = Math.min(maxPage, Math.max(1, Math.trunc(nextPage)));
     if (clamped === this.page) return;
@@ -233,6 +239,7 @@ export class MthPdfViewer extends UIElement {
   }
 
   async search(query: string): Promise<number> {
+    this._lastSearchedQuery = query;
     this.searchQuery = query;
     const normalized = query.trim().toLowerCase();
     if (!normalized || !this._pdfDoc) {
@@ -582,7 +589,7 @@ export class MthPdfViewer extends UIElement {
   private _onSearchInput = (event: Event): void => {
     const input = event.target as HTMLInputElement | null;
     if (!input) return;
-    void this.search(input.value);
+    this.searchQuery = input.value;
   };
 
   private _onToggleOutline = (): void => {

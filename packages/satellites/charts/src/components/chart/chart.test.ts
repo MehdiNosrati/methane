@@ -6,7 +6,7 @@ import {
   scanSameRootAria,
 } from '@methane/test-conformance';
 import { html as litHtml } from 'lit';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MTH_CHART_TYPES } from '../shared/chart-types.js';
 import {
   MthChartSeries,
@@ -156,5 +156,160 @@ describe('<mth-chart>', () => {
     });
     expect(hydration.failures).toEqual([]);
     expect(hydration.passed).toBe(true);
+  });
+
+  it('parses categories-json and data-json attributes into cartesian ECharts option', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.type = 'bar';
+    chart.chartTitle = 'Units';
+    chart.setAttribute('categories-json', '["Jan","Feb","Mar"]');
+    chart.setAttribute('data-json', '[12, 18, 24]');
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    const opt = chart.buildEChartsOption() as {
+      xAxis?: { data?: string[] };
+      series?: Array<{ type: string; data: unknown[] }>;
+    };
+    expect(opt.xAxis?.data).toEqual(['Jan', 'Feb', 'Mar']);
+    expect(opt.series?.[0]?.type).toBe('bar');
+    expect(opt.series?.[0]?.data).toEqual([12, 18, 24]);
+  });
+
+  it('filters hidden series and applies showLegend/showTooltip flags', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.showLegend = false;
+    chart.showTooltip = false;
+    chart.series = [
+      { name: 'Visible', type: 'line', data: [1, 2] },
+      { name: 'Hidden', type: 'line', data: [3, 4], hidden: true },
+    ];
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    const opt = chart.buildEChartsOption() as {
+      legend?: { show: boolean };
+      tooltip?: { show: boolean };
+      series?: Array<{ name: string }>;
+    };
+    expect(opt.legend?.show).toBe(false);
+    expect(opt.tooltip?.show).toBe(false);
+    expect(opt.series?.map((s) => s.name)).toEqual(['Visible']);
+  });
+
+  it('reflects loading and empty custom states and supports custom option overrides', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.loading = true;
+    chart.empty = true;
+    chart.option = { backgroundColor: 'transparent' };
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    expect(chart.hasCustomState('loading')).toBe(true);
+    expect(chart.hasCustomState('empty')).toBe(true);
+    expect((chart.buildEChartsOption() as { backgroundColor?: string }).backgroundColor).toBe(
+      'transparent',
+    );
+  });
+
+  it('disables chart animation under prefers-reduced-motion: reduce', async () => {
+    registerMthChart();
+    const origMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes('prefers-reduced-motion: reduce'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+    try {
+      const chart = document.createElement('mth-chart') as MthChart;
+      chart.data = [1, 2, 3];
+      document.body.appendChild(chart);
+      await chart.updateComplete;
+
+      expect(chart.hasCustomState('reduced-motion')).toBe(true);
+      expect(chart.buildEChartsOption().animation).toBe(false);
+    } finally {
+      window.matchMedia = origMatchMedia;
+    }
+  });
+
+  it('emits mth-chart-ready after lazy mount and re-renders when renderer changes', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.renderer = 'svg';
+    chart.data = [10, 20];
+    const readyEvents: Array<{ renderer: string; mode: string }> = [];
+    const renderEvents: Array<{ seriesCount: number }> = [];
+    chart.addEventListener('mth-chart-ready', (ev) => {
+      readyEvents.push((ev as CustomEvent<{ renderer: string; mode: string }>).detail);
+    });
+    chart.addEventListener('mth-chart-render', (ev) => {
+      renderEvents.push((ev as CustomEvent<{ seriesCount: number }>).detail);
+    });
+
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+    await vi.waitFor(() => {
+      expect(readyEvents.length).toBeGreaterThanOrEqual(1);
+    }, { timeout: 2000 });
+    expect(readyEvents[0]?.renderer).toBe('svg');
+    const rendersBefore = renderEvents.length;
+
+    chart.renderer = 'canvas';
+    await chart.updateComplete;
+    expect(chart.getAttribute('renderer')).toBe('canvas');
+    expect(renderEvents.length).toBeGreaterThan(rendersBefore);
+  });
+
+  it('omits cartesian grid/axes for non-cartesian chart types like pie and gauge', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.type = 'pie';
+    chart.data = [{ name: 'A', value: 100 }];
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    const opt = chart.buildEChartsOption() as { xAxis?: unknown; yAxis?: unknown };
+    expect(opt.xAxis).toBeUndefined();
+    expect(opt.yAxis).toBeUndefined();
+  });
+
+  it('merges custom setChartOption updates onto the headless engine handle', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.data = [1, 2];
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    chart.setChartOption({ title: { text: 'Updated' } });
+    expect((chart.engine?.getOption() as { title?: { text?: string } })?.title?.text).toBe(
+      'Updated',
+    );
+  });
+
+  it('escapes HTML in aria description and tooltip formatter for XSS safety', async () => {
+    registerMthChart();
+    const chart = document.createElement('mth-chart') as MthChart;
+    chart.chartTitle = '<img onerror=alert(1)>';
+    chart.data = [5];
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+
+    const opt = chart.buildEChartsOption() as {
+      aria?: { label?: { description?: string } };
+      tooltip?: { formatter?: (p: unknown) => string };
+    };
+    expect(opt.aria?.label?.description).toContain('&lt;img');
+    expect(opt.tooltip?.formatter?.([{ seriesName: 'S', name: '<em>N</em>', value: 5 }])).toContain(
+      '&lt;em&gt;N&lt;/em&gt;',
+    );
   });
 });

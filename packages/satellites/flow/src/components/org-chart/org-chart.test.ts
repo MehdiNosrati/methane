@@ -113,4 +113,79 @@ describe('<mth-org-chart>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('selects cards via click, updates aria-pressed, and emits mth-node-select', async () => {
+    const org = document.createElement('mth-org-chart') as MthOrgChart;
+    org.nodes = SAMPLE_ORG;
+    document.body.appendChild(org);
+    await org.updateComplete;
+
+    const selected: string[] = [];
+    org.addEventListener('mth-node-select', (ev) => {
+      selected.push((ev as CustomEvent<{ nodeId: string }>).detail.nodeId);
+    });
+
+    const cards = org.shadowRoot!.querySelectorAll<HTMLButtonElement>('.card-btn');
+    cards[1]!.click();
+    await org.updateComplete;
+
+    expect(selected).toEqual(['cto']);
+    expect(org.selectedId).toBe('cto');
+    expect(cards[1]!.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('emits mth-node-toggle with collapsed state and supports search input filtering', async () => {
+    const org = document.createElement('mth-org-chart') as MthOrgChart;
+    org.nodes = SAMPLE_ORG;
+    document.body.appendChild(org);
+    await org.updateComplete;
+
+    const toggles: unknown[] = [];
+    org.addEventListener('mth-node-toggle', (ev) => toggles.push((ev as CustomEvent).detail));
+
+    const toggleBtn = org.shadowRoot!.querySelector<HTMLButtonElement>('.toggle-btn')!;
+    toggleBtn.click();
+    await org.updateComplete;
+    expect(toggles).toEqual([{ nodeId: 'ceo', collapsed: true }]);
+    expect(toggleBtn.getAttribute('aria-expanded')).toBe('false');
+
+    const searchInput = org.shadowRoot!.querySelector<HTMLInputElement>('[part="search"]')!;
+    searchInput.value = 'Elena';
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    await org.updateComplete;
+    expect(org.shadowRoot!.querySelectorAll('[data-match="true"]').length).toBe(1);
+  });
+
+  it('supports LR and RL directional layouts and updates SVG connector paths', async () => {
+    const org = document.createElement('mth-org-chart') as MthOrgChart;
+    org.nodes = SAMPLE_ORG;
+    org.direction = 'LR';
+    document.body.appendChild(org);
+    await org.updateComplete;
+
+    const cardsLR = org.engine!.getVisibleCards();
+    const ceoLR = cardsLR.find((c) => c.id === 'ceo')!;
+    const ctoLR = cardsLR.find((c) => c.id === 'cto')!;
+    expect(ctoLR.x).toBeGreaterThan(ceoLR.x);
+    expect(org.engine!.getConnectors().length).toBe(2);
+
+    org.direction = 'RL';
+    await org.updateComplete;
+    const cardsRL = org.engine!.getVisibleCards();
+    const ceoRL = cardsRL.find((c) => c.id === 'ceo')!;
+    const ctoRL = cardsRL.find((c) => c.id === 'cto')!;
+    expect(ceoRL.x).toBeGreaterThan(ctoRL.x);
+  });
+
+  it('sets :state(empty) when nodes are empty and disposes engine on disconnect', async () => {
+    const org = document.createElement('mth-org-chart') as MthOrgChart;
+    org.nodes = [];
+    document.body.appendChild(org);
+    await org.updateComplete;
+
+    expect(org.hasCustomState('empty')).toBe(true);
+    expect(org.engine).not.toBeNull();
+    org.remove();
+    expect(org.engine).toBeNull();
+  });
 });

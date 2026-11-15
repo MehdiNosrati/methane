@@ -131,4 +131,91 @@ describe('<mth-flow-editor>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('generates orthogonal vs bezier edge paths and adapts auto direction in RTL', async () => {
+    const editor = document.createElement('mth-flow-editor') as MthFlowEditor;
+    editor.nodes = SAMPLE_NODES;
+    editor.edges = SAMPLE_EDGES;
+    editor.edgeStyle = 'orthogonal';
+    editor.direction = 'TB';
+    document.body.appendChild(editor);
+    await editor.updateComplete;
+
+    const orthoPaths = editor.engine!.getRoutedEdges().map((e) => e.pathData);
+    expect(orthoPaths[0]).toContain(' L ');
+    expect(orthoPaths[0]).not.toContain(' C ');
+
+    editor.edgeStyle = 'bezier';
+    editor.direction = 'auto';
+    editor.setAttribute('dir', 'rtl');
+    await editor.updateComplete;
+
+    const bezierPaths = editor.engine!.getRoutedEdges().map((e) => e.pathData);
+    expect(bezierPaths[0]).toContain(' C ');
+    const positioned = editor.engine!.getPositionedNodes();
+    expect(positioned[0]!.x).toBeGreaterThan(positioned[1]!.x);
+  });
+
+  it('selects nodes, highlights connected edges, and emits mth-node-select', async () => {
+    const editor = document.createElement('mth-flow-editor') as MthFlowEditor;
+    editor.nodes = SAMPLE_NODES;
+    editor.edges = SAMPLE_EDGES;
+    document.body.appendChild(editor);
+    await editor.updateComplete;
+
+    const selected: string[] = [];
+    editor.addEventListener('mth-node-select', (ev) => {
+      selected.push((ev as CustomEvent<{ nodeId: string }>).detail.nodeId);
+    });
+
+    const nodeBtns = editor.shadowRoot!.querySelectorAll<HTMLButtonElement>('.flow-node');
+    nodeBtns[0]!.click();
+    await editor.updateComplete;
+
+    expect(selected).toEqual(['trigger']);
+    expect(nodeBtns[0]!.getAttribute('aria-pressed')).toBe('true');
+    const edge1 = editor.shadowRoot!.querySelector('[data-edge-id="e1"]')!;
+    const edge2 = editor.shadowRoot!.querySelector('[data-edge-id="e2"]')!;
+    expect(edge1.getAttribute('data-highlighted')).toBe('true');
+    expect(edge2.getAttribute('data-highlighted')).toBe('false');
+  });
+
+  it('handles toolbar zoom/reset/auto-layout buttons and keyboard viewport shortcuts', async () => {
+    const editor = document.createElement('mth-flow-editor') as MthFlowEditor;
+    editor.nodes = SAMPLE_NODES;
+    editor.edges = SAMPLE_EDGES;
+    document.body.appendChild(editor);
+    await editor.updateComplete;
+
+    const viewportEvents: unknown[] = [];
+    const layoutEvents: unknown[] = [];
+    editor.addEventListener('mth-viewport-change', (ev) => viewportEvents.push((ev as CustomEvent).detail));
+    editor.addEventListener('mth-layout-complete', (ev) => layoutEvents.push((ev as CustomEvent).detail));
+
+    const tools = editor.shadowRoot!.querySelectorAll<HTMLButtonElement>('.tool-btn');
+    tools[0]!.click(); // zoom in +0.1
+    expect(editor.zoom).toBe(1.1);
+    tools[1]!.click(); // zoom out -0.1
+    expect(editor.zoom).toBe(1);
+
+    const region = editor.shadowRoot!.querySelector<HTMLElement>('[part="base"]')!;
+    region.dispatchEvent(new KeyboardEvent('keydown', { key: '+', bubbles: true }));
+    expect(editor.zoom).toBe(1.1);
+    region.dispatchEvent(new KeyboardEvent('keydown', { key: '0', bubbles: true }));
+    expect(editor.zoom).toBe(1);
+
+    tools[3]!.click(); // auto-layout
+    expect(layoutEvents).toEqual([{ nodeCount: 3, edgeCount: 2 }]);
+    expect(viewportEvents.length).toBe(4);
+  });
+
+  it('sets :state(empty) and renders fallback slot when nodes array is empty', async () => {
+    const editor = document.createElement('mth-flow-editor') as MthFlowEditor;
+    editor.nodes = [];
+    document.body.appendChild(editor);
+    await editor.updateComplete;
+
+    expect(editor.hasCustomState('empty')).toBe(true);
+    expect(editor.shadowRoot!.querySelector('.empty')).not.toBeNull();
+  });
 });

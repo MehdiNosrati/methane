@@ -153,4 +153,105 @@ describe('<mth-datagrid>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('cycles single-column sort (asc -> desc -> none) and supports multiSort', async () => {
+    registerMthDatagrid();
+    const el = document.createElement('mth-datagrid') as MthDatagrid;
+    el.multiSort = true;
+    el.columns = [
+      { id: 'dept', header: 'Dept', accessorKey: 'dept' },
+      { id: 'score', header: 'Score', accessorKey: 'score' },
+    ];
+    el.rows = [
+      { id: '1', dept: 'B', score: 10 },
+      { id: '2', dept: 'A', score: 30 },
+      { id: '3', dept: 'A', score: 20 },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const sortBtns = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.sort-btn');
+    sortBtns[0]!.click(); // dept asc
+    await el.updateComplete;
+    sortBtns[1]!.click(); // score asc (secondary)
+    await el.updateComplete;
+
+    expect(el.engine!.getProcessedRows().map((r) => r.id)).toEqual(['3', '2', '1']);
+
+    sortBtns[1]!.click(); // score desc
+    await el.updateComplete;
+    expect(el.engine!.getProcessedRows().map((r) => r.id)).toEqual(['2', '3', '1']);
+
+    sortBtns[1]!.click(); // clear score sort
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelectorAll('.header-cell')[1]!.getAttribute('aria-sort')).toBe('none');
+  });
+
+  it('supports select-all and per-row selection checkboxes emitting mth-selection-change', async () => {
+    registerMthDatagrid();
+    const el = document.createElement('mth-datagrid') as MthDatagrid;
+    el.selectable = true;
+    el.columns = [{ id: 'name', header: 'Name' }];
+    el.rows = [
+      { id: 'r1', name: 'One' },
+      { id: 'r2', name: 'Two' },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const selections: Array<string[]> = [];
+    el.addEventListener('mth-selection-change', (ev) => {
+      selections.push((ev as CustomEvent<{ selectedIds: string[] }>).detail.selectedIds);
+    });
+
+    const selectAll = el.shadowRoot!.querySelector<HTMLInputElement>('.header-cell.select-cell input')!;
+    selectAll.checked = true;
+    selectAll.dispatchEvent(new Event('change', { bubbles: true }));
+    await el.updateComplete;
+
+    expect(selections[selections.length - 1]).toEqual(['r1', 'r2']);
+    expect(el.shadowRoot!.querySelector('.body-row[data-row-id="r1"]')?.getAttribute('aria-selected')).toBe('true');
+
+    selectAll.checked = false;
+    selectAll.dispatchEvent(new Event('change', { bubbles: true }));
+    await el.updateComplete;
+    expect(selections[selections.length - 1]).toEqual([]);
+  });
+
+  it('emits mth-column-resize on resize button click and enforces 40px minimum width', async () => {
+    registerMthDatagrid();
+    const el = document.createElement('mth-datagrid') as MthDatagrid;
+    el.columns = [{ id: 'name', header: 'Name', width: 120 }];
+    el.rows = [{ id: '1', name: 'Row' }];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const resizes: Array<{ columnId: string; width: number }> = [];
+    el.addEventListener('mth-column-resize', (ev) => {
+      resizes.push((ev as CustomEvent<{ columnId: string; width: number }>).detail);
+    });
+
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.resize-btn')!.click();
+    expect(resizes).toEqual([{ columnId: 'name', width: 144 }]);
+
+    el.resizeColumn('name', 12); // below 40px guard -> ignored
+    expect(resizes).toHaveLength(1);
+  });
+
+  it('sets :state(empty) and renders fallback slot when rows array is empty', async () => {
+    registerMthDatagrid();
+    const el = document.createElement('mth-datagrid') as MthDatagrid;
+    el.columns = [{ id: 'name', header: 'Name' }];
+    el.rows = [];
+    const fallback = document.createElement('p');
+    fallback.slot = 'fallback';
+    fallback.textContent = 'No records found';
+    el.appendChild(fallback);
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.hasCustomState('empty')).toBe(true);
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="fallback"]')!;
+    expect(slot.assignedElements()).toEqual([fallback]);
+  });
 });
