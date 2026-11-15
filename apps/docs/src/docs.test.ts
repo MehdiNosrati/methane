@@ -260,6 +260,48 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
 
     const buttonHtml = readFileSync(resolve(distDir, 'components/mth-button/index.html'), 'utf8');
     expect(buttonHtml).toContain('@methane/svelte/MthButton.svelte');
+    expect(buttonHtml).toContain('Live Interactive Preview');
+    expect(buttonHtml).toContain('data-preview-stage');
+    expect(buttonHtml).toContain('data-preview-theme');
+    expect(buttonHtml).toContain('data-preview-dir');
+    expect(buttonHtml.indexOf('data-preview-stage')).toBeLessThan(
+      buttonHtml.indexOf('Multi-Framework Playground'),
+    );
+
+    const shippedTags = [
+      'mth-input',
+      'mth-field',
+      'mth-combobox',
+      'mth-option',
+      'mth-option-group',
+      'mth-dialog',
+      'mth-visually-hidden',
+      'mth-skip-link',
+      'mth-error-boundary',
+    ] as const;
+    for (const tag of shippedTags) {
+      const compHtml = readFileSync(resolve(distDir, `components/${tag}/index.html`), 'utf8');
+      expect(compHtml).toContain(`data-preview-tag="${tag}"`);
+      expect(compHtml).toContain('data-preview-upcoming="false"');
+      expect(compHtml).toContain('Live Custom Element');
+      expect(compHtml).toContain(`<${tag}`);
+    }
+
+    for (const tag of ['mth-button', 'mth-checkbox', 'mth-switch']) {
+      const compHtml = readFileSync(resolve(distDir, `components/${tag}/index.html`), 'utf8');
+      expect(compHtml).toContain(`data-preview-tag="${tag}"`);
+      expect(compHtml).toContain('data-preview-upcoming="true"');
+      expect(compHtml).toContain('Token-Styled Preview');
+    }
+
+    const clientSrc = readFileSync(resolve(docsRoot, 'src/lib/astro-client.ts'), 'utf8');
+    expect(clientSrc).toContain('registerUtilityElements()');
+    expect(clientSrc).toContain('registerAllComponents()');
+
+    const builtJsFiles = collectFiles(distDir, '.js');
+    const combinedBuiltJs = builtJsFiles.map((f) => readFileSync(f, 'utf8')).join('\n');
+    expect(combinedBuiltJs).toContain('mth-visually-hidden');
+    expect(combinedBuiltJs).toContain('mth-dialog');
 
     const tbHtml = readFileSync(resolve(distDir, 'theme-builder/index.html'), 'utf8');
     expect(tbHtml).toContain('Interactive OKLCH Theme Builder');
