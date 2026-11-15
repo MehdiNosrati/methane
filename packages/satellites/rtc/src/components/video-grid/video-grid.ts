@@ -11,6 +11,7 @@ import {
   collectHostThemeTokens,
   createAdoptedSheet,
   readHostToken,
+  removeAdoptedSheet,
   type ThemeTokenEngine,
 } from '../../shared/satellite-helpers.js';
 import { videoGridMessages } from './video-grid.messages.js';
@@ -197,6 +198,9 @@ export class MthVideoGrid extends UIElement {
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this._engine.syncState(this.participants, this.layout, this.pinnedId, this.activeSpeakerId);
     this.syncHostStates();
+    if (this.hasUpdated) {
+      this.requestUpdate();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -205,11 +209,15 @@ export class MthVideoGrid extends UIElement {
       this._engine.dispose();
       this._engine = null;
     }
+    removeAdoptedSheet(this, this.gridSheet);
     this.gridSheet = null;
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
     if (changedProperties.has('layout') || changedProperties.has('participants')) {
       this.syncHostStates();
     }
@@ -310,6 +318,19 @@ export class MthVideoGrid extends UIElement {
     `;
   }
 
+  private readonly handleToolbarKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
+
   override render() {
     const regionLabel = this.label || this.t('regionLabel');
     const spotlight = this.layout === 'speaker' ? this._engine?.getSpotlightParticipant() ?? null : null;
@@ -319,7 +340,7 @@ export class MthVideoGrid extends UIElement {
 
     return html`
       <div part="base" class="base" role="region" aria-label=${regionLabel}>
-        <div part="toolbar" class="toolbar">
+        <div part="toolbar" class="toolbar" @keydown=${this.handleToolbarKeyDown}>
           <div class="layout-group">
             <button
               type="button"

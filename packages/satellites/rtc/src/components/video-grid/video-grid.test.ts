@@ -88,6 +88,12 @@ describe('<mth-video-grid>', () => {
     expect(grid.shadowRoot!.querySelector('[part="stage"]')).toBeTruthy();
     expect(grid.engine?.getSpotlightParticipant()?.id).toBe('p2');
     expect(scanSameRootAria(grid.shadowRoot!).valid).toBe(true);
+
+    const sheetCountBefore = grid.shadowRoot!.adoptedStyleSheets.length;
+    grid.remove();
+    document.body.appendChild(grid);
+    await grid.updateComplete;
+    expect(grid.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCountBefore);
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM with fallback slot', async () => {

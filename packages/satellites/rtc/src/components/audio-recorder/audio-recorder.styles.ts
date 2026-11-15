@@ -99,4 +99,22 @@ export const audioRecorderStyles = css`
   .audio-preview {
     inline-size: 100%;
   }
+
+  @media (forced-colors: active) {
+    .meter {
+      border: 1px solid CanvasText;
+    }
+
+    .meter-fill {
+      forced-color-adjust: none;
+      background-color: Highlight;
+    }
+
+    .action-btn[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+  }
 `;

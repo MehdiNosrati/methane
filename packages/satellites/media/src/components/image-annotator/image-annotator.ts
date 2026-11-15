@@ -200,7 +200,6 @@ export class MthImageAnnotator extends UIElement {
     orientation: 'horizontal',
     loop: true,
     dir: 'auto',
-    container: () => this.shadowRoot as unknown as HTMLElement | null,
     onActiveChange: (item) => {
       const id = item?.getAttribute('data-id') ?? null;
       this.selectAnnotation(id);
@@ -243,7 +242,7 @@ export class MthImageAnnotator extends UIElement {
     }
     this.syncingFromEngine = false;
     this.rovingFocus.updateOptions({
-      dir: this.resolvedDir,
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
     });
     this.setCustomState('disabled', this.disabled);
     this.setCustomState('readonly', this.readonly);
@@ -258,26 +257,14 @@ export class MthImageAnnotator extends UIElement {
   setTool(tool: AnnotationTool): void {
     if (this.disabled || !VALID_TOOLS.includes(tool)) return;
     this.tool = tool;
-    this.dispatchEvent(
-      new CustomEvent('mth-tool-change', {
-        bubbles: true,
-        composed: true,
-        detail: { tool },
-      }),
-    );
+    this.emitEvent('mth-tool-change', { detail: { tool } });
   }
 
   addAnnotation(annotation: ImageAnnotation): ImageAnnotation | null {
     if (this.disabled || this.readonly || !this._engine) return null;
     const clean = this._engine.addAnnotation(annotation);
     this.syncFromEngine();
-    this.dispatchEvent(
-      new CustomEvent('mth-annotation-add', {
-        bubbles: true,
-        composed: true,
-        detail: { annotation: clean },
-      }),
-    );
+    this.emitEvent('mth-annotation-add', { detail: { annotation: clean } });
     return clean;
   }
 
@@ -316,13 +303,7 @@ export class MthImageAnnotator extends UIElement {
 
   selectAnnotation(id: string | null): void {
     this.selectedId = id;
-    this.dispatchEvent(
-      new CustomEvent('mth-annotation-select', {
-        bubbles: true,
-        composed: true,
-        detail: { id },
-      }),
-    );
+    this.emitEvent('mth-annotation-select', { detail: { id } });
   }
 
   private syncFromEngine(): void {
@@ -331,13 +312,7 @@ export class MthImageAnnotator extends UIElement {
     this.syncingFromEngine = true;
     this.annotations = list;
     this.revision += 1;
-    this.dispatchEvent(
-      new CustomEvent('mth-annotation-change', {
-        bubbles: true,
-        composed: true,
-        detail: { annotations: list },
-      }),
-    );
+    this.emitEvent('mth-annotation-change', { detail: { annotations: list } });
   }
 
   private handleStageClick = (event: MouseEvent): void => {
@@ -407,6 +382,19 @@ export class MthImageAnnotator extends UIElement {
     return svg`<text class="shape-label" x=${String(item.x)} y=${String(item.y)}>${item.text ?? ''}</text>`;
   }
 
+  private handleToolbarKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
+
   override render() {
     const items = this._engine?.getAnnotations() ?? this.annotations;
     const regionLabel = this.label.trim() || this.t('regionLabel');
@@ -426,7 +414,12 @@ export class MthImageAnnotator extends UIElement {
         dir=${this.resolvedDir}
         data-revision=${String(this.revision)}
       >
-        <div part="toolbar" role="toolbar" aria-label=${this.t('toolbarLabel')}>
+        <div
+          part="toolbar"
+          role="toolbar"
+          aria-label=${this.t('toolbarLabel')}
+          @keydown=${this.handleToolbarKeyDown}
+        >
           ${tools.map(
             (t) => html`
               <button
@@ -487,7 +480,7 @@ export class MthImageAnnotator extends UIElement {
                   <div
                     part="annotation-item"
                     role="option"
-                    tabindex=${index === 0 ? '0' : '-1'}
+                    tabindex=${this.rovingFocus.currentIndex === index ? '0' : '-1'}
                     data-id=${item.id}
                     aria-selected=${this.selectedId === item.id ? 'true' : 'false'}
                     @click=${() => this.selectAnnotation(item.id)}

@@ -297,6 +297,8 @@
               "statusStopped": "Recording complete",
               "statusUnsupported": "Audio recording unavailable in this environment",
               "statusError": "Recording error: {message}",
+              "micFailedError": "Microphone access failed",
+              "unknownError": "unknown",
               "playbackLabel": "Recorded audio playback"
             }
           }
@@ -655,6 +657,8 @@
               "statusDenied": "Camera permission denied",
               "statusUnsupported": "Camera API unavailable in this environment",
               "statusError": "Camera error: {message}",
+              "initFailedError": "Camera initialization failed",
+              "unknownError": "unknown",
               "capturedAlt": "Captured camera snapshot"
             }
           }
@@ -951,6 +955,8 @@
               "statusStopped": "Screen recording complete",
               "statusUnsupported": "Screen capture unavailable in this environment",
               "statusError": "Screen capture error: {message}",
+              "captureFailedError": "Screen capture failed",
+              "unknownError": "unknown",
               "playbackLabel": "Recorded screen playback"
             }
           }

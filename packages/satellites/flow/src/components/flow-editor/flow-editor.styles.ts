@@ -67,6 +67,7 @@ export const flowEditorStyles = css`
 
   .plane {
     position: relative;
+    direction: ltr;
     inline-size: 100%;
     block-size: 18rem;
     transform-origin: 0 0;
@@ -133,5 +134,19 @@ export const flowEditorStyles = css`
     text-align: center;
     color: var(--_fg-muted);
     font-size: var(--mth-font-size-sm, 0.875rem);
+  }
+
+  @media (forced-colors: active) {
+    .flow-node[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+
+    .edge-path[data-highlighted='true'] {
+      forced-color-adjust: none;
+      stroke: Highlight;
+    }
   }
 `;

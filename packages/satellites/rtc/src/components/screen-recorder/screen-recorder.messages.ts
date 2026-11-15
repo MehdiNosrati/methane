@@ -12,5 +12,7 @@ export const screenRecorderMessages = {
   statusStopped: 'Screen recording complete',
   statusUnsupported: 'Screen capture unavailable in this environment',
   statusError: 'Screen capture error: {message}',
+  captureFailedError: 'Screen capture failed',
+  unknownError: 'unknown',
   playbackLabel: 'Recorded screen playback',
 } as const;

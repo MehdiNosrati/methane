@@ -38,13 +38,27 @@ export function collectHostThemeTokens(host: HTMLElement): Record<string, string
   return tokens;
 }
 
-export function createAdoptedSheet(host: HTMLElement): CSSStyleSheet | null {
+export function createAdoptedSheet(
+  host: HTMLElement,
+  existing: CSSStyleSheet | null = null,
+): CSSStyleSheet | null {
   if (!host.shadowRoot || typeof CSSStyleSheet === 'undefined') {
     return null;
   }
-  const sheet = new CSSStyleSheet();
-  host.shadowRoot.adoptedStyleSheets = [...host.shadowRoot.adoptedStyleSheets, sheet];
+  const sheet = existing ?? new CSSStyleSheet();
+  if (!host.shadowRoot.adoptedStyleSheets.includes(sheet)) {
+    host.shadowRoot.adoptedStyleSheets = [...host.shadowRoot.adoptedStyleSheets, sheet];
+  }
   return sheet;
+}
+
+export function removeAdoptedSheet(host: HTMLElement, sheet: CSSStyleSheet | null): void {
+  if (!sheet || !host.shadowRoot) return;
+  if (host.shadowRoot.adoptedStyleSheets.includes(sheet)) {
+    host.shadowRoot.adoptedStyleSheets = host.shadowRoot.adoptedStyleSheets.filter(
+      (s) => s !== sheet,
+    );
+  }
 }
 
 export function formatDurationSeconds(totalSeconds: number): string {

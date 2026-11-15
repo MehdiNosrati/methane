@@ -14,6 +14,7 @@ import {
   createAdoptedSheet,
   escapeCssAttrValue,
   readHostToken,
+  removeAdoptedSheet,
   type ThemeTokenEngine,
 } from '../../shared/satellite-helpers.js';
 import { flowEditorMessages } from './flow-editor.messages.js';
@@ -301,6 +302,7 @@ export class MthFlowEditor extends UIElement {
   private _engine: DefaultFlowEditorEngine | null = null;
   private readonly rovingCtrl: RovingFocusController;
   private layoutSheet: CSSStyleSheet | null = null;
+  private lastResolvedDir: 'ltr' | 'rtl' = 'ltr';
 
   constructor() {
     super();
@@ -320,9 +322,13 @@ export class MthFlowEditor extends UIElement {
     if (!this._engine) {
       this._engine = new DefaultFlowEditorEngine((name) => readHostToken(this, name));
     }
+    this.lastResolvedDir = this.resolvedDir;
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this.recomputeGraph(false);
     this.setCustomState('empty', this.nodes.length === 0);
+    if (this.hasUpdated) {
+      this.requestUpdate();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -331,11 +337,18 @@ export class MthFlowEditor extends UIElement {
       this._engine.dispose();
       this._engine = null;
     }
+    removeAdoptedSheet(this, this.layoutSheet);
     this.layoutSheet = null;
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
+    const currentDir = this.resolvedDir;
+    const dirChanged = currentDir !== this.lastResolvedDir;
+    this.lastResolvedDir = currentDir;
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : currentDir,
+    });
     if (changedProperties.has('nodes')) {
       this.setCustomState('empty', this.nodes.length === 0);
     }
@@ -347,7 +360,8 @@ export class MthFlowEditor extends UIElement {
         changedProperties.has('edges') ||
         changedProperties.has('direction') ||
         changedProperties.has('edgeStyle') ||
-        changedProperties.has('autoLayout')
+        changedProperties.has('autoLayout') ||
+        (this.direction === 'auto' && dirChanged)
       ) {
         this.recomputeGraph(false);
       }
@@ -450,6 +464,19 @@ export class MthFlowEditor extends UIElement {
     }
   };
 
+  private readonly handleToolbarKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
+
   override render() {
     const regionLabel = this.label || this.t('regionLabel');
     const positioned = this._engine?.getPositionedNodes() ?? [];
@@ -457,7 +484,7 @@ export class MthFlowEditor extends UIElement {
 
     return html`
       <div part="base" class="base" role="region" aria-label=${regionLabel} @keydown=${this.handleKeyDown}>
-        <div part="toolbar" class="toolbar">
+        <div part="toolbar" class="toolbar" @keydown=${this.handleToolbarKeyDown}>
           <button type="button" class="tool-btn" @click=${() => this.zoomBy(0.1)}>
             ${this.t('zoomInLabel')}
           </button>
@@ -496,6 +523,7 @@ export class MthFlowEditor extends UIElement {
                         type="button"
                         part="node"
                         class="flow-node"
+                        dir=${this.resolvedDir}
                         data-node-id=${node.id}
                         data-roving-node="true"
                         aria-pressed=${isSelected ? 'true' : 'false'}

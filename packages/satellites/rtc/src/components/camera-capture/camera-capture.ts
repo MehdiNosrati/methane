@@ -52,7 +52,7 @@ export interface CameraCaptureEngine extends ThemeTokenEngine {
 }
 
 function isSafeDataImageUrl(url: string): boolean {
-  return /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url) || url.startsWith('data:image/svg+xml,');
+  return /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url);
 }
 
 class DefaultCameraCaptureEngine implements CameraCaptureEngine {
@@ -325,7 +325,7 @@ export class MthCameraCapture extends UIElement {
     this.devices = [...this._engine.devices];
     this.setStatus(this._engine.status);
     if (!ok && this._engine.status === 'error') {
-      this.lastError = 'Camera initialization failed';
+      this.lastError = this.t('initFailedError');
       this.emitEvent('mth-error', { detail: { message: this.lastError } });
     }
     return ok;
@@ -383,7 +383,7 @@ export class MthCameraCapture extends UIElement {
       case 'unsupported':
         return this.t('statusUnsupported');
       case 'error':
-        return this.t('statusError', { message: this.lastError || 'unknown' });
+        return this.t('statusError', { message: this.lastError || this.t('unknownError') });
       default:
         return this.t('statusIdle');
     }

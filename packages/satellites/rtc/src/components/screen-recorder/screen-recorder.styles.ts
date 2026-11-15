@@ -98,4 +98,14 @@ export const screenRecorderStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
     color: var(--_fg-muted);
   }
+
+  @media (forced-colors: active) {
+    .action-btn[data-primary='true'],
+    .action-btn[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+  }
 `;

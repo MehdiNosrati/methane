@@ -74,9 +74,21 @@ describe('<mth-waveform>', () => {
 
     expect(scanSameRootAria(el.shadowRoot!).valid).toBe(true);
 
+    const sheetCountBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCountBefore);
+    expect(el.engine?.bars.length).toBe(48);
+
+    let errorReason = '';
+    el.addEventListener('mth-error', (ev: Event) => {
+      errorReason = (ev as CustomEvent<{ reason: string }>).detail.reason;
+    });
     el.src = 'javascript:alert(1)';
     await el.updateComplete;
     expect(el.playing).toBe(false);
+    expect(errorReason).toContain('Blocked unsafe');
     expect(el.shadowRoot?.querySelector('[role="alert"]')?.textContent).toContain('Blocked unsafe');
   });
 

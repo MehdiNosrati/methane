@@ -158,4 +158,19 @@ export const videoGridStyles = css`
     color: var(--_fg-muted);
     font-size: var(--mth-font-size-sm, 0.875rem);
   }
+
+  @media (forced-colors: active) {
+    .tile[data-speaking='true'] {
+      forced-color-adjust: none;
+      border: 2px solid Highlight;
+    }
+
+    .layout-btn[aria-pressed='true'],
+    .pin-btn[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+  }
 `;

@@ -101,6 +101,13 @@ describe('<mth-flow-editor>', () => {
     await editor.updateComplete;
     expect(editor.zoom).toBe(1.25);
     expect(scanSameRootAria(editor.shadowRoot!).valid).toBe(true);
+
+    const sheetCountBefore = editor.shadowRoot!.adoptedStyleSheets.length;
+    editor.remove();
+    document.body.appendChild(editor);
+    await editor.updateComplete;
+    expect(editor.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCountBefore);
+    expect(editor.engine?.getPositionedNodes().length).toBe(2);
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM with fallback slot', async () => {

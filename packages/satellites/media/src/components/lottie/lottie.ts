@@ -8,7 +8,7 @@ import {
   UIElement,
   type PropertyValues,
 } from '@methane/core';
-import { DotLottie, type Config as DotLottieConfig } from '@lottiefiles/dotlottie-web';
+import type { DotLottie, Config as DotLottieConfig } from '@lottiefiles/dotlottie-web';
 import { MotionController } from '@methane/primitives';
 import {
   collectHostThemeTokens,
@@ -61,7 +61,7 @@ export class LottieEngine implements ThemeTokenEngine {
     return this._disposed;
   }
 
-  mountCanvas(config: LottieEngineConfig): boolean {
+  async mountCanvas(config: LottieEngineConfig): Promise<boolean> {
     if (this._disposed) return false;
     this._loop = config.loop;
     this._speed = config.speed;
@@ -74,6 +74,8 @@ export class LottieEngine implements ThemeTokenEngine {
 
     try {
       this.destroyNativePlayer();
+      const { DotLottie: DotLottieCtor } = await import('@lottiefiles/dotlottie-web');
+      if (this._disposed) return false;
       const playerConfig: DotLottieConfig = {
         canvas: config.canvas,
         autoplay: config.autoplay && !config.reducedMotion,
@@ -82,7 +84,7 @@ export class LottieEngine implements ThemeTokenEngine {
         ...(config.src ? { src: config.src } : {}),
         ...(config.data !== undefined ? { data: config.data } : {}),
       };
-      this.player = new DotLottie(playerConfig);
+      this.player = new DotLottieCtor(playerConfig);
       if (config.reducedMotion) {
         this.player.freeze();
         this._playing = false;
@@ -155,7 +157,6 @@ export class LottieEngine implements ThemeTokenEngine {
 
   private canCreateNativePlayer(canvas: HTMLCanvasElement): boolean {
     if (
-      typeof DotLottie !== 'function' ||
       typeof WebAssembly === 'undefined' ||
       typeof CanvasRenderingContext2D === 'undefined'
     ) {
@@ -222,6 +223,7 @@ export class MthLottie extends UIElement {
   private canvasEl?: HTMLCanvasElement;
 
   private _engine: LottieEngine | null = null;
+  private canvasMounted = false;
   private readonly motion = new MotionController(this, { respectReducedMotion: true });
 
   get engine(): LottieEngine | null {
@@ -233,11 +235,15 @@ export class MthLottie extends UIElement {
     this._engine = new LottieEngine((name) => readHostToken(this, name));
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this.syncReducedMotionState();
+    if (this.hasUpdated) {
+      this.requestUpdate();
+    }
   }
 
   override disconnectedCallback(): void {
     this._engine?.dispose();
     this._engine = null;
+    this.canvasMounted = false;
     super.disconnectedCallback();
   }
 
@@ -261,16 +267,20 @@ export class MthLottie extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
+    if (changed.has('src') && this.errorMessage) {
+      this.emitEvent('mth-error', { detail: { reason: this.errorMessage } });
+    }
     if (!this._engine) return;
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this.syncReducedMotionState();
 
     if (
-      (changed.has('src') || changed.has('animationData') || changed.has('autoplay')) &&
       this.canvasEl &&
-      !this.errorMessage
+      !this.errorMessage &&
+      (!this.canvasMounted || changed.has('src') || changed.has('animationData') || changed.has('autoplay'))
     ) {
-      this._engine.mountCanvas({
+      this.canvasMounted = true;
+      void this._engine.mountCanvas({
         canvas: this.canvasEl,
         src: this.src,
         data: this.animationData,
@@ -294,13 +304,7 @@ export class MthLottie extends UIElement {
     const started = this._engine.play();
     this.playing = started;
     if (started) {
-      this.dispatchEvent(
-        new CustomEvent('mth-play', {
-          bubbles: true,
-          composed: true,
-          detail: { speed: this.speed, loop: this.loop },
-        }),
-      );
+      this.emitEvent('mth-play', { detail: { speed: this.speed, loop: this.loop } });
     }
     return started;
   }
@@ -308,24 +312,13 @@ export class MthLottie extends UIElement {
   pause(): void {
     this._engine?.pause();
     this.playing = false;
-    this.dispatchEvent(
-      new CustomEvent('mth-pause', {
-        bubbles: true,
-        composed: true,
-        detail: { speed: this.speed },
-      }),
-    );
+    this.emitEvent('mth-pause', { detail: { speed: this.speed } });
   }
 
   stop(): void {
     this._engine?.stop();
     this.playing = false;
-    this.dispatchEvent(
-      new CustomEvent('mth-stop', {
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this.emitEvent('mth-stop');
   }
 
   private syncReducedMotionState(): void {

@@ -15,6 +15,7 @@ import {
   createAdoptedSheet,
   escapeCssAttrValue,
   readHostToken,
+  removeAdoptedSheet,
   type ThemeTokenEngine,
 } from '../../shared/satellite-helpers.js';
 import { orgChartMessages } from './org-chart.messages.js';
@@ -304,6 +305,7 @@ export class MthOrgChart extends UIElement {
   private _engine: DefaultOrgChartEngine | null = null;
   private readonly rovingCtrl: RovingFocusController;
   private chartSheet: CSSStyleSheet | null = null;
+  private lastResolvedDir: 'ltr' | 'rtl' = 'ltr';
   private readonly searchId = `mth-org-search-${++orgSearchCounter}`;
 
   constructor() {
@@ -324,10 +326,14 @@ export class MthOrgChart extends UIElement {
     if (!this._engine) {
       this._engine = new DefaultOrgChartEngine((name) => readHostToken(this, name));
     }
+    this.lastResolvedDir = this.resolvedDir;
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this._engine.setCollapsedIds(this.collapsedIds);
     this._engine.computeFromInput(this.nodes, this.resolveDirection(), this.query);
     this.setCustomState('empty', this.nodes.length === 0);
+    if (this.hasUpdated) {
+      this.requestUpdate();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -336,11 +342,18 @@ export class MthOrgChart extends UIElement {
       this._engine.dispose();
       this._engine = null;
     }
+    removeAdoptedSheet(this, this.chartSheet);
     this.chartSheet = null;
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
+    const currentDir = this.resolvedDir;
+    const dirChanged = currentDir !== this.lastResolvedDir;
+    this.lastResolvedDir = currentDir;
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : currentDir,
+    });
     if (changedProperties.has('nodes')) {
       this.setCustomState('empty', this.nodes.length === 0);
     }
@@ -353,7 +366,8 @@ export class MthOrgChart extends UIElement {
         changedProperties.has('nodes') ||
         changedProperties.has('direction') ||
         changedProperties.has('query') ||
-        changedProperties.has('collapsedIds')
+        changedProperties.has('collapsedIds') ||
+        (this.direction === 'auto' && dirChanged)
       ) {
         this._engine.computeFromInput(this.nodes, this.resolveDirection(), this.query);
       }
@@ -418,6 +432,19 @@ export class MthOrgChart extends UIElement {
     this.chartSheet.replaceSync(rules.join('\n'));
   }
 
+  private readonly handleSearchKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
+
   override render() {
     void this.layoutTick;
     const regionLabel = this.label || this.t('regionLabel');
@@ -436,6 +463,7 @@ export class MthOrgChart extends UIElement {
             .value=${this.query}
             placeholder=${this.t('searchPlaceholder')}
             @input=${this.handleSearchInput}
+            @keydown=${this.handleSearchKeyDown}
           />
         </div>
 
@@ -458,6 +486,7 @@ export class MthOrgChart extends UIElement {
                     <article
                       part="card"
                       class="card"
+                      dir=${this.resolvedDir}
                       data-node-id=${card.id}
                       data-selected=${this.selectedId === card.id ? 'true' : 'false'}
                       data-match=${card.matched ? 'true' : 'false'}

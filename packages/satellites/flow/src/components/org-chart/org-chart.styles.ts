@@ -10,7 +10,7 @@ export const orgChartStyles = css`
     --_border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
     --_focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
     --_accent: var(--mth-color-accent, oklch(0.6 0.2 250));
-    --_accent-subtle: var(--mth-color-accent-subtle, oklch(0.94 0.04 250));
+    --_accent-subtle: var(--mth-color-accent-subtle, light-dark(oklch(0.94 0.04 250), oklch(0.28 0.06 250)));
     --_radius: var(--mth-radius-lg, 0.75rem);
     --_radius-sm: var(--mth-radius-sm, 0.375rem);
     color: var(--_fg);
@@ -60,6 +60,7 @@ export const orgChartStyles = css`
 
   .canvas {
     position: relative;
+    direction: ltr;
     inline-size: 100%;
     min-block-size: var(--_chart-h, 18rem);
     overflow: auto;
@@ -147,5 +148,18 @@ export const orgChartStyles = css`
     text-align: center;
     color: var(--_fg-muted);
     font-size: var(--mth-font-size-sm, 0.875rem);
+  }
+
+  @media (forced-colors: active) {
+    .card[data-selected='true'] {
+      forced-color-adjust: none;
+      border: 2px solid Highlight;
+    }
+
+    .card-btn[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+    }
   }
 `;

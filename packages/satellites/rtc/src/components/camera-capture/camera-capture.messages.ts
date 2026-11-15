@@ -11,5 +11,7 @@ export const cameraCaptureMessages = {
   statusDenied: 'Camera permission denied',
   statusUnsupported: 'Camera API unavailable in this environment',
   statusError: 'Camera error: {message}',
+  initFailedError: 'Camera initialization failed',
+  unknownError: 'unknown',
   capturedAlt: 'Captured camera snapshot',
 } as const;

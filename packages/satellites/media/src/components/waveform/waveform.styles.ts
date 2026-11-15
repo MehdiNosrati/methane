@@ -3,14 +3,14 @@ import { css } from '@methane/core';
 export const waveformStyles = css`
   :host {
     display: block;
-    --_bg: var(--mth-color-surface, oklch(0.99 0 0));
-    --_fg: var(--mth-color-fg, oklch(0.18 0.02 250));
-    --_fg-muted: var(--mth-color-fg-muted, oklch(0.45 0.02 250));
-    --_border: var(--mth-color-border, oklch(0.84 0.01 250));
+    --_bg: var(--mth-color-surface, light-dark(oklch(0.99 0 0), oklch(0.18 0.01 250)));
+    --_fg: var(--mth-color-fg, light-dark(oklch(0.18 0.02 250), oklch(0.96 0.005 250)));
+    --_fg-muted: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.02 250), oklch(0.72 0.01 250)));
+    --_border: var(--mth-color-border, light-dark(oklch(0.84 0.01 250), oklch(0.32 0.01 250)));
     --_focus: var(--mth-color-border-focus, oklch(0.55 0.22 250));
     --_accent: var(--mth-color-accent, oklch(0.55 0.22 250));
-    --_accent-fg: var(--mth-color-accent-fg, oklch(0.99 0 0));
-    --_bar-idle: var(--mth-color-border, oklch(0.84 0.01 250));
+    --_accent-fg: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
+    --_bar-idle: var(--mth-color-border, light-dark(oklch(0.84 0.01 250), oklch(0.32 0.01 250)));
     --_radius: var(--mth-radius-md, 0.5rem);
     --_pad: var(--mth-space-3, 0.75rem);
     --_gap: var(--mth-space-3, 0.75rem);
@@ -129,6 +129,30 @@ export const waveformStyles = css`
   @media (prefers-reduced-motion: reduce) {
     [part='progress'] {
       transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    [part='play-button'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+
+    .bar-unplayed {
+      forced-color-adjust: none;
+      fill: CanvasText;
+    }
+
+    .bar-played {
+      forced-color-adjust: none;
+      fill: Highlight;
+    }
+
+    [part='progress'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
     }
   }
 `;

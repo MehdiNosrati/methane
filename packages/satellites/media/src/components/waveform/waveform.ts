@@ -14,6 +14,7 @@ import {
   createAdoptedSheet,
   isSafeMediaUrl,
   readHostToken,
+  removeAdoptedSheet,
   type ThemeTokenEngine,
 } from '../../shared/satellite-helpers.js';
 import { WaveformMessages } from './waveform.messages.js';
@@ -174,8 +175,16 @@ export class MthWaveform extends UIElement {
   override disconnectedCallback(): void {
     this._engine?.dispose();
     this._engine = null;
+    removeAdoptedSheet(this, this.adoptedSheet);
     this.adoptedSheet = null;
     super.disconnectedCallback();
+  }
+
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+    if (changed.has('src') && this.errorMessage) {
+      this.emitEvent('mth-error', { detail: { reason: this.errorMessage } });
+    }
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -214,25 +223,13 @@ export class MthWaveform extends UIElement {
     if (this.disabled || this.errorMessage) return;
     this.playing = true;
     this.syncEngineState();
-    this.dispatchEvent(
-      new CustomEvent('mth-play', {
-        bubbles: true,
-        composed: true,
-        detail: { currentTime: this.currentTime },
-      }),
-    );
+    this.emitEvent('mth-play', { detail: { currentTime: this.currentTime } });
   }
 
   pause(): void {
     this.playing = false;
     this.syncEngineState();
-    this.dispatchEvent(
-      new CustomEvent('mth-pause', {
-        bubbles: true,
-        composed: true,
-        detail: { currentTime: this.currentTime },
-      }),
-    );
+    this.emitEvent('mth-pause', { detail: { currentTime: this.currentTime } });
   }
 
   togglePlay(): void {
@@ -250,13 +247,7 @@ export class MthWaveform extends UIElement {
     this.currentTime = clamped;
     this.syncEngineState();
     const progress = maxTime > 0 ? clamped / maxTime : 0;
-    this.dispatchEvent(
-      new CustomEvent('mth-seek', {
-        bubbles: true,
-        composed: true,
-        detail: { currentTime: clamped, progress },
-      }),
-    );
+    this.emitEvent('mth-seek', { detail: { currentTime: clamped, progress } });
   }
 
   private syncEngineState(): void {

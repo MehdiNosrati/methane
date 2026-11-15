@@ -309,7 +309,7 @@ export class MthScreenRecorder extends UIElement {
     if (ok) {
       this.startTick();
     } else {
-      this.lastError = 'Screen capture failed';
+      this.lastError = this.t('captureFailedError');
       this.emitEvent('mth-error', { detail: { message: this.lastError } });
     }
     return ok;
@@ -391,7 +391,7 @@ export class MthScreenRecorder extends UIElement {
       case 'unsupported':
         return this.t('statusUnsupported');
       case 'error':
-        return this.t('statusError', { message: this.lastError || 'unknown' });
+        return this.t('statusError', { message: this.lastError || this.t('unknownError') });
       default:
         return this.t('statusIdle');
     }

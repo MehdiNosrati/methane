@@ -58,9 +58,19 @@ describe('<mth-lottie>', () => {
     expect(el.playing).toBe(false);
     expect(scanSameRootAria(el.shadowRoot!).valid).toBe(true);
 
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine).toBeTruthy();
+
+    let errorReason = '';
+    el.addEventListener('mth-error', (ev: Event) => {
+      errorReason = (ev as CustomEvent<{ reason: string }>).detail.reason;
+    });
     el.src = 'javascript:alert(1)';
     await el.updateComplete;
     expect(el.play()).toBe(false);
+    expect(errorReason).toContain('Blocked unsafe');
     expect(el.shadowRoot?.querySelector('[role="alert"]')?.textContent).toContain('Blocked unsafe');
     el.remove();
 

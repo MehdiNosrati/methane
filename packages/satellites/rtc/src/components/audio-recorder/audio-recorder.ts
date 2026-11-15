@@ -12,6 +12,7 @@ import {
   createAdoptedSheet,
   formatDurationSeconds,
   readHostToken,
+  removeAdoptedSheet,
   type ThemeTokenEngine,
 } from '../../shared/satellite-helpers.js';
 import { audioRecorderMessages } from './audio-recorder.messages.js';
@@ -277,6 +278,9 @@ export class MthAudioRecorder extends UIElement {
     }
     this._engine.syncThemeTokens(collectHostThemeTokens(this));
     this.syncStates();
+    if (this.hasUpdated) {
+      this.requestUpdate();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -286,6 +290,7 @@ export class MthAudioRecorder extends UIElement {
       this._engine.dispose();
       this._engine = null;
     }
+    removeAdoptedSheet(this, this.meterSheet);
     this.meterSheet = null;
     this.recState = 'idle';
   }
@@ -312,7 +317,7 @@ export class MthAudioRecorder extends UIElement {
     if (ok) {
       this.startTick();
     } else {
-      this.lastError = 'Microphone access failed';
+      this.lastError = this.t('micFailedError');
       this.emitEvent('mth-error', { detail: { message: this.lastError } });
     }
     return ok;
@@ -417,7 +422,7 @@ export class MthAudioRecorder extends UIElement {
       case 'unsupported':
         return this.t('statusUnsupported');
       case 'error':
-        return this.t('statusError', { message: this.lastError || 'unknown' });
+        return this.t('statusError', { message: this.lastError || this.t('unknownError') });
       default:
         return this.t('statusIdle');
     }
