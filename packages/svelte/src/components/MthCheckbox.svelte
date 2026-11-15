@@ -2,7 +2,7 @@
   import type { MthCheckboxProps } from '../index.js';
 
   let {
-  value = $bindable('on'),
+  value = $bindable("on"),
   checked = $bindable(false),
   children,
   ...rest

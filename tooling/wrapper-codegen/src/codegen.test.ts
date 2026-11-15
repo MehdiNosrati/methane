@@ -8,7 +8,9 @@ import {
   DEFAULT_BEHAVIOR_SPECS,
   DEFAULT_CEM_FIXTURE,
   generateAllWrappers,
+  loadWorkspaceManifestAndSpecs,
   normalizeManifest,
+  sanitizeTypeText,
 } from './index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -127,6 +129,88 @@ describe('@methane/wrapper-codegen', () => {
           cwd: repoRoot,
           stdio: 'pipe',
         },
+      );
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  it('sanitizes unimported nominal types while preserving standalone TS/DOM types', () => {
+    expect(sanitizeTypeText('DatagridColumn[]')).toBe('unknown[]');
+    expect(sanitizeTypeText('ReadonlyArray<CitationItem> | null')).toBe('ReadonlyArray<unknown> | null');
+    expect(sanitizeTypeText('DataSource<T> | null')).toBe('unknown | null');
+    expect(sanitizeTypeText('DotLottieConfig["data"] | undefined')).toBe('unknown | undefined');
+    expect(sanitizeTypeText('(item: T, index: number) => unknown')).toBe(
+      '(item: unknown, index: number) => unknown',
+    );
+    expect(sanitizeTypeText('{}')).toBe('Record<string, never>');
+    expect(sanitizeTypeText('{ item: MthBreadcrumbPathItem; index: number }')).toBe(
+      '{ item: unknown; index: number }',
+    );
+    expect(
+      sanitizeTypeText("Element | { getBoundingClientRect(): DOMRect } | DOMRect | null"),
+    ).toBe('Element | { getBoundingClientRect(): DOMRect } | DOMRect | null');
+    expect(sanitizeTypeText("'TB' | 'LR' | 'RL' | 'auto'")).toBe("'TB' | 'LR' | 'RL' | 'auto'");
+    expect(sanitizeTypeText('File[]')).toBe('File[]');
+    expect(sanitizeTypeText('ReadonlyArray<string>')).toBe('ReadonlyArray<string>');
+    expect(sanitizeTypeText('Date | FileList | ValidityState | void')).toBe(
+      'Date | FileList | ValidityState | void',
+    );
+  });
+
+  it('discovers workspace CEMs + primitives via CLI and compiles full dom-maps.d.ts; keeps fixture fallback', () => {
+    const cliPath = resolve(repoRoot, 'tooling/wrapper-codegen/dist/cli.js');
+
+    // Full workspace discovery
+    const workspaceOut = execFileSync(
+      process.execPath,
+      [cliPath, '--root', repoRoot, '--dry-run'],
+      { cwd: repoRoot, encoding: 'utf8' },
+    );
+    const match = /Generated wrappers for (\d+) components/.exec(workspaceOut);
+    expect(match).not.toBeNull();
+    expect(Number(match![1])).toBeGreaterThanOrEqual(230);
+
+    // Fallback to DEFAULT_CEM_FIXTURE in empty root without --cem
+    const emptyTmp = mkdtempSync(resolve(tmpdir(), 'mth-codegen-empty-'));
+    try {
+      const fallbackOut = execFileSync(
+        process.execPath,
+        [cliPath, '--root', emptyTmp, '--dry-run'],
+        { cwd: repoRoot, encoding: 'utf8' },
+      );
+      expect(fallbackOut).toContain('Generated wrappers for 8 components');
+    } finally {
+      rmSync(emptyTmp, { recursive: true, force: true });
+    }
+
+    // Type-check merged workspace catalog dom-maps.d.ts
+    const discovered = loadWorkspaceManifestAndSpecs(repoRoot);
+    const tmp = mkdtempSync(resolve(tmpdir(), 'mth-codegen-full-'));
+    try {
+      const fullResult = generateAllWrappers(discovered, {
+        write: true,
+        ideDir: resolve(tmp, 'ide'),
+      });
+      expect(fullResult.models.length).toBeGreaterThanOrEqual(230);
+      const domMapsPath = resolve(tmp, 'ide/dom-maps.d.ts');
+      const tscBin = resolve(repoRoot, 'node_modules/.bin/tsc');
+      execFileSync(
+        tscBin,
+        [
+          '--noEmit',
+          '--strict',
+          '--target',
+          'ES2023',
+          '--module',
+          'NodeNext',
+          '--moduleResolution',
+          'NodeNext',
+          '--lib',
+          'ES2023,DOM',
+          domMapsPath,
+        ],
+        { cwd: repoRoot, stdio: 'pipe' },
       );
     } finally {
       rmSync(tmp, { recursive: true, force: true });

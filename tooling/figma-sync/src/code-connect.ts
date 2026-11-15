@@ -23,8 +23,37 @@ const ALL_FRAMEWORKS: ReadonlyArray<CodeConnectFramework> = [
 ];
 
 function extractEnumOptions(prop: NormalizedProp): string[] | null {
-  const literals = [...prop.type.matchAll(/'([^']+)'/g)].map((m) => m[1]!);
+  const literals: string[] = [];
+  for (const branch of prop.type.split('|')) {
+    const match = /^(['"])(.*)\1$/.exec(branch.trim());
+    if (match) {
+      literals.push(match[2]!);
+    }
+  }
   return literals.length >= 2 ? literals : null;
+}
+
+function unquoteDefaultValue(raw: string | undefined): string | undefined {
+  if (raw === undefined) return undefined;
+  const trimmed = raw.trim();
+  if (trimmed.length >= 2) {
+    if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+      try {
+        const parsed = JSON.parse(trimmed) as unknown;
+        return typeof parsed === 'string' ? parsed : String(parsed);
+      } catch {
+        return trimmed.slice(1, -1);
+      }
+    }
+    if (trimmed.startsWith("'") && trimmed.endsWith("'")) {
+      return trimmed.slice(1, -1);
+    }
+  }
+  return trimmed;
+}
+
+function escapeHtmlAttr(value: string): string {
+  return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
 }
 
 function buildFigmaPropMappings(model: NormalizedComponentModel): string[] {
@@ -35,7 +64,9 @@ function buildFigmaPropMappings(model: NormalizedComponentModel): string[] {
     const label = toPascalCase(prop.name);
     const enumOptions = extractEnumOptions(prop);
     if (enumOptions) {
-      const mapping = enumOptions.map((opt) => `'${toPascalCase(opt)}': '${opt}'`).join(', ');
+      const mapping = enumOptions
+        .map((opt) => `'${opt.length === 0 ? 'Empty' : toPascalCase(opt)}': '${opt}'`)
+        .join(', ');
       lines.push(`    ${prop.name}: figma.enum('${label}', { ${mapping} }),`);
     } else if (prop.type === 'boolean') {
       lines.push(`    ${prop.name}: figma.boolean('${label}'),`);
@@ -174,12 +205,23 @@ function renderHtmlCodeConnect(
 ): string {
   const attrs = model.props
     .filter((p) => p.attr !== null)
-    .slice(0, 4)
-    .map((p) => {
-      if (p.type === 'boolean') return p.attr!;
+    .flatMap((p) => {
+      if (p.type === 'boolean') {
+        return p.defaultValue === 'true' ? [p.attr!] : [];
+      }
       const enumOpts = extractEnumOptions(p);
-      return `${p.attr!}="${enumOpts ? enumOpts[0] : (p.defaultValue?.replaceAll("'", '') ?? '')}"`;
-    });
+      const enumVal = enumOpts ? (enumOpts.find((o) => o.length > 0) ?? enumOpts[0]) : undefined;
+      const defaultVal = unquoteDefaultValue(p.defaultValue);
+      const val =
+        enumVal !== undefined && enumVal.length > 0
+          ? enumVal
+          : defaultVal !== undefined && defaultVal.length > 0
+            ? defaultVal
+            : undefined;
+      if (val === undefined) return [];
+      return [`${p.attr!}="${escapeHtmlAttr(val)}"`];
+    })
+    .slice(0, 4);
   const attrStr = attrs.length > 0 ? ` ${attrs.join(' ')}` : '';
   const slots = model.slots
     .filter((s) => s.name !== '')

@@ -2,18 +2,257 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import type {
+  MthAccordionElement,
+  MthAccordionItemElement,
+  MthActivityFeedElement,
+  MthAddressInputElement,
+  MthAiFeedbackElement,
+  MthAiMessageElement,
+  MthAlertElement,
+  MthArtifactPaneElement,
+  MthAsyncSearchElement,
+  MthAudioPlayerElement,
+  MthAudioRecorderElement,
+  MthAuditLogElement,
+  MthAuthFormElement,
+  MthAvailabilityPickerElement,
+  MthAvatarElement,
+  MthAvatarGroupElement,
+  MthBackToTopElement,
+  MthBadgeElement,
+  MthBannerElement,
+  MthBarcodeElement,
+  MthBeforeAfterElement,
+  MthBookingWidgetElement,
+  MthBottomNavElement,
+  MthBottomSheetElement,
+  MthBreadcrumbItemElement,
+  MthBreadcrumbPathElement,
+  MthBreadcrumbsElement,
+  MthBulkActionBarElement,
   MthButtonElement,
+  MthButtonGroupElement,
+  MthCalendarElement,
+  MthCalendarHeatmapElement,
+  MthCalloutElement,
+  MthCameraCaptureElement,
+  MthCaptchaSlotElement,
+  MthCardElement,
+  MthCarouselElement,
+  MthCarouselItemElement,
+  MthCartElement,
+  MthCascaderElement,
+  MthChartElement,
+  MthChartSeriesElement,
+  MthChatThreadElement,
   MthCheckboxElement,
+  MthCheckoutStepsElement,
+  MthCitationListElement,
+  MthClockElement,
+  MthCoachmarkElement,
+  MthCodeBlockElement,
+  MthCodeEditorElement,
+  MthCodeTabsElement,
+  MthCollabCursorsElement,
+  MthColorPickerElement,
+  MthColumnElement,
+  MthColumnChooserElement,
   MthComboboxElement,
+  MthCommandPaletteElement,
+  MthCommentThreadElement,
+  MthComparisonTableElement,
+  MthConditionalFieldElement,
+  MthContextMenuElement,
+  MthCookieBannerElement,
+  MthCopyButtonElement,
+  MthCountdownElement,
+  MthCreatableSelectElement,
+  MthCreditCardInputElement,
+  MthCronBuilderElement,
+  MthCsvImporterElement,
+  MthCurrencyInputElement,
+  MthDatagridElement,
+  MthDatePickerElement,
+  MthDateRangeCalendarElement,
+  MthDateRangePickerElement,
+  MthDatetimePickerElement,
   MthDialogElement,
+  MthDiffViewerElement,
+  MthDrawerElement,
+  MthDrawingPadElement,
+  MthDropdownMenuElement,
+  MthDropzoneElement,
+  MthDurationInputElement,
+  MthEmojiPickerElement,
+  MthEmptyStateElement,
   MthErrorBoundaryElement,
+  MthErrorSummaryElement,
+  MthEventCalendarElement,
+  MthFabElement,
+  MthFacetFiltersElement,
   MthFieldElement,
+  MthFieldsetElement,
+  MthFileExplorerElement,
+  MthFileUploadElement,
+  MthFilterBuilderElement,
+  MthFloatingPanelElement,
+  MthFloorPlanElement,
+  MthFlowEditorElement,
+  MthFormElement,
+  MthFormRepeaterElement,
+  MthFormWizardElement,
+  MthFormulaBarElement,
+  MthFullscreenOverlayElement,
+  MthGalleryElement,
+  MthGanttElement,
+  MthHoverCardElement,
+  MthIbanInputElement,
+  MthIconElement,
+  MthIconButtonElement,
+  MthImageElement,
+  MthImageAnnotatorElement,
+  MthImageCropperElement,
+  MthInfiniteScrollElement,
+  MthInlineEditElement,
+  MthInlineStatusElement,
   MthInputElement,
+  MthInvoiceElement,
+  MthJsonEditorElement,
+  MthKanbanElement,
+  MthKeyValueElement,
+  MthLightboxElement,
+  MthLinkElement,
+  MthListElement,
+  MthListItemElement,
+  MthLoadMoreElement,
+  MthLoadingOverlayElement,
+  MthLocationPickerElement,
+  MthLottieElement,
+  MthMapElement,
+  MthMapClusterElement,
+  MthMapDrawElement,
+  MthMapRouteElement,
+  MthMarkdownElement,
+  MthMarkdownEditorElement,
+  MthMaskedInputElement,
+  MthMasonryElement,
+  MthMathEditorElement,
+  MthMegaMenuElement,
+  MthMentionInputElement,
+  MthMenuItemElement,
+  MthMenubarElement,
+  MthMessageComposerElement,
+  MthMfaChallengeElement,
+  MthModelViewerElement,
+  MthMonthPickerElement,
+  MthMultiSelectElement,
+  MthNavbarElement,
+  MthNetworkStatusElement,
+  MthNewsletterFormElement,
+  MthNotificationBellElement,
+  MthNotificationCenterElement,
+  MthNumberInputElement,
   MthOptionElement,
   MthOptionGroupElement,
+  MthOrgChartElement,
+  MthOtpInputElement,
+  MthPaginationElement,
+  MthPasskeyPromptElement,
+  MthPasswordInputElement,
+  MthPaymentFormElement,
+  MthPdfViewerElement,
+  MthPhoneInputElement,
+  MthPivotTableElement,
+  MthPlanPickerElement,
+  MthPopoverElement,
+  MthPresenceBadgeElement,
+  MthPriceDisplayElement,
+  MthProductCardElement,
+  MthProfileMenuElement,
+  MthProgressBarElement,
+  MthProgressRingElement,
+  MthPromptInputElement,
+  MthQrCodeElement,
+  MthQuantitySelectorElement,
+  MthQueryBuilderElement,
+  MthRadioElement,
+  MthRadioGroupElement,
+  MthRangeSliderElement,
+  MthRatingElement,
+  MthReactionBarElement,
+  MthResizableGroupElement,
+  MthResizableHandleElement,
+  MthResizablePanelElement,
+  MthReviewSummaryElement,
+  MthRichEditorElement,
+  MthRoleMatrixElement,
+  MthRruleEditorElement,
+  MthSavedViewsElement,
+  MthSchedulerElement,
+  MthSchemaFormElement,
+  MthScreenRecorderElement,
+  MthScrollAreaElement,
+  MthSearchInputElement,
+  MthSeatMapElement,
+  MthSegmentedControlElement,
+  MthSelectElement,
+  MthSessionListElement,
+  MthSettingsShellElement,
+  MthShareButtonElement,
+  MthSidebarNavElement,
+  MthSignaturePadElement,
+  MthSiteSearchElement,
+  MthSkeletonElement,
   MthSkipLinkElement,
+  MthSliderElement,
+  MthSortableElement,
+  MthSparklineElement,
+  MthSpeedDialElement,
+  MthSpinnerElement,
+  MthSplitButtonElement,
+  MthSplitPaneElement,
+  MthSpreadsheetElement,
+  MthSsoButtonsElement,
+  MthStatCardElement,
+  MthStatusIndicatorElement,
+  MthStepElement,
+  MthStepperElement,
+  MthStopwatchElement,
+  MthSuggestionChipsElement,
   MthSwitchElement,
+  MthTabElement,
+  MthTabPanelElement,
+  MthTableElement,
+  MthTabsElement,
+  MthTagElement,
+  MthTagInputElement,
+  MthTextareaElement,
+  MthThinkingIndicatorElement,
+  MthTimePickerElement,
+  MthTimelineElement,
+  MthTimelineItemElement,
+  MthTimezonePickerElement,
+  MthToastElement,
+  MthTocElement,
+  MthToggleButtonElement,
+  MthToggleGroupElement,
+  MthToolCallElement,
+  MthTooltipElement,
+  MthTourElement,
+  MthTourStepElement,
+  MthTransferListElement,
+  MthTreeElement,
+  MthTreeItemElement,
+  MthTreeNavElement,
+  MthTreeTableElement,
+  MthTypingIndicatorElement,
+  MthUploadProgressElement,
+  MthVideoGridElement,
+  MthVideoPlayerElement,
+  MthVirtualScrollerElement,
   MthVisuallyHiddenElement,
+  MthWaveformElement,
+  MthZoomPanElement,
 } from './index.js';
 
 function resolveElementClass<T extends HTMLElement>(tagName: string): { new (): T } {
@@ -30,6 +269,316 @@ function resolveElementClass<T extends HTMLElement>(tagName: string): { new (): 
   return class MethanePlaceholderElement extends Base {} as unknown as { new (): T };
 }
 
+export const MthAccordion = createComponent({
+  react: React,
+  tagName: "mth-accordion",
+  elementClass: resolveElementClass<MthAccordionElement>("mth-accordion"),
+  displayName: "MthAccordion",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthAccordionItem = createComponent({
+  react: React,
+  tagName: "mth-accordion-item",
+  elementClass: resolveElementClass<MthAccordionItemElement>("mth-accordion-item"),
+  displayName: "MthAccordionItem",
+  events: {
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ value: string; expanded: boolean }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<void>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<void>>,
+  },
+});
+
+export const MthActivityFeed = createComponent({
+  react: React,
+  tagName: "mth-activity-feed",
+  elementClass: resolveElementClass<MthActivityFeedElement>("mth-activity-feed"),
+  displayName: "MthActivityFeed",
+  events: {
+    onMthDataState: "mth-data-state" as EventName<CustomEvent<{ status: unknown; count: number }>>,
+  },
+});
+
+export const MthAddressInput = createComponent({
+  react: React,
+  tagName: "mth-address-input",
+  elementClass: resolveElementClass<MthAddressInputElement>("mth-address-input"),
+  displayName: "MthAddressInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; address: unknown }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; address: unknown }>>,
+  },
+});
+
+export const MthAiFeedback = createComponent({
+  react: React,
+  tagName: "mth-ai-feedback",
+  elementClass: resolveElementClass<MthAiFeedbackElement>("mth-ai-feedback"),
+  displayName: "MthAiFeedback",
+  events: {
+    onMthFeedback: "mth-feedback" as EventName<CustomEvent<{ rating: '' | 'up' | 'down'; reasons: string[]; comment: string; submitted: boolean }>>,
+  },
+});
+
+export const MthAiMessage = createComponent({
+  react: React,
+  tagName: "mth-ai-message",
+  elementClass: resolveElementClass<MthAiMessageElement>("mth-ai-message"),
+  displayName: "MthAiMessage",
+  events: {
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ content: string; ok: boolean }>>,
+    onMthRegenerate: "mth-regenerate" as EventName<CustomEvent<{ content: string }>>,
+  },
+});
+
+export const MthAlert = createComponent({
+  react: React,
+  tagName: "mth-alert",
+  elementClass: resolveElementClass<MthAlertElement>("mth-alert"),
+  displayName: "MthAlert",
+  events: {
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthArtifactPane = createComponent({
+  react: React,
+  tagName: "mth-artifact-pane",
+  elementClass: resolveElementClass<MthArtifactPaneElement>("mth-artifact-pane"),
+  displayName: "MthArtifactPane",
+  events: {
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ content: string; ok: boolean }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthVersionChange: "mth-version-change" as EventName<CustomEvent<{ version: string }>>,
+    onMthTabChange: "mth-tab-change" as EventName<CustomEvent<{ tab: 'code' | 'preview' }>>,
+  },
+});
+
+export const MthAsyncSearch = createComponent({
+  react: React,
+  tagName: "mth-async-search",
+  elementClass: resolveElementClass<MthAsyncSearchElement>("mth-async-search"),
+  displayName: "MthAsyncSearch",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; item: unknown | null }>>,
+    onMthSearch: "mth-search" as EventName<CustomEvent<{ query: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthAudioPlayer = createComponent({
+  react: React,
+  tagName: "mth-audio-player",
+  elementClass: resolveElementClass<MthAudioPlayerElement>("mth-audio-player"),
+  displayName: "MthAudioPlayer",
+  events: {
+    onMthPlay: "mth-play" as EventName<CustomEvent<undefined>>,
+    onMthPause: "mth-pause" as EventName<CustomEvent<undefined>>,
+    onMthTimeupdate: "mth-timeupdate" as EventName<CustomEvent<{ currentTime: number; duration: number }>>,
+    onMthEnded: "mth-ended" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthAudioRecorder = createComponent({
+  react: React,
+  tagName: "mth-audio-recorder",
+  elementClass: resolveElementClass<MthAudioRecorderElement>("mth-audio-recorder"),
+  displayName: "MthAudioRecorder",
+  events: {
+    onMthStateChange: "mth-state-change" as EventName<CustomEvent<{ state: unknown }>>,
+    onMthRecordComplete: "mth-record-complete" as EventName<CustomEvent<{ blob: Blob | null; url: string; durationMs: number; mimeType: string }>>,
+    onMthLevel: "mth-level" as EventName<CustomEvent<{ level: number }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthAuditLog = createComponent({
+  react: React,
+  tagName: "mth-audit-log",
+  elementClass: resolveElementClass<MthAuditLogElement>("mth-audit-log"),
+  displayName: "MthAuditLog",
+  events: {
+    onMthEntrySelect: "mth-entry-select" as EventName<CustomEvent<{ entry: unknown }>>,
+    onMthFilterChange: "mth-filter-change" as EventName<CustomEvent<{ search: string; severity: unknown }>>,
+  },
+});
+
+export const MthAuthForm = createComponent({
+  react: React,
+  tagName: "mth-auth-form",
+  elementClass: resolveElementClass<MthAuthFormElement>("mth-auth-form"),
+  displayName: "MthAuthForm",
+  events: {
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ mode: string; email: string; password: string; fullName: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ email: string; password: string; fullName: string }>>,
+  },
+});
+
+export const MthAvailabilityPicker = createComponent({
+  react: React,
+  tagName: "mth-availability-picker",
+  elementClass: resolveElementClass<MthAvailabilityPickerElement>("mth-availability-picker"),
+  displayName: "MthAvailabilityPicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; schedule: unknown }>>,
+  },
+});
+
+export const MthAvatar = createComponent({
+  react: React,
+  tagName: "mth-avatar",
+  elementClass: resolveElementClass<MthAvatarElement>("mth-avatar"),
+  displayName: "MthAvatar",
+  events: {
+
+  },
+});
+
+export const MthAvatarGroup = createComponent({
+  react: React,
+  tagName: "mth-avatar-group",
+  elementClass: resolveElementClass<MthAvatarGroupElement>("mth-avatar-group"),
+  displayName: "MthAvatarGroup",
+  events: {
+
+  },
+});
+
+export const MthBackToTop = createComponent({
+  react: React,
+  tagName: "mth-back-to-top",
+  elementClass: resolveElementClass<MthBackToTopElement>("mth-back-to-top"),
+  displayName: "MthBackToTop",
+  events: {
+    onMthScrollTop: "mth-scroll-top" as EventName<CustomEvent<{ threshold: number }>>,
+  },
+});
+
+export const MthBadge = createComponent({
+  react: React,
+  tagName: "mth-badge",
+  elementClass: resolveElementClass<MthBadgeElement>("mth-badge"),
+  displayName: "MthBadge",
+  events: {
+
+  },
+});
+
+export const MthBanner = createComponent({
+  react: React,
+  tagName: "mth-banner",
+  elementClass: resolveElementClass<MthBannerElement>("mth-banner"),
+  displayName: "MthBanner",
+  events: {
+    onMthDismiss: "mth-dismiss" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthBarcode = createComponent({
+  react: React,
+  tagName: "mth-barcode",
+  elementClass: resolveElementClass<MthBarcodeElement>("mth-barcode"),
+  displayName: "MthBarcode",
+  events: {
+
+  },
+});
+
+export const MthBeforeAfter = createComponent({
+  react: React,
+  tagName: "mth-before-after",
+  elementClass: resolveElementClass<MthBeforeAfterElement>("mth-before-after"),
+  displayName: "MthBeforeAfter",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ position: number }>>,
+  },
+});
+
+export const MthBookingWidget = createComponent({
+  react: React,
+  tagName: "mth-booking-widget",
+  elementClass: resolveElementClass<MthBookingWidgetElement>("mth-booking-widget"),
+  displayName: "MthBookingWidget",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; date: string; time: string }>>,
+    onMthConfirm: "mth-confirm" as EventName<CustomEvent<{ value: string; date: string; time: string }>>,
+  },
+});
+
+export const MthBottomNav = createComponent({
+  react: React,
+  tagName: "mth-bottom-nav",
+  elementClass: resolveElementClass<MthBottomNavElement>("mth-bottom-nav"),
+  displayName: "MthBottomNav",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string; href?: string }>>,
+  },
+});
+
+export const MthBottomSheet = createComponent({
+  react: React,
+  tagName: "mth-bottom-sheet",
+  elementClass: resolveElementClass<MthBottomSheetElement>("mth-bottom-sheet"),
+  displayName: "MthBottomSheet",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthDetentChange: "mth-detent-change" as EventName<CustomEvent<{ detent: 'collapsed' | 'half' | 'full' }>>,
+  },
+});
+
+export const MthBreadcrumbItem = createComponent({
+  react: React,
+  tagName: "mth-breadcrumb-item",
+  elementClass: resolveElementClass<MthBreadcrumbItemElement>("mth-breadcrumb-item"),
+  displayName: "MthBreadcrumbItem",
+  events: {
+
+  },
+});
+
+export const MthBreadcrumbPath = createComponent({
+  react: React,
+  tagName: "mth-breadcrumb-path",
+  elementClass: resolveElementClass<MthBreadcrumbPathElement>("mth-breadcrumb-path"),
+  displayName: "MthBreadcrumbPath",
+  events: {
+    onMthNavigate: "mth-navigate" as EventName<CustomEvent<{ item: unknown; index: number }>>,
+    onMthExpand: "mth-expand" as EventName<CustomEvent<{ expanded: true }>>,
+  },
+});
+
+export const MthBreadcrumbs = createComponent({
+  react: React,
+  tagName: "mth-breadcrumbs",
+  elementClass: resolveElementClass<MthBreadcrumbsElement>("mth-breadcrumbs"),
+  displayName: "MthBreadcrumbs",
+  events: {
+
+  },
+});
+
+export const MthBulkActionBar = createComponent({
+  react: React,
+  tagName: "mth-bulk-action-bar",
+  elementClass: resolveElementClass<MthBulkActionBarElement>("mth-bulk-action-bar"),
+  displayName: "MthBulkActionBar",
+  events: {
+    onMthSelectAll: "mth-select-all" as EventName<CustomEvent<{ totalCount: number }>>,
+    onMthClearSelection: "mth-clear-selection" as EventName<CustomEvent<Record<string, never>>>,
+    onMthAction: "mth-action" as EventName<CustomEvent<{ id: string; selectedCount: number }>>,
+  },
+});
+
 export const MthButton = createComponent({
   react: React,
   tagName: "mth-button",
@@ -40,13 +589,291 @@ export const MthButton = createComponent({
   },
 });
 
+export const MthButtonGroup = createComponent({
+  react: React,
+  tagName: "mth-button-group",
+  elementClass: resolveElementClass<MthButtonGroupElement>("mth-button-group"),
+  displayName: "MthButtonGroup",
+  events: {
+
+  },
+});
+
+export const MthCalendar = createComponent({
+  react: React,
+  tagName: "mth-calendar",
+  elementClass: resolveElementClass<MthCalendarElement>("mth-calendar"),
+  displayName: "MthCalendar",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthFocusDate: "mth-focus-date" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthCalendarHeatmap = createComponent({
+  react: React,
+  tagName: "mth-calendar-heatmap",
+  elementClass: resolveElementClass<MthCalendarHeatmapElement>("mth-calendar-heatmap"),
+  displayName: "MthCalendarHeatmap",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ date: string; count: number }>>,
+  },
+});
+
+export const MthCallout = createComponent({
+  react: React,
+  tagName: "mth-callout",
+  elementClass: resolveElementClass<MthCalloutElement>("mth-callout"),
+  displayName: "MthCallout",
+  events: {
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ open: boolean }>>,
+  },
+});
+
+export const MthCameraCapture = createComponent({
+  react: React,
+  tagName: "mth-camera-capture",
+  elementClass: resolveElementClass<MthCameraCaptureElement>("mth-camera-capture"),
+  displayName: "MthCameraCapture",
+  events: {
+    onMthCapture: "mth-capture" as EventName<CustomEvent<{ dataUrl: string; width: number; height: number }>>,
+    onMthPermissionChange: "mth-permission-change" as EventName<CustomEvent<{ status: unknown }>>,
+    onMthDeviceChange: "mth-device-change" as EventName<CustomEvent<{ deviceId: string }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthCaptchaSlot = createComponent({
+  react: React,
+  tagName: "mth-captcha-slot",
+  elementClass: resolveElementClass<MthCaptchaSlotElement>("mth-captcha-slot"),
+  displayName: "MthCaptchaSlot",
+  events: {
+    onMthVerify: "mth-verify" as EventName<CustomEvent<{ token: string; provider: string }>>,
+    onMthExpire: "mth-expire" as EventName<CustomEvent<{ provider: string }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ provider: string; message: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthCard = createComponent({
+  react: React,
+  tagName: "mth-card",
+  elementClass: resolveElementClass<MthCardElement>("mth-card"),
+  displayName: "MthCard",
+  events: {
+
+  },
+});
+
+export const MthCarousel = createComponent({
+  react: React,
+  tagName: "mth-carousel",
+  elementClass: resolveElementClass<MthCarouselElement>("mth-carousel"),
+  displayName: "MthCarousel",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ index: number; total: number }>>,
+  },
+});
+
+export const MthCarouselItem = createComponent({
+  react: React,
+  tagName: "mth-carousel-item",
+  elementClass: resolveElementClass<MthCarouselItemElement>("mth-carousel-item"),
+  displayName: "MthCarouselItem",
+  events: {
+
+  },
+});
+
+export const MthCart = createComponent({
+  react: React,
+  tagName: "mth-cart",
+  elementClass: resolveElementClass<MthCartElement>("mth-cart"),
+  displayName: "MthCart",
+  events: {
+    onMthQuantityChange: "mth-quantity-change" as EventName<CustomEvent<{ id: string; quantity: number }>>,
+    onMthRemoveItem: "mth-remove-item" as EventName<CustomEvent<{ id: string }>>,
+    onMthCheckout: "mth-checkout" as EventName<CustomEvent<{ items: ReadonlyArray<unknown>; subtotal: number; total: number }>>,
+  },
+});
+
+export const MthCascader = createComponent({
+  react: React,
+  tagName: "mth-cascader",
+  elementClass: resolveElementClass<MthCascaderElement>("mth-cascader"),
+  displayName: "MthCascader",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; path: ReadonlyArray<string>; selectedOptions: ReadonlyArray<unknown> }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthChart = createComponent({
+  react: React,
+  tagName: "mth-chart",
+  elementClass: resolveElementClass<MthChartElement>("mth-chart"),
+  displayName: "MthChart",
+  events: {
+    onMthChartReady: "mth-chart-ready" as EventName<CustomEvent<{ renderer: 'canvas' | 'svg'; mode: 'echarts' | 'headless' }>>,
+    onMthChartRender: "mth-chart-render" as EventName<CustomEvent<{ seriesCount: number }>>,
+    onMthPointSelect: "mth-point-select" as EventName<CustomEvent<{ seriesName: string; dataIndex: number; name: string; value: unknown }>>,
+  },
+});
+
+export const MthChartSeries = createComponent({
+  react: React,
+  tagName: "mth-chart-series",
+  elementClass: resolveElementClass<MthChartSeriesElement>("mth-chart-series"),
+  displayName: "MthChartSeries",
+  events: {
+    onMthSeriesChange: "mth-series-change" as EventName<CustomEvent<{ name: string; type: unknown }>>,
+  },
+});
+
+export const MthChatThread = createComponent({
+  react: React,
+  tagName: "mth-chat-thread",
+  elementClass: resolveElementClass<MthChatThreadElement>("mth-chat-thread"),
+  displayName: "MthChatThread",
+  events: {
+    onMthScrollBottom: "mth-scroll-bottom" as EventName<CustomEvent<undefined>>,
+    onMthRetry: "mth-retry" as EventName<CustomEvent<undefined>>,
+  },
+});
+
 export const MthCheckbox = createComponent({
   react: React,
   tagName: "mth-checkbox",
   elementClass: resolveElementClass<MthCheckboxElement>("mth-checkbox"),
   displayName: "MthCheckbox",
   events: {
-    onMthChange: "mth-change" as EventName<CustomEvent<{ checked: boolean; indeterminate: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ checked: boolean; indeterminate: boolean; value: string }>>,
+  },
+});
+
+export const MthCheckoutSteps = createComponent({
+  react: React,
+  tagName: "mth-checkout-steps",
+  elementClass: resolveElementClass<MthCheckoutStepsElement>("mth-checkout-steps"),
+  displayName: "MthCheckoutSteps",
+  events: {
+    onMthStepChange: "mth-step-change" as EventName<CustomEvent<{ stepId: string; index: number }>>,
+    onMthStepComplete: "mth-step-complete" as EventName<CustomEvent<{ stepId: string }>>,
+  },
+});
+
+export const MthCitationList = createComponent({
+  react: React,
+  tagName: "mth-citation-list",
+  elementClass: resolveElementClass<MthCitationListElement>("mth-citation-list"),
+  displayName: "MthCitationList",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ id: string; index: number; title: string; url: string }>>,
+  },
+});
+
+export const MthClock = createComponent({
+  react: React,
+  tagName: "mth-clock",
+  elementClass: resolveElementClass<MthClockElement>("mth-clock"),
+  displayName: "MthClock",
+  events: {
+
+  },
+});
+
+export const MthCoachmark = createComponent({
+  react: React,
+  tagName: "mth-coachmark",
+  elementClass: resolveElementClass<MthCoachmarkElement>("mth-coachmark"),
+  displayName: "MthCoachmark",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthDismiss: "mth-dismiss" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthCodeBlock = createComponent({
+  react: React,
+  tagName: "mth-code-block",
+  elementClass: resolveElementClass<MthCodeBlockElement>("mth-code-block"),
+  displayName: "MthCodeBlock",
+  events: {
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ code: string }>>,
+  },
+});
+
+export const MthCodeEditor = createComponent({
+  react: React,
+  tagName: "mth-code-editor",
+  elementClass: resolveElementClass<MthCodeEditorElement>("mth-code-editor"),
+  displayName: "MthCodeEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthCodeTabs = createComponent({
+  react: React,
+  tagName: "mth-code-tabs",
+  elementClass: resolveElementClass<MthCodeTabsElement>("mth-code-tabs"),
+  displayName: "MthCodeTabs",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ value: string; code: string; ok: boolean }>>,
+  },
+});
+
+export const MthCollabCursors = createComponent({
+  react: React,
+  tagName: "mth-collab-cursors",
+  elementClass: resolveElementClass<MthCollabCursorsElement>("mth-collab-cursors"),
+  displayName: "MthCollabCursors",
+  events: {
+
+  },
+});
+
+export const MthColorPicker = createComponent({
+  react: React,
+  tagName: "mth-color-picker",
+  elementClass: resolveElementClass<MthColorPickerElement>("mth-color-picker"),
+  displayName: "MthColorPicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthColumn = createComponent({
+  react: React,
+  tagName: "mth-column",
+  elementClass: resolveElementClass<MthColumnElement>("mth-column"),
+  displayName: "MthColumn",
+  events: {
+
+  },
+});
+
+export const MthColumnChooser = createComponent({
+  react: React,
+  tagName: "mth-column-chooser",
+  elementClass: resolveElementClass<MthColumnChooserElement>("mth-column-chooser"),
+  displayName: "MthColumnChooser",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ columns: ReadonlyArray<unknown> }>>,
+    onMthReset: "mth-reset" as EventName<CustomEvent<Record<string, never>>>,
   },
 });
 
@@ -67,6 +894,222 @@ export const MthCombobox = createComponent({
   },
 });
 
+export const MthCommandPalette = createComponent({
+  react: React,
+  tagName: "mth-command-palette",
+  elementClass: resolveElementClass<MthCommandPaletteElement>("mth-command-palette"),
+  displayName: "MthCommandPalette",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<void>>,
+    onMthQueryChange: "mth-query-change" as EventName<CustomEvent<{ query: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ id: string; label: string; href?: string }>>,
+  },
+});
+
+export const MthCommentThread = createComponent({
+  react: React,
+  tagName: "mth-comment-thread",
+  elementClass: resolveElementClass<MthCommentThreadElement>("mth-comment-thread"),
+  displayName: "MthCommentThread",
+  events: {
+    onMthReply: "mth-reply" as EventName<CustomEvent<{ parentId: string; body: string }>>,
+    onMthResolveToggle: "mth-resolve-toggle" as EventName<CustomEvent<{ id: string; resolved: boolean }>>,
+  },
+});
+
+export const MthComparisonTable = createComponent({
+  react: React,
+  tagName: "mth-comparison-table",
+  elementClass: resolveElementClass<MthComparisonTableElement>("mth-comparison-table"),
+  displayName: "MthComparisonTable",
+  events: {
+    onMthSelectPlan: "mth-select-plan" as EventName<CustomEvent<{ id: string; name: string }>>,
+  },
+});
+
+export const MthConditionalField = createComponent({
+  react: React,
+  tagName: "mth-conditional-field",
+  elementClass: resolveElementClass<MthConditionalFieldElement>("mth-conditional-field"),
+  displayName: "MthConditionalField",
+  events: {
+    onMthConditionChange: "mth-condition-change" as EventName<CustomEvent<{ matched: boolean }>>,
+  },
+});
+
+export const MthContextMenu = createComponent({
+  react: React,
+  tagName: "mth-context-menu",
+  elementClass: resolveElementClass<MthContextMenuElement>("mth-context-menu"),
+  displayName: "MthContextMenu",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthCookieBanner = createComponent({
+  react: React,
+  tagName: "mth-cookie-banner",
+  elementClass: resolveElementClass<MthCookieBannerElement>("mth-cookie-banner"),
+  displayName: "MthCookieBanner",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthConsent: "mth-consent" as EventName<CustomEvent<{ essential: boolean; analytics: boolean; marketing: boolean }>>,
+  },
+});
+
+export const MthCopyButton = createComponent({
+  react: React,
+  tagName: "mth-copy-button",
+  elementClass: resolveElementClass<MthCopyButtonElement>("mth-copy-button"),
+  displayName: "MthCopyButton",
+  events: {
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ value: string; method: string }>>,
+    onMthCopyError: "mth-copy-error" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthCountdown = createComponent({
+  react: React,
+  tagName: "mth-countdown",
+  elementClass: resolveElementClass<MthCountdownElement>("mth-countdown"),
+  displayName: "MthCountdown",
+  events: {
+    onMthTick: "mth-tick" as EventName<CustomEvent<{ remainingMs: number; days: number; hours: number; minutes: number; seconds: number }>>,
+    onMthComplete: "mth-complete" as EventName<CustomEvent<{ target: string }>>,
+  },
+});
+
+export const MthCreatableSelect = createComponent({
+  react: React,
+  tagName: "mth-creatable-select",
+  elementClass: resolveElementClass<MthCreatableSelectElement>("mth-creatable-select"),
+  displayName: "MthCreatableSelect",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+    onMthCreate: "mth-create" as EventName<CustomEvent<{ value: string; label: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthCreditCardInput = createComponent({
+  react: React,
+  tagName: "mth-credit-card-input",
+  elementClass: resolveElementClass<MthCreditCardInputElement>("mth-credit-card-input"),
+  displayName: "MthCreditCardInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ brand: unknown; valid: boolean; complete: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ brand: unknown; valid: boolean; complete: boolean }>>,
+  },
+});
+
+export const MthCronBuilder = createComponent({
+  react: React,
+  tagName: "mth-cron-builder",
+  elementClass: resolveElementClass<MthCronBuilderElement>("mth-cron-builder"),
+  displayName: "MthCronBuilder",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthCsvImporter = createComponent({
+  react: React,
+  tagName: "mth-csv-importer",
+  elementClass: resolveElementClass<MthCsvImporterElement>("mth-csv-importer"),
+  displayName: "MthCsvImporter",
+  events: {
+    onMthParse: "mth-parse" as EventName<CustomEvent<{ headers: ReadonlyArray<string>; rowCount: number }>>,
+    onMthImport: "mth-import" as EventName<CustomEvent<{ rows: ReadonlyArray<Record<string, string>>; invalidCount: number; mappings: Record<number, string> }>>,
+  },
+});
+
+export const MthCurrencyInput = createComponent({
+  react: React,
+  tagName: "mth-currency-input",
+  elementClass: resolveElementClass<MthCurrencyInputElement>("mth-currency-input"),
+  displayName: "MthCurrencyInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; valueAsNumber: number; currency: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; valueAsNumber: number; currency: string }>>,
+  },
+});
+
+export const MthDatagrid = createComponent({
+  react: React,
+  tagName: "mth-datagrid",
+  elementClass: resolveElementClass<MthDatagridElement>("mth-datagrid"),
+  displayName: "MthDatagrid",
+  events: {
+    onMthSortChange: "mth-sort-change" as EventName<CustomEvent<{ sorting: ReadonlyArray<{ id: string; desc: boolean }> }>>,
+    onMthSelectionChange: "mth-selection-change" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string> }>>,
+    onMthColumnResize: "mth-column-resize" as EventName<CustomEvent<{ columnId: string; width: number }>>,
+  },
+});
+
+export const MthDatePicker = createComponent({
+  react: React,
+  tagName: "mth-date-picker",
+  elementClass: resolveElementClass<MthDatePickerElement>("mth-date-picker"),
+  displayName: "MthDatePicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthDateRangeCalendar = createComponent({
+  react: React,
+  tagName: "mth-date-range-calendar",
+  elementClass: resolveElementClass<MthDateRangeCalendarElement>("mth-date-range-calendar"),
+  displayName: "MthDateRangeCalendar",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ start: string; end: string }>>,
+  },
+});
+
+export const MthDateRangePicker = createComponent({
+  react: React,
+  tagName: "mth-date-range-picker",
+  elementClass: resolveElementClass<MthDateRangePickerElement>("mth-date-range-picker"),
+  displayName: "MthDateRangePicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; startDate: string; endDate: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthDatetimePicker = createComponent({
+  react: React,
+  tagName: "mth-datetime-picker",
+  elementClass: resolveElementClass<MthDatetimePickerElement>("mth-datetime-picker"),
+  displayName: "MthDatetimePicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
 export const MthDialog = createComponent({
   react: React,
   tagName: "mth-dialog",
@@ -82,6 +1125,101 @@ export const MthDialog = createComponent({
   },
 });
 
+export const MthDiffViewer = createComponent({
+  react: React,
+  tagName: "mth-diff-viewer",
+  elementClass: resolveElementClass<MthDiffViewerElement>("mth-diff-viewer"),
+  displayName: "MthDiffViewer",
+  events: {
+    onMthViewChange: "mth-view-change" as EventName<CustomEvent<{ view: unknown }>>,
+    onMthHunkChange: "mth-hunk-change" as EventName<CustomEvent<{ hunkIndex: number; total: number }>>,
+  },
+});
+
+export const MthDrawer = createComponent({
+  react: React,
+  tagName: "mth-drawer",
+  elementClass: resolveElementClass<MthDrawerElement>("mth-drawer"),
+  displayName: "MthDrawer",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthCancel: "mth-cancel" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthDrawingPad = createComponent({
+  react: React,
+  tagName: "mth-drawing-pad",
+  elementClass: resolveElementClass<MthDrawingPadElement>("mth-drawing-pad"),
+  displayName: "MthDrawingPad",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ strokeCount: number }>>,
+  },
+});
+
+export const MthDropdownMenu = createComponent({
+  react: React,
+  tagName: "mth-dropdown-menu",
+  elementClass: resolveElementClass<MthDropdownMenuElement>("mth-dropdown-menu"),
+  displayName: "MthDropdownMenu",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; checked: boolean }>>,
+  },
+});
+
+export const MthDropzone = createComponent({
+  react: React,
+  tagName: "mth-dropzone",
+  elementClass: resolveElementClass<MthDropzoneElement>("mth-dropzone"),
+  displayName: "MthDropzone",
+  events: {
+    onMthDrop: "mth-drop" as EventName<CustomEvent<{ files: File[] }>>,
+    onMthReject: "mth-reject" as EventName<CustomEvent<{ rejected: Array<{ file: File; reason: string }> }>>,
+  },
+});
+
+export const MthDurationInput = createComponent({
+  react: React,
+  tagName: "mth-duration-input",
+  elementClass: resolveElementClass<MthDurationInputElement>("mth-duration-input"),
+  displayName: "MthDurationInput",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; totalSeconds: number }>>,
+  },
+});
+
+export const MthEmojiPicker = createComponent({
+  react: React,
+  tagName: "mth-emoji-picker",
+  elementClass: resolveElementClass<MthEmojiPickerElement>("mth-emoji-picker"),
+  displayName: "MthEmojiPicker",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ emoji: string; name: string; category: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthEmptyState = createComponent({
+  react: React,
+  tagName: "mth-empty-state",
+  elementClass: resolveElementClass<MthEmptyStateElement>("mth-empty-state"),
+  displayName: "MthEmptyState",
+  events: {
+
+  },
+});
+
 export const MthErrorBoundary = createComponent({
   react: React,
   tagName: "mth-error-boundary",
@@ -90,6 +1228,49 @@ export const MthErrorBoundary = createComponent({
   events: {
     onMthErrorCaptured: "mth-error-captured" as EventName<CustomEvent<{ error: unknown }>>,
     onMthReset: "mth-reset" as EventName<CustomEvent<void>>,
+  },
+});
+
+export const MthErrorSummary = createComponent({
+  react: React,
+  tagName: "mth-error-summary",
+  elementClass: resolveElementClass<MthErrorSummaryElement>("mth-error-summary"),
+  displayName: "MthErrorSummary",
+  events: {
+    onMthFocusField: "mth-focus-field" as EventName<CustomEvent<{ id: string; name: string; message: string; href: string }>>,
+  },
+});
+
+export const MthEventCalendar = createComponent({
+  react: React,
+  tagName: "mth-event-calendar",
+  elementClass: resolveElementClass<MthEventCalendarElement>("mth-event-calendar"),
+  displayName: "MthEventCalendar",
+  events: {
+    onMthEventSelect: "mth-event-select" as EventName<CustomEvent<{ event: unknown }>>,
+    onMthEventCreate: "mth-event-create" as EventName<CustomEvent<{ date: string; time?: string }>>,
+    onMthDateChange: "mth-date-change" as EventName<CustomEvent<{ activeDate: string; view: unknown }>>,
+  },
+});
+
+export const MthFab = createComponent({
+  react: React,
+  tagName: "mth-fab",
+  elementClass: resolveElementClass<MthFabElement>("mth-fab"),
+  displayName: "MthFab",
+  events: {
+    onMthPress: "mth-press" as EventName<CustomEvent<{ originalEvent: Event }>>,
+  },
+});
+
+export const MthFacetFilters = createComponent({
+  react: React,
+  tagName: "mth-facet-filters",
+  elementClass: resolveElementClass<MthFacetFiltersElement>("mth-facet-filters"),
+  displayName: "MthFacetFilters",
+  events: {
+    onMthFilterChange: "mth-filter-change" as EventName<CustomEvent<{ groupId: string; selected: Record<string, ReadonlyArray<string>>; ranges: Record<string, unknown> }>>,
+    onMthFilterClear: "mth-filter-clear" as EventName<CustomEvent<Record<string, never>>>,
   },
 });
 
@@ -103,6 +1284,283 @@ export const MthField = createComponent({
   },
 });
 
+export const MthFieldset = createComponent({
+  react: React,
+  tagName: "mth-fieldset",
+  elementClass: resolveElementClass<MthFieldsetElement>("mth-fieldset"),
+  displayName: "MthFieldset",
+  events: {
+
+  },
+});
+
+export const MthFileExplorer = createComponent({
+  react: React,
+  tagName: "mth-file-explorer",
+  elementClass: resolveElementClass<MthFileExplorerElement>("mth-file-explorer"),
+  displayName: "MthFileExplorer",
+  events: {
+    onMthNavigate: "mth-navigate" as EventName<CustomEvent<{ folderId: string | null }>>,
+    onMthFileOpen: "mth-file-open" as EventName<CustomEvent<{ item: unknown }>>,
+    onMthSelectionChange: "mth-selection-change" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string> }>>,
+  },
+});
+
+export const MthFileUpload = createComponent({
+  react: React,
+  tagName: "mth-file-upload",
+  elementClass: resolveElementClass<MthFileUploadElement>("mth-file-upload"),
+  displayName: "MthFileUpload",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ files: File[]; value: string }>>,
+    onMthReject: "mth-reject" as EventName<CustomEvent<{ rejected: Array<{ file: File; reason: string }> }>>,
+  },
+});
+
+export const MthFilterBuilder = createComponent({
+  react: React,
+  tagName: "mth-filter-builder",
+  elementClass: resolveElementClass<MthFilterBuilderElement>("mth-filter-builder"),
+  displayName: "MthFilterBuilder",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ combinator: 'and' | 'or'; rules: ReadonlyArray<unknown> }>>,
+  },
+});
+
+export const MthFloatingPanel = createComponent({
+  react: React,
+  tagName: "mth-floating-panel",
+  elementClass: resolveElementClass<MthFloatingPanelElement>("mth-floating-panel"),
+  displayName: "MthFloatingPanel",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthMove: "mth-move" as EventName<CustomEvent<{ x: number; y: number }>>,
+    onMthMinimizeChange: "mth-minimize-change" as EventName<CustomEvent<{ minimized: boolean }>>,
+    onMthDockChange: "mth-dock-change" as EventName<CustomEvent<{ dock: 'none' | 'start' | 'end' | 'bottom' }>>,
+  },
+});
+
+export const MthFloorPlan = createComponent({
+  react: React,
+  tagName: "mth-floor-plan",
+  elementClass: resolveElementClass<MthFloorPlanElement>("mth-floor-plan"),
+  displayName: "MthFloorPlan",
+  events: {
+    onMthRoomSelect: "mth-room-select" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string>; room: unknown }>>,
+    onMthFloorZoom: "mth-floor-zoom" as EventName<CustomEvent<{ zoom: number; panX: number; panY: number }>>,
+  },
+});
+
+export const MthFlowEditor = createComponent({
+  react: React,
+  tagName: "mth-flow-editor",
+  elementClass: resolveElementClass<MthFlowEditorElement>("mth-flow-editor"),
+  displayName: "MthFlowEditor",
+  events: {
+    onMthNodeSelect: "mth-node-select" as EventName<CustomEvent<{ nodeId: string }>>,
+    onMthViewportChange: "mth-viewport-change" as EventName<CustomEvent<{ zoom: number; panX: number; panY: number }>>,
+    onMthLayoutComplete: "mth-layout-complete" as EventName<CustomEvent<{ nodeCount: number; edgeCount: number }>>,
+  },
+});
+
+export const MthForm = createComponent({
+  react: React,
+  tagName: "mth-form",
+  elementClass: resolveElementClass<MthFormElement>("mth-form"),
+  displayName: "MthForm",
+  events: {
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ values: Record<string, string | ReadonlyArray<string>> }>>,
+    onMthInvalid: "mth-invalid" as EventName<CustomEvent<{ errors: ReadonlyArray<{ readonly id: string; readonly name: string; readonly message: string; readonly label?: string }> }>>,
+  },
+});
+
+export const MthFormRepeater = createComponent({
+  react: React,
+  tagName: "mth-form-repeater",
+  elementClass: resolveElementClass<MthFormRepeaterElement>("mth-form-repeater"),
+  displayName: "MthFormRepeater",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; items: unknown[] }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; items: unknown[] }>>,
+    onMthAdd: "mth-add" as EventName<CustomEvent<{ index: number; row: unknown }>>,
+    onMthRemove: "mth-remove" as EventName<CustomEvent<{ index: number; row: unknown }>>,
+    onMthReorder: "mth-reorder" as EventName<CustomEvent<{ fromIndex: number; toIndex: number; item: HTMLElement }>>,
+  },
+});
+
+export const MthFormWizard = createComponent({
+  react: React,
+  tagName: "mth-form-wizard",
+  elementClass: resolveElementClass<MthFormWizardElement>("mth-form-wizard"),
+  displayName: "MthFormWizard",
+  events: {
+    onMthStepChange: "mth-step-change" as EventName<CustomEvent<{ index: number; previousIndex: number; step: string }>>,
+    onMthComplete: "mth-complete" as EventName<CustomEvent<{ steps: number }>>,
+  },
+});
+
+export const MthFormulaBar = createComponent({
+  react: React,
+  tagName: "mth-formula-bar",
+  elementClass: resolveElementClass<MthFormulaBarElement>("mth-formula-bar"),
+  displayName: "MthFormulaBar",
+  events: {
+    onMthFormulaInput: "mth-formula-input" as EventName<CustomEvent<{ cellAddress: string; value: string; dependencies: ReadonlyArray<string> }>>,
+    onMthFormulaCommit: "mth-formula-commit" as EventName<CustomEvent<{ cellAddress: string; value: string; valid: boolean }>>,
+  },
+});
+
+export const MthFullscreenOverlay = createComponent({
+  react: React,
+  tagName: "mth-fullscreen-overlay",
+  elementClass: resolveElementClass<MthFullscreenOverlayElement>("mth-fullscreen-overlay"),
+  displayName: "MthFullscreenOverlay",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthGallery = createComponent({
+  react: React,
+  tagName: "mth-gallery",
+  elementClass: resolveElementClass<MthGalleryElement>("mth-gallery"),
+  displayName: "MthGallery",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ index: number; item: unknown | null }>>,
+    onMthLightboxOpen: "mth-lightbox-open" as EventName<CustomEvent<{ index: number }>>,
+    onMthLightboxClose: "mth-lightbox-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthGantt = createComponent({
+  react: React,
+  tagName: "mth-gantt",
+  elementClass: resolveElementClass<MthGanttElement>("mth-gantt"),
+  displayName: "MthGantt",
+  events: {
+    onMthTaskSelect: "mth-task-select" as EventName<CustomEvent<{ task: unknown }>>,
+  },
+});
+
+export const MthHoverCard = createComponent({
+  react: React,
+  tagName: "mth-hover-card",
+  elementClass: resolveElementClass<MthHoverCardElement>("mth-hover-card"),
+  displayName: "MthHoverCard",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthIbanInput = createComponent({
+  react: React,
+  tagName: "mth-iban-input",
+  elementClass: resolveElementClass<MthIbanInputElement>("mth-iban-input"),
+  displayName: "MthIbanInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; unmasked: string; valid: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; unmasked: string; valid: boolean }>>,
+  },
+});
+
+export const MthIcon = createComponent({
+  react: React,
+  tagName: "mth-icon",
+  elementClass: resolveElementClass<MthIconElement>("mth-icon"),
+  displayName: "MthIcon",
+  events: {
+
+  },
+});
+
+export const MthIconButton = createComponent({
+  react: React,
+  tagName: "mth-icon-button",
+  elementClass: resolveElementClass<MthIconButtonElement>("mth-icon-button"),
+  displayName: "MthIconButton",
+  events: {
+    onMthPress: "mth-press" as EventName<CustomEvent<{ originalEvent: Event }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ pressed: boolean }>>,
+  },
+});
+
+export const MthImage = createComponent({
+  react: React,
+  tagName: "mth-image",
+  elementClass: resolveElementClass<MthImageElement>("mth-image"),
+  displayName: "MthImage",
+  events: {
+    onMthLoad: "mth-load" as EventName<CustomEvent<{ src: string }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ src: string }>>,
+  },
+});
+
+export const MthImageAnnotator = createComponent({
+  react: React,
+  tagName: "mth-image-annotator",
+  elementClass: resolveElementClass<MthImageAnnotatorElement>("mth-image-annotator"),
+  displayName: "MthImageAnnotator",
+  events: {
+    onMthAnnotationAdd: "mth-annotation-add" as EventName<CustomEvent<{ annotation: unknown }>>,
+    onMthAnnotationChange: "mth-annotation-change" as EventName<CustomEvent<{ annotations: unknown[] }>>,
+    onMthAnnotationSelect: "mth-annotation-select" as EventName<CustomEvent<{ id: string | null }>>,
+    onMthToolChange: "mth-tool-change" as EventName<CustomEvent<{ tool: unknown }>>,
+  },
+});
+
+export const MthImageCropper = createComponent({
+  react: React,
+  tagName: "mth-image-cropper",
+  elementClass: resolveElementClass<MthImageCropperElement>("mth-image-cropper"),
+  displayName: "MthImageCropper",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ zoom: number; offsetX: number; offsetY: number }>>,
+    onMthCrop: "mth-crop" as EventName<CustomEvent<{ zoom: number; offsetX: number; offsetY: number; aspectRatio: number; dataUrl: string }>>,
+  },
+});
+
+export const MthInfiniteScroll = createComponent({
+  react: React,
+  tagName: "mth-infinite-scroll",
+  elementClass: resolveElementClass<MthInfiniteScrollElement>("mth-infinite-scroll"),
+  displayName: "MthInfiniteScroll",
+  events: {
+    onMthLoadMore: "mth-load-more" as EventName<CustomEvent<{ cursor: string | null }>>,
+  },
+});
+
+export const MthInlineEdit = createComponent({
+  react: React,
+  tagName: "mth-inline-edit",
+  elementClass: resolveElementClass<MthInlineEditElement>("mth-inline-edit"),
+  displayName: "MthInlineEdit",
+  events: {
+    onMthEditStart: "mth-edit-start" as EventName<CustomEvent<{ value: string }>>,
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthCancel: "mth-cancel" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthInlineStatus = createComponent({
+  react: React,
+  tagName: "mth-inline-status",
+  elementClass: resolveElementClass<MthInlineStatusElement>("mth-inline-status"),
+  displayName: "MthInlineStatus",
+  events: {
+
+  },
+});
+
 export const MthInput = createComponent({
   react: React,
   tagName: "mth-input",
@@ -111,6 +1569,434 @@ export const MthInput = createComponent({
   events: {
     onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
     onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthInvoice = createComponent({
+  react: React,
+  tagName: "mth-invoice",
+  elementClass: resolveElementClass<MthInvoiceElement>("mth-invoice"),
+  displayName: "MthInvoice",
+  events: {
+
+  },
+});
+
+export const MthJsonEditor = createComponent({
+  react: React,
+  tagName: "mth-json-editor",
+  elementClass: resolveElementClass<MthJsonEditorElement>("mth-json-editor"),
+  displayName: "MthJsonEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; valid: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; valid: boolean }>>,
+    onMthModeChange: "mth-mode-change" as EventName<CustomEvent<{ mode: unknown }>>,
+  },
+});
+
+export const MthKanban = createComponent({
+  react: React,
+  tagName: "mth-kanban",
+  elementClass: resolveElementClass<MthKanbanElement>("mth-kanban"),
+  displayName: "MthKanban",
+  events: {
+    onMthCardMove: "mth-card-move" as EventName<CustomEvent<{ cardId: string; fromLaneId: string; toLaneId: string; toIndex: number; cards: ReadonlyArray<unknown> }>>,
+    onMthCardSelect: "mth-card-select" as EventName<CustomEvent<{ card: unknown }>>,
+  },
+});
+
+export const MthKeyValue = createComponent({
+  react: React,
+  tagName: "mth-key-value",
+  elementClass: resolveElementClass<MthKeyValueElement>("mth-key-value"),
+  displayName: "MthKeyValue",
+  events: {
+    onMthCopy: "mth-copy" as EventName<CustomEvent<{ value: string; ok: boolean }>>,
+  },
+});
+
+export const MthLightbox = createComponent({
+  react: React,
+  tagName: "mth-lightbox",
+  elementClass: resolveElementClass<MthLightboxElement>("mth-lightbox"),
+  displayName: "MthLightbox",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ index: number; item: unknown | null }>>,
+  },
+});
+
+export const MthLink = createComponent({
+  react: React,
+  tagName: "mth-link",
+  elementClass: resolveElementClass<MthLinkElement>("mth-link"),
+  displayName: "MthLink",
+  events: {
+    onMthPress: "mth-press" as EventName<CustomEvent<{ originalEvent: Event }>>,
+  },
+});
+
+export const MthList = createComponent({
+  react: React,
+  tagName: "mth-list",
+  elementClass: resolveElementClass<MthListElement>("mth-list"),
+  displayName: "MthList",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+    onMthAction: "mth-action" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthListItem = createComponent({
+  react: React,
+  tagName: "mth-list-item",
+  elementClass: resolveElementClass<MthListItemElement>("mth-list-item"),
+  displayName: "MthListItem",
+  events: {
+
+  },
+});
+
+export const MthLoadMore = createComponent({
+  react: React,
+  tagName: "mth-load-more",
+  elementClass: resolveElementClass<MthLoadMoreElement>("mth-load-more"),
+  displayName: "MthLoadMore",
+  events: {
+    onMthLoadMore: "mth-load-more" as EventName<CustomEvent<{ cursor: string | null }>>,
+  },
+});
+
+export const MthLoadingOverlay = createComponent({
+  react: React,
+  tagName: "mth-loading-overlay",
+  elementClass: resolveElementClass<MthLoadingOverlayElement>("mth-loading-overlay"),
+  displayName: "MthLoadingOverlay",
+  events: {
+    onMthActiveChange: "mth-active-change" as EventName<CustomEvent<{ active: boolean }>>,
+  },
+});
+
+export const MthLocationPicker = createComponent({
+  react: React,
+  tagName: "mth-location-picker",
+  elementClass: resolveElementClass<MthLocationPickerElement>("mth-location-picker"),
+  displayName: "MthLocationPicker",
+  events: {
+    onInput: "input" as EventName<CustomEvent<undefined>>,
+    onChange: "change" as EventName<CustomEvent<undefined>>,
+    onMthLocationSelect: "mth-location-select" as EventName<CustomEvent<{ lat: number; lng: number; value: string }>>,
+  },
+});
+
+export const MthLottie = createComponent({
+  react: React,
+  tagName: "mth-lottie",
+  elementClass: resolveElementClass<MthLottieElement>("mth-lottie"),
+  displayName: "MthLottie",
+  events: {
+    onMthPlay: "mth-play" as EventName<CustomEvent<{ speed: number; loop: boolean }>>,
+    onMthPause: "mth-pause" as EventName<CustomEvent<{ speed: number }>>,
+    onMthStop: "mth-stop" as EventName<CustomEvent<void>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthMap = createComponent({
+  react: React,
+  tagName: "mth-map",
+  elementClass: resolveElementClass<MthMapElement>("mth-map"),
+  displayName: "MthMap",
+  events: {
+    onMthMapMove: "mth-map-move" as EventName<CustomEvent<{ center: readonly [number, number]; zoom: number }>>,
+    onMthMarkerSelect: "mth-marker-select" as EventName<CustomEvent<{ id: string; lng: number; lat: number; label: string }>>,
+  },
+});
+
+export const MthMapCluster = createComponent({
+  react: React,
+  tagName: "mth-map-cluster",
+  elementClass: resolveElementClass<MthMapClusterElement>("mth-map-cluster"),
+  displayName: "MthMapCluster",
+  events: {
+    onMthClusterExpand: "mth-cluster-expand" as EventName<CustomEvent<{ clusterId: string; count: number; center: readonly [number, number]; zoom: number }>>,
+    onMthClusterSelect: "mth-cluster-select" as EventName<CustomEvent<{ point: unknown }>>,
+  },
+});
+
+export const MthMapDraw = createComponent({
+  react: React,
+  tagName: "mth-map-draw",
+  elementClass: resolveElementClass<MthMapDrawElement>("mth-map-draw"),
+  displayName: "MthMapDraw",
+  events: {
+    onMthDrawChange: "mth-draw-change" as EventName<CustomEvent<{ features: unknown }>>,
+    onMthDrawMode: "mth-draw-mode" as EventName<CustomEvent<{ mode: unknown }>>,
+  },
+});
+
+export const MthMapRoute = createComponent({
+  react: React,
+  tagName: "mth-map-route",
+  elementClass: resolveElementClass<MthMapRouteElement>("mth-map-route"),
+  displayName: "MthMapRoute",
+  events: {
+    onMthRouteFit: "mth-route-fit" as EventName<CustomEvent<{ bounds: unknown; distanceKm: number }>>,
+    onMthWaypointSelect: "mth-waypoint-select" as EventName<CustomEvent<{ waypoint: unknown; index: number }>>,
+  },
+});
+
+export const MthMarkdown = createComponent({
+  react: React,
+  tagName: "mth-markdown",
+  elementClass: resolveElementClass<MthMarkdownElement>("mth-markdown"),
+  displayName: "MthMarkdown",
+  events: {
+    onMthRender: "mth-render" as EventName<CustomEvent<{ length: number }>>,
+  },
+});
+
+export const MthMarkdownEditor = createComponent({
+  react: React,
+  tagName: "mth-markdown-editor",
+  elementClass: resolveElementClass<MthMarkdownEditorElement>("mth-markdown-editor"),
+  displayName: "MthMarkdownEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthModeChange: "mth-mode-change" as EventName<CustomEvent<{ mode: unknown }>>,
+  },
+});
+
+export const MthMaskedInput = createComponent({
+  react: React,
+  tagName: "mth-masked-input",
+  elementClass: resolveElementClass<MthMaskedInputElement>("mth-masked-input"),
+  displayName: "MthMaskedInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; unmasked: string; complete: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; unmasked: string; complete: boolean }>>,
+  },
+});
+
+export const MthMasonry = createComponent({
+  react: React,
+  tagName: "mth-masonry",
+  elementClass: resolveElementClass<MthMasonryElement>("mth-masonry"),
+  displayName: "MthMasonry",
+  events: {
+    onMthLayout: "mth-layout" as EventName<CustomEvent<{ columns: number }>>,
+  },
+});
+
+export const MthMathEditor = createComponent({
+  react: React,
+  tagName: "mth-math-editor",
+  elementClass: resolveElementClass<MthMathEditorElement>("mth-math-editor"),
+  displayName: "MthMathEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthMegaMenu = createComponent({
+  react: React,
+  tagName: "mth-mega-menu",
+  elementClass: resolveElementClass<MthMegaMenuElement>("mth-mega-menu"),
+  displayName: "MthMegaMenu",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ sectionId: string }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ sectionId: string; href: string; label: string }>>,
+  },
+});
+
+export const MthMentionInput = createComponent({
+  react: React,
+  tagName: "mth-mention-input",
+  elementClass: resolveElementClass<MthMentionInputElement>("mth-mention-input"),
+  displayName: "MthMentionInput",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; mentions: ReadonlyArray<string> }>>,
+    onMthMentionSelect: "mth-mention-select" as EventName<CustomEvent<{ option: unknown; trigger: string; value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthMenuItem = createComponent({
+  react: React,
+  tagName: "mth-menu-item",
+  elementClass: resolveElementClass<MthMenuItemElement>("mth-menu-item"),
+  displayName: "MthMenuItem",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; checked: boolean }>>,
+  },
+});
+
+export const MthMenubar = createComponent({
+  react: React,
+  tagName: "mth-menubar",
+  elementClass: resolveElementClass<MthMenubarElement>("mth-menubar"),
+  displayName: "MthMenubar",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string; parentValue?: string; href?: string }>>,
+  },
+});
+
+export const MthMessageComposer = createComponent({
+  react: React,
+  tagName: "mth-message-composer",
+  elementClass: resolveElementClass<MthMessageComposerElement>("mth-message-composer"),
+  displayName: "MthMessageComposer",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ value: string }>>,
+    onMthStop: "mth-stop" as EventName<CustomEvent<undefined>>,
+    onMthAttach: "mth-attach" as EventName<CustomEvent<undefined>>,
+    onMthEmoji: "mth-emoji" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthMfaChallenge = createComponent({
+  react: React,
+  tagName: "mth-mfa-challenge",
+  elementClass: resolveElementClass<MthMfaChallengeElement>("mth-mfa-challenge"),
+  displayName: "MthMfaChallenge",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; mode: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; mode: string }>>,
+    onMthComplete: "mth-complete" as EventName<CustomEvent<{ value: string; mode: string }>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ value: string; mode: string }>>,
+    onMthResend: "mth-resend" as EventName<CustomEvent<void>>,
+    onMthModeChange: "mth-mode-change" as EventName<CustomEvent<{ mode: string }>>,
+  },
+});
+
+export const MthModelViewer = createComponent({
+  react: React,
+  tagName: "mth-model-viewer",
+  elementClass: resolveElementClass<MthModelViewerElement>("mth-model-viewer"),
+  displayName: "MthModelViewer",
+  events: {
+    onMthModelLoad: "mth-model-load" as EventName<CustomEvent<{ src: string; backend: 'webgpu' | 'webgl' | 'headless' }>>,
+    onMthCameraChange: "mth-camera-change" as EventName<CustomEvent<{ theta: number; phi: number; distance: number }>>,
+    onMthModelError: "mth-model-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthMonthPicker = createComponent({
+  react: React,
+  tagName: "mth-month-picker",
+  elementClass: resolveElementClass<MthMonthPickerElement>("mth-month-picker"),
+  displayName: "MthMonthPicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthMultiSelect = createComponent({
+  react: React,
+  tagName: "mth-multi-select",
+  elementClass: resolveElementClass<MthMultiSelectElement>("mth-multi-select"),
+  displayName: "MthMultiSelect",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<undefined>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthNavbar = createComponent({
+  react: React,
+  tagName: "mth-navbar",
+  elementClass: resolveElementClass<MthNavbarElement>("mth-navbar"),
+  displayName: "MthNavbar",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ open: false; reason: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ open: boolean }>>,
+  },
+});
+
+export const MthNetworkStatus = createComponent({
+  react: React,
+  tagName: "mth-network-status",
+  elementClass: resolveElementClass<MthNetworkStatusElement>("mth-network-status"),
+  displayName: "MthNetworkStatus",
+  events: {
+    onMthStatusChange: "mth-status-change" as EventName<CustomEvent<{ online: boolean }>>,
+    onMthRetry: "mth-retry" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthNewsletterForm = createComponent({
+  react: React,
+  tagName: "mth-newsletter-form",
+  elementClass: resolveElementClass<MthNewsletterFormElement>("mth-newsletter-form"),
+  displayName: "MthNewsletterForm",
+  events: {
+    onInput: "input" as EventName<CustomEvent<undefined>>,
+    onChange: "change" as EventName<CustomEvent<undefined>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ email: string }>>,
+  },
+});
+
+export const MthNotificationBell = createComponent({
+  react: React,
+  tagName: "mth-notification-bell",
+  elementClass: resolveElementClass<MthNotificationBellElement>("mth-notification-bell"),
+  displayName: "MthNotificationBell",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthItemSelect: "mth-item-select" as EventName<CustomEvent<{ id: string }>>,
+    onMthItemDismiss: "mth-item-dismiss" as EventName<CustomEvent<{ id: string }>>,
+    onMthMarkAllRead: "mth-mark-all-read" as EventName<CustomEvent<void>>,
+  },
+});
+
+export const MthNotificationCenter = createComponent({
+  react: React,
+  tagName: "mth-notification-center",
+  elementClass: resolveElementClass<MthNotificationCenterElement>("mth-notification-center"),
+  displayName: "MthNotificationCenter",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthDismiss: "mth-dismiss" as EventName<CustomEvent<{ id: string }>>,
+    onMthClear: "mth-clear" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthNumberInput = createComponent({
+  react: React,
+  tagName: "mth-number-input",
+  elementClass: resolveElementClass<MthNumberInputElement>("mth-number-input"),
+  displayName: "MthNumberInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; valueAsNumber: number }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; valueAsNumber: number }>>,
   },
 });
 
@@ -134,6 +2020,556 @@ export const MthOptionGroup = createComponent({
   },
 });
 
+export const MthOrgChart = createComponent({
+  react: React,
+  tagName: "mth-org-chart",
+  elementClass: resolveElementClass<MthOrgChartElement>("mth-org-chart"),
+  displayName: "MthOrgChart",
+  events: {
+    onMthNodeSelect: "mth-node-select" as EventName<CustomEvent<{ nodeId: string }>>,
+    onMthNodeToggle: "mth-node-toggle" as EventName<CustomEvent<{ nodeId: string; collapsed: boolean }>>,
+  },
+});
+
+export const MthOtpInput = createComponent({
+  react: React,
+  tagName: "mth-otp-input",
+  elementClass: resolveElementClass<MthOtpInputElement>("mth-otp-input"),
+  displayName: "MthOtpInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthComplete: "mth-complete" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthPagination = createComponent({
+  react: React,
+  tagName: "mth-pagination",
+  elementClass: resolveElementClass<MthPaginationElement>("mth-pagination"),
+  displayName: "MthPagination",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ page: number }>>,
+  },
+});
+
+export const MthPasskeyPrompt = createComponent({
+  react: React,
+  tagName: "mth-passkey-prompt",
+  elementClass: resolveElementClass<MthPasskeyPromptElement>("mth-passkey-prompt"),
+  displayName: "MthPasskeyPrompt",
+  events: {
+    onMthPasskeyAuth: "mth-passkey-auth" as EventName<CustomEvent<{ mode: string; username: string; conditionalSupported: boolean }>>,
+    onMthFallback: "mth-fallback" as EventName<CustomEvent<{ mode: string; reason: string }>>,
+  },
+});
+
+export const MthPasswordInput = createComponent({
+  react: React,
+  tagName: "mth-password-input",
+  elementClass: resolveElementClass<MthPasswordInputElement>("mth-password-input"),
+  displayName: "MthPasswordInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthRevealChange: "mth-reveal-change" as EventName<CustomEvent<{ revealed: boolean }>>,
+  },
+});
+
+export const MthPaymentForm = createComponent({
+  react: React,
+  tagName: "mth-payment-form",
+  elementClass: resolveElementClass<MthPaymentFormElement>("mth-payment-form"),
+  displayName: "MthPaymentForm",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ cardholderName: string; last4: string; valid: boolean }>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ cardholderName: string; last4: string; expiry: string; valid: boolean }>>,
+  },
+});
+
+export const MthPdfViewer = createComponent({
+  react: React,
+  tagName: "mth-pdf-viewer",
+  elementClass: resolveElementClass<MthPdfViewerElement>("mth-pdf-viewer"),
+  displayName: "MthPdfViewer",
+  events: {
+    onMthPdfLoad: "mth-pdf-load" as EventName<CustomEvent<{ numPages: number; title: string }>>,
+    onMthPageChange: "mth-page-change" as EventName<CustomEvent<{ page: number; totalPages: number }>>,
+    onMthZoomChange: "mth-zoom-change" as EventName<CustomEvent<{ zoom: number | 'auto' | 'page-fit' | 'page-width' }>>,
+    onMthSearchChange: "mth-search-change" as EventName<CustomEvent<{ query: string; matchCount: number }>>,
+    onMthPdfError: "mth-pdf-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthPhoneInput = createComponent({
+  react: React,
+  tagName: "mth-phone-input",
+  elementClass: resolveElementClass<MthPhoneInputElement>("mth-phone-input"),
+  displayName: "MthPhoneInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; unmasked: string; dialCode: string; e164: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; unmasked: string; dialCode: string; e164: string }>>,
+    onMthCountryChange: "mth-country-change" as EventName<CustomEvent<{ country: string; dialCode: string }>>,
+  },
+});
+
+export const MthPivotTable = createComponent({
+  react: React,
+  tagName: "mth-pivot-table",
+  elementClass: resolveElementClass<MthPivotTableElement>("mth-pivot-table"),
+  displayName: "MthPivotTable",
+  events: {
+    onMthPivotChange: "mth-pivot-change" as EventName<CustomEvent<{ aggregator: string; groupCount: number }>>,
+    onMthGroupToggle: "mth-group-toggle" as EventName<CustomEvent<{ groupKey: string; expanded: boolean }>>,
+  },
+});
+
+export const MthPlanPicker = createComponent({
+  react: React,
+  tagName: "mth-plan-picker",
+  elementClass: resolveElementClass<MthPlanPickerElement>("mth-plan-picker"),
+  displayName: "MthPlanPicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ planId: string; billingCycle: "monthly" | "annual" }>>,
+    onMthCycleChange: "mth-cycle-change" as EventName<CustomEvent<{ billingCycle: "monthly" | "annual" }>>,
+  },
+});
+
+export const MthPopover = createComponent({
+  react: React,
+  tagName: "mth-popover",
+  elementClass: resolveElementClass<MthPopoverElement>("mth-popover"),
+  displayName: "MthPopover",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthPresenceBadge = createComponent({
+  react: React,
+  tagName: "mth-presence-badge",
+  elementClass: resolveElementClass<MthPresenceBadgeElement>("mth-presence-badge"),
+  displayName: "MthPresenceBadge",
+  events: {
+
+  },
+});
+
+export const MthPriceDisplay = createComponent({
+  react: React,
+  tagName: "mth-price-display",
+  elementClass: resolveElementClass<MthPriceDisplayElement>("mth-price-display"),
+  displayName: "MthPriceDisplay",
+  events: {
+
+  },
+});
+
+export const MthProductCard = createComponent({
+  react: React,
+  tagName: "mth-product-card",
+  elementClass: resolveElementClass<MthProductCardElement>("mth-product-card"),
+  displayName: "MthProductCard",
+  events: {
+    onMthAddToCart: "mth-add-to-cart" as EventName<CustomEvent<{ title: string; price: number | null; currency: string }>>,
+    onMthProductSelect: "mth-product-select" as EventName<CustomEvent<{ title: string; href: string }>>,
+  },
+});
+
+export const MthProfileMenu = createComponent({
+  react: React,
+  tagName: "mth-profile-menu",
+  elementClass: resolveElementClass<MthProfileMenuElement>("mth-profile-menu"),
+  displayName: "MthProfileMenu",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ id: string; label: string; item: unknown }>>,
+  },
+});
+
+export const MthProgressBar = createComponent({
+  react: React,
+  tagName: "mth-progress-bar",
+  elementClass: resolveElementClass<MthProgressBarElement>("mth-progress-bar"),
+  displayName: "MthProgressBar",
+  events: {
+
+  },
+});
+
+export const MthProgressRing = createComponent({
+  react: React,
+  tagName: "mth-progress-ring",
+  elementClass: resolveElementClass<MthProgressRingElement>("mth-progress-ring"),
+  displayName: "MthProgressRing",
+  events: {
+    onMthComplete: "mth-complete" as EventName<CustomEvent<{ value: number }>>,
+  },
+});
+
+export const MthPromptInput = createComponent({
+  react: React,
+  tagName: "mth-prompt-input",
+  elementClass: resolveElementClass<MthPromptInputElement>("mth-prompt-input"),
+  displayName: "MthPromptInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ value: string }>>,
+    onMthStop: "mth-stop" as EventName<CustomEvent<void>>,
+  },
+});
+
+export const MthQrCode = createComponent({
+  react: React,
+  tagName: "mth-qr-code",
+  elementClass: resolveElementClass<MthQrCodeElement>("mth-qr-code"),
+  displayName: "MthQrCode",
+  events: {
+
+  },
+});
+
+export const MthQuantitySelector = createComponent({
+  react: React,
+  tagName: "mth-quantity-selector",
+  elementClass: resolveElementClass<MthQuantitySelectorElement>("mth-quantity-selector"),
+  displayName: "MthQuantitySelector",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: number }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: number }>>,
+  },
+});
+
+export const MthQueryBuilder = createComponent({
+  react: React,
+  tagName: "mth-query-builder",
+  elementClass: resolveElementClass<MthQueryBuilderElement>("mth-query-builder"),
+  displayName: "MthQueryBuilder",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; query: unknown }>>,
+  },
+});
+
+export const MthRadio = createComponent({
+  react: React,
+  tagName: "mth-radio",
+  elementClass: resolveElementClass<MthRadioElement>("mth-radio"),
+  displayName: "MthRadio",
+  events: {
+    onMthRadioSelect: "mth-radio-select" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthRadioGroup = createComponent({
+  react: React,
+  tagName: "mth-radio-group",
+  elementClass: resolveElementClass<MthRadioGroupElement>("mth-radio-group"),
+  displayName: "MthRadioGroup",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthRangeSlider = createComponent({
+  react: React,
+  tagName: "mth-range-slider",
+  elementClass: resolveElementClass<MthRangeSliderElement>("mth-range-slider"),
+  displayName: "MthRangeSlider",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ start: number; end: number; value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ start: number; end: number; value: string }>>,
+  },
+});
+
+export const MthRating = createComponent({
+  react: React,
+  tagName: "mth-rating",
+  elementClass: resolveElementClass<MthRatingElement>("mth-rating"),
+  displayName: "MthRating",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; rating: number }>>,
+  },
+});
+
+export const MthReactionBar = createComponent({
+  react: React,
+  tagName: "mth-reaction-bar",
+  elementClass: resolveElementClass<MthReactionBarElement>("mth-reaction-bar"),
+  displayName: "MthReactionBar",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string>; emoji: string; selected: boolean }>>,
+    onMthAddReaction: "mth-add-reaction" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthResizableGroup = createComponent({
+  react: React,
+  tagName: "mth-resizable-group",
+  elementClass: resolveElementClass<MthResizableGroupElement>("mth-resizable-group"),
+  displayName: "MthResizableGroup",
+  events: {
+    onMthLayout: "mth-layout" as EventName<CustomEvent<{ sizes: number[] }>>,
+  },
+});
+
+export const MthResizableHandle = createComponent({
+  react: React,
+  tagName: "mth-resizable-handle",
+  elementClass: resolveElementClass<MthResizableHandleElement>("mth-resizable-handle"),
+  displayName: "MthResizableHandle",
+  events: {
+    onMthResizeDelta: "mth-resize-delta" as EventName<CustomEvent<{ deltaPercent?: number; deltaPx?: number; edge?: 'min' | 'max'; source: 'keyboard' | 'pointer' }>>,
+  },
+});
+
+export const MthResizablePanel = createComponent({
+  react: React,
+  tagName: "mth-resizable-panel",
+  elementClass: resolveElementClass<MthResizablePanelElement>("mth-resizable-panel"),
+  displayName: "MthResizablePanel",
+  events: {
+    onMthCollapse: "mth-collapse" as EventName<CustomEvent<{ collapsed: boolean }>>,
+  },
+});
+
+export const MthReviewSummary = createComponent({
+  react: React,
+  tagName: "mth-review-summary",
+  elementClass: resolveElementClass<MthReviewSummaryElement>("mth-review-summary"),
+  displayName: "MthReviewSummary",
+  events: {
+    onMthRatingFilter: "mth-rating-filter" as EventName<CustomEvent<{ star: number | null }>>,
+  },
+});
+
+export const MthRichEditor = createComponent({
+  react: React,
+  tagName: "mth-rich-editor",
+  elementClass: resolveElementClass<MthRichEditorElement>("mth-rich-editor"),
+  displayName: "MthRichEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string; html: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; html: string }>>,
+  },
+});
+
+export const MthRoleMatrix = createComponent({
+  react: React,
+  tagName: "mth-role-matrix",
+  elementClass: resolveElementClass<MthRoleMatrixElement>("mth-role-matrix"),
+  displayName: "MthRoleMatrix",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ roleId: string; permissionId: string; granted: boolean; grants: unknown }>>,
+  },
+});
+
+export const MthRruleEditor = createComponent({
+  react: React,
+  tagName: "mth-rrule-editor",
+  elementClass: resolveElementClass<MthRruleEditorElement>("mth-rrule-editor"),
+  displayName: "MthRruleEditor",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthSavedViews = createComponent({
+  react: React,
+  tagName: "mth-saved-views",
+  elementClass: resolveElementClass<MthSavedViewsElement>("mth-saved-views"),
+  displayName: "MthSavedViews",
+  events: {
+    onMthViewSelect: "mth-view-select" as EventName<CustomEvent<{ id: string }>>,
+    onMthViewCreate: "mth-view-create" as EventName<CustomEvent<{ view: unknown }>>,
+    onMthViewDuplicate: "mth-view-duplicate" as EventName<CustomEvent<{ id: string; copy: unknown }>>,
+    onMthViewPin: "mth-view-pin" as EventName<CustomEvent<{ id: string; pinned: boolean }>>,
+    onMthViewDelete: "mth-view-delete" as EventName<CustomEvent<{ id: string }>>,
+  },
+});
+
+export const MthScheduler = createComponent({
+  react: React,
+  tagName: "mth-scheduler",
+  elementClass: resolveElementClass<MthSchedulerElement>("mth-scheduler"),
+  displayName: "MthScheduler",
+  events: {
+    onMthEventSelect: "mth-event-select" as EventName<CustomEvent<{ event: unknown }>>,
+    onMthDateNavigate: "mth-date-navigate" as EventName<CustomEvent<{ date: string }>>,
+  },
+});
+
+export const MthSchemaForm = createComponent({
+  react: React,
+  tagName: "mth-schema-form",
+  elementClass: resolveElementClass<MthSchemaFormElement>("mth-schema-form"),
+  displayName: "MthSchemaForm",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ values: Record<string, unknown>; valid: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ values: Record<string, unknown>; valid: boolean }>>,
+    onMthSubmit: "mth-submit" as EventName<CustomEvent<{ values: Record<string, unknown>; valid: boolean }>>,
+    onMthInvalid: "mth-invalid" as EventName<CustomEvent<{ errors: Record<string, string> }>>,
+  },
+});
+
+export const MthScreenRecorder = createComponent({
+  react: React,
+  tagName: "mth-screen-recorder",
+  elementClass: resolveElementClass<MthScreenRecorderElement>("mth-screen-recorder"),
+  displayName: "MthScreenRecorder",
+  events: {
+    onMthStateChange: "mth-state-change" as EventName<CustomEvent<{ state: unknown }>>,
+    onMthRecordComplete: "mth-record-complete" as EventName<CustomEvent<{ blob: Blob | null; url: string; durationMs: number; mimeType: string; systemAudio: boolean }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ message: string }>>,
+  },
+});
+
+export const MthScrollArea = createComponent({
+  react: React,
+  tagName: "mth-scroll-area",
+  elementClass: resolveElementClass<MthScrollAreaElement>("mth-scroll-area"),
+  displayName: "MthScrollArea",
+  events: {
+    onMthScroll: "mth-scroll" as EventName<CustomEvent<{ scrollTop: number; scrollLeft: number }>>,
+  },
+});
+
+export const MthSearchInput = createComponent({
+  react: React,
+  tagName: "mth-search-input",
+  elementClass: resolveElementClass<MthSearchInputElement>("mth-search-input"),
+  displayName: "MthSearchInput",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthSearch: "mth-search" as EventName<CustomEvent<{ value: string }>>,
+    onMthClear: "mth-clear" as EventName<CustomEvent<Record<string, never>>>,
+  },
+});
+
+export const MthSeatMap = createComponent({
+  react: React,
+  tagName: "mth-seat-map",
+  elementClass: resolveElementClass<MthSeatMapElement>("mth-seat-map"),
+  displayName: "MthSeatMap",
+  events: {
+    onInput: "input" as EventName<CustomEvent<undefined>>,
+    onChange: "change" as EventName<CustomEvent<undefined>>,
+    onMthSeatSelect: "mth-seat-select" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string>; seat: unknown }>>,
+  },
+});
+
+export const MthSegmentedControl = createComponent({
+  react: React,
+  tagName: "mth-segmented-control",
+  elementClass: resolveElementClass<MthSegmentedControlElement>("mth-segmented-control"),
+  displayName: "MthSegmentedControl",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthSelect = createComponent({
+  react: React,
+  tagName: "mth-select",
+  elementClass: resolveElementClass<MthSelectElement>("mth-select"),
+  displayName: "MthSelect",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthClear: "mth-clear" as EventName<CustomEvent<void>>,
+    onMthInvalid: "mth-invalid" as EventName<CustomEvent<{ validity: ValidityState }>>,
+  },
+});
+
+export const MthSessionList = createComponent({
+  react: React,
+  tagName: "mth-session-list",
+  elementClass: resolveElementClass<MthSessionListElement>("mth-session-list"),
+  displayName: "MthSessionList",
+  events: {
+    onMthRevoke: "mth-revoke" as EventName<CustomEvent<{ id: string; session: unknown }>>,
+    onMthRevokeOthers: "mth-revoke-others" as EventName<CustomEvent<{ count: number; sessionIds: ReadonlyArray<string> }>>,
+  },
+});
+
+export const MthSettingsShell = createComponent({
+  react: React,
+  tagName: "mth-settings-shell",
+  elementClass: resolveElementClass<MthSettingsShellElement>("mth-settings-shell"),
+  displayName: "MthSettingsShell",
+  events: {
+    onMthSectionChange: "mth-section-change" as EventName<CustomEvent<{ id: string }>>,
+    onMthSave: "mth-save" as EventName<CustomEvent<{ activeSectionId: string }>>,
+    onMthDiscard: "mth-discard" as EventName<CustomEvent<{ activeSectionId: string }>>,
+  },
+});
+
+export const MthShareButton = createComponent({
+  react: React,
+  tagName: "mth-share-button",
+  elementClass: resolveElementClass<MthShareButtonElement>("mth-share-button"),
+  displayName: "MthShareButton",
+  events: {
+    onMthShare: "mth-share" as EventName<CustomEvent<{ method: string; title?: string; text?: string; url?: string }>>,
+    onMthShareError: "mth-share-error" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthSidebarNav = createComponent({
+  react: React,
+  tagName: "mth-sidebar-nav",
+  elementClass: resolveElementClass<MthSidebarNavElement>("mth-sidebar-nav"),
+  displayName: "MthSidebarNav",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; href?: string; label: string }>>,
+    onMthCollapseChange: "mth-collapse-change" as EventName<CustomEvent<{ collapsed: boolean }>>,
+  },
+});
+
+export const MthSignaturePad = createComponent({
+  react: React,
+  tagName: "mth-signature-pad",
+  elementClass: resolveElementClass<MthSignaturePadElement>("mth-signature-pad"),
+  displayName: "MthSignaturePad",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; isEmpty: boolean }>>,
+  },
+});
+
+export const MthSiteSearch = createComponent({
+  react: React,
+  tagName: "mth-site-search",
+  elementClass: resolveElementClass<MthSiteSearchElement>("mth-site-search"),
+  displayName: "MthSiteSearch",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<void>>,
+    onMthQueryChange: "mth-query-change" as EventName<CustomEvent<{ query: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ id: string; label: string; href?: string }>>,
+  },
+});
+
+export const MthSkeleton = createComponent({
+  react: React,
+  tagName: "mth-skeleton",
+  elementClass: resolveElementClass<MthSkeletonElement>("mth-skeleton"),
+  displayName: "MthSkeleton",
+  events: {
+
+  },
+});
+
 export const MthSkipLink = createComponent({
   react: React,
   tagName: "mth-skip-link",
@@ -144,13 +2580,522 @@ export const MthSkipLink = createComponent({
   },
 });
 
+export const MthSlider = createComponent({
+  react: React,
+  tagName: "mth-slider",
+  elementClass: resolveElementClass<MthSliderElement>("mth-slider"),
+  displayName: "MthSlider",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: number }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: number }>>,
+  },
+});
+
+export const MthSortable = createComponent({
+  react: React,
+  tagName: "mth-sortable",
+  elementClass: resolveElementClass<MthSortableElement>("mth-sortable"),
+  displayName: "MthSortable",
+  events: {
+    onMthReorder: "mth-reorder" as EventName<CustomEvent<{ fromIndex: number; toIndex: number; item: HTMLElement }>>,
+  },
+});
+
+export const MthSparkline = createComponent({
+  react: React,
+  tagName: "mth-sparkline",
+  elementClass: resolveElementClass<MthSparklineElement>("mth-sparkline"),
+  displayName: "MthSparkline",
+  events: {
+
+  },
+});
+
+export const MthSpeedDial = createComponent({
+  react: React,
+  tagName: "mth-speed-dial",
+  elementClass: resolveElementClass<MthSpeedDialElement>("mth-speed-dial"),
+  displayName: "MthSpeedDial",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string }>>,
+  },
+});
+
+export const MthSpinner = createComponent({
+  react: React,
+  tagName: "mth-spinner",
+  elementClass: resolveElementClass<MthSpinnerElement>("mth-spinner"),
+  displayName: "MthSpinner",
+  events: {
+
+  },
+});
+
+export const MthSplitButton = createComponent({
+  react: React,
+  tagName: "mth-split-button",
+  elementClass: resolveElementClass<MthSplitButtonElement>("mth-split-button"),
+  displayName: "MthSplitButton",
+  events: {
+    onMthPress: "mth-press" as EventName<CustomEvent<{ originalEvent: Event }>>,
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthSplitPane = createComponent({
+  react: React,
+  tagName: "mth-split-pane",
+  elementClass: resolveElementClass<MthSplitPaneElement>("mth-split-pane"),
+  displayName: "MthSplitPane",
+  events: {
+    onMthResize: "mth-resize" as EventName<CustomEvent<{ ratio: number }>>,
+  },
+});
+
+export const MthSpreadsheet = createComponent({
+  react: React,
+  tagName: "mth-spreadsheet",
+  elementClass: resolveElementClass<MthSpreadsheetElement>("mth-spreadsheet"),
+  displayName: "MthSpreadsheet",
+  events: {
+    onMthCellSelect: "mth-cell-select" as EventName<CustomEvent<{ address: string; displayAddress: string; raw: string; value: unknown }>>,
+    onMthCellChange: "mth-cell-change" as EventName<CustomEvent<{ address: string; raw: string; value: unknown }>>,
+  },
+});
+
+export const MthSsoButtons = createComponent({
+  react: React,
+  tagName: "mth-sso-buttons",
+  elementClass: resolveElementClass<MthSsoButtonsElement>("mth-sso-buttons"),
+  displayName: "MthSsoButtons",
+  events: {
+    onMthSsoSelect: "mth-sso-select" as EventName<CustomEvent<{ provider: string; label: string }>>,
+  },
+});
+
+export const MthStatCard = createComponent({
+  react: React,
+  tagName: "mth-stat-card",
+  elementClass: resolveElementClass<MthStatCardElement>("mth-stat-card"),
+  displayName: "MthStatCard",
+  events: {
+
+  },
+});
+
+export const MthStatusIndicator = createComponent({
+  react: React,
+  tagName: "mth-status-indicator",
+  elementClass: resolveElementClass<MthStatusIndicatorElement>("mth-status-indicator"),
+  displayName: "MthStatusIndicator",
+  events: {
+
+  },
+});
+
+export const MthStep = createComponent({
+  react: React,
+  tagName: "mth-step",
+  elementClass: resolveElementClass<MthStepElement>("mth-step"),
+  displayName: "MthStep",
+  events: {
+
+  },
+});
+
+export const MthStepper = createComponent({
+  react: React,
+  tagName: "mth-stepper",
+  elementClass: resolveElementClass<MthStepperElement>("mth-stepper"),
+  displayName: "MthStepper",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ index: number; value: string }>>,
+  },
+});
+
+export const MthStopwatch = createComponent({
+  react: React,
+  tagName: "mth-stopwatch",
+  elementClass: resolveElementClass<MthStopwatchElement>("mth-stopwatch"),
+  displayName: "MthStopwatch",
+  events: {
+    onMthStart: "mth-start" as EventName<CustomEvent<{ elapsedMs: number }>>,
+    onMthPause: "mth-pause" as EventName<CustomEvent<{ elapsedMs: number }>>,
+    onMthReset: "mth-reset" as EventName<CustomEvent<{ elapsedMs: number }>>,
+    onMthLap: "mth-lap" as EventName<CustomEvent<{ index: number; lapMs: number; totalMs: number }>>,
+  },
+});
+
+export const MthSuggestionChips = createComponent({
+  react: React,
+  tagName: "mth-suggestion-chips",
+  elementClass: resolveElementClass<MthSuggestionChipsElement>("mth-suggestion-chips"),
+  displayName: "MthSuggestionChips",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ label: string; value: string; index: number }>>,
+  },
+});
+
 export const MthSwitch = createComponent({
   react: React,
   tagName: "mth-switch",
   elementClass: resolveElementClass<MthSwitchElement>("mth-switch"),
   displayName: "MthSwitch",
   events: {
-    onMthChange: "mth-change" as EventName<CustomEvent<{ checked: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ checked: boolean; value: string }>>,
+  },
+});
+
+export const MthTab = createComponent({
+  react: React,
+  tagName: "mth-tab",
+  elementClass: resolveElementClass<MthTabElement>("mth-tab"),
+  displayName: "MthTab",
+  events: {
+
+  },
+});
+
+export const MthTabPanel = createComponent({
+  react: React,
+  tagName: "mth-tab-panel",
+  elementClass: resolveElementClass<MthTabPanelElement>("mth-tab-panel"),
+  displayName: "MthTabPanel",
+  events: {
+
+  },
+});
+
+export const MthTable = createComponent({
+  react: React,
+  tagName: "mth-table",
+  elementClass: resolveElementClass<MthTableElement>("mth-table"),
+  displayName: "MthTable",
+  events: {
+    onMthSort: "mth-sort" as EventName<CustomEvent<{ sorting: ReadonlyArray<unknown> }>>,
+    onMthSelectionChange: "mth-selection-change" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string> }>>,
+    onMthRowClick: "mth-row-click" as EventName<CustomEvent<{ id: string; row: unknown }>>,
+    onMthDataState: "mth-data-state" as EventName<CustomEvent<{ status: unknown; count: number }>>,
+  },
+});
+
+export const MthTabs = createComponent({
+  react: React,
+  tagName: "mth-tabs",
+  elementClass: resolveElementClass<MthTabsElement>("mth-tabs"),
+  displayName: "MthTabs",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthTag = createComponent({
+  react: React,
+  tagName: "mth-tag",
+  elementClass: resolveElementClass<MthTagElement>("mth-tag"),
+  displayName: "MthTag",
+  events: {
+    onMthClick: "mth-click" as EventName<CustomEvent<{ value: string; selected: boolean }>>,
+    onMthRemove: "mth-remove" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthTagInput = createComponent({
+  react: React,
+  tagName: "mth-tag-input",
+  elementClass: resolveElementClass<MthTagInputElement>("mth-tag-input"),
+  displayName: "MthTagInput",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+    onMthTagAdd: "mth-tag-add" as EventName<CustomEvent<{ tag: string; values: ReadonlyArray<string> }>>,
+    onMthTagRemove: "mth-tag-remove" as EventName<CustomEvent<{ tag: string; index: number; values: ReadonlyArray<string> }>>,
+  },
+});
+
+export const MthTextarea = createComponent({
+  react: React,
+  tagName: "mth-textarea",
+  elementClass: resolveElementClass<MthTextareaElement>("mth-textarea"),
+  displayName: "MthTextarea",
+  events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+  },
+});
+
+export const MthThinkingIndicator = createComponent({
+  react: React,
+  tagName: "mth-thinking-indicator",
+  elementClass: resolveElementClass<MthThinkingIndicatorElement>("mth-thinking-indicator"),
+  displayName: "MthThinkingIndicator",
+  events: {
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ open: boolean }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<void>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<void>>,
+  },
+});
+
+export const MthTimePicker = createComponent({
+  react: React,
+  tagName: "mth-time-picker",
+  elementClass: resolveElementClass<MthTimePickerElement>("mth-time-picker"),
+  displayName: "MthTimePicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthTimeline = createComponent({
+  react: React,
+  tagName: "mth-timeline",
+  elementClass: resolveElementClass<MthTimelineElement>("mth-timeline"),
+  displayName: "MthTimeline",
+  events: {
+
+  },
+});
+
+export const MthTimelineItem = createComponent({
+  react: React,
+  tagName: "mth-timeline-item",
+  elementClass: resolveElementClass<MthTimelineItemElement>("mth-timeline-item"),
+  displayName: "MthTimelineItem",
+  events: {
+
+  },
+});
+
+export const MthTimezonePicker = createComponent({
+  react: React,
+  tagName: "mth-timezone-picker",
+  elementClass: resolveElementClass<MthTimezonePickerElement>("mth-timezone-picker"),
+  displayName: "MthTimezonePicker",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string }>>,
+    onMthOpen: "mth-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<{ open: true }>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthToast = createComponent({
+  react: React,
+  tagName: "mth-toast",
+  elementClass: resolveElementClass<MthToastElement>("mth-toast"),
+  displayName: "MthToast",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthToc = createComponent({
+  react: React,
+  tagName: "mth-toc",
+  elementClass: resolveElementClass<MthTocElement>("mth-toc"),
+  displayName: "MthToc",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ id: string; label: string; href: string }>>,
+    onMthActiveChange: "mth-active-change" as EventName<CustomEvent<{ id: string }>>,
+  },
+});
+
+export const MthToggleButton = createComponent({
+  react: React,
+  tagName: "mth-toggle-button",
+  elementClass: resolveElementClass<MthToggleButtonElement>("mth-toggle-button"),
+  displayName: "MthToggleButton",
+  events: {
+    onMthPress: "mth-press" as EventName<CustomEvent<{ originalEvent: Event; pressed: boolean }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ pressed: boolean; value: string }>>,
+  },
+});
+
+export const MthToggleGroup = createComponent({
+  react: React,
+  tagName: "mth-toggle-group",
+  elementClass: resolveElementClass<MthToggleGroupElement>("mth-toggle-group"),
+  displayName: "MthToggleGroup",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+  },
+});
+
+export const MthToolCall = createComponent({
+  react: React,
+  tagName: "mth-tool-call",
+  elementClass: resolveElementClass<MthToolCallElement>("mth-tool-call"),
+  displayName: "MthToolCall",
+  events: {
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ open: boolean; status: string }>>,
+  },
+});
+
+export const MthTooltip = createComponent({
+  react: React,
+  tagName: "mth-tooltip",
+  elementClass: resolveElementClass<MthTooltipElement>("mth-tooltip"),
+  displayName: "MthTooltip",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthTour = createComponent({
+  react: React,
+  tagName: "mth-tour",
+  elementClass: resolveElementClass<MthTourElement>("mth-tour"),
+  displayName: "MthTour",
+  events: {
+    onMthOpen: "mth-open" as EventName<CustomEvent<undefined>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<undefined>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<undefined>>,
+    onMthStepChange: "mth-step-change" as EventName<CustomEvent<{ index: number; stepId: string }>>,
+    onMthComplete: "mth-complete" as EventName<CustomEvent<undefined>>,
+    onMthSkip: "mth-skip" as EventName<CustomEvent<{ index: number }>>,
+  },
+});
+
+export const MthTourStep = createComponent({
+  react: React,
+  tagName: "mth-tour-step",
+  elementClass: resolveElementClass<MthTourStepElement>("mth-tour-step"),
+  displayName: "MthTourStep",
+  events: {
+    onMthStepEnter: "mth-step-enter" as EventName<CustomEvent<{ stepId: string }>>,
+  },
+});
+
+export const MthTransferList = createComponent({
+  react: React,
+  tagName: "mth-transfer-list",
+  elementClass: resolveElementClass<MthTransferListElement>("mth-transfer-list"),
+  displayName: "MthTransferList",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; targetKeys: ReadonlyArray<string>; movedKeys: ReadonlyArray<string>; direction: 'left' | 'right' }>>,
+  },
+});
+
+export const MthTree = createComponent({
+  react: React,
+  tagName: "mth-tree",
+  elementClass: resolveElementClass<MthTreeElement>("mth-tree"),
+  displayName: "MthTree",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; values: ReadonlyArray<string> }>>,
+    onMthExpand: "mth-expand" as EventName<CustomEvent<{ value: string }>>,
+    onMthCollapse: "mth-collapse" as EventName<CustomEvent<{ value: string }>>,
+    onMthDataState: "mth-data-state" as EventName<CustomEvent<{ status: unknown; count: number }>>,
+  },
+});
+
+export const MthTreeItem = createComponent({
+  react: React,
+  tagName: "mth-tree-item",
+  elementClass: resolveElementClass<MthTreeItemElement>("mth-tree-item"),
+  displayName: "MthTreeItem",
+  events: {
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ value: string; expanded: boolean }>>,
+  },
+});
+
+export const MthTreeNav = createComponent({
+  react: React,
+  tagName: "mth-tree-nav",
+  elementClass: resolveElementClass<MthTreeNavElement>("mth-tree-nav"),
+  displayName: "MthTreeNav",
+  events: {
+    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string; href?: string }>>,
+    onMthToggle: "mth-toggle" as EventName<CustomEvent<{ value: string; expanded: boolean }>>,
+  },
+});
+
+export const MthTreeTable = createComponent({
+  react: React,
+  tagName: "mth-tree-table",
+  elementClass: resolveElementClass<MthTreeTableElement>("mth-tree-table"),
+  displayName: "MthTreeTable",
+  events: {
+    onMthExpandChange: "mth-expand-change" as EventName<CustomEvent<{ rowId: string; expanded: boolean; expandedIds: ReadonlyArray<string> }>>,
+    onMthSelectionChange: "mth-selection-change" as EventName<CustomEvent<{ selectedIds: ReadonlyArray<string> }>>,
+  },
+});
+
+export const MthTypingIndicator = createComponent({
+  react: React,
+  tagName: "mth-typing-indicator",
+  elementClass: resolveElementClass<MthTypingIndicatorElement>("mth-typing-indicator"),
+  displayName: "MthTypingIndicator",
+  events: {
+
+  },
+});
+
+export const MthUploadProgress = createComponent({
+  react: React,
+  tagName: "mth-upload-progress",
+  elementClass: resolveElementClass<MthUploadProgressElement>("mth-upload-progress"),
+  displayName: "MthUploadProgress",
+  events: {
+    onMthPause: "mth-pause" as EventName<CustomEvent<undefined>>,
+    onMthResume: "mth-resume" as EventName<CustomEvent<undefined>>,
+    onMthCancel: "mth-cancel" as EventName<CustomEvent<undefined>>,
+    onMthRetry: "mth-retry" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthVideoGrid = createComponent({
+  react: React,
+  tagName: "mth-video-grid",
+  elementClass: resolveElementClass<MthVideoGridElement>("mth-video-grid"),
+  displayName: "MthVideoGrid",
+  events: {
+    onMthPinChange: "mth-pin-change" as EventName<CustomEvent<{ pinnedId: string }>>,
+    onMthLayoutChange: "mth-layout-change" as EventName<CustomEvent<{ layout: 'gallery' | 'speaker' }>>,
+  },
+});
+
+export const MthVideoPlayer = createComponent({
+  react: React,
+  tagName: "mth-video-player",
+  elementClass: resolveElementClass<MthVideoPlayerElement>("mth-video-player"),
+  displayName: "MthVideoPlayer",
+  events: {
+    onMthPlay: "mth-play" as EventName<CustomEvent<undefined>>,
+    onMthPause: "mth-pause" as EventName<CustomEvent<undefined>>,
+    onMthTimeupdate: "mth-timeupdate" as EventName<CustomEvent<{ currentTime: number; duration: number }>>,
+    onMthEnded: "mth-ended" as EventName<CustomEvent<undefined>>,
+  },
+});
+
+export const MthVirtualScroller = createComponent({
+  react: React,
+  tagName: "mth-virtual-scroller",
+  elementClass: resolveElementClass<MthVirtualScrollerElement>("mth-virtual-scroller"),
+  displayName: "MthVirtualScroller",
+  events: {
+    onMthRangeChange: "mth-range-change" as EventName<CustomEvent<{ startIndex: number; endIndex: number }>>,
   },
 });
 
@@ -161,5 +3106,28 @@ export const MthVisuallyHidden = createComponent({
   displayName: "MthVisuallyHidden",
   events: {
 
+  },
+});
+
+export const MthWaveform = createComponent({
+  react: React,
+  tagName: "mth-waveform",
+  elementClass: resolveElementClass<MthWaveformElement>("mth-waveform"),
+  displayName: "MthWaveform",
+  events: {
+    onMthPlay: "mth-play" as EventName<CustomEvent<{ currentTime: number }>>,
+    onMthPause: "mth-pause" as EventName<CustomEvent<{ currentTime: number }>>,
+    onMthSeek: "mth-seek" as EventName<CustomEvent<{ currentTime: number; progress: number }>>,
+    onMthError: "mth-error" as EventName<CustomEvent<{ reason: string }>>,
+  },
+});
+
+export const MthZoomPan = createComponent({
+  react: React,
+  tagName: "mth-zoom-pan",
+  elementClass: resolveElementClass<MthZoomPanElement>("mth-zoom-pan"),
+  displayName: "MthZoomPan",
+  events: {
+    onMthChange: "mth-change" as EventName<CustomEvent<{ scale: number; panX: number; panY: number }>>,
   },
 });

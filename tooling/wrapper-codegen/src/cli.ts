@@ -5,18 +5,21 @@ import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
 import { generateAllWrappers } from './codegen.js';
 import { DEFAULT_BEHAVIOR_SPECS, DEFAULT_CEM_FIXTURE } from './fixture.js';
 import type { ExtendedCustomElementsManifest } from './types.js';
+import { hasWorkspaceManifests, loadWorkspaceManifestAndSpecs } from './workspace.js';
 
 interface ParsedArgs {
   cemPath?: string;
   specsPath?: string;
   rootDir: string;
   write: boolean;
+  workspace: boolean;
 }
 
 function parseCliArgs(argv: string[]): ParsedArgs {
   const parsed: ParsedArgs = {
     rootDir: process.cwd(),
     write: true,
+    workspace: false,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -33,6 +36,8 @@ function parseCliArgs(argv: string[]): ParsedArgs {
       i += 1;
     } else if (arg === '--dry-run') {
       parsed.write = false;
+    } else if (arg === '--workspace') {
+      parsed.workspace = true;
     }
   }
 
@@ -42,13 +47,33 @@ function parseCliArgs(argv: string[]): ParsedArgs {
 const args = parseCliArgs(process.argv.slice(2));
 const rootDir = resolve(args.rootDir);
 
-const manifest: ExtendedCustomElementsManifest = args.cemPath
-  ? (JSON.parse(readFileSync(resolve(rootDir, args.cemPath), 'utf8')) as ExtendedCustomElementsManifest)
-  : DEFAULT_CEM_FIXTURE;
+let manifest: ExtendedCustomElementsManifest;
+let specs: ReadonlyArray<ComponentBehaviorSpec>;
 
-const specs: ReadonlyArray<ComponentBehaviorSpec> = args.specsPath
-  ? (JSON.parse(readFileSync(resolve(rootDir, args.specsPath), 'utf8')) as ComponentBehaviorSpec[])
-  : DEFAULT_BEHAVIOR_SPECS;
+if (args.cemPath) {
+  manifest = JSON.parse(
+    readFileSync(resolve(rootDir, args.cemPath), 'utf8'),
+  ) as ExtendedCustomElementsManifest;
+  specs = args.specsPath
+    ? (JSON.parse(readFileSync(resolve(rootDir, args.specsPath), 'utf8')) as ComponentBehaviorSpec[])
+    : DEFAULT_BEHAVIOR_SPECS;
+} else if (args.workspace || hasWorkspaceManifests(rootDir)) {
+  const discovered = loadWorkspaceManifestAndSpecs(rootDir);
+  manifest = discovered.manifest;
+  specs = args.specsPath
+    ? [
+        ...discovered.specs,
+        ...(JSON.parse(
+          readFileSync(resolve(rootDir, args.specsPath), 'utf8'),
+        ) as ComponentBehaviorSpec[]),
+      ]
+    : discovered.specs;
+} else {
+  manifest = DEFAULT_CEM_FIXTURE;
+  specs = args.specsPath
+    ? (JSON.parse(readFileSync(resolve(rootDir, args.specsPath), 'utf8')) as ComponentBehaviorSpec[])
+    : DEFAULT_BEHAVIOR_SPECS;
+}
 
 const result = generateAllWrappers(
   { manifest, specs },

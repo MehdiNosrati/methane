@@ -1,6 +1,14 @@
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { compileDtcgTokens, dtcgSource } from '@methane/tokens';
-import { DEFAULT_BEHAVIOR_SPECS, DEFAULT_CEM_FIXTURE } from '@methane/wrapper-codegen';
+import {
+  DEFAULT_BEHAVIOR_SPECS,
+  DEFAULT_CEM_FIXTURE,
+  loadWorkspaceManifestAndSpecs,
+} from '@methane/wrapper-codegen';
 import { describe, expect, it } from 'vitest';
+
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 import {
   dtcgToFigmaVariables,
   figmaRgbaToOklchString,
@@ -130,5 +138,33 @@ describe('@methane/figma-sync deterministic Code Connect generator', () => {
     expect(buttonSvelte?.content).toContain('@methane/svelte');
     expect(buttonHtml?.path).toBe('code-connect/html/mth-button.figma.html');
     expect(buttonHtml?.content).toContain('<mth-button');
+  });
+
+  it('generates Code Connect files across the full merged workspace catalog (230+ custom elements)', () => {
+    const workspaceCatalog = loadWorkspaceManifestAndSpecs(repoRoot);
+    const files = generateCodeConnectFiles(workspaceCatalog, {
+      figmaFileUrl: 'https://www.figma.com/design/ABC123/Methane',
+    });
+
+    const tags = new Set(files.map((f) => f.tagName));
+    expect(tags.size).toBeGreaterThanOrEqual(230);
+
+    for (const framework of ['react', 'angular', 'vue', 'svelte', 'html'] as const) {
+      const count = files.filter((f) => f.framework === framework).length;
+      expect(count).toBe(tags.size);
+    }
+
+    expect(files.some((f) => f.tagName === 'mth-datagrid' && f.framework === 'react')).toBe(true);
+    expect(files.some((f) => f.tagName === 'mth-auth-form' && f.framework === 'angular')).toBe(true);
+    expect(files.some((f) => f.tagName === 'mth-skip-link' && f.framework === 'svelte')).toBe(true);
+
+    for (const file of files) {
+      expect(file.content).not.toContain("' | '");
+      expect(file.content).not.toContain('" | "');
+      if (file.framework === 'html') {
+        expect(file.content).not.toContain('"""');
+        expect(file.content).not.toMatch(/=""[A-Za-z0-9#]/);
+      }
+    }
   });
 });
