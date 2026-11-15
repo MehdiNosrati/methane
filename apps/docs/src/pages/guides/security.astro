@@ -1,0 +1,45 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+---
+
+<DocsLayout title="Security & @methane/sanitize">
+  <article class="mth-prose">
+    <h1>Security &amp; <code>@methane/sanitize</code> (ADR-012)</h1>
+    <p>
+      Every rich text, Markdown, and AI streaming surface in Methane sanitizes untrusted HTML
+      through <code>@methane/sanitize</code>. Raw <code>innerHTML</code> and Lit
+      <code>unsafeHTML</code> outside <code>@methane/sanitize</code> are statically banned by
+      <code>@methane/lint-plugin</code>.
+    </p>
+
+    <h2>Defense-in-Depth Rules</h2>
+    <ul>
+      <li>
+        <strong>Native Sanitizer API + DOMPurify Parity:</strong> Feature-detects
+        <code>'setHTML' in Element.prototype</code> and falls back to bundled DOMPurify configured
+        for strict native parity (<code>ALLOW_ARIA_ATTR: false</code>,
+        <code>ALLOW_DATA_ATTR: false</code>, <code>KEEP_CONTENT: false</code>,
+        <code>RETURN_TRUSTED_TYPE: true</code> under Trusted Types CSP).
+      </li>
+      <li>
+        <strong>Zero <code>innerHTML</code> Re-Serialization:</strong> Parsed fragments move directly
+        into the DOM without round-tripping strings.
+      </li>
+      <li>
+        <strong>URL Allowlist (<code>isSafeUrl</code>):</strong> Allows only <code>https:</code>,
+        <code>http:</code>, <code>mailto:</code>, <code>tel:</code>, and relative <code>/</code> or
+        <code>#</code> paths; rejects <code>javascript:</code>, <code>data:</code>, and
+        <code>vbscript:</code>.
+      </li>
+      <li>
+        <strong>User SVGs &amp; Uploads:</strong> Uploaded SVGs render exclusively via
+        <code>&lt;img src&gt;</code> (never inline <code>&lt;svg&gt;</code>). Client-side upload
+        MIME/size checks are advisory UX checks only; server-side validation is mandatory.
+      </li>
+    </ul>
+
+    <pre><code>{`import { safeSetHTML, parseSafeFragment, isSafeUrl } from '@methane/sanitize';
+
+safeSetHTML(containerEl, untrustedHtml);`}</code></pre>
+  </article>
+</DocsLayout>

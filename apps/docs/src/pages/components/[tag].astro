@@ -1,0 +1,167 @@
+---
+import CodeTabs from '../../components/CodeTabs.astro';
+import DocsLayout from '../../components/DocsLayout.astro';
+import { loadComponentDocs, type ComponentDocEntry } from '../../lib/component-loader.js';
+import { withBase } from '../../lib/links.js';
+
+export async function getStaticPaths() {
+  const entries = await loadComponentDocs();
+  return entries.map((entry) => ({
+    params: { tag: entry.tagName },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: ComponentDocEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<DocsLayout title={`<${entry.tagName}>`}>
+  <mth-stack data-gap="6">
+    <mth-flex data-justify="between" data-gap="3">
+      <div>
+        <a class="docs-nav-link" href={withBase('/components')} style="display:inline-block;padding-inline:0">
+          ← All Components
+        </a>
+        <h1 style="margin-block:var(--mth-space-2) 0">
+          <code>&lt;{entry.tagName}&gt;</code>
+        </h1>
+      </div>
+      <mth-flex data-gap="2">
+        <span class="docs-badge">{entry.packageName}</span>
+        <span class="docs-badge">{entry.bundleBadge.coldLabel}</span>
+        <span class="docs-badge">{entry.bundleBadge.marginalLabel}</span>
+      </mth-flex>
+    </mth-flex>
+
+    <p style="margin-block:0;color:var(--mth-color-fg-muted)">{entry.description}</p>
+
+    <div class="docs-callout">
+      <strong>When NOT to use:</strong> {entry.whenNotToUse}
+    </div>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>Multi-Framework Playground &amp; Snippets</h2>
+      <CodeTabs id={`comp-${entry.tagName}`} snippets={entry.snippets} />
+    </section>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>Properties &amp; Attributes</h2>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Attribute</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              entry.model.props.map((prop) => (
+                <tr>
+                  <td><code>{prop.name}</code></td>
+                  <td><code>{prop.attr ?? '—'}</code></td>
+                  <td><code>{prop.type}</code></td>
+                  <td><code>{prop.defaultValue ?? '—'}</code></td>
+                  <td>{prop.description}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {
+      entry.model.events.length > 0 && (
+        <section class="mth-stack" data-gap="3">
+          <h2>Events</h2>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Detail Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entry.model.events.map((ev) => (
+                  <tr>
+                    <td><code>{ev.name}</code></td>
+                    <td><code>{ev.detailType}</code></td>
+                    <td>{ev.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      entry.spec && entry.spec.keyboard.length > 0 && (
+        <section class="mth-stack" data-gap="3">
+          <h2>APG Keyboard Matrix</h2>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Direction</th>
+                  <th>When</th>
+                  <th>Expected Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entry.spec.keyboard.map((kb) => (
+                  <tr>
+                    <td><kbd>{kb.key}</kbd></td>
+                    <td><code>{kb.dir ?? 'both'}</code></td>
+                    <td>{kb.when}</td>
+                    <td>{kb.expect}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      entry.a11yChecklist && (
+        <section class="mth-stack" data-gap="3">
+          <h2>Accessibility Checklist</h2>
+          <div class="docs-table-wrap">
+            <table class="docs-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Requirement</th>
+                  <th>Verified By</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entry.a11yChecklist.items.map((item) => (
+                  <tr>
+                    <td><span class="docs-badge">{item.category}</span></td>
+                    <td>{item.requirement}</td>
+                    <td><code>{item.verifiedBy}</code></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
+    }
+  </mth-stack>
+</DocsLayout>

@@ -1,0 +1,109 @@
+---
+interface Props {
+  id: string;
+  snippets: {
+    readonly html: string;
+    readonly react: string;
+    readonly vue: string;
+    readonly angular: string;
+    readonly svelte: string;
+  };
+}
+
+const { id, snippets } = Astro.props;
+const frameworks = [
+  { key: 'html', label: 'HTML', code: snippets.html },
+  { key: 'react', label: 'React 19', code: snippets.react },
+  { key: 'vue', label: 'Vue', code: snippets.vue },
+  { key: 'angular', label: 'Angular', code: snippets.angular },
+  { key: 'svelte', label: 'Svelte 5', code: snippets.svelte },
+] as const;
+---
+
+<div class="docs-tabs" data-code-tabs={id}>
+  <div class="docs-tablist" role="tablist" aria-label="Framework code examples">
+    {
+      frameworks.map((fw, index) => (
+        <button
+          type="button"
+          class="docs-tab"
+          role="tab"
+          id={`${id}-tab-${fw.key}`}
+          aria-controls={`${id}-panel-${fw.key}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? 0 : -1}
+          data-tab-target={fw.key}
+        >
+          {fw.label}
+        </button>
+      ))
+    }
+    <mth-spacer></mth-spacer>
+    <button type="button" class="docs-tab" data-copy-active={id}>
+      Copy
+    </button>
+  </div>
+  {
+    frameworks.map((fw, index) => (
+      <div
+        class="docs-tabpanel"
+        role="tabpanel"
+        id={`${id}-panel-${fw.key}`}
+        aria-labelledby={`${id}-tab-${fw.key}`}
+        data-panel-key={fw.key}
+        hidden={index !== 0}
+      >
+        <pre class="docs-code"><code>{fw.code}</code></pre>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  for (const container of document.querySelectorAll('[data-code-tabs]')) {
+    const tabs = [...container.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...container.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const copyBtn = container.querySelector<HTMLButtonElement>('[data-copy-active]');
+
+    const activate = (nextTab: HTMLButtonElement) => {
+      const targetKey = nextTab.dataset.tabTarget;
+      for (const tab of tabs) {
+        const selected = tab === nextTab;
+        tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+        tab.tabIndex = selected ? 0 : -1;
+      }
+      for (const panel of panels) {
+        panel.hidden = panel.dataset.panelKey !== targetKey;
+      }
+    };
+
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => activate(tab));
+      tab.addEventListener('keydown', (event) => {
+        const idx = tabs.indexOf(tab);
+        if (event.key === 'ArrowRight') {
+          const next = tabs[(idx + 1) % tabs.length]!;
+          activate(next);
+          next.focus();
+        } else if (event.key === 'ArrowLeft') {
+          const prev = tabs[(idx - 1 + tabs.length) % tabs.length]!;
+          activate(prev);
+          prev.focus();
+        }
+      });
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      const visiblePanel = panels.find((p) => !p.hidden);
+      const text = visiblePanel?.textContent ?? '';
+      if (text && navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => {
+          copyBtn.textContent = orig;
+        }, 1200);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,53 @@
+---
+import DocsLayout from '../components/DocsLayout.astro';
+import { withBase } from '../lib/links.js';
+---
+
+<DocsLayout title="Architecture">
+  <article class="mth-prose">
+    <h1>Methane Architecture</h1>
+    <p>
+      Methane achieves ~250+ UI capabilities across 5 deliverables layers without collapsing under
+      runtime weight by enforcing <strong>Rule #1 — Earned Shadow DOM</strong> and a strictly acyclic
+      dependency DAG (enforced statically by <code>@methane/lint-plugin</code>).
+    </p>
+
+    <h2>Layered Package Graph</h2>
+    <dl class="mth-dl" data-variant="bordered">
+      <dt>Layer 0a — @methane/tokens</dt>
+      <dd>W3C DTCG JSON compiled into <code>--mth-*</code> CSS custom properties using <code>oklch()</code>, <code>light-dark()</code>, density scaling, and <code>forced-colors</code>.</dd>
+
+      <dt>Layer 0b — @methane/css</dt>
+      <dd>23 Light-DOM 0 B JS CSS primitives wrapped in <code>@layer mth.primitives</code> using CSS Logical Properties only.</dd>
+
+      <dt>Layer 0c — @methane/sanitize</dt>
+      <dd>Native <code>Element.prototype.setHTML()</code> with bundled DOMPurify parity fallback and Trusted Types support (ADR-012).</dd>
+
+      <dt>Layer 1a — @methane/core</dt>
+      <dd>Lit 3 + human-owned <code>UIElement</code> base class, versioned <code>globalThis[Symbol.for('@methane/runtime')]</code> singleton, i18n message catalog, and Community Context Protocol.</dd>
+
+      <dt>Layer 1b — @methane/primitives</dt>
+      <dd>24 shared behavioral controllers, headless cores (<code>TableCore</code>, <code>CalendarCore</code>), stores, and utilities.</dd>
+
+      <dt>Layer 2 — @methane/ui</dt>
+      <dd>148 declarative-first custom elements exported as per-tag subpaths and side-effect-free element classes.</dd>
+
+      <dt>Layer 3a — Domain Kits</dt>
+      <dd>46 composite domain elements across <code>@methane/ai</code>, <code>auth</code>, <code>admin</code>, <code>chat</code>, and <code>commerce</code>.</dd>
+
+      <dt>Layer 3b — Satellites</dt>
+      <dd>11 wrap-first heavy packages (TanStack Table/Virtual, Apache ECharts, ProseMirror, CodeMirror 6, MapLibre, pdf.js, Three.js) with SemVer-exempt <code>.engine</code>.</dd>
+    </dl>
+
+    <h2>Quality Gates</h2>
+    <ul>
+      <li>Machine-readable <code>&lt;tag&gt;.spec.ts</code> authored before implementation (ADR-014).</li>
+      <li>5 Class Conformance Suites + <code>SatelliteEngineSuite</code> + <code>HydrationPuritySuite</code>.</li>
+      <li>Mechanical ESLint + Stylelint invariants via <code>@methane/lint-plugin</code>.</li>
+    </ul>
+
+    <p>
+      See <a href={withBase('/adrs')}>ADRs 001–015</a> for full architectural decision rationale.
+    </p>
+  </article>
+</DocsLayout>

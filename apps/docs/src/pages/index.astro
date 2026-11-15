@@ -1,0 +1,82 @@
+---
+import DocsLayout from '../components/DocsLayout.astro';
+import { withBase } from '../lib/links.js';
+---
+
+<DocsLayout title="Introduction">
+  <mth-stack data-gap="8">
+    <section class="mth-hero" style="padding-block:var(--mth-space-8);padding-inline:0">
+      <div class="mth-hero-content">
+        <span class="mth-hero-eyebrow">Methane Design System · @methane/*</span>
+        <h1 class="mth-hero-title">Spec-first Web Components &amp; 0 B JS CSS Primitives</h1>
+        <p class="mth-hero-lead">
+          ~250+ UI capabilities organized into a strictly acyclic layered architecture:
+          23 zero-JS Light-DOM CSS primitives, Lit 3 + UIElement, 24 shared behavioral primitives,
+          streaming DSD SSR across 6 frameworks, and auto-generated wrappers.
+        </p>
+        <div class="mth-hero-actions">
+          <a class="docs-btn docs-btn-primary" href={withBase('/quickstart')}>Get Started</a>
+          <a class="docs-btn" href={withBase('/css')}>Explore 23 CSS Primitives</a>
+          <a class="docs-btn" href={withBase('/theme-builder')}>OKLCH Theme Builder</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mth-feature-grid">
+      <article class="mth-feature-card">
+        <span class="mth-feature-icon">0B</span>
+        <h2>Earned Shadow DOM</h2>
+        <p>
+          Structural, typographic, and static marketing blocks ship in <code>@methane/css</code> as
+          23 pure Light-DOM CSS primitives using CSS Logical Properties and <code>@layer mth.primitives</code>.
+        </p>
+      </article>
+      <article class="mth-feature-card">
+        <span class="mth-feature-icon">OKLCH</span>
+        <h2>Adaptive Token Engine</h2>
+        <p>
+          W3C DTCG JSON compiled via <code>@methane/tokens</code> into <code>light-dark()</code>,
+          <code>oklch()</code> relative ramps, density multipliers, and <code>forced-colors: active</code>.
+        </p>
+      </article>
+      <article class="mth-feature-card">
+        <span class="mth-feature-icon">DSD</span>
+        <h2>Hybrid Streaming SSR</h2>
+        <p>
+          <code>@methane/ssr</code> + Next, Nuxt, SvelteKit, Astro, and Angular adapters emit cached
+          stylesheet links with &lt;1 KB critical inline shells and zero hydration replacement.
+        </p>
+      </article>
+    </section>
+
+    <section class="mth-bento-grid">
+      <div class="mth-bento-item" data-span="2">
+        <h3>Strictly Acyclic Package DAG</h3>
+        <p>
+          <code>tokens / sanitize → core → primitives → ui → kits → satellites</code>.
+          Components compose shared controllers from <code>@methane/primitives</code> and never import
+          sibling internals.
+        </p>
+        <mth-flex data-gap="2">
+          <a class="docs-btn" href={withBase('/architecture')}>Architecture Overview</a>
+          <a class="docs-btn" href={withBase('/adrs')}>Read ADRs 001–015</a>
+        </mth-flex>
+      </div>
+      <div class="mth-bento-item">
+        <h3>Interactive Theme Studio</h3>
+        <p>Tune OKLCH brand seeds, radius scale, and density, then export CSS or DTCG JSON.</p>
+        <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>Open Theme Builder</a>
+      </div>
+    </section>
+
+    <section class="mth-cta" data-variant="accent">
+      <div>
+        <h2>Ready to wire Methane into your stack?</h2>
+        <p>Follow the multi-framework quickstart for HTML, React 19, Vue, Angular, or Svelte 5.</p>
+      </div>
+      <div class="mth-cta-actions">
+        <a class="docs-btn" href={withBase('/quickstart')}>Quickstart Guide →</a>
+      </div>
+    </section>
+  </mth-stack>
+</DocsLayout>

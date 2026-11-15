@@ -1,0 +1,52 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+---
+
+<DocsLayout title="Forms & Accessibility Guide">
+  <article class="mth-prose">
+    <h1>Form Participation &amp; Accessibility</h1>
+
+    <h2>ADR-003: Strict Same-Root ARIA Contract</h2>
+    <ul>
+      <li>
+        Every <code>aria-*</code> ID reference (<code>aria-labelledby</code>,
+        <code>aria-describedby</code>, <code>aria-errormessage</code>,
+        <code>aria-controls</code>, <code>aria-activedescendant</code>) resolves within the exact
+        same DOM root.
+      </li>
+      <li>
+        Controls render their own internal <code>&lt;label&gt;</code>, hint, and error containers
+        inside Shadow DOM, populated via props/attributes plus mirrored <code>slot="label"</code>,
+        <code>slot="hint"</code>, and <code>slot="error"</code>.
+      </li>
+      <li>
+        External <code>&lt;label for="id"&gt;</code> works natively via
+        <code>ElementInternals.labels</code>.
+      </li>
+      <li>
+        <code>&lt;mth-field&gt;</code> is strictly a layout wrapper and Community Context Protocol
+        provider — never a cross-root ARIA bridge.
+      </li>
+    </ul>
+
+    <h2>Form-Associated Custom Elements (FACE)</h2>
+    <ul>
+      <li>
+        <code>FormControlController</code> wires <code>static formAssociated = true</code>,
+        <code>setFormValue()</code>, <code>setValidity()</code>, <code>formResetCallback()</code>,
+        <code>formStateRestoreCallback()</code>, and <code>:state(dirty | touched | user-invalid)</code>.
+      </li>
+      <li>
+        <strong><code>fieldset[disabled]</code> rule:</strong>
+        <code>formDisabledCallback(disabled)</code> disables internal shadow controls without ever
+        mutating the host's <code>disabled</code> attribute.
+      </li>
+      <li>
+        <strong>Autofill Bridge:</strong> Autofill-targeted inputs (<code>mth-input</code>,
+        <code>mth-password-input</code>, <code>mth-phone-input</code>,
+        <code>mth-credit-card-input</code>) support a Light-DOM <code>&lt;input&gt;</code> slot mode
+        alongside shadow forwarding.
+      </li>
+    </ul>
+  </article>
+</DocsLayout>
