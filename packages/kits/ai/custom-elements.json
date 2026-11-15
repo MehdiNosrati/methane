@@ -1,0 +1,2853 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai-feedback/ai-feedback.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAiFeedback",
+          "tagName": "mth-ai-feedback",
+          "customElement": true,
+          "description": "AI response rating control with thumbs up/down, multi-select reason chips (`SelectionController`), and RTL-aware roving focus.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rating",
+              "attribute": "rating",
+              "reflect": true,
+              "type": {
+                "text": "'' | 'up' | 'down'"
+              },
+              "default": "\"\"",
+              "description": "Current feedback polarity (`''` | `'up'` | `'down'`)."
+            },
+            {
+              "kind": "field",
+              "name": "reasons",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "Optional custom reason labels overriding localized defaults."
+            },
+            {
+              "kind": "field",
+              "name": "selectedReasons",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "Currently selected negative-feedback reason identifiers."
+            },
+            {
+              "kind": "field",
+              "name": "comment",
+              "attribute": "comment",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional free-text user comment."
+            },
+            {
+              "kind": "field",
+              "name": "submitted",
+              "attribute": "submitted",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks feedback as submitted and displays confirmation notice."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all feedback interactions."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible toolbar group label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rating",
+              "fieldName": "rating",
+              "type": {
+                "text": "'' | 'up' | 'down'"
+              },
+              "default": "\"\"",
+              "description": "Current feedback polarity (`''` | `'up'` | `'down'`)."
+            },
+            {
+              "name": "comment",
+              "fieldName": "comment",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional free-text user comment."
+            },
+            {
+              "name": "submitted",
+              "fieldName": "submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks feedback as submitted and displays confirmation notice."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all feedback interactions."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible toolbar group label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-feedback",
+              "type": {
+                "text": "CustomEvent<{ rating: '' | 'up' | 'down'; reasons: string[]; comment: string; submitted: boolean }>"
+              },
+              "description": "Fired whenever rating changes or detailed feedback is submitted."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional extra actions beside the rating buttons."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root feedback group container."
+            },
+            {
+              "name": "feedback-control",
+              "description": "Focusable rating and reason toggle buttons."
+            },
+            {
+              "name": "comment-input",
+              "description": "Optional follow-up feedback text input."
+            },
+            {
+              "name": "submit-button",
+              "description": "Submit button shown when detailed feedback is open."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Button background color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active chip border accent color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Comment input corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "positive",
+              "description": "Custom element state :state(positive)."
+            },
+            {
+              "name": "negative",
+              "description": "Custom element state :state(negative)."
+            },
+            {
+              "name": "submitted",
+              "description": "Custom element state :state(submitted)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-ai-feedback",
+            "package": "@methane/ai",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "positive",
+              "negative",
+              "submitted",
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "feedback button focused",
+                "expect": "moves focus to next control (RTL flipped)"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "feedback button focused",
+                "expect": "moves focus to previous control (RTL flipped)"
+              },
+              {
+                "key": "Home",
+                "when": "feedback button focused",
+                "expect": "moves focus to first control"
+              },
+              {
+                "key": "End",
+                "when": "feedback button focused",
+                "expect": "moves focus to last control"
+              }
+            ],
+            "props": [
+              {
+                "name": "rating",
+                "attr": "rating",
+                "type": "'' | 'up' | 'down'",
+                "default": ""
+              },
+              {
+                "name": "reasons",
+                "attr": false,
+                "type": "string[]"
+              },
+              {
+                "name": "selectedReasons",
+                "attr": false,
+                "type": "string[]"
+              },
+              {
+                "name": "comment",
+                "attr": "comment",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "submitted",
+                "attr": "submitted",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-feedback",
+                "cancelable": false,
+                "detailType": "{ rating: '' | 'up' | 'down'; reasons: string[]; comment: string; submitted: boolean }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional extra actions beside the rating buttons."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root feedback group container."
+              },
+              {
+                "name": "feedback-control",
+                "description": "Focusable rating and reason toggle buttons."
+              },
+              {
+                "name": "comment-input",
+                "description": "Optional follow-up feedback text input."
+              },
+              {
+                "name": "submit-button",
+                "description": "Submit button shown when detailed feedback is open."
+              }
+            ],
+            "messages": {
+              "label": "Response feedback",
+              "thumbsUpLabel": "Helpful",
+              "thumbsDownLabel": "Not helpful",
+              "reasonInaccurate": "Inaccurate",
+              "reasonIncomplete": "Incomplete",
+              "reasonVerbose": "Too verbose",
+              "reasonOffTopic": "Off-topic",
+              "commentPlaceholder": "Tell us more (optional)",
+              "submitLabel": "Submit feedback",
+              "submittedNotice": "Thanks for your feedback."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAiFeedback",
+          "declaration": {
+            "name": "MthAiFeedback",
+            "module": "src/components/ai-feedback/ai-feedback.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-ai-feedback",
+          "declaration": {
+            "name": "MthAiFeedback",
+            "module": "src/components/ai-feedback/ai-feedback.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/ai-message/ai-message.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAiMessage",
+          "tagName": "mth-ai-message",
+          "customElement": true,
+          "description": "AI conversation message bubble with sanitized streaming Markdown rendering (ADR-012) and copy/regenerate actions.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "role",
+              "attribute": "role",
+              "reflect": true,
+              "type": {
+                "text": "'user' | 'assistant' | 'system'"
+              },
+              "default": "\"assistant\"",
+              "description": "Sender role (`user`, `assistant`, or `system`)."
+            },
+            {
+              "kind": "field",
+              "name": "content",
+              "attribute": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Markdown text content rendered through `@methane/sanitize`."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in raw HTML sanitization inside Markdown. Disabled (`false`) by default."
+            },
+            {
+              "kind": "field",
+              "name": "streaming",
+              "attribute": "streaming",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays active streaming cursor indicator and live region updates."
+            },
+            {
+              "kind": "field",
+              "name": "author",
+              "attribute": "author",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Display author name overriding localized role label."
+            },
+            {
+              "kind": "field",
+              "name": "timestamp",
+              "attribute": "timestamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional formatted timestamp displayed in the header."
+            },
+            {
+              "kind": "field",
+              "name": "showActions",
+              "attribute": "show-actions",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows copy and regenerate action buttons."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "role",
+              "fieldName": "role",
+              "type": {
+                "text": "'user' | 'assistant' | 'system'"
+              },
+              "default": "\"assistant\"",
+              "description": "Sender role (`user`, `assistant`, or `system`)."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Markdown text content rendered through `@methane/sanitize`."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in raw HTML sanitization inside Markdown. Disabled (`false`) by default."
+            },
+            {
+              "name": "streaming",
+              "fieldName": "streaming",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays active streaming cursor indicator and live region updates."
+            },
+            {
+              "name": "author",
+              "fieldName": "author",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Display author name overriding localized role label."
+            },
+            {
+              "name": "timestamp",
+              "fieldName": "timestamp",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional formatted timestamp displayed in the header."
+            },
+            {
+              "name": "show-actions",
+              "fieldName": "showActions",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows copy and regenerate action buttons."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-copy",
+              "type": {
+                "text": "CustomEvent<{ content: string; ok: boolean }>"
+              },
+              "description": "Fired when the message content is copied via `ClipboardAndShare`."
+            },
+            {
+              "name": "mth-regenerate",
+              "type": {
+                "text": "CustomEvent<{ content: string }>"
+              },
+              "description": "Fired when the user requests regenerating an assistant response."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional trailing light-DOM body content."
+            },
+            {
+              "name": "avatar",
+              "description": "Optional custom avatar overriding default `<mth-avatar>`."
+            },
+            {
+              "name": "header",
+              "description": "Optional custom header content."
+            },
+            {
+              "name": "actions",
+              "description": "Additional action buttons rendered alongside copy/regenerate."
+            },
+            {
+              "name": "footer",
+              "description": "Optional footer metadata or citations below the message."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root article container representing the message."
+            },
+            {
+              "name": "avatar",
+              "description": "Avatar column container."
+            },
+            {
+              "name": "header",
+              "description": "Author, role badge, and timestamp bar."
+            },
+            {
+              "name": "content",
+              "description": "Sanitized markdown message body container."
+            },
+            {
+              "name": "cursor",
+              "description": "Streaming caret indicator shown when `streaming` is true."
+            },
+            {
+              "name": "actions",
+              "description": "Action toolbar containing copy and regenerate controls."
+            },
+            {
+              "name": "footer",
+              "description": "Optional footer slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Assistant message background color."
+            },
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "User message background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Message border color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Message card corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "streaming",
+              "description": "Custom element state :state(streaming)."
+            },
+            {
+              "name": "copied",
+              "description": "Custom element state :state(copied)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-ai-message",
+            "package": "@methane/ai",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "streaming",
+              "copied"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "role",
+                "attr": "role",
+                "type": "'user' | 'assistant' | 'system'",
+                "default": "assistant"
+              },
+              {
+                "name": "content",
+                "attr": "content",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "streaming",
+                "attr": "streaming",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "author",
+                "attr": "author",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "timestamp",
+                "attr": "timestamp",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showActions",
+                "attr": "show-actions",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-copy",
+                "cancelable": false,
+                "detailType": "{ content: string; ok: boolean }"
+              },
+              {
+                "name": "mth-regenerate",
+                "cancelable": false,
+                "detailType": "{ content: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional trailing light-DOM body content."
+              },
+              {
+                "name": "avatar",
+                "description": "Optional custom avatar overriding default `<mth-avatar>`."
+              },
+              {
+                "name": "header",
+                "description": "Optional custom header content."
+              },
+              {
+                "name": "actions",
+                "description": "Additional action buttons rendered alongside copy/regenerate."
+              },
+              {
+                "name": "footer",
+                "description": "Optional footer metadata or citations below the message."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root article container representing the message."
+              },
+              {
+                "name": "avatar",
+                "description": "Avatar column container."
+              },
+              {
+                "name": "header",
+                "description": "Author, role badge, and timestamp bar."
+              },
+              {
+                "name": "content",
+                "description": "Sanitized markdown message body container."
+              },
+              {
+                "name": "cursor",
+                "description": "Streaming caret indicator shown when `streaming` is true."
+              },
+              {
+                "name": "actions",
+                "description": "Action toolbar containing copy and regenerate controls."
+              },
+              {
+                "name": "footer",
+                "description": "Optional footer slot wrapper."
+              }
+            ],
+            "messages": {
+              "assistantLabel": "Assistant",
+              "userLabel": "You",
+              "systemLabel": "System",
+              "streamingLabel": "Generating response",
+              "copyLabel": "Copy message",
+              "copiedLabel": "Copied",
+              "regenerateLabel": "Regenerate response",
+              "regionLabel": "{role} message"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAiMessage",
+          "declaration": {
+            "name": "MthAiMessage",
+            "module": "src/components/ai-message/ai-message.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-ai-message",
+          "declaration": {
+            "name": "MthAiMessage",
+            "module": "src/components/ai-message/ai-message.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/artifact-pane/artifact-pane.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthArtifactPane",
+          "tagName": "mth-artifact-pane",
+          "customElement": true,
+          "description": "Tabbed AI artifact viewer with version selection, ClipboardAndShare copy, close action, and `@methane/sanitize` HTML/Markdown preview.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls whether the artifact pane is visible."
+            },
+            {
+              "kind": "field",
+              "name": "title",
+              "attribute": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Artifact display title."
+            },
+            {
+              "kind": "field",
+              "name": "kind",
+              "attribute": "kind",
+              "type": {
+                "text": "'code' | 'html' | 'markdown'"
+              },
+              "default": "\"code\"",
+              "description": "Artifact content format (`code` | `html` | `markdown`)."
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "attribute": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"text\"",
+              "description": "Language badge shown in the header."
+            },
+            {
+              "kind": "field",
+              "name": "content",
+              "attribute": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Artifact source text or markup."
+            },
+            {
+              "kind": "field",
+              "name": "versions",
+              "type": {
+                "text": "ArtifactVersion[]"
+              },
+              "description": "Optional array of `{ id, label, content, kind?, language?, title? }` versions."
+            },
+            {
+              "kind": "field",
+              "name": "activeVersion",
+              "attribute": "active-version",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected version ID."
+            },
+            {
+              "kind": "field",
+              "name": "activeTab",
+              "attribute": "active-tab",
+              "reflect": true,
+              "type": {
+                "text": "'code' | 'preview'"
+              },
+              "default": "\"code\"",
+              "description": "Active view mode (`code` | `preview`)."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls raw HTML allowance for Markdown previews (false by default)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls whether the artifact pane is visible."
+            },
+            {
+              "name": "title",
+              "fieldName": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Artifact display title."
+            },
+            {
+              "name": "kind",
+              "fieldName": "kind",
+              "type": {
+                "text": "'code' | 'html' | 'markdown'"
+              },
+              "default": "\"code\"",
+              "description": "Artifact content format (`code` | `html` | `markdown`)."
+            },
+            {
+              "name": "language",
+              "fieldName": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"text\"",
+              "description": "Language badge shown in the header."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Artifact source text or markup."
+            },
+            {
+              "name": "active-version",
+              "fieldName": "activeVersion",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected version ID."
+            },
+            {
+              "name": "active-tab",
+              "fieldName": "activeTab",
+              "type": {
+                "text": "'code' | 'preview'"
+              },
+              "default": "\"code\"",
+              "description": "Active view mode (`code` | `preview`)."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls raw HTML allowance for Markdown previews (false by default)."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-copy",
+              "type": {
+                "text": "CustomEvent<{ content: string; ok: boolean }>"
+              },
+              "description": "Fired when artifact source is copied."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Cancelable event fired when closing the artifact pane."
+            },
+            {
+              "name": "mth-version-change",
+              "type": {
+                "text": "CustomEvent<{ version: string }>"
+              },
+              "description": "Fired when the user switches artifact versions."
+            },
+            {
+              "name": "mth-tab-change",
+              "type": {
+                "text": "CustomEvent<{ tab: 'code' | 'preview' }>"
+              },
+              "description": "Fired when toggling between code and preview views."
+            }
+          ],
+          "slots": [
+            {
+              "name": "actions",
+              "description": "Optional extra header toolbar actions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer artifact panel container."
+            },
+            {
+              "name": "header",
+              "description": "Title, version selector, tab switcher, copy, and close bar."
+            },
+            {
+              "name": "code",
+              "description": "Escaped source code `<pre>` block."
+            },
+            {
+              "name": "preview-body",
+              "description": "Sanitized HTML/Markdown preview container."
+            },
+            {
+              "name": "copy-button",
+              "description": "Copy artifact source button."
+            },
+            {
+              "name": "close-button",
+              "description": "Close artifact button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Artifact pane background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Artifact pane border color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Artifact pane corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "copied",
+              "description": "Custom element state :state(copied)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-artifact-pane",
+            "package": "@methane/ai",
+            "conformance": [],
+            "controllers": [
+              "RovingFocusController",
+              "MotionController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "open",
+              "copied"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "tab focused",
+                "expect": "moves focus between Code and Preview tabs (RTL flipped)"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "tab focused",
+                "expect": "moves focus between Code and Preview tabs (RTL flipped)"
+              }
+            ],
+            "props": [
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "title",
+                "attr": "title",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "kind",
+                "attr": "kind",
+                "type": "'code' | 'html' | 'markdown'",
+                "default": "code"
+              },
+              {
+                "name": "language",
+                "attr": "language",
+                "type": "string",
+                "default": "text"
+              },
+              {
+                "name": "content",
+                "attr": "content",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "versions",
+                "attr": false,
+                "type": "ArtifactVersion[]"
+              },
+              {
+                "name": "activeVersion",
+                "attr": "active-version",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "activeTab",
+                "attr": "active-tab",
+                "type": "'code' | 'preview'",
+                "default": "code"
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-copy",
+                "cancelable": false,
+                "detailType": "{ content: string; ok: boolean }"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": true,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-version-change",
+                "cancelable": false,
+                "detailType": "{ version: string }"
+              },
+              {
+                "name": "mth-tab-change",
+                "cancelable": false,
+                "detailType": "{ tab: 'code' | 'preview' }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "actions",
+                "description": "Optional extra header toolbar actions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer artifact panel container."
+              },
+              {
+                "name": "header",
+                "description": "Title, version selector, tab switcher, copy, and close bar."
+              },
+              {
+                "name": "code",
+                "description": "Escaped source code `<pre>` block."
+              },
+              {
+                "name": "preview-body",
+                "description": "Sanitized HTML/Markdown preview container."
+              },
+              {
+                "name": "copy-button",
+                "description": "Copy artifact source button."
+              },
+              {
+                "name": "close-button",
+                "description": "Close artifact button."
+              }
+            ],
+            "messages": {
+              "untitled": "Artifact",
+              "codeTabLabel": "Code",
+              "previewTabLabel": "Preview",
+              "versionLabel": "Version",
+              "copyLabel": "Copy",
+              "copiedLabel": "Copied",
+              "closeLabel": "Close artifact"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthArtifactPane",
+          "declaration": {
+            "name": "MthArtifactPane",
+            "module": "src/components/artifact-pane/artifact-pane.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-artifact-pane",
+          "declaration": {
+            "name": "MthArtifactPane",
+            "module": "src/components/artifact-pane/artifact-pane.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/citation-list/citation-list.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCitationList",
+          "tagName": "mth-citation-list",
+          "customElement": true,
+          "description": "Numbered AI source citation chips with strict `https:`/`http:` URL validation (ADR-012) and RTL-aware roving focus.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "citations",
+              "type": {
+                "text": "CitationItem[]"
+              },
+              "description": "Array of `{ id?, index?, title, url, snippet?, domain? }` citations."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the citation list."
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "attribute": "orientation",
+              "reflect": true,
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Layout and arrow navigation orientation (`horizontal` | `vertical`)."
+            },
+            {
+              "kind": "field",
+              "name": "selectedId",
+              "attribute": "selected-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently highlighted citation ID."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the citation list."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Layout and arrow navigation orientation (`horizontal` | `vertical`)."
+            },
+            {
+              "name": "selected-id",
+              "fieldName": "selectedId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently highlighted citation ID."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-select",
+              "type": {
+                "text": "CustomEvent<{ id: string; index: number; title: string; url: string }>"
+              },
+              "description": "Fired when a citation item is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional trailing light-DOM citation elements."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root navigation list container."
+            },
+            {
+              "name": "citation-item",
+              "description": "Individual numbered source chip or link."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Citation chip background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Citation chip border color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Citation chip border radius."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-citation-list",
+            "package": "@methane/ai",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "none",
+            "states": [],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "citation focused",
+                "expect": "moves focus to next citation (RTL flipped)"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "citation focused",
+                "expect": "moves focus to previous citation (RTL flipped)"
+              },
+              {
+                "key": "Home",
+                "when": "citation focused",
+                "expect": "moves focus to first citation"
+              },
+              {
+                "key": "End",
+                "when": "citation focused",
+                "expect": "moves focus to last citation"
+              }
+            ],
+            "props": [
+              {
+                "name": "citations",
+                "attr": false,
+                "type": "CitationItem[]"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "orientation",
+                "attr": "orientation",
+                "type": "'horizontal' | 'vertical'",
+                "default": "horizontal"
+              },
+              {
+                "name": "selectedId",
+                "attr": "selected-id",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-select",
+                "cancelable": false,
+                "detailType": "{ id: string; index: number; title: string; url: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional trailing light-DOM citation elements."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root navigation list container."
+              },
+              {
+                "name": "citation-item",
+                "description": "Individual numbered source chip or link."
+              }
+            ],
+            "messages": {
+              "label": "Sources",
+              "emptyLabel": "No sources cited",
+              "unsafeUrlLabel": "Invalid link blocked"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCitationList",
+          "declaration": {
+            "name": "MthCitationList",
+            "module": "src/components/citation-list/citation-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-citation-list",
+          "declaration": {
+            "name": "MthCitationList",
+            "module": "src/components/citation-list/citation-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/prompt-input/prompt-input.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPromptInput",
+          "tagName": "mth-prompt-input",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "IME-safe auto-sizing AI prompt composer with FormControlController integration, Enter/Mod+Enter submission, and stop-generation state.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current prompt text value."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Textarea placeholder text."
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "attribute": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional helper text displayed below the composer."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error text displayed when invalid."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables prompt input and submission."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the prompt as required for form validation."
+            },
+            {
+              "kind": "field",
+              "name": "streaming",
+              "attribute": "streaming",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Switches the primary control into stop-generation mode."
+            },
+            {
+              "kind": "field",
+              "name": "submitOnEnter",
+              "attribute": "submit-on-enter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true, Enter submits and Shift+Enter adds a newline; when false, Mod+Enter submits."
+            },
+            {
+              "kind": "field",
+              "name": "maxRows",
+              "attribute": "max-rows",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Maximum visible auto-sized row count."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current prompt text value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible field label."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Textarea placeholder text."
+            },
+            {
+              "name": "hint",
+              "fieldName": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional helper text displayed below the composer."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit error text displayed when invalid."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables prompt input and submission."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks the prompt as required for form validation."
+            },
+            {
+              "name": "streaming",
+              "fieldName": "streaming",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Switches the primary control into stop-generation mode."
+            },
+            {
+              "name": "submit-on-enter",
+              "fieldName": "submitOnEnter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true, Enter submits and Shift+Enter adds a newline; when false, Mod+Enter submits."
+            },
+            {
+              "name": "max-rows",
+              "fieldName": "maxRows",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Maximum visible auto-sized row count."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired as the user types prompt text (after IME composition ends)."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired when the prompt input commits on blur/change."
+            },
+            {
+              "name": "mth-submit",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Cancelable event fired when submitting the prompt."
+            },
+            {
+              "name": "mth-stop",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired when the user activates the stop-generation button."
+            }
+          ],
+          "slots": [
+            {
+              "name": "attachments",
+              "description": "Optional file or context attachment chips above/beside the composer."
+            },
+            {
+              "name": "model",
+              "description": "Optional model selector control in the composer toolbar."
+            },
+            {
+              "name": "actions",
+              "description": "Additional toolbar controls placed beside the submit button."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer wrapper containing label, composer, hint, and error."
+            },
+            {
+              "name": "label",
+              "description": "Prompt label element."
+            },
+            {
+              "name": "composer",
+              "description": "Bordered prompt box."
+            },
+            {
+              "name": "textarea",
+              "description": "Internal auto-sizing `<textarea>` element."
+            },
+            {
+              "name": "footer",
+              "description": "Toolbar row for attachments, model slot, and submit/stop button."
+            },
+            {
+              "name": "submit-button",
+              "description": "Primary send button."
+            },
+            {
+              "name": "stop-button",
+              "description": "Stop generation button rendered while `streaming` is true."
+            },
+            {
+              "name": "hint",
+              "description": "Helper text below the composer."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message below the composer."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Composer background color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring and active border color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Composer corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "streaming",
+              "description": "Custom element state :state(streaming)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-prompt-input",
+            "package": "@methane/ai",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "streaming",
+              "invalid",
+              "dirty",
+              "touched",
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "focused and submitOnEnter is true without Shift or IME composition",
+                "expect": "emits cancelable mth-submit with current value"
+              }
+            ],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hint",
+                "attr": "hint",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "streaming",
+                "attr": "streaming",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "submitOnEnter",
+                "attr": "submit-on-enter",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "maxRows",
+                "attr": "max-rows",
+                "type": "number",
+                "default": 6
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-submit",
+                "cancelable": true,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-stop",
+                "cancelable": false,
+                "detailType": "void"
+              }
+            ],
+            "slots": [
+              {
+                "name": "attachments",
+                "description": "Optional file or context attachment chips above/beside the composer."
+              },
+              {
+                "name": "model",
+                "description": "Optional model selector control in the composer toolbar."
+              },
+              {
+                "name": "actions",
+                "description": "Additional toolbar controls placed beside the submit button."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer wrapper containing label, composer, hint, and error."
+              },
+              {
+                "name": "label",
+                "description": "Prompt label element."
+              },
+              {
+                "name": "composer",
+                "description": "Bordered prompt box."
+              },
+              {
+                "name": "textarea",
+                "description": "Internal auto-sizing `<textarea>` element."
+              },
+              {
+                "name": "footer",
+                "description": "Toolbar row for attachments, model slot, and submit/stop button."
+              },
+              {
+                "name": "submit-button",
+                "description": "Primary send button."
+              },
+              {
+                "name": "stop-button",
+                "description": "Stop generation button rendered while `streaming` is true."
+              },
+              {
+                "name": "hint",
+                "description": "Helper text below the composer."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message below the composer."
+              }
+            ],
+            "messages": {
+              "label": "Prompt",
+              "placeholder": "Ask anything...",
+              "submitLabel": "Send message",
+              "stopLabel": "Stop generating",
+              "valueMissing": "Please enter a prompt.",
+              "hintText": "Press Enter to send, Shift+Enter for a new line.",
+              "modEnterHintText": "Press Ctrl+Enter or Cmd+Enter to send."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPromptInput",
+          "declaration": {
+            "name": "MthPromptInput",
+            "module": "src/components/prompt-input/prompt-input.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-prompt-input",
+          "declaration": {
+            "name": "MthPromptInput",
+            "module": "src/components/prompt-input/prompt-input.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/suggestion-chips/suggestion-chips.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSuggestionChips",
+          "tagName": "mth-suggestion-chips",
+          "customElement": true,
+          "description": "Starter prompt chip bar with RTL-aware RovingFocusController navigation and `mth-select` event dispatch.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "SuggestionChipItem[]"
+              },
+              "description": "Array of `{ id?, label, value?, prompt?, disabled? }` starter prompt items."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the suggestion bar."
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "attribute": "orientation",
+              "reflect": true,
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Horizontal or vertical chip flow."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all suggestion chips."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the suggestion bar."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Horizontal or vertical chip flow."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all suggestion chips."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-select",
+              "type": {
+                "text": "CustomEvent<{ label: string; value: string; index: number }>"
+              },
+              "description": "Fired when the user activates a suggestion chip."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional trailing custom suggestions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Container group holding suggestion chips."
+            },
+            {
+              "name": "chip",
+              "description": "Individual selectable prompt chip button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Chip background color."
+            },
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "Chip hover background color."
+            },
+            {
+              "name": "--mth-radius-full",
+              "description": "Chip pill border radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-suggestion-chips",
+            "package": "@methane/ai",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "chip focused",
+                "expect": "moves focus to next suggestion (RTL flipped)"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "chip focused",
+                "expect": "moves focus to previous suggestion (RTL flipped)"
+              },
+              {
+                "key": "Home",
+                "when": "chip focused",
+                "expect": "moves focus to first suggestion"
+              },
+              {
+                "key": "End",
+                "when": "chip focused",
+                "expect": "moves focus to last suggestion"
+              }
+            ],
+            "props": [
+              {
+                "name": "items",
+                "attr": false,
+                "type": "SuggestionChipItem[]"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "orientation",
+                "attr": "orientation",
+                "type": "'horizontal' | 'vertical'",
+                "default": "horizontal"
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-select",
+                "cancelable": false,
+                "detailType": "{ label: string; value: string; index: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional trailing custom suggestions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Container group holding suggestion chips."
+              },
+              {
+                "name": "chip",
+                "description": "Individual selectable prompt chip button."
+              }
+            ],
+            "messages": {
+              "label": "Suggested prompts"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSuggestionChips",
+          "declaration": {
+            "name": "MthSuggestionChips",
+            "module": "src/components/suggestion-chips/suggestion-chips.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-suggestion-chips",
+          "declaration": {
+            "name": "MthSuggestionChips",
+            "module": "src/components/suggestion-chips/suggestion-chips.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/thinking-indicator/thinking-indicator.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthThinkingIndicator",
+          "tagName": "mth-thinking-indicator",
+          "customElement": true,
+          "description": "Collapsible AI reasoning/chain-of-thought disclosure with elapsed timing and MotionController reduced-motion support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether the reasoning panel is expanded."
+            },
+            {
+              "kind": "field",
+              "name": "streaming",
+              "attribute": "streaming",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays active thinking spinner while reasoning streams."
+            },
+            {
+              "kind": "field",
+              "name": "elapsedSeconds",
+              "attribute": "elapsed-seconds",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Formatted reasoning duration in seconds."
+            },
+            {
+              "kind": "field",
+              "name": "summary",
+              "attribute": "summary",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom disclosure heading overriding default localized label."
+            },
+            {
+              "kind": "field",
+              "name": "content",
+              "attribute": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Plain-text reasoning summary shown inside the disclosure panel."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls whether the reasoning panel is expanded."
+            },
+            {
+              "name": "streaming",
+              "fieldName": "streaming",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays active thinking spinner while reasoning streams."
+            },
+            {
+              "name": "elapsed-seconds",
+              "fieldName": "elapsedSeconds",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Formatted reasoning duration in seconds."
+            },
+            {
+              "name": "summary",
+              "fieldName": "summary",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom disclosure heading overriding default localized label."
+            },
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Plain-text reasoning summary shown inside the disclosure panel."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-toggle",
+              "type": {
+                "text": "CustomEvent<{ open: boolean }>"
+              },
+              "description": "Fired when the user toggles the disclosure state."
+            },
+            {
+              "name": "mth-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Cancelable motion lifecycle event before expanding."
+            },
+            {
+              "name": "mth-after-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired after expansion completes."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Cancelable motion lifecycle event before collapsing."
+            },
+            {
+              "name": "mth-after-close",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired after collapse completes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional detailed reasoning text or blocks."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer disclosure card container."
+            },
+            {
+              "name": "trigger",
+              "description": "Expand/collapse summary button."
+            },
+            {
+              "name": "panel",
+              "description": "Collapsible `role=\"region\"` reasoning panel."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Disclosure container background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Disclosure border color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Disclosure corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "streaming",
+              "description": "Custom element state :state(streaming)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-thinking-indicator",
+            "package": "@methane/ai",
+            "conformance": [],
+            "controllers": [
+              "MotionController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "open",
+              "streaming"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "trigger button focused",
+                "expect": "toggles reasoning panel open/closed"
+              },
+              {
+                "key": "Space",
+                "when": "trigger button focused",
+                "expect": "toggles reasoning panel open/closed"
+              }
+            ],
+            "props": [
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "streaming",
+                "attr": "streaming",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "elapsedSeconds",
+                "attr": "elapsed-seconds",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "summary",
+                "attr": "summary",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "content",
+                "attr": "content",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-toggle",
+                "cancelable": false,
+                "detailType": "{ open: boolean }"
+              },
+              {
+                "name": "mth-open",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-open",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-close",
+                "cancelable": false,
+                "detailType": "void"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional detailed reasoning text or blocks."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer disclosure card container."
+              },
+              {
+                "name": "trigger",
+                "description": "Expand/collapse summary button."
+              },
+              {
+                "name": "panel",
+                "description": "Collapsible `role=\"region\"` reasoning panel."
+              }
+            ],
+            "messages": {
+              "thinkingLabel": "Thinking...",
+              "thoughtForSeconds": "Thought for {seconds}s",
+              "thoughtSummary": "Reasoning details"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthThinkingIndicator",
+          "declaration": {
+            "name": "MthThinkingIndicator",
+            "module": "src/components/thinking-indicator/thinking-indicator.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-thinking-indicator",
+          "declaration": {
+            "name": "MthThinkingIndicator",
+            "module": "src/components/thinking-indicator/thinking-indicator.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tool-call/tool-call.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthToolCall",
+          "tagName": "mth-tool-call",
+          "customElement": true,
+          "description": "Collapsible AI tool invocation card displaying execution status, escaped JSON arguments, and sanitized text output.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Invoked tool function name."
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "attribute": "status",
+              "reflect": true,
+              "type": {
+                "text": "'pending' | 'running' | 'success' | 'error'"
+              },
+              "default": "\"pending\"",
+              "description": "Current tool status (`pending` | `running` | `success` | `error`)."
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether arguments and output details are expanded."
+            },
+            {
+              "kind": "field",
+              "name": "args",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "JSON-serializable arguments payload."
+            },
+            {
+              "kind": "field",
+              "name": "output",
+              "type": {
+                "text": "unknown"
+              },
+              "description": "JSON-serializable or text output payload."
+            },
+            {
+              "kind": "field",
+              "name": "durationMs",
+              "attribute": "duration-ms",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional execution latency in milliseconds."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Invoked tool function name."
+            },
+            {
+              "name": "status",
+              "fieldName": "status",
+              "type": {
+                "text": "'pending' | 'running' | 'success' | 'error'"
+              },
+              "default": "\"pending\"",
+              "description": "Current tool status (`pending` | `running` | `success` | `error`)."
+            },
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether arguments and output details are expanded."
+            },
+            {
+              "name": "duration-ms",
+              "fieldName": "durationMs",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional execution latency in milliseconds."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-toggle",
+              "type": {
+                "text": "CustomEvent<{ open: boolean; status: string }>"
+              },
+              "description": "Fired when the user toggles the tool details panel."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional supplementary result content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root tool card container."
+            },
+            {
+              "name": "trigger",
+              "description": "Collapsible header button."
+            },
+            {
+              "name": "details",
+              "description": "Expanded arguments and output container."
+            },
+            {
+              "name": "args",
+              "description": "Formatted tool arguments `<pre>` block."
+            },
+            {
+              "name": "output",
+              "description": "Formatted tool output `<pre>` block."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Tool card background color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Tool card border color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Tool card corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "pending",
+              "description": "Custom element state :state(pending)."
+            },
+            {
+              "name": "running",
+              "description": "Custom element state :state(running)."
+            },
+            {
+              "name": "success",
+              "description": "Custom element state :state(success)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-tool-call",
+            "package": "@methane/ai",
+            "conformance": [],
+            "controllers": [
+              "MotionController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "open",
+              "pending",
+              "running",
+              "success",
+              "error"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "trigger button focused",
+                "expect": "expands or collapses tool details"
+              },
+              {
+                "key": "Space",
+                "when": "trigger button focused",
+                "expect": "expands or collapses tool details"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "status",
+                "attr": "status",
+                "type": "'pending' | 'running' | 'success' | 'error'",
+                "default": "pending"
+              },
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "args",
+                "attr": false,
+                "type": "unknown"
+              },
+              {
+                "name": "output",
+                "attr": false,
+                "type": "unknown"
+              },
+              {
+                "name": "durationMs",
+                "attr": "duration-ms",
+                "type": "number | null",
+                "default": null
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-toggle",
+                "cancelable": false,
+                "detailType": "{ open: boolean; status: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional supplementary result content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root tool card container."
+              },
+              {
+                "name": "trigger",
+                "description": "Collapsible header button."
+              },
+              {
+                "name": "details",
+                "description": "Expanded arguments and output container."
+              },
+              {
+                "name": "args",
+                "description": "Formatted tool arguments `<pre>` block."
+              },
+              {
+                "name": "output",
+                "description": "Formatted tool output `<pre>` block."
+              }
+            ],
+            "messages": {
+              "defaultToolName": "Tool call",
+              "statusPending": "Pending",
+              "statusRunning": "Running",
+              "statusSuccess": "Completed",
+              "statusError": "Error",
+              "argumentsLabel": "Arguments",
+              "outputLabel": "Output",
+              "durationLabel": "{ms} ms"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthToolCall",
+          "declaration": {
+            "name": "MthToolCall",
+            "module": "src/components/tool-call/tool-call.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-tool-call",
+          "declaration": {
+            "name": "MthToolCall",
+            "module": "src/components/tool-call/tool-call.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
