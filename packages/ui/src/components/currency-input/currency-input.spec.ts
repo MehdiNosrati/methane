@@ -19,7 +19,7 @@ export const currencyInputSpec: ComponentBehaviorSpec = {
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'currency', attr: 'currency', type: 'string', default: 'USD' },
-    { name: 'locale', attr: 'locale', type: 'string', default: 'en-US' },
+    { name: 'locale', attr: 'locale', type: 'string', default: '' },
     { name: 'decimals', attr: 'decimals', type: 'number', default: 2 },
     { name: 'allowNegative', attr: 'allow-negative', type: 'boolean', default: false },
     { name: 'min', attr: 'min', type: 'number | undefined' },

@@ -56,7 +56,7 @@ export class MthNumberInput extends UIElement {
   step = 1;
 
   @property({ type: String })
-  locale = 'en-US';
+  locale = '';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -387,7 +387,8 @@ export class MthNumberInput extends UIElement {
       hasNumeric && this.min !== undefined && Number.isFinite(this.min) && numeric <= this.min;
     const atMax =
       hasNumeric && this.max !== undefined && Number.isFinite(this.max) && numeric >= this.max;
-    const valueText = hasNumeric ? FormattingUtils.formatNumber(numeric, this.locale) : undefined;
+    const effectiveLocale = this.locale || this.resolvedLocale;
+    const valueText = hasNumeric ? FormattingUtils.formatNumber(numeric, effectiveLocale) : undefined;
 
     return html`
       <div part="base" class="base">

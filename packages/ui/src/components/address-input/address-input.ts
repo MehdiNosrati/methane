@@ -332,6 +332,8 @@ export class MthAddressInput extends UIElement {
         part="base"
         class="fieldset"
         aria-describedby=${hasHint && !hasError ? 'mth-addr-hint' : nothing}
+        aria-invalid=${isInvalid ? 'true' : 'false'}
+        aria-errormessage=${isInvalid && hasError ? 'mth-addr-error' : nothing}
         @focusout=${this.handleGroupFocusOut}
       >
         <legend

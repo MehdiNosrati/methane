@@ -360,6 +360,7 @@ export class MthFormRepeater extends UIElement {
     const isRequired = this.formCtrl.required;
     const isDisabled = this.formCtrl.disabled;
     const isReadonly = this.formCtrl.readOnly;
+    const isInvalid = this.formCtrl.userInvalid || explicitError.length > 0;
     const schemas = this.resolveSchemas();
     const canAdd =
       !isDisabled &&
@@ -372,6 +373,8 @@ export class MthFormRepeater extends UIElement {
         part="base"
         class="fieldset"
         aria-describedby=${hasHint && !hasError ? 'mth-rep-hint' : nothing}
+        aria-invalid=${isInvalid ? 'true' : 'false'}
+        aria-errormessage=${isInvalid && hasError ? 'mth-rep-error' : nothing}
         @focusout=${this.handleGroupFocusOut}
       >
         <legend

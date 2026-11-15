@@ -211,6 +211,7 @@ export class MthOtpInput extends UIElement {
       this.formCtrl.validate();
     }
 
+    this.rovingFocus.updateOptions({ dir: this.resolvedDir });
     this.setCustomState('required', this.formCtrl.required);
     this.setCustomState('readonly', this.formCtrl.readOnly);
   }
@@ -382,6 +383,8 @@ export class MthOtpInput extends UIElement {
           aria-labelledby=${hasLabel ? 'mth-otp-label' : nothing}
           aria-label=${!hasLabel ? this.t('defaultLabel') : nothing}
           aria-describedby=${hasHint && !hasError ? 'mth-otp-hint' : nothing}
+          aria-invalid=${isInvalid ? 'true' : 'false'}
+          aria-errormessage=${isInvalid && hasError ? 'mth-otp-error' : nothing}
           data-invalid=${isInvalid ? 'true' : 'false'}
           @focusout=${this.handleCellsFocusOut}
         >
@@ -397,6 +400,7 @@ export class MthOtpInput extends UIElement {
                 .value=${char}
                 aria-label=${this.t('cellLabel', { index: idx + 1, total })}
                 aria-invalid=${isInvalid ? 'true' : 'false'}
+                aria-errormessage=${isInvalid && hasError ? 'mth-otp-error' : nothing}
                 ?disabled=${isDisabled}
                 ?readonly=${isReadonly}
                 @input=${(ev: Event) => this.handleCellInput(idx, ev)}

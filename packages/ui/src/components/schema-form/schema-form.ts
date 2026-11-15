@@ -154,13 +154,7 @@ export class MthSchemaForm extends UIElement {
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
-    if (changedProperties.has('schemaJson') && !this.schema && this.schemaJson.length > 0) {
-      const parsed = parseSchemaJson(this.schemaJson);
-      if (parsed) {
-        this.schema = parsed;
-      }
-    }
-    if (changedProperties.has('schema')) {
+    if (changedProperties.has('schema') || changedProperties.has('schemaJson')) {
       this.applyDefaultsIfUnset();
     }
     if (
@@ -303,9 +297,14 @@ export class MthSchemaForm extends UIElement {
               type="checkbox"
               name=${key}
               .checked=${checked}
-              ?disabled=${this.disabled}
+              aria-readonly=${this.readonly ? 'true' : 'false'}
+              ?disabled=${this.disabled || this.readonly}
               @change=${(ev: Event) => {
                 const target = ev.target as HTMLInputElement;
+                if (this.readonly) {
+                  target.checked = checked;
+                  return;
+                }
                 this.updateFieldValue(key, target.checked, true);
               }}
             />
@@ -323,10 +322,15 @@ export class MthSchemaForm extends UIElement {
             class="select-control"
             name=${key}
             aria-label=${label}
+            aria-readonly=${this.readonly ? 'true' : 'false'}
             .value=${strVal}
-            ?disabled=${this.disabled}
+            ?disabled=${this.disabled || this.readonly}
             @change=${(ev: Event) => {
               const target = ev.target as HTMLSelectElement;
+              if (this.readonly) {
+                target.value = strVal;
+                return;
+              }
               this.updateFieldValue(key, target.value, true);
             }}
           >

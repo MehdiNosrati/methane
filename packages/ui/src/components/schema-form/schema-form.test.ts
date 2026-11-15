@@ -81,6 +81,49 @@ describe('<mth-schema-form>', () => {
     expect(el.values.email).toBe('');
   });
 
+  it('supports updating schema-json dynamically and prevents checkbox/select mutations when readonly', async () => {
+    const el = document.createElement('mth-schema-form') as MthSchemaForm;
+    el.setAttribute(
+      'schema-json',
+      JSON.stringify({
+        properties: {
+          agree: { type: 'boolean', title: 'Agree', default: false },
+          plan: { type: 'string', title: 'Plan', enum: ['free', 'pro'], default: 'free' },
+        },
+      }),
+    );
+    el.readonly = true;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.values.agree).toBe(false);
+    expect(el.values.plan).toBe('free');
+
+    const checkbox = el.shadowRoot!.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
+    const select = el.shadowRoot!.querySelector<HTMLSelectElement>('select')!;
+    expect(checkbox.disabled).toBe(true);
+    expect(select.disabled).toBe(true);
+    checkbox.checked = true;
+    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+    select.value = 'pro';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.values.agree).toBe(false);
+    expect(el.values.plan).toBe('free');
+
+    el.setAttribute(
+      'schema-json',
+      JSON.stringify({
+        properties: {
+          region: { type: 'string', title: 'Region', default: 'eu-west' },
+        },
+      }),
+    );
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('mth-input[name="region"]')).not.toBeNull();
+    expect(el.values.region).toBe('eu-west');
+  });
+
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {
     const schemaJson = JSON.stringify({
       title: 'Profile',

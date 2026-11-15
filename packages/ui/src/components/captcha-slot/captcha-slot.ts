@@ -278,6 +278,8 @@ export class MthCaptchaSlot extends UIElement {
           aria-labelledby=${hasLabel ? 'mth-captcha-label' : nothing}
           aria-label=${!hasLabel ? this.t('defaultLabel') : nothing}
           aria-describedby=${hasHint && !hasError ? 'mth-captcha-hint' : nothing}
+          aria-invalid=${isInvalid ? 'true' : 'false'}
+          aria-errormessage=${isInvalid && hasError ? 'mth-captcha-error' : nothing}
           aria-disabled=${isDisabled ? 'true' : 'false'}
         >
           <slot></slot>

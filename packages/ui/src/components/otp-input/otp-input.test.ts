@@ -9,6 +9,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthOtpInput, otpInputSpec, registerMthOtpInput } from './index.js';
+import { ContextProvider } from '@lit/context';
+import { LOCALE_CONTEXT } from '@methane/core';
 
 describe('<mth-otp-input>', () => {
   afterEach(() => {
@@ -109,6 +111,33 @@ describe('<mth-otp-input>', () => {
     await el.updateComplete;
     expect(el.checkValidity()).toBe(false);
     expect(el.validityFlags.tooShort).toBe(true);
+
+    el.error = 'Invalid verification code';
+    await el.updateComplete;
+    const group = el.shadowRoot!.querySelector<HTMLElement>('[role="group"]')!;
+    expect(group.getAttribute('aria-invalid')).toBe('true');
+    expect(group.getAttribute('aria-errormessage')).toBe('mth-otp-error');
+    expect(cells[0]!.getAttribute('aria-errormessage')).toBe('mth-otp-error');
+    expect(scanSameRootAria(el).issues).toEqual([]);
+
+    const localeHost = document.createElement('div');
+    document.body.appendChild(localeHost);
+    new ContextProvider(localeHost, {
+      context: LOCALE_CONTEXT,
+      initialValue: { version: 1, locale: 'ar', dir: 'rtl' },
+    });
+    const rtlOtp = document.createElement('mth-otp-input') as MthOtpInput;
+    rtlOtp.label = 'RTL Code';
+    rtlOtp.length = 4;
+    localeHost.appendChild(rtlOtp);
+    await rtlOtp.updateComplete;
+    const rtlCells = rtlOtp.shadowRoot!.querySelectorAll<HTMLInputElement>('input[part="cell"]');
+    rtlCells[0]!.focus();
+    rtlCells[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }),
+    );
+    await rtlOtp.updateComplete;
+    expect(rtlCells[1]!.tabIndex).toBe(0);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

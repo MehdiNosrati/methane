@@ -65,7 +65,7 @@ export class MthCurrencyInput extends UIElement {
   currency = 'USD';
 
   @property({ type: String })
-  locale = 'en-US';
+  locale = '';
 
   @property({ type: Number })
   decimals = 2;
@@ -103,17 +103,19 @@ export class MthCurrencyInput extends UIElement {
   private readonly formCtrl: FormControlController;
   private readonly inputCtrl: InputController;
   private readonly maskEngine: MaskAndFormatEngine;
+  private lastEffectiveLocale = '';
 
   constructor() {
     super();
+    const initialMeta = resolveCurrencyMetadata('en', this.currency);
     this.maskEngine = new MaskAndFormatEngine(
       {
         mode: 'numeric',
-        locale: this.locale,
+        locale: 'en',
         decimals: this.decimals,
         allowNegative: this.allowNegative,
-        groupSeparator: ',',
-        decimalSeparator: '.',
+        groupSeparator: initialMeta.groupSeparator,
+        decimalSeparator: initialMeta.decimalSeparator,
       },
       null,
     );
@@ -156,7 +158,11 @@ export class MthCurrencyInput extends UIElement {
           return {
             flags: { rangeUnderflow: true },
             message: this.t('rangeUnderflow', {
-              min: FormattingUtils.formatCurrency(this.min, this.currency, this.locale),
+              min: FormattingUtils.formatCurrency(
+                this.min,
+                this.currency,
+                this.locale || this.resolvedLocale,
+              ),
             }),
           };
         }
@@ -164,7 +170,11 @@ export class MthCurrencyInput extends UIElement {
           return {
             flags: { rangeOverflow: true },
             message: this.t('rangeOverflow', {
-              max: FormattingUtils.formatCurrency(this.max, this.currency, this.locale),
+              max: FormattingUtils.formatCurrency(
+                this.max,
+                this.currency,
+                this.locale || this.resolvedLocale,
+              ),
             }),
           };
         }
@@ -214,7 +224,7 @@ export class MthCurrencyInput extends UIElement {
   get formattedValue(): string {
     const num = this.valueAsNumber;
     if (!Number.isFinite(num)) return '';
-    return FormattingUtils.formatCurrency(num, this.currency, this.locale);
+    return FormattingUtils.formatCurrency(num, this.currency, this.locale || this.resolvedLocale);
   }
 
   override focus(options?: FocusOptions): void {
@@ -252,16 +262,19 @@ export class MthCurrencyInput extends UIElement {
 
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
+    const effectiveLocale = this.locale || this.resolvedLocale;
     if (
+      effectiveLocale !== this.lastEffectiveLocale ||
       changedProperties.has('locale') ||
       changedProperties.has('currency') ||
       changedProperties.has('decimals') ||
       changedProperties.has('allowNegative')
     ) {
-      const meta = resolveCurrencyMetadata(this.locale, this.currency);
+      this.lastEffectiveLocale = effectiveLocale;
+      const meta = resolveCurrencyMetadata(effectiveLocale, this.currency);
       this.maskEngine.setConfig({
         mode: 'numeric',
-        locale: this.locale,
+        locale: effectiveLocale,
         decimals: this.decimals,
         allowNegative: this.allowNegative,
         groupSeparator: meta.groupSeparator,
@@ -312,7 +325,8 @@ export class MthCurrencyInput extends UIElement {
 
   private formatForDisplay(rawCanonical: string): string {
     if (rawCanonical.length === 0) return '';
-    const { decimalSeparator } = resolveCurrencyMetadata(this.locale, this.currency);
+    const effectiveLocale = this.locale || this.resolvedLocale;
+    const { decimalSeparator } = resolveCurrencyMetadata(effectiveLocale, this.currency);
     const localizedRaw =
       decimalSeparator === '.' ? rawCanonical : rawCanonical.replace('.', decimalSeparator);
     return this.maskEngine.format(localizedRaw).formatted;
@@ -417,7 +431,8 @@ export class MthCurrencyInput extends UIElement {
     const isDisabled = this.formCtrl.disabled;
     const isReadonly = this.formCtrl.readOnly;
     const isInvalid = this.formCtrl.userInvalid || explicitError.length > 0;
-    const meta = resolveCurrencyMetadata(this.locale, this.currency);
+    const effectiveLocale = this.locale || this.resolvedLocale;
+    const meta = resolveCurrencyMetadata(effectiveLocale, this.currency);
     const displayValue = this.formatForDisplay(this.value);
 
     return html`

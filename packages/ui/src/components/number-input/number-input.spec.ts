@@ -24,7 +24,7 @@ export const numberInputSpec: ComponentBehaviorSpec = {
     { name: 'min', attr: 'min', type: 'number | undefined' },
     { name: 'max', attr: 'max', type: 'number | undefined' },
     { name: 'step', attr: 'step', type: 'number', default: 1 },
-    { name: 'locale', attr: 'locale', type: 'string', default: 'en-US' },
+    { name: 'locale', attr: 'locale', type: 'string', default: '' },
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
     { name: 'required', attr: 'required', type: 'boolean', default: false },
     { name: 'readonly', attr: 'readonly', type: 'boolean', default: false },
