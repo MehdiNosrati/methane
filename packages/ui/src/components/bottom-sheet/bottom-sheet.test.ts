@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthBottomSheet, bottomSheetSpec, registerMthBottomSheet } from './index.js';
+import { bottomSheetSpec } from './bottom-sheet.spec.js';
+import { MthBottomSheet, registerMthBottomSheet } from './index.js';
 
 describe('<mth-bottom-sheet>', () => {
   afterEach(() => {

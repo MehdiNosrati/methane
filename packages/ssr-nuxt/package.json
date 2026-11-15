@@ -1,9 +1,12 @@
 {
   "name": "@methane-ui/ssr-nuxt",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Nuxt Nitro server plugin and Vue SSR custom-element adapter for Methane UI (ADR-009)",
   "license": "MIT",
   "type": "module",
+  "sideEffects": [
+    "./dist/client.js"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -15,7 +18,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

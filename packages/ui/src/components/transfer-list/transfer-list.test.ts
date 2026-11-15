@@ -3,10 +3,10 @@ import { FormControlSuite, HydrationPuritySuite, ListboxSuite, scanSameRootAria 
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
+import { transferListSpec } from './transfer-list.spec.js';
 import {
   MthTransferList,
   registerMthTransferList,
-  transferListSpec,
   type TransferListChangeDetail,
   type TransferListItem,
 } from './index.js';

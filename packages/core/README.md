@@ -15,7 +15,7 @@ pnpm add @methane-ui/core
 npm install @methane-ui/core
 ```
 
-> `@methane-ui/core` (`^0.1.0`) is a required `peerDependency` of `@methane-ui/primitives`, `@methane-ui/ui`, `@methane-ui/ai`, `@methane-ui/auth`, `@methane-ui/admin`, `@methane-ui/chat`, `@methane-ui/commerce`, and all 11 `@methane-ui/*` satellite packages.
+> `@methane-ui/core` (`^0.1.2`) is a required `peerDependency` of `@methane-ui/primitives`, `@methane-ui/ui`, `@methane-ui/ai`, `@methane-ui/auth`, `@methane-ui/admin`, `@methane-ui/chat`, `@methane-ui/commerce`, and all 11 `@methane-ui/*` satellite packages.
 
 ## Package Exports
 

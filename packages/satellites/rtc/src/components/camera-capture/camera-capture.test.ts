@@ -7,7 +7,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { cameraCaptureSpec, MthCameraCapture, registerMthCameraCapture } from './index.js';
+import { cameraCaptureSpec } from './camera-capture.spec.js';
+import { MthCameraCapture, registerMthCameraCapture } from './index.js';
 
 describe('<mth-camera-capture>', () => {
   afterEach(() => {

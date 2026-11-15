@@ -5,7 +5,6 @@ import { MthThinkingIndicator } from './thinking-indicator.js';
 
 export { MthThinkingIndicator } from './thinking-indicator.js';
 export { thinkingIndicatorMessages } from './thinking-indicator.messages.js';
-export { thinkingIndicatorSpec } from './thinking-indicator.spec.js';
 export { thinkingIndicatorStyles } from './thinking-indicator.styles.js';
 
 export function registerMthThinkingIndicator(prefix?: string): ReadonlyArray<string> {

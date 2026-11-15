@@ -3,11 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {
-  MthDateRangeCalendar,
-  dateRangeCalendarSpec,
-  registerMthDateRangeCalendar,
-} from './index.js';
+import { dateRangeCalendarSpec } from './date-range-calendar.spec.js';
+import { MthDateRangeCalendar, registerMthDateRangeCalendar } from './index.js';
 
 describe('<mth-date-range-calendar>', () => {
   afterEach(() => {

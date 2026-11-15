@@ -7,7 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthPdfViewer, pdfViewerSpec, registerMthPdfViewer } from './index.js';
+import { pdfViewerSpec } from './pdf-viewer.spec.js';
+import { MthPdfViewer, registerMthPdfViewer } from './index.js';
 
 async function mountPdfViewer(
   props: Partial<

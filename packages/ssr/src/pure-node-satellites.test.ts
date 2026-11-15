@@ -27,16 +27,16 @@ describe('Pure-Node SSR barrel imports and satellite DSD rendering', () => {
     const script = `
 import './packages/ssr/dist/dom-shim.js';
 import { transformHtmlDsd } from './packages/ssr/dist/index.js';
-import './packages/ui/dist/index.js';
+import './packages/ui/dist/define.js';
 
 const kits = ['admin', 'ai', 'auth', 'chat', 'commerce'];
 for (const kit of kits) {
-  await import('./packages/kits/' + kit + '/dist/index.js');
+  await import('./packages/kits/' + kit + '/dist/define.js');
 }
 
 const satellites = ['3d', 'charts', 'code', 'datagrid', 'editor', 'flow', 'maps', 'media', 'pdf', 'rtc', 'spreadsheet'];
 for (const sat of satellites) {
-  await import('./packages/satellites/' + sat + '/dist/index.js');
+  await import('./packages/satellites/' + sat + '/dist/define.js');
 }
 
 const tags = ${JSON.stringify(SATELLITE_TAGS)};

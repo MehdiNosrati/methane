@@ -10,7 +10,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/field';
 import '@methane-ui/ui/radio';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthRadioGroup, radioGroupSpec, registerMthRadioGroup } from './index.js';
+import { radioGroupSpec } from './radio-group.spec.js';
+import { MthRadioGroup, registerMthRadioGroup } from './index.js';
 
 function createRadio(value: string, label: string, disabled = false): HTMLElement {
   const r = document.createElement('mth-radio');

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPasskeyPrompt, passkeyPromptSpec, registerMthPasskeyPrompt } from './index.js';
+import { passkeyPromptSpec } from './passkey-prompt.spec.js';
+import { MthPasskeyPrompt, registerMthPasskeyPrompt } from './index.js';
 
 describe('<mth-passkey-prompt>', () => {
   const originalPkc = (globalThis as { PublicKeyCredential?: unknown }).PublicKeyCredential;

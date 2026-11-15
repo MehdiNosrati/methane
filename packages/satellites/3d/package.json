@@ -1,17 +1,21 @@
 {
   "name": "@methane-ui/3d",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Wrap-first Three.js lazy WebGL/WebGPU 3D model viewer (<mth-model-viewer>) for Methane UI",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
-    "./dist/index.js",
+    "./dist/define.js",
     "./dist/components/*/index.js"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./define": {
+      "types": "./dist/define.d.ts",
+      "default": "./dist/define.js"
     },
     "./custom-elements.json": "./custom-elements.json",
     "./*/element.js": {
@@ -30,6 +34,9 @@
   "customElements": "custom-elements.json",
   "files": [
     "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.spec.*",
+    "!dist/specs.json",
     "custom-elements.json"
   ],
   "scripts": {
@@ -56,7 +63,7 @@
     "@types/three": "^0.187.0"
   },
   "peerDependencies": {
-    "@methane-ui/core": "^0.1.1"
+    "@methane-ui/core": "^0.1.2"
   },
   "publishConfig": {
     "access": "public"

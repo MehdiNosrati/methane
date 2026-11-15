@@ -8,13 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import {
-  flowEditorSpec,
-  MthFlowEditor,
-  registerMthFlowEditor,
-  type FlowEdge,
-  type FlowNode,
-} from './index.js';
+import { flowEditorSpec } from './flow-editor.spec.js';
+import { MthFlowEditor, registerMthFlowEditor, type FlowEdge, type FlowNode } from './index.js';
 
 const SAMPLE_NODES: FlowNode[] = [
   { id: 'trigger', label: 'Webhook' },

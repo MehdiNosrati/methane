@@ -10,7 +10,6 @@ export {
   type MthCitationOrientation,
 } from './citation-list.js';
 export { citationListMessages } from './citation-list.messages.js';
-export { citationListSpec } from './citation-list.spec.js';
 export { citationListStyles } from './citation-list.styles.js';
 
 export function registerMthCitationList(prefix?: string): ReadonlyArray<string> {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthArtifactPane, artifactPaneSpec, registerMthArtifactPane } from './index.js';
+import { artifactPaneSpec } from './artifact-pane.spec.js';
+import { MthArtifactPane, registerMthArtifactPane } from './index.js';
 
 describe('<mth-artifact-pane>', () => {
   afterEach(() => {

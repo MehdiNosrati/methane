@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthNotificationCenter, notificationCenterSpec, registerMthNotificationCenter } from './index.js';
+import { notificationCenterSpec } from './notification-center.spec.js';
+import { MthNotificationCenter, registerMthNotificationCenter } from './index.js';
 
 describe('<mth-notification-center>', () => {
   afterEach(() => {

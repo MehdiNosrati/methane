@@ -6,7 +6,6 @@ export {
   type BookingDaySlots,
 } from './booking-widget.js';
 export { bookingWidgetMessages } from './booking-widget.messages.js';
-export { bookingWidgetSpec } from './booking-widget.spec.js';
 export { bookingWidgetStyles } from './booking-widget.styles.js';
 
 export function registerMthBookingWidget(prefix?: string): ReadonlyArray<string> {

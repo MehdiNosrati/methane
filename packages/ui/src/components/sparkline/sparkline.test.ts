@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthSparkline, registerMthSparkline, sparklineSpec } from './index.js';
+import { sparklineSpec } from './sparkline.spec.js';
+import { MthSparkline, registerMthSparkline } from './index.js';
 
 describe('<mth-sparkline>', () => {
   afterEach(() => {

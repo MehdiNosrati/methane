@@ -2,12 +2,17 @@ import '@lit-labs/ssr-dom-shim';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { transformSync } from 'esbuild';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = resolve(__dirname, '..');
 const srcComponentsDir = resolve(pkgRoot, 'src/components');
 const distDir = resolve(pkgRoot, 'dist');
 const distComponentsDir = resolve(distDir, 'components');
+
+const DECORATE_RE =
+  /^var __decorate = \(this && this\.__decorate\) \|\| function [\s\S]*?^\};\r?\n/m;
+const CSS_TEMPLATE_RE = /\bcss\s*`([^`$\\]*(?:\\[\s\S][^`$\\]*)*)`/g;
 
 function toPascalCase(tag) {
   return tag
@@ -27,11 +32,64 @@ function discoverComponents() {
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .filter((name) => {
-      const hasIndex = existsSync(resolve(srcComponentsDir, name, 'index.ts'));
+      const hasElement = existsSync(resolve(srcComponentsDir, name, 'element.ts'));
       const hasSpec = existsSync(resolve(srcComponentsDir, name, `${name}.spec.ts`));
-      return hasIndex && hasSpec;
+      return hasElement && hasSpec;
     })
     .sort((a, b) => a.localeCompare(b));
+}
+
+function collectJsFiles(dir, out = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = resolve(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectJsFiles(full, out);
+    } else if (entry.isFile() && entry.name.endsWith('.js')) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+function minifyCssTemplates(source) {
+  return source.replace(CSS_TEMPLATE_RE, (_match, rawCss) => {
+    const unescaped = rawCss
+      .replace(/\\`/g, '`')
+      .replace(/\\\$/g, '$')
+      .replace(/\\\\/g, '\\');
+    const minified = transformSync(unescaped, {
+      loader: 'css',
+      minify: true,
+    }).code.trim();
+    const escaped = minified
+      .replace(/\\/g, '\\\\')
+      .replace(/`/g, '\\`')
+      .replace(/\$\{/g, '\\${');
+    return `css\`${escaped}\``;
+  });
+}
+
+function postProcessDistJs(dir) {
+  for (const filePath of collectJsFiles(dir)) {
+    let code = readFileSync(filePath, 'utf8');
+    if (DECORATE_RE.test(code)) {
+      code = code.replace(
+        DECORATE_RE,
+        "import { __decorate } from '@methane-ui/core';\n",
+      );
+    }
+    if (filePath.endsWith('.styles.js')) {
+      code = minifyCssTemplates(code);
+    }
+    const result = transformSync(code, {
+      loader: 'js',
+      format: 'esm',
+      target: 'es2023',
+      minifySyntax: true,
+      minifyWhitespace: true,
+    });
+    writeFileSync(filePath, result.code, 'utf8');
+  }
 }
 
 async function main() {
@@ -51,23 +109,26 @@ async function main() {
       throw new Error(`CEM_METADATA must not appear in ${dirName}/element.ts`);
     }
 
-    const indexModUrl = pathToFileURL(resolve(distComponentsDir, dirName, 'index.js')).href;
-    const indexMod = await import(indexModUrl);
-    for (const exportName of Object.keys(indexMod)) {
-      const prevDir = seenBarrelExports.get(exportName);
-      if (prevDir) {
-        throw new Error(
-          `Duplicate barrel export "${exportName}" in ${dirName}/index.ts (already exported by ${prevDir}/index.ts)`,
-        );
-      }
-      seenBarrelExports.set(exportName, dirName);
-    }
-
     const specModUrl = pathToFileURL(resolve(distComponentsDir, dirName, `${dirName}.spec.js`)).href;
     const elemModUrl = pathToFileURL(resolve(distComponentsDir, dirName, 'element.js')).href;
 
     const specMod = await import(specModUrl);
     const elemMod = await import(elemModUrl);
+
+    for (const exportName of Object.keys(elemMod)) {
+      if (exportName === 'CEM_METADATA') {
+        throw new Error(
+          `Conflicting barrel export '${exportName}' in ${dirName}/element.ts; keep CEM_METADATA scoped to ${dirName}.spec.ts.`,
+        );
+      }
+      const existingOwner = seenBarrelExports.get(exportName);
+      if (existingOwner) {
+        throw new Error(
+          `Conflicting barrel export '${exportName}' in ${dirName}/element.ts (already exported by ${existingOwner}/element.ts).`,
+        );
+      }
+      seenBarrelExports.set(exportName, dirName);
+    }
 
     const spec = Object.values(specMod).find(
       (v) => v && typeof v === 'object' && 'tag' in v && 'conformance' in v,
@@ -82,13 +143,13 @@ async function main() {
       throw new Error(`Expected class ${className} exported from ${dirName}/element.ts`);
     }
 
-    const meta =
-      typeof specMod.CEM_METADATA === 'object' && specMod.CEM_METADATA !== null
-        ? specMod.CEM_METADATA
-        : {};
+    const meta = typeof specMod.CEM_METADATA === 'object' && specMod.CEM_METADATA !== null
+      ? specMod.CEM_METADATA
+      : {};
 
-    const elemProps =
-      ElementCtor.elementProperties instanceof Map ? ElementCtor.elementProperties : new Map();
+    const elemProps = ElementCtor.elementProperties instanceof Map
+      ? ElementCtor.elementProperties
+      : new Map();
 
     const members = [];
     const attributes = [];
@@ -144,9 +205,10 @@ async function main() {
       events: spec.events.map((ev) => ({
         name: ev.name,
         type: {
-          text: ev.detailType.startsWith('CustomEvent<')
-            ? ev.detailType
-            : `CustomEvent<${ev.detailType}>`,
+          text:
+            ev.detailType.startsWith('CustomEvent<')
+              ? ev.detailType
+              : `CustomEvent<${ev.detailType}>`,
         },
         description: meta.eventDescriptions?.[ev.name] ?? `Emitted event ${ev.name}.`,
       })),
@@ -192,8 +254,8 @@ async function main() {
 
     specs.push(spec);
     registerTags.push([spec.tag, className, dirName]);
-    jsExports.push(`export * from './components/${dirName}/index.js';`);
-    dtsExports.push(`export * from './components/${dirName}/index.js';`);
+    jsExports.push(`export * from './components/${dirName}/element.js';`);
+    dtsExports.push(`export * from './components/${dirName}/element.js';`);
   }
 
   const runtimeImports = registerTags
@@ -220,14 +282,38 @@ async function main() {
     '',
   ].join('\n');
 
+  const tagNameMapEntries = registerTags
+    .map(([tag, className, dirName]) => `    '${tag}': import('./components/${dirName}/element.js').${className};`)
+    .join('\n');
+
   const barrelDts = [
     ...dtsExports,
     'export declare function registerAllComponents(prefix?: string): ReadonlyArray<string>;',
+    '',
+    'declare global {',
+    '  interface HTMLElementTagNameMap {',
+    tagNameMapEntries,
+    '  }',
+    '}',
+    '',
+  ].join('\n');
+
+  const defineJs = [
+    "import { registerAllComponents } from './index.js';",
+    'registerAllComponents();',
+    'export { registerAllComponents };',
+    '',
+  ].join('\n');
+
+  const defineDts = [
+    "export { registerAllComponents } from './index.js';",
     '',
   ].join('\n');
 
   writeFileSync(resolve(distDir, 'index.js'), barrelJs, 'utf8');
   writeFileSync(resolve(distDir, 'index.d.ts'), barrelDts, 'utf8');
+  writeFileSync(resolve(distDir, 'define.js'), defineJs, 'utf8');
+  writeFileSync(resolve(distDir, 'define.d.ts'), defineDts, 'utf8');
   writeFileSync(resolve(distDir, 'specs.json'), JSON.stringify(specs, null, 2) + '\n', 'utf8');
 
   const cem = {
@@ -236,6 +322,8 @@ async function main() {
     modules: cemModules,
   };
   writeFileSync(resolve(pkgRoot, 'custom-elements.json'), JSON.stringify(cem, null, 2) + '\n', 'utf8');
+
+  postProcessDistJs(distDir);
 }
 
 await main();

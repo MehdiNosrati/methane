@@ -1,9 +1,10 @@
 {
   "name": "@methane-ui/lint-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ESLint and Stylelint architectural invariant rules for Methane UI (ADR-002, ADR-012, ADR-014)",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -19,7 +20,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "dependencies": {
     "eslint": "^10.15.0",

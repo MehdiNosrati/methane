@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPaymentForm, paymentFormSpec, registerMthPaymentForm } from './index.js';
+import { paymentFormSpec } from './payment-form.spec.js';
+import { MthPaymentForm, registerMthPaymentForm } from './index.js';
 
 describe('<mth-payment-form>', () => {
   afterEach(() => {

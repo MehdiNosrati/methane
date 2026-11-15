@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthFloatingPanel, floatingPanelSpec, registerMthFloatingPanel } from './index.js';
+import { floatingPanelSpec } from './floating-panel.spec.js';
+import { MthFloatingPanel, registerMthFloatingPanel } from './index.js';
 
 describe('<mth-floating-panel>', () => {
   afterEach(() => {

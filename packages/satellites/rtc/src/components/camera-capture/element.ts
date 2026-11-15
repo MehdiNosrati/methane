@@ -8,6 +8,8 @@ export {
   type CameraDeviceSummary,
   type CameraPermissionStatus,
 } from './camera-capture.js';
+export { cameraCaptureMessages } from './camera-capture.messages.js';
+export { cameraCaptureStyles } from './camera-capture.styles.js';
 
 export function registerMthCameraCapture(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -17,5 +19,3 @@ export function registerMthCameraCapture(prefix?: string): ReadonlyArray<string>
     },
   });
 }
-
-registerMthCameraCapture();

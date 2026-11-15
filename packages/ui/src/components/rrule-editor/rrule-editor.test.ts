@@ -3,7 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthRruleEditor, registerMthRruleEditor, rruleEditorSpec } from './index.js';
+import { rruleEditorSpec } from './rrule-editor.spec.js';
+import { MthRruleEditor, registerMthRruleEditor } from './index.js';
 
 describe('<mth-rrule-editor>', () => {
   afterEach(() => {

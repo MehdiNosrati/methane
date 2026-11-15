@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { ICON_CATALOG, MthIcon, iconSpec, registerMthIcon, type MthIconName } from './index.js';
+import { iconSpec } from './icon.spec.js';
+import { ICON_CATALOG, MthIcon, registerMthIcon, type MthIconName } from './index.js';
 
 const EXPECTED_ICONS: ReadonlyArray<MthIconName> = [
   'check',

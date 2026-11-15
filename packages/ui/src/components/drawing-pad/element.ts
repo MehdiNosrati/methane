@@ -10,5 +10,4 @@ export function registerMthDrawingPad(prefix?: string): ReadonlyArray<string> {
 
 export { MthDrawingPad, type DrawingPoint, type DrawingStroke, type DrawingTool } from './drawing-pad.js';
 export { drawingPadMessages } from './drawing-pad.messages.js';
-export { drawingPadSpec } from './drawing-pad.spec.js';
 export { drawingPadStyles } from './drawing-pad.styles.js';

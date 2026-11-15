@@ -8,7 +8,6 @@ export {
   type MthChartSeriesInput,
 } from './chart.js';
 export { chartMessages } from './chart.messages.js';
-export { chartSpec } from './chart.spec.js';
 export { chartStyles } from './chart.styles.js';
 
 export function registerMthChart(prefix?: string): ReadonlyArray<string> {

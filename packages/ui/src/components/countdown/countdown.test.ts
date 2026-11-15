@@ -3,7 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthCountdown, countdownSpec, registerMthCountdown } from './index.js';
+import { countdownSpec } from './countdown.spec.js';
+import { MthCountdown, registerMthCountdown } from './index.js';
 
 describe('<mth-countdown>', () => {
   afterEach(() => {

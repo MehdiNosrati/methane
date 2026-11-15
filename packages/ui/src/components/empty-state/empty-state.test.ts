@@ -3,7 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import { MthEmptyState, emptyStateSpec, registerMthEmptyState } from './index.js';
+import { emptyStateSpec } from './empty-state.spec.js';
+import { MthEmptyState, registerMthEmptyState } from './index.js';
 
 describe('<mth-empty-state>', () => {
   afterEach(() => {

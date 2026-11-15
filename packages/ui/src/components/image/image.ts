@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { imageMessages } from './image.messages.js';
@@ -112,7 +112,9 @@ export class MthImage extends UIElement {
       const trimmedRatio = this.aspectRatio.trim();
       const safeRatio = trimmedRatio && SAFE_ASPECT_RATIO_RE.test(trimmedRatio) ? trimmedRatio : '';
       if (trimmedRatio && !safeRatio) {
-        devWarn(`<mth-image> rejected unsafe aspect-ratio "${trimmedRatio}".`);
+        if (IS_DEV) {
+          devWarn(`<mth-image> rejected unsafe aspect-ratio "${trimmedRatio}".`);
+        }
       }
       const safeFit = VALID_IMAGE_FITS.has(this.fit) ? this.fit : 'cover';
       const ratioRule = safeRatio ? `--_aspect-ratio: ${safeRatio};` : '';
@@ -129,7 +131,9 @@ export class MthImage extends UIElement {
     const trimmed = candidate.trim();
     if (!trimmed) return undefined;
     if (!isSafeImageSrc(trimmed)) {
-      devWarn(`<mth-image> rejected unsafe src "${trimmed}".`);
+      if (IS_DEV) {
+        devWarn(`<mth-image> rejected unsafe src "${trimmed}".`);
+      }
       return undefined;
     }
     return trimmed;

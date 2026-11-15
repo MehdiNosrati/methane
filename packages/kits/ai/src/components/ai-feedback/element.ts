@@ -5,7 +5,6 @@ import { MthAiFeedback } from './ai-feedback.js';
 
 export { MthAiFeedback, type MthAiFeedbackRating } from './ai-feedback.js';
 export { aiFeedbackMessages } from './ai-feedback.messages.js';
-export { aiFeedbackSpec } from './ai-feedback.spec.js';
 export { aiFeedbackStyles } from './ai-feedback.styles.js';
 
 export function registerMthAiFeedback(prefix?: string): ReadonlyArray<string> {

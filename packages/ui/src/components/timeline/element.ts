@@ -8,7 +8,6 @@ export {
   type TimelineItemData,
 } from './timeline.js';
 export { timelineMessages } from './timeline.messages.js';
-export { timelineSpec } from './timeline.spec.js';
 export { timelineStyles } from './timeline.styles.js';
 
 export function registerMthTimeline(prefix?: string): ReadonlyArray<string> {

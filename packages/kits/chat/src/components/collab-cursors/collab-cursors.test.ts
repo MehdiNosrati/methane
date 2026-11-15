@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { collabCursorsSpec, MthCollabCursors, registerMthCollabCursors } from './index.js';
+import { collabCursorsSpec } from './collab-cursors.spec.js';
+import { MthCollabCursors, registerMthCollabCursors } from './index.js';
 
 describe('<mth-collab-cursors>', () => {
   afterEach(() => {

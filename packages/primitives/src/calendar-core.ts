@@ -27,7 +27,7 @@ export interface CalendarCoreOptions {
   initialFocusDate?: CalendarDate;
 }
 
-const SUNDAY_START_TERRITORIES = new Set([
+const SUNDAY_START_TERRITORIES = /* @__PURE__ */ new Set([
   'AG', 'AS', 'AU', 'BD', 'BR', 'BS', 'BT', 'BW', 'BZ', 'CA', 'CO', 'DM', 'DO', 'ET',
   'GT', 'GU', 'HK', 'HN', 'ID', 'IL', 'IN', 'JM', 'JP', 'KE', 'KH', 'KR', 'LA', 'MH',
   'MM', 'MO', 'MT', 'MX', 'MZ', 'NI', 'NP', 'PA', 'PE', 'PH', 'PK', 'PR', 'PT', 'PY',

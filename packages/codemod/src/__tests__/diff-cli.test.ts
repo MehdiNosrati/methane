@@ -178,7 +178,7 @@ describe('@methane-ui/codemod diff, fixtures & CLI', () => {
     expect(
       runCli(['--version'], { stdout: (t) => (verOut += t), stderr: () => {} }),
     ).toBe(0);
-    expect(verOut.trim()).toBe('0.1.1');
+    expect(verOut.trim()).toBe('0.1.2');
 
     let errOut = '';
     expect(
@@ -190,7 +190,7 @@ describe('@methane-ui/codemod diff, fixtures & CLI', () => {
     if (existsSync(distCli)) {
       const res = spawnSync(process.execPath, [distCli, '--version'], { encoding: 'utf8' });
       expect(res.status).toBe(0);
-      expect(res.stdout.trim()).toBe('0.1.1');
+      expect(res.stdout.trim()).toBe('0.1.2');
     }
   });
 });

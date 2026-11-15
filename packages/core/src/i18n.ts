@@ -13,7 +13,7 @@ export type MessageCatalog = Readonly<Record<string, MessageEntry>>;
 const BIDI_FSI = '\u2068';
 const BIDI_PDI = '\u2069';
 
-const RUNTIME_I18N_SYMBOL = Symbol.for('@methane-ui/i18n');
+const RUNTIME_I18N_SYMBOL = /* @__PURE__ */ Symbol.for('@methane-ui/i18n');
 
 interface I18nStore {
   readonly packs: Map<string, Map<string, MessageCatalog>>;

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthPopover, popoverSpec, registerMthPopover } from './index.js';
+import { popoverSpec } from './popover.spec.js';
+import { MthPopover, registerMthPopover } from './index.js';
 
 describe('<mth-popover>', () => {
   afterEach(() => {

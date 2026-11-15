@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPivotTable, pivotTableSpec, registerMthPivotTable } from './index.js';
+import { pivotTableSpec } from './pivot-table.spec.js';
+import { MthPivotTable, registerMthPivotTable } from './index.js';
 
 describe('<mth-pivot-table>', () => {
   afterEach(() => {

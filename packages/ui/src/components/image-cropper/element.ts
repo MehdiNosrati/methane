@@ -10,5 +10,4 @@ export function registerMthImageCropper(prefix?: string): ReadonlyArray<string> 
 
 export { MthImageCropper, type CropResult } from './image-cropper.js';
 export { imageCropperMessages } from './image-cropper.messages.js';
-export { imageCropperSpec } from './image-cropper.spec.js';
 export { imageCropperStyles } from './image-cropper.styles.js';

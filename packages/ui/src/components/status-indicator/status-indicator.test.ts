@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthStatusIndicator, registerMthStatusIndicator, statusIndicatorSpec } from './index.js';
+import { statusIndicatorSpec } from './status-indicator.spec.js';
+import { MthStatusIndicator, registerMthStatusIndicator } from './index.js';
 
 describe('<mth-status-indicator>', () => {
   afterEach(() => {

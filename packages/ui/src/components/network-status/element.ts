@@ -3,7 +3,6 @@ import { MthNetworkStatus } from './network-status.js';
 
 export { MthNetworkStatus } from './network-status.js';
 export { networkStatusMessages } from './network-status.messages.js';
-export { networkStatusSpec } from './network-status.spec.js';
 export { networkStatusStyles } from './network-status.styles.js';
 
 export function registerMthNetworkStatus(prefix?: string): ReadonlyArray<string> {

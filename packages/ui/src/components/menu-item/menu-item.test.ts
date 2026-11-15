@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthMenuItem, menuItemSpec, registerMthMenuItem } from './index.js';
+import { menuItemSpec } from './menu-item.spec.js';
+import { MthMenuItem, registerMthMenuItem } from './index.js';
 
 describe('<mth-menu-item>', () => {
   afterEach(() => {

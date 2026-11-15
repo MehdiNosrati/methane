@@ -42,20 +42,20 @@ export interface FormContextValue {
  * Versioned Community Context Protocol tokens (ADR-006).
  * Symbol.for keys ensure interoperability across duplicate module loads.
  */
-export const THEME_CONTEXT = createContext<ThemeContextValue>(
-  Symbol.for('@methane-ui/context/theme'),
+export const THEME_CONTEXT = /* @__PURE__ */ createContext<ThemeContextValue>(
+  /* @__PURE__ */ Symbol.for('@methane-ui/context/theme'),
 );
 
-export const LOCALE_CONTEXT = createContext<LocaleContextValue>(
-  Symbol.for('@methane-ui/context/locale'),
+export const LOCALE_CONTEXT = /* @__PURE__ */ createContext<LocaleContextValue>(
+  /* @__PURE__ */ Symbol.for('@methane-ui/context/locale'),
 );
 
-export const FIELD_CONTEXT = createContext<FieldContextValue>(
-  Symbol.for('@methane-ui/context/field'),
+export const FIELD_CONTEXT = /* @__PURE__ */ createContext<FieldContextValue>(
+  /* @__PURE__ */ Symbol.for('@methane-ui/context/field'),
 );
 
-export const FORM_CONTEXT = createContext<FormContextValue>(
-  Symbol.for('@methane-ui/context/form'),
+export const FORM_CONTEXT = /* @__PURE__ */ createContext<FormContextValue>(
+  /* @__PURE__ */ Symbol.for('@methane-ui/context/form'),
 );
 
 export const DEFAULT_THEME_CONTEXT: ThemeContextValue = {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthSessionList, registerMthSessionList, sessionListSpec } from './index.js';
+import { sessionListSpec } from './session-list.spec.js';
+import { MthSessionList, registerMthSessionList } from './index.js';
 
 describe('<mth-session-list>', () => {
   afterEach(() => {

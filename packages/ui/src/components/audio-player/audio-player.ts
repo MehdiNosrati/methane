@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { audioPlayerMessages } from './audio-player.messages.js';
@@ -167,7 +167,9 @@ export class MthAudioPlayer extends UIElement {
     const trimmed = this.src.trim();
     if (!trimmed) return undefined;
     if (!isSafeAudioUrl(trimmed)) {
-      devWarn(`<mth-audio-player> rejected unsafe src "${trimmed}".`);
+      if (IS_DEV) {
+        devWarn(`<mth-audio-player> rejected unsafe src "${trimmed}".`);
+      }
       return undefined;
     }
     return trimmed;

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthTypingIndicator, registerMthTypingIndicator, typingIndicatorSpec } from './index.js';
+import { typingIndicatorSpec } from './typing-indicator.spec.js';
+import { MthTypingIndicator, registerMthTypingIndicator } from './index.js';
 
 describe('<mth-typing-indicator>', () => {
   afterEach(() => {

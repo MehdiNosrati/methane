@@ -3,7 +3,6 @@ import { MthDiffViewer } from './diff-viewer.js';
 
 export { MthDiffViewer, type DiffViewerEngine } from './diff-viewer.js';
 export { diffViewerMessages } from './diff-viewer.messages.js';
-export { diffViewerSpec, type DiffViewMode } from './diff-viewer.spec.js';
 export { diffViewerStyles } from './diff-viewer.styles.js';
 
 export function registerMthDiffViewer(prefix?: string): ReadonlyArray<string> {

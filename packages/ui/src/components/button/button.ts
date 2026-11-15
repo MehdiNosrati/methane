@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -103,7 +103,9 @@ export class MthButton extends UIElement {
     const raw = this.href.trim();
     if (!raw) return undefined;
     if (!isSafeHref(raw)) {
-      devWarn(`<mth-button> rejected unsafe href "${raw}". Only https:, http:, mailto:, tel:, and relative paths are permitted.`);
+      if (IS_DEV) {
+        devWarn(`<mth-button> rejected unsafe href "${raw}". Only https:, http:, mailto:, tel:, and relative paths are permitted.`);
+      }
       return undefined;
     }
     return raw;

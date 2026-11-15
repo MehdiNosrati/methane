@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthFormRepeater, formRepeaterSpec, registerMthFormRepeater } from './index.js';
+import { formRepeaterSpec } from './form-repeater.spec.js';
+import { MthFormRepeater, registerMthFormRepeater } from './index.js';
 
 describe('<mth-form-repeater>', () => {
   afterEach(() => {

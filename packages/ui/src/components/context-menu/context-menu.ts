@@ -9,10 +9,12 @@ import {
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { contextMenuMessages } from './context-menu.messages.js';
-import { EMPTY_CONTEXT_MENU_ITEMS, type ContextMenuItem } from './context-menu.spec.js';
+import type { ContextMenuItem } from './context-menu.spec.js';
 import { contextMenuStyles } from './context-menu.styles.js';
 
 export type { ContextMenuItem };
+
+const EMPTY_CONTEXT_MENU_ITEMS: ReadonlyArray<ContextMenuItem> = Object.freeze([]);
 
 function createPointAnchor(x: number, y: number): VirtualAnchor {
   return {

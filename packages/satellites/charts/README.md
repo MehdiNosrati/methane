@@ -12,13 +12,14 @@ pnpm add @methane-ui/charts @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/charts @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/charts` | Registers `<mth-chart>` and `<mth-chart-series>` and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/charts` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/charts/define` | Side-effect entrypoint that auto-registers all charts custom elements and exports `registerAllComponents` |
 | `@methane-ui/charts/chart` / `@methane-ui/charts/chart-series` | Per-component tree-shakeable entrypoints |
 | `@methane-ui/charts/*/element` | Unregistered component classes and `registerMth*()` helpers |
 | `@methane-ui/charts/custom-elements.json` | Custom Elements Manifest (CEM) |
@@ -57,7 +58,8 @@ npm install @methane-ui/charts @methane-ui/core @methane-ui/tokens
 
 ```ts
 import '@methane-ui/tokens/tokens.css';
-import '@methane-ui/charts';
+import '@methane-ui/charts/chart';
+import '@methane-ui/charts/chart-series';
 
 const chart = document.querySelector('mth-chart')!;
 chart.addEventListener('mth-chart-ready', (ev) => {

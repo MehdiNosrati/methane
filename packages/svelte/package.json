@@ -1,9 +1,10 @@
 {
   "name": "@methane-ui/svelte",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Svelte 5 typed wrappers supporting bind:value, bind:checked, and bind:open for Methane UI (ADR-009)",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,6 +21,7 @@
   },
   "files": [
     "dist",
+    "!dist/**/*.map",
     "src/generated/svelte"
   ],
   "scripts": {

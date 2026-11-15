@@ -3,12 +3,8 @@ import { compileSpec } from '@methane-ui/spec-compiler';
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthCsvImporter,
-  csvImporterSpec,
-  parseCsvMatrix,
-  registerMthCsvImporter,
-} from './index.js';
+import { csvImporterSpec } from './csv-importer.spec.js';
+import { MthCsvImporter, parseCsvMatrix, registerMthCsvImporter } from './index.js';
 
 describe('<mth-csv-importer>', () => {
   afterEach(() => {

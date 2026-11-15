@@ -5,7 +5,6 @@ import { MthAuthForm } from './auth-form.js';
 
 export { MthAuthForm, type MthAuthFormMode } from './auth-form.js';
 export { authFormMessages } from './auth-form.messages.js';
-export { authFormSpec } from './auth-form.spec.js';
 export { authFormStyles } from './auth-form.styles.js';
 
 export function registerMthAuthForm(prefix?: string): ReadonlyArray<string> {

@@ -8,7 +8,6 @@ export {
   type SsoProviderItem,
 } from './sso-buttons.js';
 export { ssoButtonsMessages } from './sso-buttons.messages.js';
-export { ssoButtonsSpec } from './sso-buttons.spec.js';
 export { ssoButtonsStyles } from './sso-buttons.styles.js';
 
 export function registerMthSsoButtons(prefix?: string): ReadonlyArray<string> {

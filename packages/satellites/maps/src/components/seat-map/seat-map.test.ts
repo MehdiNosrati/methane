@@ -9,7 +9,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthSeatMap, seatMapSpec, registerMthSeatMap, type SeatDefinition } from './index.js';
+import { seatMapSpec } from './seat-map.spec.js';
+import { MthSeatMap, registerMthSeatMap, type SeatDefinition } from './index.js';
 
 const SAMPLE_SEATS: ReadonlyArray<SeatDefinition> = [
   { id: 'A1', label: 'A1', tier: 'vip' },

@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthOtpInput, otpInputSpec, registerMthOtpInput } from './index.js';
+import { otpInputSpec } from './otp-input.spec.js';
+import { MthOtpInput, registerMthOtpInput } from './index.js';
 import { ContextProvider } from '@lit/context';
 import { LOCALE_CONTEXT } from '@methane-ui/core';
 

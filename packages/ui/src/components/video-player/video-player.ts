@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { videoPlayerMessages } from './video-player.messages.js';
@@ -173,7 +173,9 @@ export class MthVideoPlayer extends UIElement {
     const trimmed = raw.trim();
     if (!trimmed) return undefined;
     if (!isSafeMediaUrl(trimmed)) {
-      devWarn(`<mth-video-player> rejected unsafe URL "${trimmed}".`);
+      if (IS_DEV) {
+        devWarn(`<mth-video-player> rejected unsafe URL "${trimmed}".`);
+      }
       return undefined;
     }
     return trimmed;

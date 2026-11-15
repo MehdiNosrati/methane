@@ -1,17 +1,11 @@
-import { getRuntime } from '@methane-ui/core';
-import { MthPaymentForm } from './element.js';
+import { registerMthPaymentForm } from './element.js';
 
-export { MthPaymentForm } from './element.js';
-export { paymentFormMessages } from './payment-form.messages.js';
-export { paymentFormSpec } from './payment-form.spec.js';
-
-export function registerMthPaymentForm(prefix = 'mth'): ReadonlyArray<string> {
-  return getRuntime().registry.defineComponents({
-    prefix,
-    components: {
-      'mth-payment-form': MthPaymentForm,
-    },
-  });
-}
+export * from './element.js';
 
 registerMthPaymentForm();
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-payment-form': import('./payment-form.js').MthPaymentForm;
+  }
+}

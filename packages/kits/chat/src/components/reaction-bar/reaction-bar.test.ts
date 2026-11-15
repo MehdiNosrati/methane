@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthReactionBar, reactionBarSpec, registerMthReactionBar } from './index.js';
+import { reactionBarSpec } from './reaction-bar.spec.js';
+import { MthReactionBar, registerMthReactionBar } from './index.js';
 
 describe('<mth-reaction-bar>', () => {
   afterEach(() => {

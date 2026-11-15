@@ -4,7 +4,6 @@ import { MthSessionList } from './session-list.js';
 
 export { MthSessionList, type SessionListItem } from './session-list.js';
 export { sessionListMessages } from './session-list.messages.js';
-export { sessionListSpec } from './session-list.spec.js';
 export { sessionListStyles } from './session-list.styles.js';
 
 export function registerMthSessionList(prefix?: string): ReadonlyArray<string> {

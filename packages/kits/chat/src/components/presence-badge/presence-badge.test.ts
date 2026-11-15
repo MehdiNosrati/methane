@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPresenceBadge, presenceBadgeSpec, registerMthPresenceBadge } from './index.js';
+import { presenceBadgeSpec } from './presence-badge.spec.js';
+import { MthPresenceBadge, registerMthPresenceBadge } from './index.js';
 
 describe('<mth-presence-badge>', () => {
   afterEach(() => {

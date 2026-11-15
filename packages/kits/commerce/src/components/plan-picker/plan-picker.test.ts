@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPlanPicker, planPickerSpec, registerMthPlanPicker } from './index.js';
+import { planPickerSpec } from './plan-picker.spec.js';
+import { MthPlanPicker, registerMthPlanPicker } from './index.js';
 
 const DEMO_PLANS = [
   { id: 'starter', name: 'Starter', monthlyPrice: 12, annualPrice: 120, features: ['1 user'] },

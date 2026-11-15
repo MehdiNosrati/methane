@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { checkoutStepsSpec, MthCheckoutSteps, registerMthCheckoutSteps } from './index.js';
+import { checkoutStepsSpec } from './checkout-steps.spec.js';
+import { MthCheckoutSteps, registerMthCheckoutSteps } from './index.js';
 
 const DEMO_STEPS = [
   { id: 'shipping', label: 'Shipping', completed: true },

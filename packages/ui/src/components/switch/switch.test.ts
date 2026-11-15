@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/field';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthSwitch, registerMthSwitch, switchSpec } from './index.js';
+import { switchSpec } from './switch.spec.js';
+import { MthSwitch, registerMthSwitch } from './index.js';
 
 describe('<mth-switch>', () => {
   afterEach(() => {

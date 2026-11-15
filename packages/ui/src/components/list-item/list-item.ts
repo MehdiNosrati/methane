@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { listItemMessages } from './list-item.messages.js';
@@ -84,7 +84,9 @@ export class MthListItem extends UIElement {
     const raw = this.href.trim();
     if (!raw) return undefined;
     if (!isSafeHref(raw)) {
-      devWarn(`<mth-list-item> rejected unsafe href "${raw}".`);
+      if (IS_DEV) {
+        devWarn(`<mth-list-item> rejected unsafe href "${raw}".`);
+      }
       return undefined;
     }
     return raw;

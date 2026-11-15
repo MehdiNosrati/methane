@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthAuthForm, authFormSpec, registerMthAuthForm } from './index.js';
+import { authFormSpec } from './auth-form.spec.js';
+import { MthAuthForm, registerMthAuthForm } from './index.js';
 
 describe('<mth-auth-form>', () => {
   afterEach(() => {

@@ -5,7 +5,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthInfiniteScroll, infiniteScrollSpec, registerMthInfiniteScroll } from './index.js';
+import { infiniteScrollSpec } from './infinite-scroll.spec.js';
+import { MthInfiniteScroll, registerMthInfiniteScroll } from './index.js';
 
 describe('<mth-infinite-scroll>', () => {
   afterEach(() => {

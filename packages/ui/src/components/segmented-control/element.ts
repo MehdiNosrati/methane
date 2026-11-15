@@ -10,7 +10,6 @@ export {
   segmentedControlMessages,
   type SegmentedControlMessages,
 } from './segmented-control.messages.js';
-export { segmentedControlSpec } from './segmented-control.spec.js';
 export { segmentedControlStyles } from './segmented-control.styles.js';
 
 export function registerMthSegmentedControl(prefix?: string): ReadonlyArray<string> {

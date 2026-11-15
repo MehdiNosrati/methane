@@ -9,7 +9,6 @@ export {
   type AuditSeverityFilter,
 } from './audit-log.js';
 export { auditLogMessages } from './audit-log.messages.js';
-export { auditLogSpec } from './audit-log.spec.js';
 export { auditLogStyles } from './audit-log.styles.js';
 
 export function registerMthAuditLog(prefix?: string): ReadonlyArray<string> {

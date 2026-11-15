@@ -3,7 +3,6 @@ import { MthCarouselItem } from './carousel-item.js';
 
 export { MthCarouselItem } from './carousel-item.js';
 export { carouselItemMessages, type CarouselItemMessages } from './carousel-item.messages.js';
-export { carouselItemSpec } from './carousel-item.spec.js';
 export { carouselItemStyles } from './carousel-item.styles.js';
 
 export function registerMthCarouselItem(prefix?: string): ReadonlyArray<string> {

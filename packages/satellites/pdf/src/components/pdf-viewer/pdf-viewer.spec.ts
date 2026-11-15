@@ -67,7 +67,8 @@ export const CEM_METADATA = {
     'Wrap-first Mozilla pdf.js `<mth-pdf-viewer>` component supporting page navigation, zoom presets, text search, document outline, URL sanitization, keyboard/RTL navigation, and `<slot name="fallback">`.',
   propDescriptions: {
     src: 'URL to PDF document (validated with @methane-ui/sanitize isSafeUrl).',
-    workerSrc: 'Optional custom pdf.js worker script URL.',
+    workerSrc:
+      'Optional custom pdf.js worker script URL. Strongly recommended in production to keep pdf.js parsing off the main thread and prevent bundling pdf.worker.mjs (~several hundred KB) into app lazy chunks.',
     documentTitle: 'Accessible PDF title shown in viewer label.',
     page: '1-based active page number.',
     totalPages: 'Total page count reported by pdf.js.',

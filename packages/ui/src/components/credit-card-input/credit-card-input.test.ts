@@ -3,11 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthCreditCardInput,
-  creditCardInputSpec,
-  registerMthCreditCardInput,
-} from './index.js';
+import { creditCardInputSpec } from './credit-card-input.spec.js';
+import { MthCreditCardInput, registerMthCreditCardInput } from './index.js';
 
 describe('<mth-credit-card-input>', () => {
   afterEach(() => {

@@ -7,6 +7,8 @@ export {
   type AudioRecorderState,
   type AudioRecordingResult,
 } from './audio-recorder.js';
+export { audioRecorderMessages } from './audio-recorder.messages.js';
+export { audioRecorderStyles } from './audio-recorder.styles.js';
 
 export function registerMthAudioRecorder(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -16,5 +18,3 @@ export function registerMthAudioRecorder(prefix?: string): ReadonlyArray<string>
     },
   });
 }
-
-registerMthAudioRecorder();

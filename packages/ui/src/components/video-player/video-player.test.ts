@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthVideoPlayer, registerMthVideoPlayer, videoPlayerSpec } from './index.js';
+import { videoPlayerSpec } from './video-player.spec.js';
+import { MthVideoPlayer, registerMthVideoPlayer } from './index.js';
 
 describe('<mth-video-player>', () => {
   afterEach(() => {

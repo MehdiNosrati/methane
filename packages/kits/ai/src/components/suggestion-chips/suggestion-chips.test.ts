@@ -3,11 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import {
-  MthSuggestionChips,
-  registerMthSuggestionChips,
-  suggestionChipsSpec,
-} from './index.js';
+import { suggestionChipsSpec } from './suggestion-chips.spec.js';
+import { MthSuggestionChips, registerMthSuggestionChips } from './index.js';
 
 describe('<mth-suggestion-chips>', () => {
   afterEach(() => {

@@ -1,5 +1,11 @@
-export { MthWaveform, WaveformEngine, type AudioBufferLike } from './waveform.js';
-export { WaveformMessages, type WaveformMessageKey } from './waveform.messages.js';
-export { waveformSpec } from './waveform.spec.js';
-export { waveformStyles } from './waveform.styles.js';
-export { registerMthWaveform } from './element.js';
+import { registerMthWaveform } from './element.js';
+
+export * from './element.js';
+
+registerMthWaveform();
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-waveform': import('./waveform.js').MthWaveform;
+  }
+}

@@ -8,9 +8,9 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
+import { auditLogSpec } from './audit-log.spec.js';
 import {
   MthAuditLog,
-  auditLogSpec,
   registerMthAuditLog,
   type AuditLogEntry,
   type AuditLogFilter,

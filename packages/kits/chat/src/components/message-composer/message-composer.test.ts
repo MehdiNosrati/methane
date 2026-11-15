@@ -3,11 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import {
-  messageComposerSpec,
-  MthMessageComposer,
-  registerMthMessageComposer,
-} from './index.js';
+import { messageComposerSpec } from './message-composer.spec.js';
+import { MthMessageComposer, registerMthMessageComposer } from './index.js';
 
 describe('<mth-message-composer>', () => {
   afterEach(() => {

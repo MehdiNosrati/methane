@@ -3,11 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthFilterBuilder,
-  filterBuilderSpec,
-  registerMthFilterBuilder,
-} from './index.js';
+import { filterBuilderSpec } from './filter-builder.spec.js';
+import { MthFilterBuilder, registerMthFilterBuilder } from './index.js';
 
 describe('<mth-filter-builder>', () => {
   afterEach(() => {

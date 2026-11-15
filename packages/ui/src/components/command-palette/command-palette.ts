@@ -8,13 +8,12 @@ import {
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { commandPaletteMessages } from './command-palette.messages.js';
-import {
-  EMPTY_COMMAND_PALETTE_ITEMS,
-  type CommandPaletteItem,
-} from './command-palette.spec.js';
+import type { CommandPaletteItem } from './command-palette.spec.js';
 import { commandPaletteStyles } from './command-palette.styles.js';
 
 export type { CommandPaletteItem };
+
+const EMPTY_COMMAND_PALETTE_ITEMS: ReadonlyArray<CommandPaletteItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

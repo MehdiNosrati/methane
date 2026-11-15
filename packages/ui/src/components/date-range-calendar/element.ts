@@ -3,7 +3,6 @@ import { MthDateRangeCalendar } from './date-range-calendar.js';
 
 export { MthDateRangeCalendar } from './date-range-calendar.js';
 export { dateRangeCalendarMessages } from './date-range-calendar.messages.js';
-export { dateRangeCalendarSpec } from './date-range-calendar.spec.js';
 export { dateRangeCalendarStyles } from './date-range-calendar.styles.js';
 
 export function registerMthDateRangeCalendar(prefix?: string): ReadonlyArray<string> {

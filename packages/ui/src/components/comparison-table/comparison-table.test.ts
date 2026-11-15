@@ -3,11 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthComparisonTable,
-  comparisonTableSpec,
-  registerMthComparisonTable,
-} from './index.js';
+import { comparisonTableSpec } from './comparison-table.spec.js';
+import { MthComparisonTable, registerMthComparisonTable } from './index.js';
 
 describe('<mth-comparison-table>', () => {
   afterEach(() => {

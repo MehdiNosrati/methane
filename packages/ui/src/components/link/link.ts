@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -75,7 +75,9 @@ export class MthLink extends UIElement {
     const raw = this.href.trim();
     if (!raw) return undefined;
     if (!isSafeHref(raw)) {
-      devWarn(`<mth-link> rejected unsafe href "${raw}".`);
+      if (IS_DEV) {
+        devWarn(`<mth-link> rejected unsafe href "${raw}".`);
+      }
       return undefined;
     }
     return raw;

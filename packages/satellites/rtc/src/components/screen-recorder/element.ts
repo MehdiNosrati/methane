@@ -7,6 +7,8 @@ export {
   type ScreenRecorderState,
   type ScreenRecordingResult,
 } from './screen-recorder.js';
+export { screenRecorderMessages } from './screen-recorder.messages.js';
+export { screenRecorderStyles } from './screen-recorder.styles.js';
 
 export function registerMthScreenRecorder(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -16,5 +18,3 @@ export function registerMthScreenRecorder(prefix?: string): ReadonlyArray<string
     },
   });
 }
-
-registerMthScreenRecorder();

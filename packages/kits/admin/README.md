@@ -12,15 +12,16 @@ pnpm add @methane-ui/admin @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/admin @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/admin` | Auto-registers all 13 admin kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/admin` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/admin/define` | Side-effect entrypoint that auto-registers all admin custom elements and exports `registerAllComponents` |
 | `@methane-ui/admin/<slug>` | Per-component entrypoint (e.g. `@methane-ui/admin/kanban`, `@methane-ui/admin/filter-builder`) |
-| `@methane-ui/admin/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/admin/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` |
 | `@methane-ui/admin/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

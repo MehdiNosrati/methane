@@ -8,7 +8,6 @@ export {
   type CsvValidatedRow,
 } from './csv-importer.js';
 export { csvImporterMessages } from './csv-importer.messages.js';
-export { csvImporterSpec } from './csv-importer.spec.js';
 export { csvImporterStyles } from './csv-importer.styles.js';
 
 export function registerMthCsvImporter(prefix?: string): ReadonlyArray<string> {

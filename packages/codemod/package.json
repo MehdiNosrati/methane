@@ -1,9 +1,10 @@
 {
   "name": "@methane-ui/codemod",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Idempotent AST codemod CLI and migration transforms for Methane UI",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "bin": {
     "methane-codemod": "./dist/cli.js"
   },
@@ -22,7 +23,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "peerDependencies": {
     "typescript": ">=5.0.0"

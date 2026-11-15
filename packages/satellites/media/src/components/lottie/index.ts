@@ -1,5 +1,11 @@
-export { MthLottie, LottieEngine, type LottieEngineConfig } from './lottie.js';
-export { LottieMessages, type LottieMessageKey } from './lottie.messages.js';
-export { lottieSpec } from './lottie.spec.js';
-export { lottieStyles } from './lottie.styles.js';
-export { registerMthLottie } from './element.js';
+import { registerMthLottie } from './element.js';
+
+export * from './element.js';
+
+registerMthLottie();
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-lottie': import('./lottie.js').MthLottie;
+  }
+}

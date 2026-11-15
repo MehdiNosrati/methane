@@ -7,7 +7,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthScreenRecorder, registerMthScreenRecorder, screenRecorderSpec } from './index.js';
+import { screenRecorderSpec } from './screen-recorder.spec.js';
+import { MthScreenRecorder, registerMthScreenRecorder } from './index.js';
 
 describe('<mth-screen-recorder>', () => {
   afterEach(() => {

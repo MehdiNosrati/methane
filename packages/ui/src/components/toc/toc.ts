@@ -3,10 +3,12 @@ import { ObserverPoolController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { tocMessages } from './toc.messages.js';
-import { EMPTY_TOC_ITEMS, type TocItem } from './toc.spec.js';
+import type { TocItem } from './toc.spec.js';
 import { tocStyles } from './toc.styles.js';
 
 export type { TocItem };
+
+const EMPTY_TOC_ITEMS: ReadonlyArray<TocItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

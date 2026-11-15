@@ -11,7 +11,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/menu-item';
 import type { MthMenuItem } from '@methane-ui/ui/menu-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthDropdownMenu, dropdownMenuSpec, registerMthDropdownMenu } from './index.js';
+import { dropdownMenuSpec } from './dropdown-menu.spec.js';
+import { MthDropdownMenu, registerMthDropdownMenu } from './index.js';
 
 function createMenuItems(): MthMenuItem[] {
   const cut = document.createElement('mth-menu-item') as MthMenuItem;

@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthOrgChart, orgChartSpec, registerMthOrgChart, type OrgChartNode } from './index.js';
+import { orgChartSpec } from './org-chart.spec.js';
+import { MthOrgChart, registerMthOrgChart, type OrgChartNode } from './index.js';
 
 const SAMPLE_ORG: OrgChartNode[] = [
   {

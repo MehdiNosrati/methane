@@ -1,17 +1,21 @@
 {
   "name": "@methane-ui/media",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Methane waveform, Lottie animation, and SVG image annotator satellite components wrapping @lottiefiles/dotlottie-web (ADR-013)",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
-    "./dist/index.js",
+    "./dist/define.js",
     "./dist/components/*/index.js"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./define": {
+      "types": "./dist/define.d.ts",
+      "default": "./dist/define.js"
     },
     "./custom-elements.json": "./custom-elements.json",
     "./*/element.js": {
@@ -30,6 +34,9 @@
   "customElements": "custom-elements.json",
   "files": [
     "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.spec.*",
+    "!dist/specs.json",
     "custom-elements.json"
   ],
   "scripts": {
@@ -55,7 +62,7 @@
     "@methane-ui/test-conformance": "workspace:^"
   },
   "peerDependencies": {
-    "@methane-ui/core": "^0.1.1"
+    "@methane-ui/core": "^0.1.2"
   },
   "publishConfig": {
     "access": "public"

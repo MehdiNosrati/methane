@@ -8,7 +8,6 @@ export {
   type ToggleGroupSize,
 } from './toggle-group.js';
 export { toggleGroupMessages } from './toggle-group.messages.js';
-export { toggleGroupSpec } from './toggle-group.spec.js';
 export { toggleGroupStyles } from './toggle-group.styles.js';
 
 export function registerMthToggleGroup(prefix?: string): ReadonlyArray<string> {

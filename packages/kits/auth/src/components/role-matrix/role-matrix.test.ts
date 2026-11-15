@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthRoleMatrix, registerMthRoleMatrix, roleMatrixSpec } from './index.js';
+import { roleMatrixSpec } from './role-matrix.spec.js';
+import { MthRoleMatrix, registerMthRoleMatrix } from './index.js';
 
 const SAMPLE_ROLES = [
   { id: 'admin', name: 'Admin' },

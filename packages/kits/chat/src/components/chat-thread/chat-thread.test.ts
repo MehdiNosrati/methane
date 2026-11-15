@@ -4,7 +4,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { chatThreadSpec, MthChatThread, registerMthChatThread } from './index.js';
+import { chatThreadSpec } from './chat-thread.spec.js';
+import { MthChatThread, registerMthChatThread } from './index.js';
 
 describe('<mth-chat-thread>', () => {
   afterEach(() => {

@@ -3,7 +3,6 @@ import { MthSkeleton } from './skeleton.js';
 
 export { MthSkeleton, type MthSkeletonVariant } from './skeleton.js';
 export { skeletonMessages } from './skeleton.messages.js';
-export { skeletonSpec } from './skeleton.spec.js';
 export { skeletonStyles } from './skeleton.styles.js';
 
 export function registerMthSkeleton(prefix?: string): ReadonlyArray<string> {

@@ -1,10 +1,9 @@
 import { defineComponents } from '@methane-ui/core';
 import { MthFloorPlan } from './floor-plan.js';
 import { floorPlanMessages } from './floor-plan.messages.js';
-import { floorPlanSpec } from './floor-plan.spec.js';
 import { floorPlanStyles } from './floor-plan.styles.js';
 
-export { MthFloorPlan, floorPlanMessages, floorPlanSpec, floorPlanStyles };
+export { MthFloorPlan, floorPlanMessages, floorPlanStyles };
 export type { FloorPlanRoom } from './floor-plan.js';
 
 export function registerMthFloorPlan(prefix?: string): string {

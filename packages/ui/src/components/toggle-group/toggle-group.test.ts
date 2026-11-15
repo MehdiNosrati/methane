@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthToggleGroup, registerMthToggleGroup, toggleGroupSpec } from './index.js';
+import { toggleGroupSpec } from './toggle-group.spec.js';
+import { MthToggleGroup, registerMthToggleGroup } from './index.js';
 
 describe('<mth-toggle-group>', () => {
   afterEach(() => {

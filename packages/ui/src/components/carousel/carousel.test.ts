@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/carousel-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { carouselSpec, MthCarousel, registerMthCarousel } from './index.js';
+import { carouselSpec } from './carousel.spec.js';
+import { MthCarousel, registerMthCarousel } from './index.js';
 
 function createCarouselFixture(dir: 'ltr' | 'rtl' = 'ltr'): MthCarousel {
   const carousel = document.createElement('mth-carousel') as MthCarousel;

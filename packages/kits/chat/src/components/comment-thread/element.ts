@@ -6,7 +6,6 @@ export {
   commentThreadMessages,
   type CommentThreadMessages,
 } from './comment-thread.messages.js';
-export { commentThreadSpec } from './comment-thread.spec.js';
 export { commentThreadStyles } from './comment-thread.styles.js';
 
 export function registerMthCommentThread(prefix?: string): ReadonlyArray<string> {

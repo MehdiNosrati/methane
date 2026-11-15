@@ -8,7 +8,6 @@ export {
   type TreeTableRow,
 } from './tree-table.js';
 export { treeTableMessages } from './tree-table.messages.js';
-export { treeTableSpec } from './tree-table.spec.js';
 export { treeTableStyles } from './tree-table.styles.js';
 
 export function registerMthTreeTable(prefix?: string): ReadonlyArray<string> {

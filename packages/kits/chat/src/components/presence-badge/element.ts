@@ -7,7 +7,6 @@ export {
   type MthPresenceStatus,
 } from './presence-badge.js';
 export { presenceBadgeMessages, type PresenceBadgeMessages } from './presence-badge.messages.js';
-export { presenceBadgeSpec } from './presence-badge.spec.js';
 export { presenceBadgeStyles } from './presence-badge.styles.js';
 
 export function registerMthPresenceBadge(prefix?: string): ReadonlyArray<string> {

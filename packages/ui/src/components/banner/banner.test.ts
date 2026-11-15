@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthBanner, bannerSpec, registerMthBanner } from './index.js';
+import { bannerSpec } from './banner.spec.js';
+import { MthBanner, registerMthBanner } from './index.js';
 
 describe('<mth-banner>', () => {
   afterEach(() => {

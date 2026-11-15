@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthProgressBar, progressBarSpec, registerMthProgressBar } from './index.js';
+import { progressBarSpec } from './progress-bar.spec.js';
+import { MthProgressBar, registerMthProgressBar } from './index.js';
 
 describe('<mth-progress-bar>', () => {
   afterEach(() => {

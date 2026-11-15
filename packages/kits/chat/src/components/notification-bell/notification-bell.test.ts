@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthNotificationBell, notificationBellSpec, registerMthNotificationBell } from './index.js';
+import { notificationBellSpec } from './notification-bell.spec.js';
+import { MthNotificationBell, registerMthNotificationBell } from './index.js';
 
 describe('<mth-notification-bell>', () => {
   afterEach(() => {

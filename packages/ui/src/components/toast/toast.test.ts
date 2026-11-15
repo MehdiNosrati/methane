@@ -5,7 +5,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthToast, registerMthToast, toastSpec } from './index.js';
+import { toastSpec } from './toast.spec.js';
+import { MthToast, registerMthToast } from './index.js';
 
 describe('<mth-toast>', () => {
   afterEach(() => {

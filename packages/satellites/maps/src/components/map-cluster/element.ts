@@ -1,10 +1,9 @@
 import { defineComponents } from '@methane-ui/core';
 import { MthMapCluster } from './map-cluster.js';
 import { mapClusterMessages } from './map-cluster.messages.js';
-import { mapClusterSpec } from './map-cluster.spec.js';
 import { mapClusterStyles } from './map-cluster.styles.js';
 
-export { MthMapCluster, mapClusterMessages, mapClusterSpec, mapClusterStyles };
+export { MthMapCluster, mapClusterMessages, mapClusterStyles };
 export type { ClusterPoint, ComputedCluster } from './map-cluster.js';
 
 export function registerMthMapCluster(prefix?: string): string {

@@ -3,7 +3,6 @@ import { MthTimezonePicker } from './timezone-picker.js';
 
 export { MthTimezonePicker } from './timezone-picker.js';
 export { timezonePickerMessages } from './timezone-picker.messages.js';
-export { timezonePickerSpec } from './timezone-picker.spec.js';
 export { timezonePickerStyles } from './timezone-picker.styles.js';
 
 export function registerMthTimezonePicker(prefix?: string): ReadonlyArray<string> {

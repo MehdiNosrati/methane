@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthFormulaBar, formulaBarSpec, registerMthFormulaBar } from './index.js';
+import { formulaBarSpec } from './formula-bar.spec.js';
+import { MthFormulaBar, registerMthFormulaBar } from './index.js';
 
 describe('<mth-formula-bar>', () => {
   afterEach(() => {

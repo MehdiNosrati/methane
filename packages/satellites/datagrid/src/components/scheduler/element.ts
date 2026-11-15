@@ -9,7 +9,6 @@ export {
   type TimelineDayColumn,
 } from './scheduler.js';
 export { schedulerMessages } from './scheduler.messages.js';
-export { schedulerSpec } from './scheduler.spec.js';
 export { schedulerStyles } from './scheduler.styles.js';
 
 export function registerMthScheduler(prefix?: string): ReadonlyArray<string> {

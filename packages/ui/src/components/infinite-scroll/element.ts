@@ -3,7 +3,6 @@ import { MthInfiniteScroll } from './infinite-scroll.js';
 
 export { MthInfiniteScroll } from './infinite-scroll.js';
 export { infiniteScrollMessages } from './infinite-scroll.messages.js';
-export { infiniteScrollSpec } from './infinite-scroll.spec.js';
 export { infiniteScrollStyles } from './infinite-scroll.styles.js';
 
 export function registerMthInfiniteScroll(prefix?: string): ReadonlyArray<string> {

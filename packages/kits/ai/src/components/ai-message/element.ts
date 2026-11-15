@@ -7,7 +7,6 @@ import { MthAiMessage } from './ai-message.js';
 
 export { MthAiMessage, type MthAiMessageRole } from './ai-message.js';
 export { aiMessageMessages } from './ai-message.messages.js';
-export { aiMessageSpec } from './ai-message.spec.js';
 export { aiMessageStyles } from './ai-message.styles.js';
 
 export function registerMthAiMessage(prefix?: string): ReadonlyArray<string> {

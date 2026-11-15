@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthQueryBuilder,
-  queryBuilderSpec,
-  registerMthQueryBuilder,
-} from './index.js';
+import { queryBuilderSpec } from './query-builder.spec.js';
+import { MthQueryBuilder, registerMthQueryBuilder } from './index.js';
 
 describe('<mth-query-builder>', () => {
   afterEach(() => {

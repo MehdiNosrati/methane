@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthMap, mapSpec, registerMthMap } from './index.js';
+import { mapSpec } from './map.spec.js';
+import { MthMap, registerMthMap } from './index.js';
 
 describe('mth-map', () => {
   afterEach(() => {

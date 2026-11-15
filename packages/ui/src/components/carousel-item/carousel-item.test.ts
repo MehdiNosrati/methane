@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { carouselItemSpec, MthCarouselItem, registerMthCarouselItem } from './index.js';
+import { carouselItemSpec } from './carousel-item.spec.js';
+import { MthCarouselItem, registerMthCarouselItem } from './index.js';
 
 describe('<mth-carousel-item>', () => {
   afterEach(() => {

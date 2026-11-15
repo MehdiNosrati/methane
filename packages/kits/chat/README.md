@@ -12,15 +12,16 @@ pnpm add @methane-ui/chat @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/chat @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/chat` | Auto-registers all 8 chat kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/chat` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/chat/define` | Side-effect entrypoint that auto-registers all chat custom elements and exports `registerAllComponents` |
 | `@methane-ui/chat/<slug>` | Per-component entrypoint (e.g. `@methane-ui/chat/chat-thread`, `@methane-ui/chat/message-composer`) |
-| `@methane-ui/chat/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/chat/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` |
 | `@methane-ui/chat/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

@@ -6,7 +6,7 @@ import { parseMigrationManifest } from './manifest.js';
 import { runCodemod } from './runner.js';
 import type { MigrationManifest } from './types.js';
 
-export const CLI_VERSION = '0.1.1';
+export const CLI_VERSION = '0.1.2';
 
 export interface ParsedCliArgs {
   readonly targets: ReadonlyArray<string>;

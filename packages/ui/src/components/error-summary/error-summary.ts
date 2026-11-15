@@ -3,10 +3,12 @@ import { property, query, state } from 'lit/decorators.js';
 import { UIElement } from '@methane-ui/core';
 import { LiveAnnouncer } from '@methane-ui/primitives';
 import { errorSummaryMessages } from './error-summary.messages.js';
-import { EMPTY_ERROR_SUMMARY_ITEMS, type ErrorSummaryItem } from './error-summary.spec.js';
+import type { ErrorSummaryItem } from './error-summary.spec.js';
 import { errorSummaryStyles } from './error-summary.styles.js';
 
 export type { ErrorSummaryItem };
+
+const EMPTY_ERROR_SUMMARY_ITEMS: ReadonlyArray<ErrorSummaryItem> = Object.freeze([]);
 
 /**
  * Focusable `role="alert"` validation error summary with `LiveAnnouncer` integration,

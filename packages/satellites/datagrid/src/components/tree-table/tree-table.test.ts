@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthTreeTable, registerMthTreeTable, treeTableSpec } from './index.js';
+import { treeTableSpec } from './tree-table.spec.js';
+import { MthTreeTable, registerMthTreeTable } from './index.js';
 
 describe('<mth-tree-table>', () => {
   afterEach(() => {

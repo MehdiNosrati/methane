@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthMaskedInput, maskedInputSpec, registerMthMaskedInput } from './index.js';
+import { maskedInputSpec } from './masked-input.spec.js';
+import { MthMaskedInput, registerMthMaskedInput } from './index.js';
 
 describe('<mth-masked-input>', () => {
   afterEach(() => {

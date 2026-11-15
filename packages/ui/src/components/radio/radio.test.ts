@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthRadio, radioSpec, registerMthRadio } from './index.js';
+import { radioSpec } from './radio.spec.js';
+import { MthRadio, registerMthRadio } from './index.js';
 
 describe('<mth-radio>', () => {
   afterEach(() => {

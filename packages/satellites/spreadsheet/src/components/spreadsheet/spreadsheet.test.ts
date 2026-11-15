@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthSpreadsheet, registerMthSpreadsheet, spreadsheetSpec } from './index.js';
+import { spreadsheetSpec } from './spreadsheet.spec.js';
+import { MthSpreadsheet, registerMthSpreadsheet } from './index.js';
 
 async function mountSpreadsheet(
   props: Partial<

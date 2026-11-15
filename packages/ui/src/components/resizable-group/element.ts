@@ -6,7 +6,6 @@ export {
   type MthResizableGroupOrientation,
 } from './resizable-group.js';
 export { resizableGroupMessages } from './resizable-group.messages.js';
-export { resizableGroupSpec } from './resizable-group.spec.js';
 export { resizableGroupStyles } from './resizable-group.styles.js';
 
 export function registerMthResizableGroup(prefix?: string): ReadonlyArray<string> {

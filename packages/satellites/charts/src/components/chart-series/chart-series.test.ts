@@ -3,12 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MTH_CHART_TYPES,
-  MthChartSeries,
-  chartSeriesSpec,
-  registerMthChartSeries,
-} from './index.js';
+import { chartSeriesSpec } from './chart-series.spec.js';
+import { MTH_CHART_TYPES, MthChartSeries, registerMthChartSeries } from './index.js';
 
 describe('<mth-chart-series>', () => {
   afterEach(() => {

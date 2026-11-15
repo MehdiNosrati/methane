@@ -7,11 +7,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthActivityFeed,
-  activityFeedSpec,
-  registerMthActivityFeed,
-} from './index.js';
+import { activityFeedSpec } from './activity-feed.spec.js';
+import { MthActivityFeed, registerMthActivityFeed } from './index.js';
 
 describe('<mth-activity-feed>', () => {
   afterEach(() => {

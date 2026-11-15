@@ -6,7 +6,6 @@ export {
   creatableSelectMessages,
   type CreatableSelectMessages,
 } from './creatable-select.messages.js';
-export { creatableSelectSpec } from './creatable-select.spec.js';
 export { creatableSelectStyles } from './creatable-select.styles.js';
 
 export function registerMthCreatableSelect(prefix?: string): ReadonlyArray<string> {

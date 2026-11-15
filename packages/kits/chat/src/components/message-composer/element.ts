@@ -6,7 +6,6 @@ export {
   messageComposerMessages,
   type MessageComposerMessages,
 } from './message-composer.messages.js';
-export { messageComposerSpec } from './message-composer.spec.js';
 export { messageComposerStyles } from './message-composer.styles.js';
 
 export function registerMthMessageComposer(prefix?: string): ReadonlyArray<string> {

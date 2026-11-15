@@ -7,7 +7,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthWaveform, registerMthWaveform, waveformSpec } from './index.js';
+import { waveformSpec } from './waveform.spec.js';
+import { MthWaveform, registerMthWaveform } from './index.js';
 
 registerMthWaveform();
 

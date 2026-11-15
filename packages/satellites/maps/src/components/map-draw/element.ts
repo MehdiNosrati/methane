@@ -1,10 +1,9 @@
 import { defineComponents } from '@methane-ui/core';
 import { MthMapDraw } from './map-draw.js';
 import { mapDrawMessages } from './map-draw.messages.js';
-import { mapDrawSpec } from './map-draw.spec.js';
 import { mapDrawStyles } from './map-draw.styles.js';
 
-export { MthMapDraw, mapDrawMessages, mapDrawSpec, mapDrawStyles };
+export { MthMapDraw, mapDrawMessages, mapDrawStyles };
 export type { DrawMode } from './map-draw.js';
 
 export function registerMthMapDraw(prefix?: string): string {

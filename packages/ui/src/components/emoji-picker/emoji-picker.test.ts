@@ -8,12 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  emojiPickerSpec,
-  MthEmojiPicker,
-  registerMthEmojiPicker,
-  type EmojiSelectDetail,
-} from './index.js';
+import { emojiPickerSpec } from './emoji-picker.spec.js';
+import { MthEmojiPicker, registerMthEmojiPicker, type EmojiSelectDetail } from './index.js';
 
 describe('<mth-emoji-picker>', () => {
   afterEach(() => {

@@ -3,7 +3,6 @@ import { MthIbanInput } from './iban-input.js';
 
 export { MthIbanInput } from './iban-input.js';
 export { ibanInputMessages } from './iban-input.messages.js';
-export { ibanInputSpec } from './iban-input.spec.js';
 export { ibanInputStyles } from './iban-input.styles.js';
 
 export function registerMthIbanInput(prefix?: string): ReadonlyArray<string> {

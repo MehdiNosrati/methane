@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/list-item';
 import type { MthListItem } from '@methane-ui/ui/list-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthList, listSpec, registerMthList } from './index.js';
+import { listSpec } from './list.spec.js';
+import { MthList, registerMthList } from './index.js';
 
 function createListFixture(): MthList {
   const list = document.createElement('mth-list') as MthList;

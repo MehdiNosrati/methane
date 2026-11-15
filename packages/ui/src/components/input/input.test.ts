@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/field';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthInput, inputSpec, registerMthInput } from './index.js';
+import { inputSpec } from './input.spec.js';
+import { MthInput, registerMthInput } from './index.js';
 
 describe('<mth-input>', () => {
   afterEach(() => {

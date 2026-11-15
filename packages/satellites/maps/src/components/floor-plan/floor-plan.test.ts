@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, SatelliteEngineSuite, scanSameR
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthFloorPlan, floorPlanSpec, registerMthFloorPlan } from './index.js';
+import { floorPlanSpec } from './floor-plan.spec.js';
+import { MthFloorPlan, registerMthFloorPlan } from './index.js';
 
 describe('mth-floor-plan', () => {
   afterEach(() => {

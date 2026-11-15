@@ -8,7 +8,6 @@ export {
   type MthFabVariant,
 } from './fab.js';
 export { fabMessages } from './fab.messages.js';
-export { fabSpec } from './fab.spec.js';
 export { fabStyles } from './fab.styles.js';
 
 export function registerMthFab(prefix?: string): ReadonlyArray<string> {

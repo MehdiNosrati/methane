@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { lottieSpec, MthLottie, registerMthLottie } from './index.js';
+import { lottieSpec } from './lottie.spec.js';
+import { MthLottie, registerMthLottie } from './index.js';
 
 registerMthLottie();
 

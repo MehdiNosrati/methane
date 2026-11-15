@@ -66,6 +66,11 @@ export class MthPdfViewer extends UIElement {
   @property({ type: String, reflect: true })
   src = '';
 
+  /**
+   * Optional custom `pdf.js` worker script URL (`worker-src`).
+   * In production, configure `workerSrc` to offload large-PDF parsing from the main thread
+   * and avoid pulling `pdfjs-dist/build/pdf.worker.mjs` into app lazy chunks.
+   */
   @property({ type: String, attribute: 'worker-src' })
   workerSrc = '';
 

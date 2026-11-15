@@ -8,11 +8,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthAvailabilityPicker,
-  availabilityPickerSpec,
-  registerMthAvailabilityPicker,
-} from './index.js';
+import { availabilityPickerSpec } from './availability-picker.spec.js';
+import { MthAvailabilityPicker, registerMthAvailabilityPicker } from './index.js';
 
 describe('<mth-availability-picker>', () => {
   afterEach(() => {

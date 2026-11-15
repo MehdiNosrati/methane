@@ -7,12 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthEventCalendar,
-  eventCalendarSpec,
-  registerMthEventCalendar,
-  type CalendarEvent,
-} from './index.js';
+import { eventCalendarSpec } from './event-calendar.spec.js';
+import { MthEventCalendar, registerMthEventCalendar, type CalendarEvent } from './index.js';
 
 describe('<mth-event-calendar>', () => {
   afterEach(() => {

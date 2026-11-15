@@ -8,7 +8,6 @@ export {
   type TableRowRecord,
 } from './table.js';
 export { tableMessages } from './table.messages.js';
-export { tableSpec } from './table.spec.js';
 export { tableStyles } from './table.styles.js';
 
 export function registerMthTable(prefix?: string): ReadonlyArray<string> {

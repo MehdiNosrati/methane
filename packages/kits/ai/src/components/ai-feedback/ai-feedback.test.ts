@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthAiFeedback, aiFeedbackSpec, registerMthAiFeedback } from './index.js';
+import { aiFeedbackSpec } from './ai-feedback.spec.js';
+import { MthAiFeedback, registerMthAiFeedback } from './index.js';
 
 describe('<mth-ai-feedback>', () => {
   afterEach(() => {

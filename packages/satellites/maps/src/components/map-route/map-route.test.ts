@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthMapRoute, mapRouteSpec, registerMthMapRoute } from './index.js';
+import { mapRouteSpec } from './map-route.spec.js';
+import { MthMapRoute, registerMthMapRoute } from './index.js';
 
 describe('mth-map-route', () => {
   afterEach(() => {

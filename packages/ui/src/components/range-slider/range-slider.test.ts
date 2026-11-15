@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthRangeSlider, registerMthRangeSlider, rangeSliderSpec } from './index.js';
+import { rangeSliderSpec } from './range-slider.spec.js';
+import { MthRangeSlider, registerMthRangeSlider } from './index.js';
 
 describe('<mth-range-slider>', () => {
   afterEach(() => {

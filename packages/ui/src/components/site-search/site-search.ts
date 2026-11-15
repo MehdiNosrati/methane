@@ -13,10 +13,12 @@ import {
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { siteSearchMessages } from './site-search.messages.js';
-import { EMPTY_SITE_SEARCH_ITEMS, type SiteSearchItem } from './site-search.spec.js';
+import type { SiteSearchItem } from './site-search.spec.js';
 import { siteSearchStyles } from './site-search.styles.js';
 
 export type { SiteSearchItem };
+
+const EMPTY_SITE_SEARCH_ITEMS: ReadonlyArray<SiteSearchItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();
