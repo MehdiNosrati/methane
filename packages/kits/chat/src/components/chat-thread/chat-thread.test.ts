@@ -112,4 +112,41 @@ describe('<mth-chat-thread>', () => {
     await el.updateComplete;
     expect(el.shadowRoot!.adoptedStyleSheets.length).toBeGreaterThanOrEqual(sheetsBefore);
   });
+
+  it('preserves query-string links and sanitizes opt-in allowRawHtml without stripping safe tags', async () => {
+    const el = document.createElement('mth-chat-thread') as MthChatThread;
+    expect(el.allowRawHtml).toBe(false);
+    el.messages = [
+      {
+        id: 'q1',
+        author: 'Ada',
+        body: '<b>literal</b> [search](https://example.com/search?q=a&page=2)',
+      },
+    ];
+    document.body.append(el);
+    await el.updateComplete;
+
+    let body = el.shadowRoot!.querySelector('[part="message-body"]')!;
+    expect(body.querySelector('b')).toBeNull();
+    expect(body.textContent).toContain('<b>literal</b>');
+    expect(body.querySelector('a')?.getAttribute('href')).toBe(
+      'https://example.com/search?q=a&page=2',
+    );
+
+    el.allowRawHtml = true;
+    el.messages = [
+      {
+        id: 'q2',
+        author: 'Grace',
+        body: '<b>bold</b><script>evil()</script><img src="https://example.com/ok.png" onerror="alert(1)"> [q](https://example.com/?x=1&y=2)',
+      },
+    ];
+    await el.updateComplete;
+
+    body = el.shadowRoot!.querySelector('[part="message-body"]')!;
+    expect(body.querySelector('b')?.textContent).toBe('bold');
+    expect(body.querySelector('script')).toBeNull();
+    expect(body.querySelector('img')?.hasAttribute('onerror')).toBe(false);
+    expect(body.querySelector('a')?.getAttribute('href')).toBe('https://example.com/?x=1&y=2');
+  });
 });

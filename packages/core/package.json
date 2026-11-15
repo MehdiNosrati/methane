@@ -1,6 +1,6 @@
 {
   "name": "@methane/core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Lit 3 UIElement base class, single versioned global runtime, i18n catalog, and Community Context Protocol for Methane UI",
   "license": "MIT",
   "type": "module",
@@ -8,6 +8,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./hydrate": {
+      "types": "./dist/hydrate.d.ts",
+      "default": "./dist/hydrate.js"
     },
     "./runtime": {
       "types": "./dist/runtime.d.ts",
