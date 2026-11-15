@@ -47,21 +47,69 @@ importers:
 
   apps/docs:
     dependencies:
+      '@methane-ui/3d':
+        specifier: workspace:^
+        version: link:../../packages/satellites/3d
+      '@methane-ui/admin':
+        specifier: workspace:^
+        version: link:../../packages/kits/admin
+      '@methane-ui/ai':
+        specifier: workspace:^
+        version: link:../../packages/kits/ai
+      '@methane-ui/auth':
+        specifier: workspace:^
+        version: link:../../packages/kits/auth
       '@methane-ui/bundle-budget':
         specifier: workspace:^
         version: link:../../tooling/bundle-budget
+      '@methane-ui/charts':
+        specifier: workspace:^
+        version: link:../../packages/satellites/charts
+      '@methane-ui/chat':
+        specifier: workspace:^
+        version: link:../../packages/kits/chat
+      '@methane-ui/code':
+        specifier: workspace:^
+        version: link:../../packages/satellites/code
+      '@methane-ui/commerce':
+        specifier: workspace:^
+        version: link:../../packages/kits/commerce
       '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
       '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
+      '@methane-ui/datagrid':
+        specifier: workspace:^
+        version: link:../../packages/satellites/datagrid
+      '@methane-ui/editor':
+        specifier: workspace:^
+        version: link:../../packages/satellites/editor
+      '@methane-ui/flow':
+        specifier: workspace:^
+        version: link:../../packages/satellites/flow
+      '@methane-ui/maps':
+        specifier: workspace:^
+        version: link:../../packages/satellites/maps
+      '@methane-ui/media':
+        specifier: workspace:^
+        version: link:../../packages/satellites/media
+      '@methane-ui/pdf':
+        specifier: workspace:^
+        version: link:../../packages/satellites/pdf
       '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
+      '@methane-ui/rtc':
+        specifier: workspace:^
+        version: link:../../packages/satellites/rtc
       '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../tooling/spec-compiler
+      '@methane-ui/spreadsheet':
+        specifier: workspace:^
+        version: link:../../packages/satellites/spreadsheet
       '@methane-ui/ssr-astro':
         specifier: workspace:^
         version: link:../../packages/ssr-astro

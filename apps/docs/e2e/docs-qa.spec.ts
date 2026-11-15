@@ -402,4 +402,150 @@ test.describe('@methane-ui/docs visual, custom-element & interactive QA', () => 
       Math.abs(bentoBottoms[0]!.btnBottom! - bentoBottoms[1]!.btnBottom!),
     ).toBeLessThanOrEqual(1);
   });
+
+  test('renders interactive <mth-availability-picker> matrix, toggles slots, and emits mth-change', async ({
+    page,
+  }) => {
+    const { pageErrors, consoleErrors } = attachErrorListeners(page);
+    const response = await page.goto(docsUrl('/methane/components/mth-availability-picker/'), {
+      waitUntil: 'networkidle',
+    });
+    expect(response?.status()).toBe(200);
+
+    await page.evaluate(async () => {
+      await customElements.whenDefined('mth-availability-picker');
+      const el = document.querySelector('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await el?.updateComplete;
+    });
+
+    const initial = await page.evaluate(() => {
+      const target = document.querySelector<HTMLElement>('[data-preview-target]');
+      const sr = target?.shadowRoot ?? null;
+      const cells = sr ? Array.from(sr.querySelectorAll<HTMLButtonElement>('.slot-cell')) : [];
+      const pressedCount = cells.filter((c) => c.getAttribute('aria-pressed') === 'true').length;
+      const rect = target?.getBoundingClientRect();
+      return {
+        defined: Boolean(customElements.get('mth-availability-picker')),
+        statusText: document.querySelector('[data-preview-status]')?.textContent?.trim() ?? '',
+        hasShadowRoot: Boolean(sr),
+        cellCount: cells.length,
+        pressedCount,
+        width: rect?.width ?? 0,
+        height: rect?.height ?? 0,
+        firstCellPressed: cells[0]?.getAttribute('aria-pressed') ?? null,
+      };
+    });
+
+    expect(initial.defined).toBe(true);
+    expect(initial.statusText).toContain('Live Custom Element');
+    expect(initial.hasShadowRoot).toBe(true);
+    expect(initial.cellCount).toBe(35);
+    expect(initial.pressedCount).toBeGreaterThanOrEqual(8);
+    expect(initial.width).toBeGreaterThanOrEqual(300);
+    expect(initial.height).toBeGreaterThanOrEqual(180);
+
+    await page.evaluate(() => {
+      const target = document.querySelector<HTMLElement>('[data-preview-target]');
+      const firstCell = target?.shadowRoot?.querySelector<HTMLButtonElement>('.slot-cell');
+      firstCell?.click();
+    });
+
+    const after = await page.evaluate(async () => {
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      const firstCell = target?.shadowRoot?.querySelector<HTMLButtonElement>('.slot-cell');
+      return {
+        firstCellPressed: firstCell?.getAttribute('aria-pressed') ?? null,
+        readout: document.querySelector('[data-preview-readout]')?.textContent?.trim() ?? '',
+      };
+    });
+
+    expect(after.firstCellPressed).not.toBe(initial.firstCellPressed);
+    expect(after.readout).toContain('mth-change');
+    expect(pageErrors).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
+
+  const packageRepresentatives: ReadonlyArray<{ pkg: string; tag: string }> = [
+    { pkg: '@methane-ui/ui', tag: 'mth-async-search' },
+    { pkg: '@methane-ui/ui', tag: 'mth-tree' },
+    { pkg: '@methane-ui/primitives', tag: 'mth-error-boundary' },
+    { pkg: '@methane-ui/primitives', tag: 'mth-skip-link' },
+    { pkg: '@methane-ui/admin', tag: 'mth-availability-picker' },
+    { pkg: '@methane-ui/admin', tag: 'mth-kanban' },
+    { pkg: '@methane-ui/ai', tag: 'mth-ai-message' },
+    { pkg: '@methane-ui/ai', tag: 'mth-prompt-input' },
+    { pkg: '@methane-ui/auth', tag: 'mth-auth-form' },
+    { pkg: '@methane-ui/auth', tag: 'mth-role-matrix' },
+    { pkg: '@methane-ui/chat', tag: 'mth-chat-thread' },
+    { pkg: '@methane-ui/chat', tag: 'mth-message-composer' },
+    { pkg: '@methane-ui/commerce', tag: 'mth-cart' },
+    { pkg: '@methane-ui/commerce', tag: 'mth-plan-picker' },
+    { pkg: '@methane-ui/3d', tag: 'mth-model-viewer' },
+    { pkg: '@methane-ui/charts', tag: 'mth-chart' },
+    { pkg: '@methane-ui/code', tag: 'mth-code-editor' },
+    { pkg: '@methane-ui/code', tag: 'mth-diff-viewer' },
+    { pkg: '@methane-ui/datagrid', tag: 'mth-datagrid' },
+    { pkg: '@methane-ui/datagrid', tag: 'mth-gantt' },
+    { pkg: '@methane-ui/editor', tag: 'mth-rich-editor' },
+    { pkg: '@methane-ui/editor', tag: 'mth-markdown-editor' },
+    { pkg: '@methane-ui/flow', tag: 'mth-flow-editor' },
+    { pkg: '@methane-ui/flow', tag: 'mth-org-chart' },
+    { pkg: '@methane-ui/maps', tag: 'mth-map' },
+    { pkg: '@methane-ui/media', tag: 'mth-waveform' },
+    { pkg: '@methane-ui/media', tag: 'mth-lottie' },
+    { pkg: '@methane-ui/pdf', tag: 'mth-pdf-viewer' },
+    { pkg: '@methane-ui/rtc', tag: 'mth-video-grid' },
+    { pkg: '@methane-ui/spreadsheet', tag: 'mth-spreadsheet' },
+    { pkg: '@methane-ui/spreadsheet', tag: 'mth-formula-bar' },
+  ];
+
+  for (const { pkg, tag } of packageRepresentatives) {
+    test(`hydrates live <${tag}> (${pkg}) with visible UI and zero errors`, async ({ page }) => {
+      const { pageErrors, consoleErrors } = attachErrorListeners(page);
+      const response = await page.goto(docsUrl(`/methane/components/${tag}/`), {
+        waitUntil: 'networkidle',
+      });
+      expect(response?.status()).toBe(200);
+
+      const state = await page.evaluate(async (expectedTag) => {
+        await customElements.whenDefined(expectedTag);
+        const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+          | (HTMLElement & { updateComplete?: Promise<unknown> })
+          | null;
+        await target?.updateComplete;
+        const canvas = document.querySelector<HTMLElement>('[data-preview-canvas]');
+        const canvasRect = canvas?.getBoundingClientRect();
+        const targetRect = target?.getBoundingClientRect();
+        const targetDisplay = target ? getComputedStyle(target).display : '';
+        return {
+          defined: Boolean(customElements.get(expectedTag)),
+          statusText: document.querySelector('[data-preview-status]')?.textContent?.trim() ?? '',
+          hasShadowRoot: Boolean(target?.shadowRoot),
+          canvasWidth: canvasRect?.width ?? 0,
+          canvasHeight: canvasRect?.height ?? 0,
+          targetWidth: targetRect?.width ?? 0,
+          targetHeight: targetRect?.height ?? 0,
+          targetDisplay,
+        };
+      }, tag);
+
+      expect(state.defined, `${tag} was not defined`).toBe(true);
+      expect(state.statusText).toContain('Live Custom Element');
+      expect(state.statusText).not.toContain('Token-Styled Preview');
+      expect(state.hasShadowRoot, `${tag} missing shadowRoot`).toBe(true);
+      expect(state.canvasWidth).toBeGreaterThan(40);
+      expect(state.canvasHeight).toBeGreaterThan(24);
+      if (state.targetDisplay !== 'contents') {
+        expect(state.targetWidth, `${tag} host width collapsed`).toBeGreaterThan(40);
+        expect(state.targetHeight, `${tag} host height collapsed`).toBeGreaterThan(24);
+      }
+      expect(pageErrors).toEqual([]);
+      expect(consoleErrors).toEqual([]);
+    });
+  }
 });

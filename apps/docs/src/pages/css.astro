@@ -2,6 +2,7 @@
 import CodeTabs from '../components/CodeTabs.astro';
 import DocsLayout from '../components/DocsLayout.astro';
 import { CSS_PRIMITIVE_CATALOG } from '../lib/css-catalog.js';
+import { splitInlineCode } from '../lib/inline-code.js';
 
 const categories = ['Layout', 'Typography & Surface', 'Content & Marketing'] as const;
 ---
@@ -45,10 +46,17 @@ const categories = ['Layout', 'Typography & Surface', 'Content & Marketing'] as 
                     <span class="docs-badge">{item.subpath}</span>
                   </mth-flex>
 
-                  <p style="margin-block:0;color:var(--mth-color-fg-muted)">{item.description}</p>
+                  <p style="margin-block:0;color:var(--mth-color-fg-muted)">
+                    {splitInlineCode(item.description).map((seg) =>
+                      seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+                    )}
+                  </p>
 
                   <div class="docs-callout">
-                    <strong>When NOT to use:</strong> {item.whenNotToUse}
+                    <strong>When NOT to use:</strong>{' '}
+                    {splitInlineCode(item.whenNotToUse).map((seg) =>
+                      seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+                    )}
                   </div>
 
                   <div class="docs-preview" set:html={item.previewHtml} />

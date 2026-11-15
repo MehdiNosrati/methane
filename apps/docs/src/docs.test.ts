@@ -9,6 +9,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { ADRS } from './lib/adrs.js';
 import { loadComponentDocs } from './lib/component-loader.js';
 import { CSS_PRIMITIVE_CATALOG } from './lib/css-catalog.js';
+import { ALL_DEMO_SPECS, renderDemoHtml } from './lib/demos/index.js';
 import { BASE_PATH } from './lib/links.js';
 import {
   DEFAULT_THEME_CONFIG,
@@ -347,11 +348,36 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
       expect(compHtml).toContain(`<${tag}`);
     }
 
-    const builtComponentPages = collectFiles(resolve(distDir, 'components'), '.html');
-    expect(builtComponentPages.length).toBeGreaterThanOrEqual(231);
+    const builtComponentPages = collectFiles(resolve(distDir, 'components'), '.html').filter(
+      (file) => file !== resolve(distDir, 'components/index.html'),
+    );
+    expect(builtComponentPages.length).toBeGreaterThanOrEqual(251);
     for (const page of builtComponentPages) {
+      const tag = dirname(page).split('/').pop() ?? '';
       const html = readFileSync(page, 'utf8');
       expect(html).not.toContain('data-preview-upcoming="true"');
+      expect(html, `Token-Styled Preview leaked on ${tag}`).not.toContain('Token-Styled Preview');
+      expect(html, `Missing Live Custom Element badge on ${tag}`).toContain('Live Custom Element');
+      const canvasMatch =
+        /class="docs-preview-canvas"[^>]*>([\s\S]*?)<\/div>\s*<div class="docs-preview-output"/.exec(
+          html,
+        );
+      const canvasHtml = canvasMatch?.[1] ?? '';
+      expect(canvasHtml, `Missing <${tag} in preview canvas`).toContain(`<${tag}`);
+      expect(canvasHtml, `Missing data-preview-target in preview canvas for ${tag}`).toContain(
+        'data-preview-target',
+      );
+    }
+
+    const allBuiltHtml = collectFiles(distDir, '.html');
+    for (const page of allBuiltHtml) {
+      const stripped = readFileSync(page, 'utf8').replace(
+        /<pre class="docs-code">[\s\S]*?<\/pre>/g,
+        '',
+      );
+      expect(stripped, `Unparsed \`<mth- backtick in ${page}`).not.toContain('`<mth-');
+      expect(stripped, `Unparsed \`&lt;mth- backtick in ${page}`).not.toContain('`&lt;mth-');
+      expect(stripped, `Unparsed \`@methane-ui backtick in ${page}`).not.toContain('`@methane-ui');
     }
 
     const componentsIndexHtml = readFileSync(resolve(distDir, 'components/index.html'), 'utf8');
@@ -673,5 +699,22 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
     const quickstartSrc = readFileSync(resolve(docsRoot, 'src/pages/quickstart.astro'), 'utf8');
     expect(quickstartSrc).toContain('CUSTOM_ELEMENTS_SCHEMA');
     expect(quickstartSrc).toContain("import '@methane-ui/ui/button';");
+  });
+
+  it('covers 100% of loadComponentDocs() entries in ALL_DEMO_SPECS and renders escaped non-self-closing HTML', async () => {
+    const components = await loadComponentDocs();
+    const missingTags = components
+      .map((c) => c.tagName)
+      .filter((tag) => !Object.prototype.hasOwnProperty.call(ALL_DEMO_SPECS, tag));
+    expect(missingTags).toEqual([]);
+
+    const escaped = renderDemoHtml('mth-test-widget', {
+      attrs: { label: 'A & "B" <C> \'D\'' },
+      text: '5 < 10 & "ok"',
+    });
+    expect(escaped).toBe(
+      '<mth-test-widget label="A &amp; &quot;B&quot; &lt;C&gt; &#39;D&#39;" data-preview-target>5 &lt; 10 &amp; &quot;ok&quot;</mth-test-widget>',
+    );
+    expect(escaped).not.toContain('/>');
   });
 });
