@@ -1,0 +1,29 @@
+{
+  "name": "@methane/security-gate",
+  "version": "0.1.0",
+  "description": "Strict CSP Trusted Types compliance suite, permissive supply-chain license audit, and workflow security gates for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@methane/core": "workspace:*",
+    "@methane/primitives": "workspace:*",
+    "@methane/sanitize": "workspace:*",
+    "@methane/ssr": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

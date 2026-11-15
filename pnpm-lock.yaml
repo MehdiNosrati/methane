@@ -281,6 +281,24 @@ importers:
         specifier: ^18.0.0
         version: 18.0.0
 
+  tooling/security-gate:
+    dependencies:
+      '@methane/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@methane/primitives':
+        specifier: workspace:*
+        version: link:../../packages/primitives
+      '@methane/sanitize':
+        specifier: workspace:*
+        version: link:../../packages/sanitize
+      '@methane/ssr':
+        specifier: workspace:*
+        version: link:../../packages/ssr
+      lit:
+        specifier: ^3.2.1
+        version: 3.3.3
+
   tooling/spec-compiler:
     dependencies:
       '@methane/test-conformance':

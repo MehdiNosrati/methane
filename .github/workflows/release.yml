@@ -1,0 +1,76 @@
+name: Release & Provenance Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run publish in --dry-run mode without pushing to npm'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  NPM_CONFIG_PROVENANCE: 'true'
+
+jobs:
+  release:
+    name: Verify, Budget Check & Publish (@methane/*)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test (including security & license gates)
+        run: pnpm test
+
+      - name: Bundle budget check (@methane/bundle-budget)
+        run: |
+          node --input-type=module -e "
+            import { checkBundleBudgets } from './tooling/bundle-budget/dist/index.js';
+            const report = await checkBundleBudgets([
+              { name: '@methane/sanitize', entryPoint: './packages/sanitize/dist/index.js' },
+              { name: '@methane/core', entryPoint: './packages/core/dist/index.js' },
+              { name: '@methane/primitives', entryPoint: './packages/primitives/dist/index.js' },
+            ]);
+            console.log(report.markdown);
+            if (!report.passed) process.exit(1);
+          "
+
+      - name: Publish @methane/* packages with Sigstore provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            pnpm -r --filter "./packages/*" --no-git-checks publish --provenance --access public --dry-run
+          else
+            pnpm -r --filter "./packages/*" --no-git-checks publish --provenance --access public
+          fi
