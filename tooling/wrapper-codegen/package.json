@@ -23,6 +23,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/spec-compiler": "workspace:*"
+    "@methane/spec-compiler": "workspace:^"
   }
 }

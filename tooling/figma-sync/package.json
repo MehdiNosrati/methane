@@ -20,8 +20,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/spec-compiler": "workspace:*",
-    "@methane/tokens": "workspace:*",
-    "@methane/wrapper-codegen": "workspace:*"
+    "@methane/spec-compiler": "workspace:^",
+    "@methane/tokens": "workspace:^",
+    "@methane/wrapper-codegen": "workspace:^"
   }
 }

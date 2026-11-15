@@ -14,10 +14,10 @@
     "dist"
   ],
   "dependencies": {
-    "@methane/core": "workspace:*",
-    "@methane/primitives": "workspace:*",
-    "@methane/sanitize": "workspace:*",
-    "@methane/ssr": "workspace:*",
+    "@methane/core": "workspace:^",
+    "@methane/primitives": "workspace:^",
+    "@methane/sanitize": "workspace:^",
+    "@methane/ssr": "workspace:^",
     "lit": "^3.2.1"
   },
   "scripts": {

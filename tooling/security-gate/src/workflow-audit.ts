@@ -156,6 +156,18 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
           message: 'release.yml must support `workflow_dispatch` `dry_run` mode.',
         });
       }
+      if (
+        /--filter\s+["']\.\/packages\/\*["']/.test(content) ||
+        !content.includes('./packages/**') ||
+        !content.includes('./tooling/*')
+      ) {
+        findings.push({
+          file: fileName,
+          rule: 'release-nested-package-filter',
+          message:
+            'release.yml must filter `./packages/**` and `./tooling/*` (never shallow `./packages/*`) so nested kits, satellites, and tooling publish.',
+        });
+      }
     }
 
     if (fileName === 'pages.yml') {

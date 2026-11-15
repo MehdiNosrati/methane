@@ -12,16 +12,16 @@
     "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
-    "@methane/css": "workspace:*",
-    "@methane/primitives": "workspace:*",
-    "@methane/ssr-sveltekit": "workspace:*",
-    "@methane/svelte": "workspace:*",
-    "@methane/tokens": "workspace:*",
-    "@methane/ui": "workspace:*",
+    "@methane/css": "workspace:^",
+    "@methane/primitives": "workspace:^",
+    "@methane/ssr-sveltekit": "workspace:^",
+    "@methane/svelte": "workspace:^",
+    "@methane/tokens": "workspace:^",
+    "@methane/ui": "workspace:^",
     "svelte": "^5.57.3"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:*",
+    "@methane/test-conformance": "workspace:^",
     "@sveltejs/adapter-node": "^5.0.0",
     "@sveltejs/kit": "^2.50.0",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
