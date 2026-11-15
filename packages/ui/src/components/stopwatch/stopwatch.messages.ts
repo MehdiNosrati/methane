@@ -1,0 +1,16 @@
+export const stopwatchMessages = {
+  regionLabel: 'Stopwatch',
+  start: 'Start',
+  pause: 'Pause',
+  resume: 'Resume',
+  lap: 'Lap',
+  reset: 'Reset',
+  lapsLabel: 'Recorded laps',
+  lapColumn: 'Lap',
+  splitColumn: 'Split',
+  totalColumn: 'Total',
+  startedAnnouncement: 'Stopwatch started',
+  pausedAnnouncement: 'Stopwatch paused',
+  resetAnnouncement: 'Stopwatch reset',
+  lapAnnouncement: 'Lap {index} recorded at {time}',
+} as const;
