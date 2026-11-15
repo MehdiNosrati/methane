@@ -133,6 +133,7 @@ test.describe('Real-browser FACE forms, focus delegation, and style invariants',
 
   test('Keyboard Tab focus navigation, delegatesFocus, and visual style invariants', async ({
     page,
+    browserName,
   }) => {
     const pageErrors: string[] = [];
     page.on('pageerror', (err) => pageErrors.push(err.message));
@@ -189,9 +190,10 @@ test.describe('Real-browser FACE forms, focus delegation, and style invariants',
       root.append(focusSection, styleSection, selLtr, rtlWrap);
     });
 
-    // Tab navigation delegates focus into each shadow root
+    // Tab navigation delegates focus into each shadow root (macOS WebKit uses Alt+Tab for buttons/checkboxes)
+    const tabKey = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
     await page.locator('#pre-focus-btn').focus();
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(tabKey);
     const firstFocus = await page.evaluate(() => ({
       activeTag: document.activeElement?.id,
       shadowFocused: Boolean(document.getElementById('tab-input')?.shadowRoot?.activeElement),
@@ -203,7 +205,7 @@ test.describe('Real-browser FACE forms, focus delegation, and style invariants',
     expect(firstFocus.shadowFocused).toBe(true);
     expect(firstFocus.matchesFocusVisible).toBe(true);
 
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(tabKey);
     const secondFocus = await page.evaluate(() => ({
       activeTag: document.activeElement?.id,
       shadowFocused: Boolean(document.getElementById('tab-button')?.shadowRoot?.activeElement),
@@ -211,7 +213,7 @@ test.describe('Real-browser FACE forms, focus delegation, and style invariants',
     expect(secondFocus.activeTag).toBe('tab-button');
     expect(secondFocus.shadowFocused).toBe(true);
 
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(tabKey);
     const thirdFocus = await page.evaluate(() => ({
       activeTag: document.activeElement?.id,
       shadowFocused: Boolean(document.getElementById('tab-checkbox')?.shadowRoot?.activeElement),

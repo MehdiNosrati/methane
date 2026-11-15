@@ -269,7 +269,7 @@ export class MthDropdownMenu extends UIElement {
 
   private resolveAnchor(): PositioningAnchor | null {
     if (this.anchor) return this.anchor;
-    return this.getSlottedTrigger() ?? this.anchorWrapperEl ?? this;
+    return this.anchorWrapperEl ?? this.getSlottedTrigger() ?? this;
   }
 
   private syncMenuItems(): void {
@@ -300,6 +300,11 @@ export class MthDropdownMenu extends UIElement {
   }
 
   private readonly handleTriggerClick = (): void => {
+    // Safari/WebKit does not focus <button> on pointer click; ensure keyboard navigation works after click.
+    const trigger = this.getSlottedTrigger();
+    if (trigger && typeof trigger.focus === 'function') {
+      trigger.focus({ preventScroll: true });
+    }
     void this.toggle();
   };
 

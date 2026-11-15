@@ -317,9 +317,36 @@ export class MthAsyncSearch extends UIElement {
 
   private handleInputKeyDown(event: KeyboardEvent): void {
     if (this.isEffectivelyDisabled) return;
-    if (event.key === 'ArrowDown' && !this.open) {
+    if (event.key === 'ArrowDown') {
       event.preventDefault();
-      void this.show();
+      if (!this.open) {
+        void this.show();
+      }
+      this.moveActiveOption(1);
+      return;
+    }
+    if (event.key === 'ArrowUp' && this.open) {
+      event.preventDefault();
+      this.moveActiveOption(-1);
+      return;
+    }
+    if (event.key === 'Home' && this.open) {
+      event.preventDefault();
+      this.syncListboxOptions();
+      const firstIdx = this.resolveCurrentItems().findIndex((o) => !o.disabled);
+      if (firstIdx >= 0) this.listboxCtrl.setActiveIndex(firstIdx);
+      return;
+    }
+    if (event.key === 'End' && this.open) {
+      event.preventDefault();
+      this.syncListboxOptions();
+      const items = this.resolveCurrentItems();
+      for (let i = items.length - 1; i >= 0; i -= 1) {
+        if (!items[i]?.disabled) {
+          this.listboxCtrl.setActiveIndex(i);
+          break;
+        }
+      }
       return;
     }
     if (event.key === 'Enter' && this.open && this.listboxCtrl.activeOption) {
@@ -328,6 +355,43 @@ export class MthAsyncSearch extends UIElement {
       const item = this.resolveCurrentItems().find((o) => this.resolveItemValue(o) === val) ?? null;
       this.selectItem(val, item, true);
     }
+  }
+
+  private moveActiveOption(delta: 1 | -1): void {
+    this.syncListboxOptions();
+    const items = this.resolveCurrentItems();
+    const len = items.length;
+    if (len === 0) return;
+    let idx = this.listboxCtrl.activeIndex;
+    for (let step = 0; step < len; step += 1) {
+      idx = idx === -1 ? (delta === 1 ? 0 : len - 1) : (idx + delta + len) % len;
+      if (!items[idx]?.disabled) {
+        this.listboxCtrl.setActiveIndex(idx);
+        return;
+      }
+    }
+  }
+
+  private syncListboxOptions(): void {
+    const items = this.resolveCurrentItems();
+    const prev = this.listboxCtrl.allOptions;
+    const same =
+      prev.length === items.length &&
+      items.every(
+        (opt, idx) =>
+          prev[idx]?.value === this.resolveItemValue(opt) &&
+          prev[idx]?.label === opt.label &&
+          Boolean(prev[idx]?.disabled) === Boolean(opt.disabled),
+      );
+    if (same) return;
+    this.listboxCtrl.setOptions(
+      items.map((opt, idx) => ({
+        id: `mth-as-opt-${idx}`,
+        value: this.resolveItemValue(opt),
+        label: opt.label,
+        disabled: Boolean(opt.disabled),
+      })),
+    );
   }
 
   private handleLabelSlotChange(event: Event): void {

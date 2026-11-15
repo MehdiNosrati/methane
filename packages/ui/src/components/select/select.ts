@@ -626,6 +626,8 @@ export class MthSelect extends UIElement {
 
   private handleTriggerClick(): void {
     if (this.isEffectivelyDisabled || this.isEffectivelyReadOnly) return;
+    // Safari/WebKit does not focus <button> on pointer click; focus explicitly for keyboard nav & restoreFocus.
+    this.triggerEl?.focus({ preventScroll: true });
     if (this.open) {
       void this.hide('invoker');
     } else {

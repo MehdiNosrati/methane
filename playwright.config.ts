@@ -22,11 +22,29 @@ export default defineConfig({
       },
     },
     {
+      name: 'component-browser-webkit',
+      testDir: './e2e',
+      testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Safari'],
+        baseURL: process.env['E2E_BASE_URL'] ?? 'http://127.0.0.1:3100',
+      },
+    },
+    {
       name: 'verify-next',
       testDir: './apps/verify-next/e2e',
       testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: process.env['VERIFY_NEXT_URL'] ?? 'http://127.0.0.1:3101',
+      },
+    },
+    {
+      name: 'verify-next-webkit',
+      testDir: './apps/verify-next/e2e',
+      testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Safari'],
         baseURL: process.env['VERIFY_NEXT_URL'] ?? 'http://127.0.0.1:3101',
       },
     },
@@ -63,6 +81,15 @@ export default defineConfig({
       testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: process.env['DOCS_URL'] ?? 'http://127.0.0.1:3105/methane/',
+      },
+    },
+    {
+      name: 'docs-qa-webkit',
+      testDir: './apps/docs/e2e',
+      testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Safari'],
         baseURL: process.env['DOCS_URL'] ?? 'http://127.0.0.1:3105/methane/',
       },
     },
