@@ -1,0 +1,92 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { rangeSliderMessages } from './range-slider.messages.js';
+
+export const rangeSliderSpec: ComponentBehaviorSpec = {
+  tag: 'mth-range-slider',
+  package: '@methane/ui',
+  conformance: ['form-control'],
+  controllers: ['FormControlController'],
+  focusModel: 'delegates-focus',
+  states: ['dirty', 'touched', 'user-invalid', 'disabled'],
+  keyboard: [
+    { key: 'ArrowRight', dir: 'ltr', when: 'either thumb focused', expect: 'increases focused thumb value by step' },
+    { key: 'ArrowLeft', dir: 'rtl', when: 'either thumb focused', expect: 'increases focused thumb value in RTL' },
+    { key: 'PageUp / PageDown', when: 'either thumb focused', expect: 'moves focused thumb by ten steps' },
+    { key: 'Home / End', when: 'either thumb focused', expect: 'moves focused thumb to valid lower/upper bound' },
+  ],
+  props: [
+    { name: 'name', attr: 'name', type: 'string', default: '' },
+    { name: 'value', attr: 'value', type: 'string', default: '25,75' },
+    { name: 'defaultValue', attr: 'default-value', type: 'string', default: '25,75' },
+    { name: 'start', attr: 'start', type: 'number', default: 25 },
+    { name: 'end', attr: 'end', type: 'number', default: 75 },
+    { name: 'min', attr: 'min', type: 'number', default: 0 },
+    { name: 'max', attr: 'max', type: 'number', default: 100 },
+    { name: 'step', attr: 'step', type: 'number', default: 1 },
+    { name: 'minDistance', attr: 'min-distance', type: 'number', default: 0 },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'hint', attr: 'hint', type: 'string', default: '' },
+    { name: 'error', attr: 'error', type: 'string', default: '' },
+    { name: 'size', attr: 'size', type: "'sm' | 'md' | 'lg'", default: 'md' },
+    { name: 'showValue', attr: 'show-value', type: 'boolean', default: false },
+    { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
+    { name: 'readonly', attr: 'readonly', type: 'boolean', default: false },
+    { name: 'formatValue', attr: false, type: '((value: number) => string) | null', default: null },
+  ],
+  events: [
+    { name: 'mth-input', cancelable: false, detailType: '{ start: number; end: number; value: string }' },
+    { name: 'mth-change', cancelable: false, detailType: '{ start: number; end: number; value: string }' },
+  ],
+  slots: [
+    { name: 'label', description: 'Custom label content.' },
+    { name: 'hint', description: 'Helper text below the slider.' },
+    { name: 'error', description: 'Validation error message.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Root wrapper.' },
+    { name: 'header', description: 'Label and readout row.' },
+    { name: 'label', description: 'Group label element.' },
+    { name: 'value', description: 'Formatted range readout.' },
+    { name: 'track-wrap', description: 'Pointer hit area.' },
+    { name: 'track', description: 'Background track.' },
+    { name: 'fill', description: 'Active segment between thumbs.' },
+    { name: 'thumb-start', description: 'Lower bound thumb.' },
+    { name: 'thumb-end', description: 'Upper bound thumb.' },
+    { name: 'hint', description: 'Helper container.' },
+    { name: 'error', description: 'Error container.' },
+  ],
+  messages: { ...rangeSliderMessages },
+};
+
+export const CEM_METADATA = {
+  description:
+    'Form-associated dual-thumb range slider with independent start and end ARIA slider thumbs, min-distance clamping, and RTL support.',
+  propDescriptions: {
+    name: 'Form submission field name.',
+    value: 'Comma-separated pair "start,end".',
+    defaultValue: 'Default "start,end" restored on form reset.',
+    start: 'Current start value.',
+    end: 'Current end value.',
+    min: 'Minimum selectable value.',
+    max: 'Maximum selectable value.',
+    step: 'Step increment.',
+    minDistance: 'Minimum gap maintained between start and end thumbs.',
+    label: 'Accessible group label.',
+    hint: 'Helper message.',
+    error: 'Validation error message.',
+    size: 'Visual scale.',
+    showValue: 'Shows formatted start - end values.',
+    disabled: 'Disables both thumbs.',
+    readonly: 'Prevents edits while keeping focusability.',
+    formatValue: 'Custom numeric formatter.',
+  },
+  eventDescriptions: {
+    'mth-input': 'Dispatched while dragging or stepping either thumb.',
+    'mth-change': 'Dispatched when a thumb adjustment commits.',
+  },
+  cssProperties: [
+    { name: '--mth-range-slider-track-bg', description: 'Track background color.', default: 'var(--mth-color-border)' },
+    { name: '--mth-range-slider-fill-bg', description: 'Selected range bar color.', default: 'var(--mth-color-accent)' },
+    { name: '--mth-range-slider-thumb-bg', description: 'Thumb fill color.', default: 'var(--mth-color-surface)' },
+  ],
+};
