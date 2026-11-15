@@ -1,0 +1,39 @@
+---
+import DocsLayout from '../components/DocsLayout.astro';
+import { ADRS } from '../lib/adrs.js';
+---
+
+<DocsLayout title="ADRs 001–015">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Architecture Decision Records (ADR-001 – ADR-015)</h1>
+      <p>
+        Every Methane package, component spec, and CI lint rule traces directly to these 15 locked
+        architectural decisions.
+      </p>
+    </div>
+
+    <div class="mth-stack" data-gap="4">
+      {
+        ADRS.map((adr) => (
+          <article class="docs-card" id={adr.id.toLowerCase()}>
+            <mth-stack data-gap="2">
+              <mth-flex data-gap="2">
+                <span class="docs-badge">{adr.id}</span>
+                <strong>{adr.title}</strong>
+              </mth-flex>
+              <dl class="mth-dl">
+                <dt>Context</dt>
+                <dd>{adr.context}</dd>
+                <dt>Decision</dt>
+                <dd>{adr.decision}</dd>
+                <dt>Consequence</dt>
+                <dd>{adr.consequence}</dd>
+              </dl>
+            </mth-stack>
+          </article>
+        ))
+      }
+    </div>
+  </mth-stack>
+</DocsLayout>

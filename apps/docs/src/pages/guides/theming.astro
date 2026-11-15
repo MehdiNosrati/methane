@@ -1,0 +1,61 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { withBase } from '../../lib/links.js';
+---
+
+<DocsLayout title="Theming & 4-Tier CSS">
+  <article class="mth-prose">
+    <h1>Theming &amp; 4-Tier Styling Contract</h1>
+    <p>
+      Methane styles never fight Shadow DOM. Every component exposes four explicit, SemVer-governed
+      customization tiers:
+    </p>
+
+    <div class="docs-table-wrap">
+      <table class="docs-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Mechanism</th>
+            <th>Contract</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Design Tokens</strong></td>
+            <td><code>--mth-*</code> custom properties</td>
+            <td>Compiled from W3C DTCG JSON using <code>light-dark()</code> and relative <code>oklch()</code>. Covered by SemVer.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Parts &amp; States</strong></td>
+            <td><code>::part()</code>, <code>exportparts</code>, <code>:state()</code></td>
+            <td>Stable semantic parts (<code>base</code>, <code>control</code>, <code>label</code>, <code>popup</code>) and <code>CustomStateSet</code>. Covered by SemVer.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Sheet Escape Hatch</strong></td>
+            <td><code>registerStyles(tagOrGlobal, css)</code></td>
+            <td>Appends Constructable <code>CSSStyleSheet</code> into <code>@layer override</code> via <code>@methane/runtime</code>. Unparted internal selectors are SemVer-exempt.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Unstyled / Primitives</strong></td>
+            <td>Minimal structural sheet + <code>@methane/primitives</code></td>
+            <td>Swap the default theme or attach behavioral controllers to custom elements directly.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Logical Properties &amp; Density</h2>
+    <p>
+      100% of Methane stylesheets enforce CSS Logical Properties (<code>padding-inline</code>,
+      <code>inset-block-start</code>, <code>border-inline-start</code>) via
+      <code>@methane/lint-plugin</code> and scale spacing automatically with
+      <code>[data-mth-density='compact' | 'default' | 'comfortable']</code>.
+    </p>
+
+    <p>
+      Try customizing live OKLCH seeds and density in the
+      <a href={withBase('/theme-builder')}>Interactive OKLCH Theme Builder</a>.
+    </p>
+  </article>
+</DocsLayout>

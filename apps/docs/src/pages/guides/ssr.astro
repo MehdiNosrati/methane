@@ -1,0 +1,57 @@
+---
+import CodeTabs from '../../components/CodeTabs.astro';
+import DocsLayout from '../../components/DocsLayout.astro';
+
+const ssrSnippets = {
+  html: `import { renderToString, transformHtmlDsd } from '@methane/ssr';
+
+const result = await transformHtmlDsd('<mth-button variant="solid">Save</mth-button>', {
+  styles: 'linked',
+  assetBase: '/assets/methane',
+});`,
+  react: `import { renderNextDsd, withMethaneNextHeaders } from '@methane/ssr-next';
+// Next.js App Router RSC + React 19 native custom-element streaming`,
+  vue: `import { createMethaneNuxtNitroPlugin } from '@methane/ssr-nuxt';
+// Nuxt Nitro server plugin expanding DSD + hoisting stylesheet links`,
+  angular: `import { provideMethaneSsr } from '@methane/ssr-angular';
+// Non-destructive Angular SSR serialization + hydration`,
+  svelte: `import { createMethaneSvelteKitHandle } from '@methane/ssr-sveltekit';
+// SvelteKit handle hook for streaming DSD + asset hoisting`,
+};
+---
+
+<DocsLayout title="SSR & Adapters Guide">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Server-Side Rendering &amp; Hybrid DSD</h1>
+      <p>
+        Methane wraps <code>@lit-labs/ssr</code> behind <code>@methane/ssr</code> and provides six
+        dedicated framework adapters: <code>@methane/ssr</code>, <code>@methane/ssr-next</code>,
+        <code>@methane/ssr-nuxt</code>, <code>@methane/ssr-sveltekit</code>,
+        <code>@methane/ssr-astro</code>, and <code>@methane/ssr-angular</code>.
+      </p>
+
+      <h2>ADR-008: Hybrid DSD Style Delivery</h2>
+      <ul>
+        <li>
+          <strong><code>styles: 'linked'</code> (Default):</strong> Emits a content-hashed
+          <code>&lt;link rel="stylesheet" href="..."&gt;</code> inside
+          <code>&lt;template shadowrootmode="open"&gt;</code> (parsed once per URL) paired with a
+          <strong>&lt; 1 KB critical inline <code>&lt;style&gt;</code> shell</strong> for zero FOUC and zero CLS.
+        </li>
+        <li>
+          <strong><code>styles: 'inline'</code>:</strong> Embeds the full component stylesheet inside
+          <code>&lt;style&gt;</code> for emails, single-file HTML exports, and assetless edge responses.
+        </li>
+        <li>
+          <strong>Client-only fallback:</strong> <code>@methane/css/defined-guard.css</code> applies a
+          fail-open <code>:not(:defined)</code> 2s opacity reveal animation (never <code>visibility: hidden</code>),
+          while pure-CSS custom tags (<code>mth-stack</code>, <code>mth-grid</code>, <code>mth-flex</code>,
+          <code>mth-container</code>, <code>mth-spacer</code>) stay immediately visible at <code>opacity: 1</code>.
+        </li>
+      </ul>
+    </div>
+
+    <CodeTabs id="ssr-adapters" snippets={ssrSnippets} />
+  </mth-stack>
+</DocsLayout>

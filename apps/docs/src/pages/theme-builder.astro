@@ -1,0 +1,214 @@
+---
+import DocsLayout from '../components/DocsLayout.astro';
+import {
+  DEFAULT_THEME_CONFIG,
+  generateThemeCssOverrides,
+  generateThemeDtcgDocument,
+} from '../lib/theme-builder.js';
+
+const initialCss = generateThemeCssOverrides(DEFAULT_THEME_CONFIG);
+const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_CONFIG), null, 2);
+---
+
+<DocsLayout title="Interactive OKLCH Theme Builder">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Interactive OKLCH Theme Builder</h1>
+      <p>
+        Configure Methane's <code>oklch()</code> brand accent seed, corner radius scale, and
+        <code>--mth-density</code> multiplier, preview across Light, Dark, and High-Contrast modes,
+        and export ready-to-use <code>--mth-*</code> CSS or W3C DTCG <code>tokens.json</code>.
+      </p>
+    </div>
+
+    <div class="mth-sidebar-layout" style="--mth-sidebar-width:20rem">
+      <section class="docs-card">
+        <mth-stack data-gap="4">
+          <h2 style="margin-block:0">Theme Controls</h2>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Brand Lightness (L): <strong id="tb-l-val">{DEFAULT_THEME_CONFIG.brandLightness}</strong></span>
+            <input id="tb-l" type="range" min="0.35" max="0.75" step="0.01" value={DEFAULT_THEME_CONFIG.brandLightness} />
+          </label>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Brand Chroma (C): <strong id="tb-c-val">{DEFAULT_THEME_CONFIG.brandChroma}</strong></span>
+            <input id="tb-c" type="range" min="0.02" max="0.28" step="0.01" value={DEFAULT_THEME_CONFIG.brandChroma} />
+          </label>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Brand Hue (H): <strong id="tb-h-val">{DEFAULT_THEME_CONFIG.brandHue}</strong>°</span>
+            <input id="tb-h" type="range" min="0" max="360" step="1" value={DEFAULT_THEME_CONFIG.brandHue} />
+          </label>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Radius Scale</span>
+            <select id="tb-radius" class="docs-btn">
+              <option value="none">None (0px)</option>
+              <option value="sharp">Sharp</option>
+              <option value="default" selected>Default</option>
+              <option value="rounded">Rounded</option>
+              <option value="pill">Pill</option>
+            </select>
+          </label>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Density</span>
+            <select id="tb-density" class="docs-btn">
+              <option value="compact">Compact (0.8x)</option>
+              <option value="default" selected>Default (1.0x)</option>
+              <option value="comfortable">Comfortable (1.2x)</option>
+            </select>
+          </label>
+
+          <label class="mth-stack" data-gap="1">
+            <span>Preview Mode</span>
+            <select id="tb-scheme" class="docs-btn">
+              <option value="light" selected>Light</option>
+              <option value="dark">Dark</option>
+              <option value="high-contrast">High Contrast (forced-colors)</option>
+            </select>
+          </label>
+        </mth-stack>
+      </section>
+
+      <section class="mth-stack" data-gap="4">
+        <div id="tb-preview" class="docs-preview" data-mth-theme="light" data-mth-density="default">
+          <mth-stack data-gap="4">
+            <mth-flex data-justify="between">
+              <strong>Live Token Preview</strong>
+              <span class="docs-badge" id="tb-seed-badge">oklch(0.56 0.21 255)</span>
+            </mth-flex>
+            <div class="mth-feature-grid" style="--mth-feature-min:11rem">
+              <div class="mth-feature-card">
+                <span class="mth-feature-icon">★</span>
+                <strong>Accent Surface</strong>
+                <p style="margin-block:0;color:var(--mth-color-fg-muted)">Relative OKLCH ramp adapts automatically.</p>
+                <button type="button" class="docs-btn docs-btn-primary">Primary Action</button>
+              </div>
+              <div class="mth-pricing-tier mth-pricing-featured">
+                <strong>Featured Tier</strong>
+                <div class="mth-pricing-price">$29</div>
+                <span style="color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">Radius &amp; density update live</span>
+              </div>
+            </div>
+          </mth-stack>
+        </div>
+
+        <div class="docs-card">
+          <mth-stack data-gap="3">
+            <mth-flex data-justify="between">
+              <strong>Export <code>--mth-*</code> CSS</strong>
+              <mth-flex data-gap="2">
+                <button type="button" class="docs-btn" id="tb-copy-css">Copy CSS</button>
+                <button type="button" class="docs-btn" id="tb-copy-dtcg">Copy tokens.json</button>
+                <button type="button" class="docs-btn docs-btn-primary" id="tb-download-dtcg">Download tokens.json</button>
+              </mth-flex>
+            </mth-flex>
+            <pre class="docs-code" id="tb-css-output"><code>{initialCss}</code></pre>
+            <details>
+              <summary style="cursor:pointer;font-weight:var(--mth-font-weight-medium)">
+                Preview W3C DTCG <code>tokens.json</code>
+              </summary>
+              <pre class="docs-code" id="tb-dtcg-output" style="max-block-size:18rem;overflow:auto;margin-block-start:var(--mth-space-3)"><code>{initialDtcgJson}</code></pre>
+            </details>
+          </mth-stack>
+        </div>
+      </section>
+    </div>
+  </mth-stack>
+
+  <script>
+    import {
+      formatBrandSeedOklch,
+      generateThemeCssOverrides,
+      generateThemeDtcgDocument,
+      type DensityPreset,
+      type RadiusPreset,
+      type ThemeBuilderConfig,
+    } from '../lib/theme-builder.js';
+
+    const lInput = document.getElementById('tb-l') as HTMLInputElement;
+    const cInput = document.getElementById('tb-c') as HTMLInputElement;
+    const hInput = document.getElementById('tb-h') as HTMLInputElement;
+    const radiusSelect = document.getElementById('tb-radius') as HTMLSelectElement;
+    const densitySelect = document.getElementById('tb-density') as HTMLSelectElement;
+    const schemeSelect = document.getElementById('tb-scheme') as HTMLSelectElement;
+
+    const lVal = document.getElementById('tb-l-val')!;
+    const cVal = document.getElementById('tb-c-val')!;
+    const hVal = document.getElementById('tb-h-val')!;
+    const previewEl = document.getElementById('tb-preview')!;
+    const seedBadge = document.getElementById('tb-seed-badge')!;
+    const cssOutput = document.getElementById('tb-css-output')!;
+    const dtcgOutput = document.getElementById('tb-dtcg-output')!;
+
+    const RADIUS_STYLE_MAP: Record<RadiusPreset, { sm: string; md: string; lg: string; xl: string }> = {
+      none: { sm: '0px', md: '0px', lg: '0px', xl: '0px' },
+      sharp: { sm: '0.125rem', md: '0.25rem', lg: '0.375rem', xl: '0.5rem' },
+      default: { sm: '0.25rem', md: '0.375rem', lg: '0.5rem', xl: '0.75rem' },
+      rounded: { sm: '0.375rem', md: '0.625rem', lg: '0.875rem', xl: '1.25rem' },
+      pill: { sm: '0.75rem', md: '1rem', lg: '1.5rem', xl: '2rem' },
+    };
+
+    const getConfig = (): ThemeBuilderConfig => ({
+      brandLightness: Number(lInput.value),
+      brandChroma: Number(cInput.value),
+      brandHue: Number(hInput.value),
+      radiusPreset: radiusSelect.value as RadiusPreset,
+      density: densitySelect.value as DensityPreset,
+    });
+
+    const update = () => {
+      const cfg = getConfig();
+      const seed = formatBrandSeedOklch(cfg);
+      const radii = RADIUS_STYLE_MAP[cfg.radiusPreset];
+
+      lVal.textContent = String(cfg.brandLightness);
+      cVal.textContent = String(cfg.brandChroma);
+      hVal.textContent = String(cfg.brandHue);
+      seedBadge.textContent = seed;
+
+      previewEl.style.setProperty('--mth-color-seed-brand', seed);
+      previewEl.style.setProperty('--mth-radius-sm', radii.sm);
+      previewEl.style.setProperty('--mth-radius-md', radii.md);
+      previewEl.style.setProperty('--mth-radius-lg', radii.lg);
+      previewEl.style.setProperty('--mth-radius-xl', radii.xl);
+
+      previewEl.removeAttribute('data-mth-theme');
+      previewEl.removeAttribute('data-mth-contrast');
+      if (schemeSelect.value === 'light' || schemeSelect.value === 'dark') {
+        previewEl.setAttribute('data-mth-theme', schemeSelect.value);
+      } else {
+        previewEl.setAttribute('data-mth-contrast', 'high');
+      }
+      previewEl.setAttribute('data-mth-density', cfg.density);
+
+      cssOutput.textContent = generateThemeCssOverrides(cfg);
+      dtcgOutput.textContent = JSON.stringify(generateThemeDtcgDocument(cfg), null, 2);
+    };
+
+    for (const el of [lInput, cInput, hInput, radiusSelect, densitySelect, schemeSelect]) {
+      el.addEventListener('input', update);
+      el.addEventListener('change', update);
+    }
+
+    document.getElementById('tb-copy-css')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(cssOutput.textContent ?? '');
+    });
+
+    document.getElementById('tb-copy-dtcg')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(dtcgOutput.textContent ?? '');
+    });
+
+    document.getElementById('tb-download-dtcg')?.addEventListener('click', () => {
+      const blob = new Blob([dtcgOutput.textContent ?? '{}'], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'tokens.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</DocsLayout>

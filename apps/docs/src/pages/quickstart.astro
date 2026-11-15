@@ -1,0 +1,107 @@
+---
+import CodeTabs from '../components/CodeTabs.astro';
+import DocsLayout from '../components/DocsLayout.astro';
+import { withBase } from '../lib/links.js';
+
+const installSnippets = {
+  html: `pnpm add @methane/tokens @methane/css @methane/ui`,
+  react: `pnpm add @methane/tokens @methane/css @methane/ui @methane/react`,
+  vue: `pnpm add @methane/tokens @methane/css @methane/ui @methane/vue`,
+  angular: `pnpm add @methane/tokens @methane/css @methane/ui @methane/angular`,
+  svelte: `pnpm add @methane/tokens @methane/css @methane/ui @methane/svelte`,
+};
+
+const usageSnippets = {
+  html: `<link rel="stylesheet" href="@methane/tokens/tokens.css" />
+<link rel="stylesheet" href="@methane/css/index.css" />
+<script type="module" src="@methane/ui/button"></script>
+
+<mth-stack data-gap="4">
+  <mth-button variant="solid">Save changes</mth-button>
+</mth-stack>`,
+  react: `import '@methane/tokens/tokens.css';
+import '@methane/css/index.css';
+import '@methane/ui/button';
+import '@methane/react';
+
+export function SaveAction() {
+  return (
+    <mth-stack data-gap="4">
+      <mth-button variant="solid" onmth-press={() => console.log('saved')}>
+        Save changes
+      </mth-button>
+    </mth-stack>
+  );
+}`,
+  vue: `<script setup lang="ts">
+import '@methane/tokens/tokens.css';
+import '@methane/css/index.css';
+import '@methane/ui/button';
+import '@methane/vue';
+</script>
+
+<template>
+  <mth-stack data-gap="4">
+    <mth-button variant="solid" @mth-press="() => console.log('saved')">
+      Save changes
+    </mth-button>
+  </mth-stack>
+</template>`,
+  angular: `import { Component } from '@angular/core';
+import { MthButtonDirective } from '@methane/angular';
+
+@Component({
+  standalone: true,
+  imports: [MthButtonDirective],
+  template: \`
+    <mth-stack data-gap="4">
+      <mth-button variant="solid" (mthPress)="onSave()">Save changes</mth-button>
+    </mth-stack>
+  \`,
+})
+export class SaveActionComponent {
+  onSave() {}
+}`,
+  svelte: `<script lang="ts">
+  import '@methane/tokens/tokens.css';
+  import '@methane/css/index.css';
+  import MthButton from '@methane/svelte/MthButton.svelte';
+</script>
+
+<mth-stack data-gap="4">
+  <MthButton variant="solid">Save changes</MthButton>
+</mth-stack>`,
+};
+---
+
+<DocsLayout title="Quickstart">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Quickstart</h1>
+      <p>
+        Load <code>@methane/tokens</code> and <code>@methane/css</code> once at your application root,
+        then import only the <code>@methane/ui/*</code> entrypoints and typed framework wrappers you need.
+      </p>
+    </div>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>1. Install Packages</h2>
+      <CodeTabs id="quickstart-install" snippets={installSnippets} />
+    </section>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>2. Render Primitives &amp; Elements</h2>
+      <CodeTabs id="quickstart-usage" snippets={usageSnippets} />
+    </section>
+
+    <div class="docs-callout">
+      <strong>Tip:</strong> For React 18 apps lacking React 19 native custom-element support, import
+      wrappers from <code>@methane/react/legacy</code> instead of <code>@methane/react</code>.
+    </div>
+
+    <mth-flex data-gap="3">
+      <a class="docs-btn" href={withBase('/guides/ssr')}>Next: SSR &amp; Adapters →</a>
+      <a class="docs-btn" href={withBase('/css')}>Browse 23 CSS Primitives</a>
+    </mth-flex>
+  </mth-stack>
+</DocsLayout>

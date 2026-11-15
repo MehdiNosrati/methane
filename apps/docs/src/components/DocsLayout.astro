@@ -1,0 +1,132 @@
+---
+import '../styles/docs.css';
+import { DOCS_NAV, withBase } from '../lib/links.js';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Methane (@methane/*) — layered, spec-first Web Component & 0 B JS CSS design system.',
+} = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Methane UI</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="mth-app-shell">
+      <header class="mth-app-shell-header docs-header">
+        <a class="docs-brand" href={withBase('/')}>
+          <span>Methane</span>
+          <span class="docs-brand-badge">@methane/*</span>
+        </a>
+        <div class="docs-controls">
+          <a class="docs-btn" href={withBase('/css')}>23 CSS Primitives</a>
+          <a class="docs-btn" href={withBase('/components')}>Components</a>
+          <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>Theme Builder</a>
+          <select id="docs-theme-select" class="docs-btn" aria-label="Color theme">
+            <option value="auto">Theme: Auto</option>
+            <option value="light">Theme: Light</option>
+            <option value="dark">Theme: Dark</option>
+            <option value="high-contrast">Theme: High Contrast</option>
+          </select>
+          <select id="docs-density-select" class="docs-btn" aria-label="UI density">
+            <option value="default">Density: Default</option>
+            <option value="compact">Density: Compact</option>
+            <option value="comfortable">Density: Comfortable</option>
+          </select>
+        </div>
+      </header>
+
+      <aside class="mth-app-shell-sidebar docs-sidebar" aria-label="Documentation navigation">
+        {
+          DOCS_NAV.map((section) => (
+            <div class="docs-nav-group">
+              <h2 class="docs-nav-heading">{section.title}</h2>
+              <ul class="docs-nav-list">
+                {section.items.map((item) => {
+                  const itemNorm = item.href.replace(/\/+$/, '') || '/';
+                  const isActive = currentPath === itemNorm;
+                  return (
+                    <li>
+                      <a
+                        class="docs-nav-link"
+                        href={item.href}
+                        aria-current={isActive ? 'page' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))
+        }
+      </aside>
+
+      <main class="mth-app-shell-main docs-main">
+        <slot />
+      </main>
+
+      <footer class="mth-app-shell-footer mth-footer">
+        <div class="mth-container">
+          <div class="mth-footer-bottom" style="margin-block-start:0;padding-block-start:0;border-block-start:0">
+            <span>Methane UI · MIT License · Astro + @methane/ssr-astro + @methane/css + @methane/tokens</span>
+            <mth-flex data-gap="3">
+              <a href={withBase('/adrs')}>ADRs 001–015</a>
+              <a href={withBase('/guides/security')}>Security</a>
+              <a href={withBase('/theme-builder')}>Theme Builder</a>
+            </mth-flex>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const themeSelect = document.getElementById('docs-theme-select') as HTMLSelectElement | null;
+      const densitySelect = document.getElementById('docs-density-select') as HTMLSelectElement | null;
+
+      function applyTheme(value: string) {
+        root.removeAttribute('data-mth-theme');
+        root.removeAttribute('data-mth-contrast');
+        if (value === 'light' || value === 'dark') {
+          root.setAttribute('data-mth-theme', value);
+        } else if (value === 'high-contrast') {
+          root.setAttribute('data-mth-contrast', 'high');
+        }
+      }
+
+      function applyDensity(value: string) {
+        root.setAttribute('data-mth-density', value);
+      }
+
+      const savedTheme = localStorage.getItem('mth-docs-theme') ?? 'auto';
+      const savedDensity = localStorage.getItem('mth-docs-density') ?? 'default';
+      applyTheme(savedTheme);
+      applyDensity(savedDensity);
+      if (themeSelect) themeSelect.value = savedTheme;
+      if (densitySelect) densitySelect.value = savedDensity;
+
+      themeSelect?.addEventListener('change', () => {
+        localStorage.setItem('mth-docs-theme', themeSelect.value);
+        applyTheme(themeSelect.value);
+      });
+
+      densitySelect?.addEventListener('change', () => {
+        localStorage.setItem('mth-docs-density', densitySelect.value);
+        applyDensity(densitySelect.value);
+      });
+    </script>
+  </body>
+</html>

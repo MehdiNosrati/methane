@@ -1,0 +1,73 @@
+---
+import DocsLayout from '../components/DocsLayout.astro';
+import { withBase } from '../lib/links.js';
+import { compiledTokens } from '@methane/tokens';
+
+const colorTokens = compiledTokens.filter((t) => t.type === 'color');
+const scaleTokens = compiledTokens.filter((t) => t.type !== 'color');
+---
+
+<DocsLayout title="Design Tokens">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Design Tokens (<code>@methane/tokens</code>)</h1>
+      <p>
+        {compiledTokens.length} W3C DTCG tokens compiled into <code>--mth-*</code> CSS custom
+        properties using <code>oklch()</code> relative color syntax, <code>light-dark()</code>,
+        <code>--mth-density</code> scaling, and <code>forced-colors: active</code> high contrast.
+      </p>
+      <p>
+        <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>
+          Customize in OKLCH Theme Builder →
+        </a>
+      </p>
+    </div>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>Color &amp; Surface Tokens ({colorTokens.length})</h2>
+      <div class="mth-grid" style="--mth-grid-min:18rem">
+        {
+          colorTokens.map((token) => (
+            <div class="docs-card">
+              <mth-flex data-gap="3" data-wrap="nowrap">
+                <span class="docs-swatch" style={`background:${token.value}`} />
+                <mth-stack data-gap="1">
+                  <code>{token.cssName}</code>
+                  <span style="font-size:var(--mth-font-size-xs);color:var(--mth-color-fg-muted)">
+                    {token.value}
+                  </span>
+                </mth-stack>
+              </mth-flex>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mth-stack" data-gap="3">
+      <h2>Scale, Typography, Motion &amp; Elevation ({scaleTokens.length})</h2>
+      <div class="docs-table-wrap">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>CSS Variable</th>
+              <th>Type</th>
+              <th>Compiled Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              scaleTokens.map((token) => (
+                <tr>
+                  <td><code>{token.cssName}</code></td>
+                  <td><span class="docs-badge">{token.type}</span></td>
+                  <td><code>{token.value}</code></td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </mth-stack>
+</DocsLayout>

@@ -1,0 +1,48 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { loadComponentDocs } from '../../lib/component-loader.js';
+import { withBase } from '../../lib/links.js';
+
+const components = await loadComponentDocs();
+---
+
+<DocsLayout title="Component Reference">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Component Reference</h1>
+      <p>
+        Auto-generated directly from <code>custom-elements.json</code> and
+        <code>ComponentBehaviorSpec</code> via <code>@methane/spec-compiler</code>. As
+        <code>@methane/ui</code>, domain kits, and satellite packages land, this reference updates
+        automatically.
+      </p>
+    </div>
+
+    <div class="mth-grid" style="--mth-grid-min:20rem">
+      {
+        components.map((entry) => (
+          <article class="docs-card">
+            <mth-stack data-gap="3">
+              <mth-flex data-justify="between" data-gap="2">
+                <code>&lt;{entry.tagName}&gt;</code>
+                <span class="docs-badge">{entry.bundleBadge.marginalLabel}</span>
+              </mth-flex>
+              <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
+                {entry.description}
+              </p>
+              <mth-flex data-gap="2">
+                <span class="docs-badge">{entry.bundleBadge.coldLabel}</span>
+                {entry.spec?.conformance.map((suite) => (
+                  <span class="docs-badge">{suite}</span>
+                ))}
+              </mth-flex>
+              <a class="docs-btn" href={withBase(`/components/${entry.tagName}`)}>
+                View API, APG &amp; Playground →
+              </a>
+            </mth-stack>
+          </article>
+        ))
+      }
+    </div>
+  </mth-stack>
+</DocsLayout>
