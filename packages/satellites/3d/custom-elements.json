@@ -1,0 +1,582 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/model-viewer/model-viewer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthModelViewer",
+          "tagName": "mth-model-viewer",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Wrap-first Three.js `<mth-model-viewer>` component featuring lazy WebGL/WebGPU renderer attachment, keyboard orbit/zoom/reset controls, MotionController reduced-motion gating on `autoRotate`, URL sanitization, and poster/fallback slots.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "attribute": "src",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "glTF/GLB model URL (validated with @methane/sanitize isSafeUrl)."
+            },
+            {
+              "kind": "field",
+              "name": "poster",
+              "attribute": "poster",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional preview poster image URL shown until the 3D scene loads."
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "attribute": "alt",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible description of the 3D model."
+            },
+            {
+              "kind": "field",
+              "name": "rendererBackend",
+              "attribute": "renderer-backend",
+              "reflect": true,
+              "type": {
+                "text": "'auto' | 'webgl' | 'webgpu'"
+              },
+              "default": "\"auto\"",
+              "description": "Preferred Three.js rendering backend (`auto`, `webgl`, or `webgpu`)."
+            },
+            {
+              "kind": "field",
+              "name": "autoRotate",
+              "attribute": "auto-rotate",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables continuous camera turntable rotation (disabled automatically under prefers-reduced-motion: reduce)."
+            },
+            {
+              "kind": "field",
+              "name": "autoRotateSpeed",
+              "attribute": "auto-rotate-speed",
+              "type": {
+                "text": "number"
+              },
+              "default": "2",
+              "description": "Turntable rotation speed multiplier."
+            },
+            {
+              "kind": "field",
+              "name": "cameraOrbitTheta",
+              "attribute": "camera-orbit-theta",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal camera azimuth angle in degrees."
+            },
+            {
+              "kind": "field",
+              "name": "cameraOrbitPhi",
+              "attribute": "camera-orbit-phi",
+              "type": {
+                "text": "number"
+              },
+              "default": "75",
+              "description": "Vertical camera polar angle in degrees."
+            },
+            {
+              "kind": "field",
+              "name": "cameraDistance",
+              "attribute": "camera-distance",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Camera orbit distance from origin."
+            },
+            {
+              "kind": "field",
+              "name": "exposure",
+              "attribute": "exposure",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Tone-mapping exposure multiplier."
+            },
+            {
+              "kind": "field",
+              "name": "showControls",
+              "attribute": "show-controls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows interactive accessible camera toolbar controls."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indicates active model/renderer loading."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Error message when model load or URL validation fails."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "glTF/GLB model URL (validated with @methane/sanitize isSafeUrl)."
+            },
+            {
+              "name": "poster",
+              "fieldName": "poster",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional preview poster image URL shown until the 3D scene loads."
+            },
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible description of the 3D model."
+            },
+            {
+              "name": "renderer-backend",
+              "fieldName": "rendererBackend",
+              "type": {
+                "text": "'auto' | 'webgl' | 'webgpu'"
+              },
+              "default": "\"auto\"",
+              "description": "Preferred Three.js rendering backend (`auto`, `webgl`, or `webgpu`)."
+            },
+            {
+              "name": "auto-rotate",
+              "fieldName": "autoRotate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables continuous camera turntable rotation (disabled automatically under prefers-reduced-motion: reduce)."
+            },
+            {
+              "name": "auto-rotate-speed",
+              "fieldName": "autoRotateSpeed",
+              "type": {
+                "text": "number"
+              },
+              "default": "2",
+              "description": "Turntable rotation speed multiplier."
+            },
+            {
+              "name": "camera-orbit-theta",
+              "fieldName": "cameraOrbitTheta",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal camera azimuth angle in degrees."
+            },
+            {
+              "name": "camera-orbit-phi",
+              "fieldName": "cameraOrbitPhi",
+              "type": {
+                "text": "number"
+              },
+              "default": "75",
+              "description": "Vertical camera polar angle in degrees."
+            },
+            {
+              "name": "camera-distance",
+              "fieldName": "cameraDistance",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Camera orbit distance from origin."
+            },
+            {
+              "name": "exposure",
+              "fieldName": "exposure",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Tone-mapping exposure multiplier."
+            },
+            {
+              "name": "show-controls",
+              "fieldName": "showControls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows interactive accessible camera toolbar controls."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Indicates active model/renderer loading."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Error message when model load or URL validation fails."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-model-load",
+              "type": {
+                "text": "CustomEvent<{ src: string; backend: 'webgpu' | 'webgl' | 'headless' }>"
+              },
+              "description": "Emitted when the Three.js model finishes loading."
+            },
+            {
+              "name": "mth-camera-change",
+              "type": {
+                "text": "CustomEvent<{ theta: number; phi: number; distance: number }>"
+              },
+              "description": "Emitted when camera orbit or zoom updates."
+            },
+            {
+              "name": "mth-model-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Emitted when model URL validation or glTF load fails."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Accessible fallback content shown when 3D rendering is unavailable."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer 3D viewer frame."
+            },
+            {
+              "name": "viewport",
+              "description": "Focusable 3D viewport container."
+            },
+            {
+              "name": "canvas",
+              "description": "WebGL/WebGPU canvas surface."
+            },
+            {
+              "name": "poster",
+              "description": "Optional poster preview image."
+            },
+            {
+              "name": "controls",
+              "description": "Accessible camera orbit/zoom/reset controls."
+            },
+            {
+              "name": "status",
+              "description": "Loading or error status region."
+            },
+            {
+              "name": "fallback",
+              "description": "Slotted fallback container."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            },
+            {
+              "name": "loaded",
+              "description": "Custom element state :state(loaded)."
+            },
+            {
+              "name": "auto-rotating",
+              "description": "Custom element state :state(auto-rotating)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-model-viewer",
+            "package": "@methane/3d",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "MotionController",
+              "ObserverPoolController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "loading",
+              "error",
+              "loaded",
+              "auto-rotating",
+              "reduced-motion"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "3D viewport is focused",
+                "expect": "orbits camera left"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "3D viewport is focused",
+                "expect": "orbits camera right"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "3D viewport is focused",
+                "expect": "tilts camera upward"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "3D viewport is focused",
+                "expect": "tilts camera downward"
+              },
+              {
+                "key": "+",
+                "when": "3D viewport is focused",
+                "expect": "zooms camera closer"
+              },
+              {
+                "key": "-",
+                "when": "3D viewport is focused",
+                "expect": "zooms camera farther"
+              },
+              {
+                "key": "Home",
+                "when": "3D viewport is focused",
+                "expect": "resets camera orbit and distance"
+              }
+            ],
+            "props": [
+              {
+                "name": "src",
+                "attr": "src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "poster",
+                "attr": "poster",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "alt",
+                "attr": "alt",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "rendererBackend",
+                "attr": "renderer-backend",
+                "type": "'auto' | 'webgl' | 'webgpu'",
+                "default": "auto"
+              },
+              {
+                "name": "autoRotate",
+                "attr": "auto-rotate",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "autoRotateSpeed",
+                "attr": "auto-rotate-speed",
+                "type": "number",
+                "default": 2
+              },
+              {
+                "name": "cameraOrbitTheta",
+                "attr": "camera-orbit-theta",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "cameraOrbitPhi",
+                "attr": "camera-orbit-phi",
+                "type": "number",
+                "default": 75
+              },
+              {
+                "name": "cameraDistance",
+                "attr": "camera-distance",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "exposure",
+                "attr": "exposure",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "showControls",
+                "attr": "show-controls",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-model-load",
+                "cancelable": false,
+                "detailType": "{ src: string; backend: 'webgpu' | 'webgl' | 'headless' }"
+              },
+              {
+                "name": "mth-camera-change",
+                "cancelable": false,
+                "detailType": "{ theta: number; phi: number; distance: number }"
+              },
+              {
+                "name": "mth-model-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Accessible fallback content shown when 3D rendering is unavailable."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer 3D viewer frame."
+              },
+              {
+                "name": "viewport",
+                "description": "Focusable 3D viewport container."
+              },
+              {
+                "name": "canvas",
+                "description": "WebGL/WebGPU canvas surface."
+              },
+              {
+                "name": "poster",
+                "description": "Optional poster preview image."
+              },
+              {
+                "name": "controls",
+                "description": "Accessible camera orbit/zoom/reset controls."
+              },
+              {
+                "name": "status",
+                "description": "Loading or error status region."
+              },
+              {
+                "name": "fallback",
+                "description": "Slotted fallback container."
+              }
+            ],
+            "messages": {
+              "viewerLabel": "Interactive 3D model viewer",
+              "controlsLabel": "3D camera controls",
+              "zoomIn": "Zoom in camera",
+              "zoomOut": "Zoom out camera",
+              "resetCamera": "Reset camera view",
+              "toggleAutoRotate": "Toggle auto-rotation",
+              "loadingLabel": "Loading 3D model...",
+              "invalidUrlError": "Blocked unsafe 3D model URL"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthModelViewer",
+          "declaration": {
+            "name": "MthModelViewer",
+            "module": "src/components/model-viewer/model-viewer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-model-viewer",
+          "declaration": {
+            "name": "MthModelViewer",
+            "module": "src/components/model-viewer/model-viewer.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
