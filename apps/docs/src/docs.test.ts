@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { MTH_CSS_PRIMITIVES } from '@methane/css';
 import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
 import { compileDtcgTokens } from '@methane/tokens';
@@ -87,6 +87,9 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
 
     const button = components.find((c) => c.tagName === 'mth-button');
     expect(button?.snippets.html).toContain('@methane/ui/button');
+    expect(button?.snippets.angular).toContain('CUSTOM_ELEMENTS_SCHEMA');
+    expect(button?.snippets.angular).toContain("import '@methane/ui/button';");
+    expect(button?.snippets.svelte).toContain("import '@methane/ui/button';");
     expect(button?.snippets.svelte).toContain("import MthButton from '@methane/svelte/MthButton.svelte';");
     expect(button?.snippets.svelte).not.toContain("from '@methane/svelte';");
 
@@ -460,5 +463,153 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(skillsGuideHtml).toContain('methane-theming');
     expect(skillsGuideHtml).toContain('methane-ssr');
     expect(skillsGuideHtml).toContain('methane-contribute');
+  });
+
+  it('verifies every @methane/* named import and subpath in ssr.astro and quickstart.astro resolves against actual package exports', async () => {
+    const repoRoot = resolve(docsRoot, '../..');
+    const packageMap = new Map<string, { dir: string; exports: Record<string, unknown> }>();
+
+    const scanPackages = (baseDir: string) => {
+      for (const entry of readdirSync(baseDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        const pkgDir = resolve(baseDir, entry.name);
+        const pkgJsonPath = resolve(pkgDir, 'package.json');
+        if (existsSync(pkgJsonPath)) {
+          const pkgJson = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as {
+            name?: string;
+            exports?: Record<string, unknown>;
+          };
+          if (pkgJson.name && pkgJson.exports) {
+            packageMap.set(pkgJson.name, { dir: pkgDir, exports: pkgJson.exports });
+          }
+        }
+      }
+    };
+
+    scanPackages(resolve(repoRoot, 'packages'));
+    scanPackages(resolve(repoRoot, 'packages/kits'));
+    scanPackages(resolve(repoRoot, 'packages/satellites'));
+
+    const resolveExportTarget = (
+      specifier: string,
+    ): { dir: string; defaultPath: string; typesPath?: string } => {
+      const parts = specifier.split('/');
+      const pkgName = `${parts[0]}/${parts[1]}`;
+      const subpath = parts.length > 2 ? `./${parts.slice(2).join('/')}` : '.';
+      const pkgInfo = packageMap.get(pkgName);
+      expect(pkgInfo, `Unknown workspace package ${pkgName} in "${specifier}"`).toBeDefined();
+
+      let target = pkgInfo!.exports[subpath];
+      if (!target) {
+        for (const [pattern, val] of Object.entries(pkgInfo!.exports)) {
+          if (!pattern.includes('*')) continue;
+          const regex = new RegExp(`^${pattern.replaceAll('.', '\\.').replaceAll('*', '(.+)')}$`);
+          const match = regex.exec(subpath);
+          if (match) {
+            const wildcardVal = match[1]!;
+            const substitute = (entry: unknown): unknown => {
+              if (typeof entry === 'string') return entry.replaceAll('*', wildcardVal);
+              if (entry && typeof entry === 'object') {
+                return Object.fromEntries(
+                  Object.entries(entry as Record<string, unknown>).map(([k, v]) => [
+                    k,
+                    substitute(v),
+                  ]),
+                );
+              }
+              return entry;
+            };
+            target = substitute(val);
+            break;
+          }
+        }
+      }
+
+      expect(target, `Missing export "${subpath}" on ${pkgName}`).toBeDefined();
+      const defaultRel =
+        typeof target === 'string'
+          ? target
+          : ((target as { default?: string; svelte?: string }).default ??
+            (target as { svelte?: string }).svelte);
+      const typesRel =
+        typeof target === 'object' && target !== null
+          ? (target as { types?: string }).types
+          : undefined;
+      expect(defaultRel, `Missing default target for "${specifier}"`).toBeTruthy();
+
+      const defaultPath = resolve(pkgInfo!.dir, defaultRel!);
+      expect(existsSync(defaultPath), `Missing built export file ${defaultPath}`).toBe(true);
+      return {
+        dir: pkgInfo!.dir,
+        defaultPath,
+        ...(typesRel ? { typesPath: resolve(pkgInfo!.dir, typesRel) } : {}),
+      };
+    };
+
+    const collectDeclText = (entryPath: string, seen = new Set<string>()): string => {
+      if (seen.has(entryPath) || !existsSync(entryPath)) return '';
+      seen.add(entryPath);
+      const text = readFileSync(entryPath, 'utf8');
+      const chunks = [text];
+      for (const reexport of text.matchAll(/export\s+(?:\*|\{[^}]*\})\s+from\s+['"](\.[^'"]+)['"]/g)) {
+        const rel = reexport[1]!.replace(/\.(?:m?js)$/, '.d.ts');
+        const nextPath = resolve(entryPath, '..', rel.endsWith('.d.ts') ? rel : `${rel}.d.ts`);
+        chunks.push(collectDeclText(nextPath, seen));
+      }
+      return chunks.join('\n');
+    };
+
+    const docFiles = [
+      resolve(docsRoot, 'src/pages/guides/ssr.astro'),
+      resolve(docsRoot, 'src/pages/quickstart.astro'),
+    ];
+
+    for (const file of docFiles) {
+      const source = readFileSync(file, 'utf8');
+
+      for (const namedMatch of source.matchAll(
+        /import\s*\{([^}]+)\}\s*from\s*['"](@methane\/[^'"]+)['"]/g,
+      )) {
+        const names = namedMatch[1]!
+          .split(',')
+          .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]!.trim())
+          .filter(Boolean);
+        const specifier = namedMatch[2]!;
+        const resolved = resolveExportTarget(specifier);
+
+        if (resolved.defaultPath.endsWith('.js')) {
+          try {
+            const mod = (await import(pathToFileURL(resolved.defaultPath).href)) as Record<
+              string,
+              unknown
+            >;
+            for (const symbol of names) {
+              expect(
+                Object.prototype.hasOwnProperty.call(mod, symbol),
+                `Missing runtime export "${symbol}" in "${specifier}" (referenced in ${file})`,
+              ).toBe(true);
+            }
+          } catch {
+            const declSource = collectDeclText(resolved.typesPath ?? resolved.defaultPath);
+            for (const symbol of names) {
+              expect(
+                declSource.includes(symbol),
+                `Missing declaration for "${symbol}" in "${specifier}" (referenced in ${file})`,
+              ).toBe(true);
+            }
+          }
+        }
+      }
+
+      for (const sideEffectMatch of source.matchAll(
+        /(?:import\s+['"]|src=['"])(@methane\/[^'"]+)['"]/g,
+      )) {
+        resolveExportTarget(sideEffectMatch[1]!);
+      }
+    }
+
+    const quickstartSrc = readFileSync(resolve(docsRoot, 'src/pages/quickstart.astro'), 'utf8');
+    expect(quickstartSrc).toContain('CUSTOM_ELEMENTS_SCHEMA');
+    expect(quickstartSrc).toContain("import '@methane/ui/button';");
   });
 });
