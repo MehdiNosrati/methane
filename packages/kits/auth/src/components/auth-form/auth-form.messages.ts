@@ -1,0 +1,16 @@
+export const authFormMessages = {
+  signInTitle: 'Sign in',
+  signUpTitle: 'Create account',
+  resetTitle: 'Reset password',
+  magicLinkTitle: 'Email sign-in link',
+  emailLabel: 'Email address',
+  passwordLabel: 'Password',
+  nameLabel: 'Full name',
+  signInSubmit: 'Sign in',
+  signUpSubmit: 'Create account',
+  resetSubmit: 'Send reset link',
+  magicLinkSubmit: 'Send sign-in link',
+  valueMissing: 'Please enter your email address.',
+  invalidEmail: 'Please enter a valid email address.',
+  passwordRequired: 'Please enter your password.',
+} as const;

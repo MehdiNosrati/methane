@@ -1,0 +1,2530 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/auth-form/auth-form.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAuthForm",
+          "tagName": "mth-auth-form",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Authentication form supporting sign-in, sign-up, password reset, and magic-link modes with autofill-compatible `autocomplete`, FormControlController validation, and alert error display.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'signin' | 'signup' | 'reset' | 'magic-link'"
+              },
+              "default": "\"signin\"",
+              "description": "Form flow mode (`signin` | `signup` | `reset` | `magic-link`)."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form-associated primary email value."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "kind": "field",
+              "name": "email",
+              "attribute": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Bound email input value."
+            },
+            {
+              "kind": "field",
+              "name": "password",
+              "attribute": "password",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Bound password input value."
+            },
+            {
+              "kind": "field",
+              "name": "fullName",
+              "attribute": "full-name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Full name value displayed in `signup` mode."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "External authentication error message shown in `<mth-alert>`."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables controls and shows loading state on submit."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all form controls."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Marks email (and password when applicable) as required."
+            },
+            {
+              "kind": "field",
+              "name": "submitLabel",
+              "attribute": "submit-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom submit button label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'signin' | 'signup' | 'reset' | 'magic-link'"
+              },
+              "default": "\"signin\"",
+              "description": "Form flow mode (`signin` | `signup` | `reset` | `magic-link`)."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form-associated primary email value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "name": "email",
+              "fieldName": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Bound email input value."
+            },
+            {
+              "name": "password",
+              "fieldName": "password",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Bound password input value."
+            },
+            {
+              "name": "full-name",
+              "fieldName": "fullName",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Full name value displayed in `signup` mode."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "External authentication error message shown in `<mth-alert>`."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables controls and shows loading state on submit."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all form controls."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Marks email (and password when applicable) as required."
+            },
+            {
+              "name": "submit-label",
+              "fieldName": "submitLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom submit button label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-submit",
+              "type": {
+                "text": "CustomEvent<{ mode: string; email: string; password: string; fullName: string }>"
+              },
+              "description": "Cancelable submit event emitted when client validation passes."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ email: string; password: string; fullName: string }>"
+              },
+              "description": "Fired when any credential field changes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "header",
+              "description": "Optional header branding or mode switch tabs."
+            },
+            {
+              "name": "footer",
+              "description": "Optional helper links below the submit button."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer form container card."
+            },
+            {
+              "name": "heading",
+              "description": "Mode title heading."
+            },
+            {
+              "name": "email-input",
+              "description": "Email input with `autocomplete=\"email\"`."
+            },
+            {
+              "name": "password-input",
+              "description": "Password input with contextual `autocomplete`."
+            },
+            {
+              "name": "error",
+              "description": "Error alert banner wrapper."
+            },
+            {
+              "name": "submit-button",
+              "description": "Primary submit button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Auth card background color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Input focus outline color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Auth card corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-auth-form",
+            "package": "@methane/auth",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "invalid",
+              "loading",
+              "dirty",
+              "touched"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'signin' | 'signup' | 'reset' | 'magic-link'",
+                "default": "signin"
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "email",
+                "attr": "email",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "password",
+                "attr": "password",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "fullName",
+                "attr": "full-name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "submitLabel",
+                "attr": "submit-label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-submit",
+                "cancelable": true,
+                "detailType": "{ mode: string; email: string; password: string; fullName: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ email: string; password: string; fullName: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "header",
+                "description": "Optional header branding or mode switch tabs."
+              },
+              {
+                "name": "footer",
+                "description": "Optional helper links below the submit button."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer form container card."
+              },
+              {
+                "name": "heading",
+                "description": "Mode title heading."
+              },
+              {
+                "name": "email-input",
+                "description": "Email input with `autocomplete=\"email\"`."
+              },
+              {
+                "name": "password-input",
+                "description": "Password input with contextual `autocomplete`."
+              },
+              {
+                "name": "error",
+                "description": "Error alert banner wrapper."
+              },
+              {
+                "name": "submit-button",
+                "description": "Primary submit button."
+              }
+            ],
+            "messages": {
+              "signInTitle": "Sign in",
+              "signUpTitle": "Create account",
+              "resetTitle": "Reset password",
+              "magicLinkTitle": "Email sign-in link",
+              "emailLabel": "Email address",
+              "passwordLabel": "Password",
+              "nameLabel": "Full name",
+              "signInSubmit": "Sign in",
+              "signUpSubmit": "Create account",
+              "resetSubmit": "Send reset link",
+              "magicLinkSubmit": "Send sign-in link",
+              "valueMissing": "Please enter your email address.",
+              "invalidEmail": "Please enter a valid email address.",
+              "passwordRequired": "Please enter your password."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAuthForm",
+          "declaration": {
+            "name": "MthAuthForm",
+            "module": "src/components/auth-form/auth-form.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-auth-form",
+          "declaration": {
+            "name": "MthAuthForm",
+            "module": "src/components/auth-form/auth-form.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/mfa-challenge/mfa-challenge.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMfaChallenge",
+          "tagName": "mth-mfa-challenge",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Multi-factor authentication challenge supporting 6-digit TOTP entry with multi-cell paste and backup recovery code entry.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'totp' | 'backup'"
+              },
+              "default": "\"totp\"",
+              "description": "Active challenge verification mode (`totp` | `backup`)."
+            },
+            {
+              "kind": "field",
+              "name": "length",
+              "attribute": "length",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Number of TOTP digit cells."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current entered verification or backup code."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "External verification error message."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables controls and shows verification submission progress."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables code entry and action buttons."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether a complete verification code is required for form validity."
+            },
+            {
+              "kind": "field",
+              "name": "allowResend",
+              "attribute": "allow-resend",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to display a resend code button."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'totp' | 'backup'"
+              },
+              "default": "\"totp\"",
+              "description": "Active challenge verification mode (`totp` | `backup`)."
+            },
+            {
+              "name": "length",
+              "fieldName": "length",
+              "type": {
+                "text": "number"
+              },
+              "default": "6",
+              "description": "Number of TOTP digit cells."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current entered verification or backup code."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via ElementInternals."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "External verification error message."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables controls and shows verification submission progress."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables code entry and action buttons."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether a complete verification code is required for form validity."
+            },
+            {
+              "name": "allow-resend",
+              "fieldName": "allowResend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to display a resend code button."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string; mode: string }>"
+              },
+              "description": "Emitted on code input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; mode: string }>"
+              },
+              "description": "Emitted on code commit."
+            },
+            {
+              "name": "mth-complete",
+              "type": {
+                "text": "CustomEvent<{ value: string; mode: string }>"
+              },
+              "description": "Emitted when all TOTP digits are entered."
+            },
+            {
+              "name": "mth-submit",
+              "type": {
+                "text": "CustomEvent<{ value: string; mode: string }>"
+              },
+              "description": "Emitted when verification is submitted."
+            },
+            {
+              "name": "mth-resend",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Emitted when the user requests a new code."
+            },
+            {
+              "name": "mth-mode-change",
+              "type": {
+                "text": "CustomEvent<{ mode: string }>"
+              },
+              "description": "Emitted when toggling between totp and backup modes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Optional helper footer content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer challenge container."
+            },
+            {
+              "name": "digits",
+              "description": "TOTP digit cell group."
+            },
+            {
+              "name": "digit",
+              "description": "Individual TOTP numeric input."
+            },
+            {
+              "name": "backup-input",
+              "description": "Backup code input field."
+            },
+            {
+              "name": "submit",
+              "description": "Verify submit button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Challenge card surface background."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Digit input focus outline color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-mfa-challenge",
+            "package": "@methane/auth",
+            "conformance": [
+              "form-control",
+              "roving-focus"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "invalid",
+              "loading"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "TOTP cell focused",
+                "expect": "Moves focus to next digit cell"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "TOTP cell focused",
+                "expect": "Moves focus to next digit cell in RTL"
+              },
+              {
+                "key": "Backspace",
+                "when": "Empty TOTP cell focused",
+                "expect": "Clears previous digit and focuses it"
+              }
+            ],
+            "props": [
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'totp' | 'backup'",
+                "default": "totp"
+              },
+              {
+                "name": "length",
+                "attr": "length",
+                "type": "number",
+                "default": 6
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowResend",
+                "attr": "allow-resend",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string; mode: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; mode: string }"
+              },
+              {
+                "name": "mth-complete",
+                "cancelable": false,
+                "detailType": "{ value: string; mode: string }"
+              },
+              {
+                "name": "mth-submit",
+                "cancelable": false,
+                "detailType": "{ value: string; mode: string }"
+              },
+              {
+                "name": "mth-resend",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-mode-change",
+                "cancelable": false,
+                "detailType": "{ mode: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "default",
+                "description": "Optional helper footer content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer challenge container."
+              },
+              {
+                "name": "digits",
+                "description": "TOTP digit cell group."
+              },
+              {
+                "name": "digit",
+                "description": "Individual TOTP numeric input."
+              },
+              {
+                "name": "backup-input",
+                "description": "Backup code input field."
+              },
+              {
+                "name": "submit",
+                "description": "Verify submit button."
+              }
+            ],
+            "messages": {
+              "heading": "Verify your identity",
+              "totpInstructions": "Enter the verification code from your authenticator app.",
+              "backupInstructions": "Enter one of your recovery backup codes.",
+              "digitLabel": "Digit {index} of {total}",
+              "backupLabel": "Backup code",
+              "backupPlaceholder": "XXXX-XXXX",
+              "useBackup": "Use a backup code",
+              "useTotp": "Use authenticator code",
+              "submit": "Verify",
+              "resend": "Resend code",
+              "requiredError": "Please enter your verification code.",
+              "incompleteError": "Please enter the full {length}-digit verification code."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMfaChallenge",
+          "declaration": {
+            "name": "MthMfaChallenge",
+            "module": "src/components/mfa-challenge/mfa-challenge.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-mfa-challenge",
+          "declaration": {
+            "name": "MthMfaChallenge",
+            "module": "src/components/mfa-challenge/mfa-challenge.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/passkey-prompt/passkey-prompt.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPasskeyPrompt",
+          "tagName": "mth-passkey-prompt",
+          "customElement": true,
+          "description": "WebAuthn passkey registration and sign-in prompt with PublicKeyCredential feature detection and fallback trigger.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'signin' | 'register'"
+              },
+              "default": "\"signin\"",
+              "description": "Whether authenticating with an existing passkey or enrolling a new one."
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "attribute": "status",
+              "reflect": true,
+              "type": {
+                "text": "'idle' | 'pending' | 'success' | 'error' | 'unsupported'"
+              },
+              "default": "\"idle\"",
+              "description": "Current WebAuthn prompt lifecycle state."
+            },
+            {
+              "kind": "field",
+              "name": "username",
+              "attribute": "username",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional user identifier associated with the passkey prompt."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit failure message displayed to the user."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables trigger and fallback controls."
+            },
+            {
+              "kind": "field",
+              "name": "conditional",
+              "attribute": "conditional",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to check WebAuthn conditional mediation support."
+            },
+            {
+              "kind": "field",
+              "name": "allowFallback",
+              "attribute": "allow-fallback",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the alternate authentication method button."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'signin' | 'register'"
+              },
+              "default": "\"signin\"",
+              "description": "Whether authenticating with an existing passkey or enrolling a new one."
+            },
+            {
+              "name": "status",
+              "fieldName": "status",
+              "type": {
+                "text": "'idle' | 'pending' | 'success' | 'error' | 'unsupported'"
+              },
+              "default": "\"idle\"",
+              "description": "Current WebAuthn prompt lifecycle state."
+            },
+            {
+              "name": "username",
+              "fieldName": "username",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional user identifier associated with the passkey prompt."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit failure message displayed to the user."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables trigger and fallback controls."
+            },
+            {
+              "name": "conditional",
+              "fieldName": "conditional",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to check WebAuthn conditional mediation support."
+            },
+            {
+              "name": "allow-fallback",
+              "fieldName": "allowFallback",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the alternate authentication method button."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-passkey-auth",
+              "type": {
+                "text": "CustomEvent<{ mode: string; username: string; conditionalSupported: boolean }>"
+              },
+              "description": "Emitted when the user initiates WebAuthn passkey verification or registration."
+            },
+            {
+              "name": "mth-fallback",
+              "type": {
+                "text": "CustomEvent<{ mode: string; reason: string }>"
+              },
+              "description": "Emitted when the user selects another sign-in method."
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Optional extra guidance or provider footer."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer passkey prompt card."
+            },
+            {
+              "name": "action",
+              "description": "Primary passkey CTA button."
+            },
+            {
+              "name": "fallback",
+              "description": "Alternate sign-in method button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Prompt card surface background."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary passkey CTA background."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-passkey-prompt",
+            "package": "@methane/auth",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [
+              "disabled"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'signin' | 'register'",
+                "default": "signin"
+              },
+              {
+                "name": "status",
+                "attr": "status",
+                "type": "'idle' | 'pending' | 'success' | 'error' | 'unsupported'",
+                "default": "idle"
+              },
+              {
+                "name": "username",
+                "attr": "username",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "conditional",
+                "attr": "conditional",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowFallback",
+                "attr": "allow-fallback",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-passkey-auth",
+                "cancelable": false,
+                "detailType": "{ mode: string; username: string; conditionalSupported: boolean }"
+              },
+              {
+                "name": "mth-fallback",
+                "cancelable": false,
+                "detailType": "{ mode: string; reason: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "default",
+                "description": "Optional extra guidance or provider footer."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer passkey prompt card."
+              },
+              {
+                "name": "action",
+                "description": "Primary passkey CTA button."
+              },
+              {
+                "name": "fallback",
+                "description": "Alternate sign-in method button."
+              }
+            ],
+            "messages": {
+              "signinTitle": "Sign in with a passkey",
+              "registerTitle": "Create a passkey",
+              "signinDescription": "Use your device biometrics, PIN, or hardware security key to continue.",
+              "registerDescription": "Save a passkey on this device for faster, phishing-resistant sign-in.",
+              "signinButton": "Continue with passkey",
+              "registerButton": "Create passkey",
+              "pendingLabel": "Waiting for your device...",
+              "successLabel": "Passkey verified",
+              "unsupportedLabel": "Passkeys are not supported on this device or browser.",
+              "conditionalBadge": "Autofill ready",
+              "fallbackButton": "Use another sign-in method",
+              "accountLabel": "Account: {username}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPasskeyPrompt",
+          "declaration": {
+            "name": "MthPasskeyPrompt",
+            "module": "src/components/passkey-prompt/passkey-prompt.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-passkey-prompt",
+          "declaration": {
+            "name": "MthPasskeyPrompt",
+            "module": "src/components/passkey-prompt/passkey-prompt.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/profile-menu/profile-menu.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthProfileMenu",
+          "tagName": "mth-profile-menu",
+          "customElement": true,
+          "description": "Authenticated user profile menu trigger with positioned overlay popover, role badge, and roving menu items.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the profile dropdown menu is open."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Authenticated user display name."
+            },
+            {
+              "kind": "field",
+              "name": "email",
+              "attribute": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Authenticated user email address."
+            },
+            {
+              "kind": "field",
+              "name": "avatarSrc",
+              "attribute": "avatar-src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Avatar image URL rendered inside `<mth-avatar>`."
+            },
+            {
+              "kind": "field",
+              "name": "userRole",
+              "attribute": "user-role",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional user role badge shown in menu header."
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "ReadonlyArray<ProfileMenuItem>"
+              },
+              "description": "Menu action entries rendered inside the overlay."
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "attribute": "placement",
+              "reflect": true,
+              "type": {
+                "text": "Placement"
+              },
+              "default": "\"bottom-end\"",
+              "description": "Preferred overlay placement relative to the trigger."
+            },
+            {
+              "kind": "field",
+              "name": "offset",
+              "attribute": "offset",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Gap in pixels between trigger and menu surface."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables opening the profile menu."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether the profile dropdown menu is open."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Authenticated user display name."
+            },
+            {
+              "name": "email",
+              "fieldName": "email",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Authenticated user email address."
+            },
+            {
+              "name": "avatar-src",
+              "fieldName": "avatarSrc",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Avatar image URL rendered inside `<mth-avatar>`."
+            },
+            {
+              "name": "user-role",
+              "fieldName": "userRole",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional user role badge shown in menu header."
+            },
+            {
+              "name": "placement",
+              "fieldName": "placement",
+              "type": {
+                "text": "Placement"
+              },
+              "default": "\"bottom-end\"",
+              "description": "Preferred overlay placement relative to the trigger."
+            },
+            {
+              "name": "offset",
+              "fieldName": "offset",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Gap in pixels between trigger and menu surface."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables opening the profile menu."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Emitted before opening; cancelable."
+            },
+            {
+              "name": "mth-after-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Emitted after menu opens."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Emitted before closing."
+            },
+            {
+              "name": "mth-after-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Emitted after menu closes."
+            },
+            {
+              "name": "mth-select",
+              "type": {
+                "text": "CustomEvent<{ id: string; label: string; item: ProfileMenuItem }>"
+              },
+              "description": "Emitted when a menu action is selected."
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Optional extra menu footer or links."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "trigger",
+              "description": "Avatar trigger button."
+            },
+            {
+              "name": "menu",
+              "description": "Floating profile menu container."
+            },
+            {
+              "name": "item",
+              "description": "Individual menu action button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Floating menu card background."
+            },
+            {
+              "name": "--mth-z-index-popover",
+              "description": "Floating menu stack layer."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-profile-menu",
+            "package": "@methane/auth",
+            "conformance": [
+              "overlay"
+            ],
+            "controllers": [
+              "OverlayController",
+              "PositioningController",
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "open",
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "Escape",
+                "when": "Menu overlay is open",
+                "expect": "Closes menu and restores focus to trigger"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "Menu item is focused",
+                "expect": "Moves focus to next menu item"
+              }
+            ],
+            "props": [
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "email",
+                "attr": "email",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "avatarSrc",
+                "attr": "avatar-src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "userRole",
+                "attr": "user-role",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "items",
+                "attr": false,
+                "type": "ReadonlyArray<ProfileMenuItem>"
+              },
+              {
+                "name": "placement",
+                "attr": "placement",
+                "type": "Placement",
+                "default": "bottom-end"
+              },
+              {
+                "name": "offset",
+                "attr": "offset",
+                "type": "number",
+                "default": 8
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-open",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-open",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-after-close",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-select",
+                "cancelable": false,
+                "detailType": "{ id: string; label: string; item: ProfileMenuItem }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "default",
+                "description": "Optional extra menu footer or links."
+              }
+            ],
+            "parts": [
+              {
+                "name": "trigger",
+                "description": "Avatar trigger button."
+              },
+              {
+                "name": "menu",
+                "description": "Floating profile menu container."
+              },
+              {
+                "name": "item",
+                "description": "Individual menu action button."
+              }
+            ],
+            "messages": {
+              "menuLabel": "Account menu",
+              "signedInAs": "Signed in as {name}",
+              "signOut": "Sign out"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthProfileMenu",
+          "declaration": {
+            "name": "MthProfileMenu",
+            "module": "src/components/profile-menu/profile-menu.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-profile-menu",
+          "declaration": {
+            "name": "MthProfileMenu",
+            "module": "src/components/profile-menu/profile-menu.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/role-matrix/role-matrix.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthRoleMatrix",
+          "tagName": "mth-role-matrix",
+          "customElement": true,
+          "description": "Interactive role-by-permission authorization matrix grid with 2D roving keyboard navigation and readonly enforcement.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "roles",
+              "type": {
+                "text": "ReadonlyArray<RoleMatrixRole>"
+              },
+              "description": "Columns representing roles."
+            },
+            {
+              "kind": "field",
+              "name": "permissions",
+              "type": {
+                "text": "ReadonlyArray<RoleMatrixPermission>"
+              },
+              "description": "Rows representing permissions."
+            },
+            {
+              "kind": "field",
+              "name": "grants",
+              "type": {
+                "text": "RoleMatrixGrants"
+              },
+              "description": "Mapping of role ID to granted permission IDs."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents mutating role permission grants while keeping navigation intact."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all matrix cells."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label for the permissions grid."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents mutating role permission grants while keeping navigation intact."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all matrix cells."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label for the permissions grid."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ roleId: string; permissionId: string; granted: boolean; grants: RoleMatrixGrants }>"
+              },
+              "description": "Emitted when a permission grant is toggled."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Scrollable matrix wrapper."
+            },
+            {
+              "name": "table",
+              "description": "Semantic grid table."
+            },
+            {
+              "name": "checkbox",
+              "description": "Individual role/permission grant checkbox."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Matrix container background color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Granted checkbox accent color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-role-matrix",
+            "package": "@methane/auth",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "readonly",
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Grid cell focused",
+                "expect": "Moves focus to next column cell"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "Grid cell focused",
+                "expect": "Moves focus to cell in next row"
+              }
+            ],
+            "props": [
+              {
+                "name": "roles",
+                "attr": false,
+                "type": "ReadonlyArray<RoleMatrixRole>"
+              },
+              {
+                "name": "permissions",
+                "attr": false,
+                "type": "ReadonlyArray<RoleMatrixPermission>"
+              },
+              {
+                "name": "grants",
+                "attr": false,
+                "type": "RoleMatrixGrants"
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ roleId: string; permissionId: string; granted: boolean; grants: RoleMatrixGrants }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Scrollable matrix wrapper."
+              },
+              {
+                "name": "table",
+                "description": "Semantic grid table."
+              },
+              {
+                "name": "checkbox",
+                "description": "Individual role/permission grant checkbox."
+              }
+            ],
+            "messages": {
+              "matrixLabel": "Role permissions matrix",
+              "permissionColumn": "Permission",
+              "cellLabel": "{permission} for {role}",
+              "emptyState": "No roles or permissions configured.",
+              "grantedLabel": "Granted",
+              "deniedLabel": "Not granted"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthRoleMatrix",
+          "declaration": {
+            "name": "MthRoleMatrix",
+            "module": "src/components/role-matrix/role-matrix.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-role-matrix",
+          "declaration": {
+            "name": "MthRoleMatrix",
+            "module": "src/components/role-matrix/role-matrix.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/session-list/session-list.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSessionList",
+          "tagName": "mth-session-list",
+          "customElement": true,
+          "description": "Active authenticated session list displaying device metadata, current-session badge, and single/bulk revocation actions.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "sessions",
+              "type": {
+                "text": "ReadonlyArray<SessionListItem>"
+              },
+              "description": "Active device sessions to display."
+            },
+            {
+              "kind": "field",
+              "name": "heading",
+              "attribute": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom heading override."
+            },
+            {
+              "kind": "field",
+              "name": "allowRevokeCurrent",
+              "attribute": "allow-revoke-current",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows revoking the current active session directly."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables revocation buttons while an async revocation request is in flight."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all interactive revocation buttons."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "heading",
+              "fieldName": "heading",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom heading override."
+            },
+            {
+              "name": "allow-revoke-current",
+              "fieldName": "allowRevokeCurrent",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows revoking the current active session directly."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables revocation buttons while an async revocation request is in flight."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all interactive revocation buttons."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-revoke",
+              "type": {
+                "text": "CustomEvent<{ id: string; session: SessionListItem }>"
+              },
+              "description": "Emitted when a single session revoke button is clicked."
+            },
+            {
+              "name": "mth-revoke-others",
+              "type": {
+                "text": "CustomEvent<{ count: number; sessionIds: ReadonlyArray<string> }>"
+              },
+              "description": "Emitted when bulk sign-out of non-current sessions is requested."
+            }
+          ],
+          "slots": [
+            {
+              "name": "default",
+              "description": "Optional footer content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer session list section."
+            },
+            {
+              "name": "item",
+              "description": "Individual session card."
+            },
+            {
+              "name": "revoke",
+              "description": "Single session revoke button."
+            },
+            {
+              "name": "revoke-others",
+              "description": "Bulk revoke other sessions button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Session card surface background."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Revoke action accent color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-session-list",
+            "package": "@methane/auth",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [
+              "disabled",
+              "loading"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "sessions",
+                "attr": false,
+                "type": "ReadonlyArray<SessionListItem>"
+              },
+              {
+                "name": "heading",
+                "attr": "heading",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "allowRevokeCurrent",
+                "attr": "allow-revoke-current",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-revoke",
+                "cancelable": false,
+                "detailType": "{ id: string; session: SessionListItem }"
+              },
+              {
+                "name": "mth-revoke-others",
+                "cancelable": false,
+                "detailType": "{ count: number; sessionIds: ReadonlyArray<string> }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "default",
+                "description": "Optional footer content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer session list section."
+              },
+              {
+                "name": "item",
+                "description": "Individual session card."
+              },
+              {
+                "name": "revoke",
+                "description": "Single session revoke button."
+              },
+              {
+                "name": "revoke-others",
+                "description": "Bulk revoke other sessions button."
+              }
+            ],
+            "messages": {
+              "heading": "Active sessions",
+              "revokeOthers": "Sign out other sessions",
+              "currentBadge": "Current session",
+              "revoke": "Revoke",
+              "revokeAriaLabel": "Revoke session on {device}",
+              "emptyState": "No active sessions found.",
+              "ipPrefix": "IP: {ip}",
+              "lastActivePrefix": "Last active: {lastActive}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSessionList",
+          "declaration": {
+            "name": "MthSessionList",
+            "module": "src/components/session-list/session-list.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-session-list",
+          "declaration": {
+            "name": "MthSessionList",
+            "module": "src/components/session-list/session-list.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/sso-buttons/sso-buttons.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSsoButtons",
+          "tagName": "mth-sso-buttons",
+          "customElement": true,
+          "description": "Federated Single Sign-On provider button group with RovingFocusController navigation and per-provider loading state.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "providers",
+              "type": {
+                "text": "SsoProviderItem[]"
+              },
+              "description": "Array of `{ id, label?, disabled? }` SSO provider entries."
+            },
+            {
+              "kind": "field",
+              "name": "loadingProvider",
+              "attribute": "loading-provider",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the provider currently authenticating."
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "attribute": "orientation",
+              "reflect": true,
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"vertical\"",
+              "description": "Stack direction (`vertical` | `horizontal`)."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all provider buttons."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "loading-provider",
+              "fieldName": "loadingProvider",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the provider currently authenticating."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"vertical\"",
+              "description": "Stack direction (`vertical` | `horizontal`)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all provider buttons."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-sso-select",
+              "type": {
+                "text": "CustomEvent<{ provider: string; label: string }>"
+              },
+              "description": "Fired when an enabled SSO provider button is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional extra SSO provider controls."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root provider group container."
+            },
+            {
+              "name": "provider-button",
+              "description": "Individual SSO provider action button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Provider button background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Provider button border."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Provider button corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-sso-buttons",
+            "package": "@methane/auth",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "disabled",
+              "loading"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "vertical provider button focused",
+                "expect": "moves focus to next provider button"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "vertical provider button focused",
+                "expect": "moves focus to previous provider button"
+              },
+              {
+                "key": "Home",
+                "when": "provider button focused",
+                "expect": "moves focus to first provider button"
+              },
+              {
+                "key": "End",
+                "when": "provider button focused",
+                "expect": "moves focus to last provider button"
+              }
+            ],
+            "props": [
+              {
+                "name": "providers",
+                "attr": false,
+                "type": "SsoProviderItem[]"
+              },
+              {
+                "name": "loadingProvider",
+                "attr": "loading-provider",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "orientation",
+                "attr": "orientation",
+                "type": "'horizontal' | 'vertical'",
+                "default": "vertical"
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-sso-select",
+                "cancelable": false,
+                "detailType": "{ provider: string; label: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional extra SSO provider controls."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root provider group container."
+              },
+              {
+                "name": "provider-button",
+                "description": "Individual SSO provider action button."
+              }
+            ],
+            "messages": {
+              "label": "Single sign-on providers",
+              "continueWith": "Continue with {provider}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSsoButtons",
+          "declaration": {
+            "name": "MthSsoButtons",
+            "module": "src/components/sso-buttons/sso-buttons.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-sso-buttons",
+          "declaration": {
+            "name": "MthSsoButtons",
+            "module": "src/components/sso-buttons/sso-buttons.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
