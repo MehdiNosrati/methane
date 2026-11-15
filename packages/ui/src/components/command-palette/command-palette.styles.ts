@@ -4,20 +4,20 @@ export const commandPaletteStyles = css`
   :host {
     display: contents;
     --_cp-surface: var(--mth-color-surface, oklch(1 0 0));
-    --_cp-subtle: var(--mth-color-surface-subtle, oklch(0.97 0.005 260));
-    --_cp-text: var(--mth-color-text, oklch(0.2 0.02 260));
-    --_cp-muted: var(--mth-color-text-muted, oklch(0.52 0.02 260));
+    --_cp-subtle: var(--mth-color-bg-subtle, oklch(0.97 0.005 260));
+    --_cp-text: var(--mth-color-fg, oklch(0.2 0.02 260));
+    --_cp-muted: var(--mth-color-fg-muted, oklch(0.52 0.02 260));
     --_cp-border: var(--mth-color-border, oklch(0.86 0.01 260));
-    --_cp-primary: var(--mth-color-primary, oklch(0.55 0.18 260));
+    --_cp-primary: var(--mth-color-accent, oklch(0.55 0.18 260));
     --_cp-backdrop: var(--mth-color-backdrop, oklch(0.15 0.02 260 / 0.45));
     --_cp-radius-lg: var(--mth-radius-lg, 0.75rem);
     --_cp-radius-md: var(--mth-radius-md, 0.375rem);
-    --_cp-space-sm: var(--mth-space-sm, 0.5rem);
-    --_cp-space-md: var(--mth-space-md, 0.75rem);
+    --_cp-space-sm: var(--mth-space-2, 0.5rem);
+    --_cp-space-md: var(--mth-space-3, 0.75rem);
     --_cp-shadow: var(--mth-shadow-lg, 0 20px 50px oklch(0.1 0.02 260 / 0.2));
     --_cp-font-md: var(--mth-font-size-md, 1rem);
     --_cp-font-sm: var(--mth-font-size-sm, 0.875rem);
-    --_cp-z: var(--mth-z-modal, 1000);
+    --_cp-z: var(--mth-z-index-modal, 1000);
   }
 
   [part='dialog'] {

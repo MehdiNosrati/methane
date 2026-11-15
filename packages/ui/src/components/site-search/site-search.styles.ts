@@ -6,19 +6,19 @@ export const siteSearchStyles = css`
     position: relative;
     inline-size: min(24rem, 100%);
     --_ss-surface: var(--mth-color-surface, oklch(1 0 0));
-    --_ss-subtle: var(--mth-color-surface-subtle, oklch(0.97 0.005 260));
-    --_ss-text: var(--mth-color-text, oklch(0.2 0.02 260));
-    --_ss-muted: var(--mth-color-text-muted, oklch(0.52 0.02 260));
+    --_ss-subtle: var(--mth-color-bg-subtle, oklch(0.97 0.005 260));
+    --_ss-text: var(--mth-color-fg, oklch(0.2 0.02 260));
+    --_ss-muted: var(--mth-color-fg-muted, oklch(0.52 0.02 260));
     --_ss-border: var(--mth-color-border, oklch(0.85 0.01 260));
-    --_ss-primary: var(--mth-color-primary, oklch(0.55 0.18 260));
+    --_ss-primary: var(--mth-color-accent, oklch(0.55 0.18 260));
     --_ss-danger: var(--mth-color-danger, oklch(0.55 0.2 25));
     --_ss-radius: var(--mth-radius-md, 0.375rem);
-    --_ss-space-sm: var(--mth-space-sm, 0.5rem);
-    --_ss-space-md: var(--mth-space-md, 0.75rem);
+    --_ss-space-sm: var(--mth-space-2, 0.5rem);
+    --_ss-space-md: var(--mth-space-3, 0.75rem);
     --_ss-shadow: var(--mth-shadow-md, 0 8px 24px oklch(0.15 0.02 260 / 0.14));
     --_ss-font-md: var(--mth-font-size-md, 1rem);
     --_ss-font-sm: var(--mth-font-size-sm, 0.875rem);
-    --_ss-z: var(--mth-z-popover, 500);
+    --_ss-z: var(--mth-z-index-popover, 500);
   }
 
   [part='combobox'] {
