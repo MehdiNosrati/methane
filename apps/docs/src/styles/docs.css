@@ -764,4 +764,31 @@
     outline: var(--mth-focus-ring-width, 2px) solid var(--mth-color-border-focus);
     outline-offset: var(--mth-focus-ring-offset, 2px);
   }
+
+  [data-comp-card] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  [data-comp-card][hidden] {
+    display: none;
+  }
+
+  [data-comp-card] > mth-stack {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  [data-comp-card] > mth-stack > .docs-btn {
+    margin-block-start: auto;
+  }
+
+  .mth-bento-item > :is(mth-flex, .docs-btn):last-child {
+    margin-block-start: auto;
+  }
+
+  .mth-bento-item > .docs-btn:last-child {
+    align-self: flex-start;
+  }
 }

@@ -329,4 +329,77 @@ test.describe('@methane-ui/docs visual, custom-element & interactive QA', () => 
     });
     expect(detailRawBackticks).toEqual([]);
   });
+
+  test('aligns bottom CTA buttons across multi-card rows on /components/ and home bento grid', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(docsUrl('/methane/components/'), { waitUntil: 'networkidle' });
+
+    const componentRows = await page.evaluate(() => {
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-comp-card]')).filter(
+        (card) => !card.hidden && card.getBoundingClientRect().height > 0,
+      );
+
+      type CardMetric = { tag: string; cardTop: number; btnBottom: number };
+      const rows: CardMetric[][] = [];
+
+      for (const card of cards) {
+        const cardRect = card.getBoundingClientRect();
+        const btn = card.querySelector<HTMLElement>('a.docs-btn');
+        if (!btn) continue;
+        const btnRect = btn.getBoundingClientRect();
+        const tag = card.querySelector('code')?.textContent?.trim() ?? '';
+        const metric: CardMetric = { tag, cardTop: cardRect.top, btnBottom: btnRect.bottom };
+
+        const existingRow = rows.find((row) => Math.abs(row[0]!.cardTop - metric.cardTop) <= 2);
+        if (existingRow) {
+          existingRow.push(metric);
+        } else {
+          rows.push([metric]);
+        }
+      }
+      return rows;
+    });
+
+    const multiCardRows = componentRows.filter((row) => row.length > 1);
+    expect(multiCardRows.length).toBeGreaterThan(0);
+
+    const checkedTags = multiCardRows.flatMap((row) => row.map((item) => item.tag));
+    expect(checkedTags).toEqual(
+      expect.arrayContaining(['<mth-alert>', '<mth-artifact-pane>', '<mth-async-search>']),
+    );
+
+    for (const row of multiCardRows) {
+      const baselineBottom = row[0]!.btnBottom;
+      for (const item of row) {
+        expect(
+          Math.abs(item.btnBottom - baselineBottom),
+          `Expected ${item.tag} CTA bottom (${item.btnBottom}) to match row baseline (${baselineBottom}) within 1px`,
+        ).toBeLessThanOrEqual(1);
+      }
+    }
+
+    await page.goto(docsUrl('/methane/'), { waitUntil: 'networkidle' });
+    const bentoBottoms = await page.evaluate(() => {
+      const items = Array.from(
+        document.querySelectorAll<HTMLElement>('.mth-bento-grid > .mth-bento-item'),
+      );
+      return items.map((item) => {
+        const btn = item.querySelector<HTMLElement>('.docs-btn');
+        return {
+          cardTop: item.getBoundingClientRect().top,
+          btnBottom: btn ? btn.getBoundingClientRect().bottom : null,
+        };
+      });
+    });
+
+    expect(bentoBottoms.length).toBe(2);
+    expect(Math.abs(bentoBottoms[0]!.cardTop - bentoBottoms[1]!.cardTop)).toBeLessThanOrEqual(2);
+    expect(bentoBottoms[0]!.btnBottom).not.toBeNull();
+    expect(bentoBottoms[1]!.btnBottom).not.toBeNull();
+    expect(
+      Math.abs(bentoBottoms[0]!.btnBottom! - bentoBottoms[1]!.btnBottom!),
+    ).toBeLessThanOrEqual(1);
+  });
 });

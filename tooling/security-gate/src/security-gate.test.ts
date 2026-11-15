@@ -137,6 +137,15 @@ describe('@methane-ui/security-gate', () => {
 
     const fakeWs = makeTempDir();
     writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n", 'utf8');
+    writeFileSync(
+      join(fakeWs, 'package.json'),
+      JSON.stringify({
+        name: 'bad-root',
+        private: true,
+        pnpm: { peerDependencyRules: { allowedVersions: { '@methane-ui/core': '*' } } },
+      }),
+      'utf8',
+    );
     mkdirSync(join(fakeWs, 'packages/bad-pkg'), { recursive: true });
     writeFileSync(
       join(fakeWs, 'packages/bad-pkg/package.json'),
@@ -153,8 +162,10 @@ describe('@methane-ui/security-gate', () => {
     expect(badAudit.passed).toBe(false);
     expect(badAudit.violations.map((v) => v.rule).sort()).toEqual([
       'duplicate-dep-and-peer',
+      'forbidden-peer-dependency-rules',
       'invalid-methane-peer-range',
       'missing-readme',
+      'publishable-core-dependency',
       'version-skew',
     ]);
   });

@@ -8,7 +8,9 @@ export interface PackageAuditViolation {
     | 'duplicate-dep-and-peer'
     | 'invalid-methane-peer-range'
     | 'version-skew'
-    | 'missing-readme';
+    | 'missing-readme'
+    | 'forbidden-peer-dependency-rules'
+    | 'publishable-core-dependency';
   readonly message: string;
 }
 
@@ -33,6 +35,9 @@ interface PackageManifestShape {
   readonly private?: boolean;
   readonly dependencies?: Readonly<Record<string, string>>;
   readonly peerDependencies?: Readonly<Record<string, string>>;
+  readonly pnpm?: {
+    readonly peerDependencyRules?: unknown;
+  };
 }
 
 function findWorkspaceRoot(startDir = process.cwd()): string {
@@ -107,6 +112,28 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
     const location = relative(workspaceRoot, manifestPath) || 'package.json';
     const deps = raw.dependencies ?? {};
     const peers = raw.peerDependencies ?? {};
+
+    if (location === 'package.json' && raw.pnpm?.peerDependencyRules !== undefined) {
+      violations.push({
+        packageName: pkgName,
+        location,
+        rule: 'forbidden-peer-dependency-rules',
+        message: 'root package.json must not define pnpm.peerDependencyRules',
+      });
+    }
+
+    if (
+      raw.private !== true &&
+      pkgName !== '@methane-ui/core' &&
+      Object.prototype.hasOwnProperty.call(deps, '@methane-ui/core')
+    ) {
+      violations.push({
+        packageName: pkgName,
+        location,
+        rule: 'publishable-core-dependency',
+        message: 'publishable package must list "@methane-ui/core" in peerDependencies/devDependencies, never dependencies',
+      });
+    }
 
     for (const depName of Object.keys(deps)) {
       if (Object.prototype.hasOwnProperty.call(peers, depName)) {

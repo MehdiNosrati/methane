@@ -1213,9 +1213,6 @@ importers:
 
   tooling/security-gate:
     dependencies:
-      '@methane-ui/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
@@ -1228,6 +1225,10 @@ importers:
       lit:
         specifier: ^3.2.1
         version: 3.3.3
+    devDependencies:
+      '@methane-ui/core':
+        specifier: workspace:^
+        version: link:../../packages/core
 
   tooling/spec-compiler:
     dependencies:

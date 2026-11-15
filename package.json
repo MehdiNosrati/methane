@@ -19,13 +19,6 @@
     "release:dry-run": "pnpm -r --filter \"./packages/**\" --filter \"./tooling/*\" --no-git-checks publish --access public --dry-run",
     "release:publish": "pnpm -r --filter \"./packages/**\" --filter \"./tooling/*\" --no-git-checks publish --access public"
   },
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "@methane-ui/core": "*"
-      }
-    }
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.1",
