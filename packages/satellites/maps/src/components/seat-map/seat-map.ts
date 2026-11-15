@@ -258,7 +258,8 @@ export class MthSeatMap extends UIElement {
           part="grid"
           role="grid"
           aria-labelledby="mth-seat-label"
-          aria-describedby=${errorMsg ? 'mth-seat-error' : nothing}
+          aria-invalid=${this.formCtrl.invalid ? 'true' : 'false'}
+          aria-errormessage=${errorMsg ? 'mth-seat-error' : nothing}
           aria-multiselectable=${this.multiple ? 'true' : 'false'}
         >
           ${rows.map(

@@ -1,4 +1,5 @@
 import { html, nothing, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
+import { ObserverPoolController } from '@methane/primitives';
 import type { StyleSpecification } from 'maplibre-gl';
 import { createMapEngine, type LngLatTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapMessages } from './map.messages.js';
@@ -33,6 +34,8 @@ export class MthMap extends UIElement {
   @query('.canvas') private canvasEl?: HTMLElement | null;
 
   private _engine: MapEngineHandle | null = null;
+  private readonly observerCtrl = new ObserverPoolController(this);
+  private observedCanvasEl: HTMLElement | null = null;
 
   get engine(): MapEngineHandle | null {
     return this._engine;
@@ -40,6 +43,19 @@ export class MthMap extends UIElement {
 
   private get isRtl(): boolean {
     return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
+  }
+
+  private syncEngineCanvas(): void {
+    if (this._engine && this.canvasEl) {
+      this._engine.attachContainer(this.canvasEl);
+      this._engine.syncThemeTokens();
+      if (this.observedCanvasEl !== this.canvasEl) {
+        this.observedCanvasEl = this.canvasEl;
+        this.observerCtrl.observeResize(this.canvasEl, () => {
+          this._engine?.resize();
+        });
+      }
+    }
   }
 
   override connectedCallback(): void {
@@ -60,9 +76,13 @@ export class MthMap extends UIElement {
       this.viewZoom = this._engine.zoom;
     }
     this.setCustomState('interactive', this.interactive);
+    if (this.hasUpdated) {
+      this.syncEngineCanvas();
+    }
   }
 
   override disconnectedCallback(): void {
+    this.observedCanvasEl = null;
     if (this._engine) {
       this._engine.remove();
       this._engine = null;
@@ -74,6 +94,9 @@ export class MthMap extends UIElement {
     super.willUpdate(changed);
     if (changed.has('interactive')) {
       this.setCustomState('interactive', this.interactive);
+    }
+    if (this._engine && changed.has('mapStyle')) {
+      this._engine.setStyle(this.mapStyle);
     }
     if (
       this._engine &&
@@ -96,10 +119,7 @@ export class MthMap extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
-    if (this._engine && this.canvasEl) {
-      this._engine.attachContainer(this.canvasEl);
-      this._engine.syncThemeTokens();
-    }
+    this.syncEngineCanvas();
   }
 
   zoomIn(): void {
@@ -121,7 +141,7 @@ export class MthMap extends UIElement {
   }
 
   resetView(): void {
-    if (!this._engine) return;
+    if (!this.interactive || !this._engine) return;
     this._engine.setView({
       center: [this.centerLng, this.centerLat],
       zoom: this.zoom,
@@ -242,6 +262,7 @@ export class MthMap extends UIElement {
               type="button"
               class="control-btn"
               aria-label=${this.t('zoomIn')}
+              ?disabled=${!this.interactive}
               @click=${() => this.zoomIn()}
             >
               +
@@ -250,6 +271,7 @@ export class MthMap extends UIElement {
               type="button"
               class="control-btn"
               aria-label=${this.t('zoomOut')}
+              ?disabled=${!this.interactive}
               @click=${() => this.zoomOut()}
             >
               -
@@ -258,6 +280,7 @@ export class MthMap extends UIElement {
               type="button"
               class="control-btn"
               aria-label=${this.t('resetView')}
+              ?disabled=${!this.interactive}
               @click=${() => this.resetView()}
             >
               0

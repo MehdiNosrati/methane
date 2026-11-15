@@ -1,5 +1,5 @@
 import { html, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { ObserverPoolController, RovingFocusController } from '@methane/primitives';
 import { createMapEngine, type BoundsTuple, type LngLatTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapClusterMessages } from './map-cluster.messages.js';
 import { mapClusterStyles } from './map-cluster.styles.js';
@@ -91,6 +91,8 @@ export class MthMapCluster extends UIElement {
   @query('.canvas') private canvasEl?: HTMLElement | null;
 
   private _engine: MapEngineHandle | null = null;
+  private readonly observerCtrl = new ObserverPoolController(this);
+  private observedCanvasEl: HTMLElement | null = null;
   private readonly rovingCtrl: RovingFocusController;
 
   constructor() {
@@ -110,6 +112,19 @@ export class MthMapCluster extends UIElement {
     return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
   }
 
+  private syncEngineCanvas(): void {
+    if (this._engine && this.canvasEl) {
+      this._engine.attachContainer(this.canvasEl);
+      this._engine.syncThemeTokens();
+      if (this.observedCanvasEl !== this.canvasEl) {
+        this.observedCanvasEl = this.canvasEl;
+        this.observerCtrl.observeResize(this.canvasEl, () => {
+          this._engine?.resize();
+        });
+      }
+    }
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.activeZoom = this.zoom;
@@ -120,9 +135,13 @@ export class MthMapCluster extends UIElement {
         maxZoom: this.maxZoom,
       });
     }
+    if (this.hasUpdated) {
+      this.syncEngineCanvas();
+    }
   }
 
   override disconnectedCallback(): void {
+    this.observedCanvasEl = null;
     if (this._engine) {
       this._engine.remove();
       this._engine = null;
@@ -143,10 +162,7 @@ export class MthMapCluster extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
-    if (this._engine && this.canvasEl) {
-      this._engine.attachContainer(this.canvasEl);
-      this._engine.syncThemeTokens();
-    }
+    this.syncEngineCanvas();
   }
 
   get clusters(): ReadonlyArray<ComputedCluster> {

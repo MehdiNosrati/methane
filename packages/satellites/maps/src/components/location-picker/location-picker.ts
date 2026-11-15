@@ -1,5 +1,5 @@
 import { html, nothing, property, query, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { FormControlController, ObserverPoolController } from '@methane/primitives';
 import { createMapEngine, normalizeLngLat, type MapEngineHandle } from '../shared/map-engine.js';
 import { locationPickerMessages } from './location-picker.messages.js';
 import { locationPickerStyles } from './location-picker.styles.js';
@@ -37,6 +37,8 @@ export class MthLocationPicker extends UIElement {
   @query('.canvas') private canvasEl?: HTMLElement | null;
 
   private _engine: MapEngineHandle | null = null;
+  private readonly observerCtrl = new ObserverPoolController(this);
+  private observedCanvasEl: HTMLElement | null = null;
   private readonly formCtrl: FormControlController;
 
   constructor() {
@@ -87,6 +89,19 @@ export class MthLocationPicker extends UIElement {
     return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
   }
 
+  private syncEngineCanvas(): void {
+    if (this._engine && this.canvasEl) {
+      this._engine.attachContainer(this.canvasEl);
+      this._engine.syncThemeTokens();
+      if (this.observedCanvasEl !== this.canvasEl) {
+        this.observedCanvasEl = this.canvasEl;
+        this.observerCtrl.observeResize(this.canvasEl, () => {
+          this._engine?.resize();
+        });
+      }
+    }
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (!this._engine) {
@@ -99,9 +114,13 @@ export class MthLocationPicker extends UIElement {
     }
     this.formCtrl.setDefaultValue(this.defaultValue);
     this.formCtrl.setValue(this.value);
+    if (this.hasUpdated) {
+      this.syncEngineCanvas();
+    }
   }
 
   override disconnectedCallback(): void {
+    this.observedCanvasEl = null;
     if (this._engine) {
       this._engine.remove();
       this._engine = null;
@@ -146,10 +165,7 @@ export class MthLocationPicker extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
-    if (this._engine && this.canvasEl) {
-      this._engine.attachContainer(this.canvasEl);
-      this._engine.syncThemeTokens();
-    }
+    this.syncEngineCanvas();
   }
 
   checkValidity(): boolean {
@@ -250,7 +266,8 @@ export class MthLocationPicker extends UIElement {
             class="pin-target"
             part="pin-target"
             aria-labelledby="mth-loc-label"
-            aria-describedby=${errorMsg ? 'mth-loc-error' : 'mth-loc-readout'}
+            aria-describedby="mth-loc-readout"
+            aria-errormessage=${errorMsg ? 'mth-loc-error' : nothing}
             aria-invalid=${this.formCtrl.invalid ? 'true' : 'false'}
             ?disabled=${isDisabled}
             @keydown=${this.handlePinKeydown}

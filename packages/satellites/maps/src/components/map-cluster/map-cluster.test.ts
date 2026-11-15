@@ -95,5 +95,11 @@ describe('mth-map-cluster', () => {
 
     expect(expanded.length).toBe(1);
     expect(el.engine!.zoom).toBe(4);
+
+    el.remove();
+    expect(el.engine).toBeNull();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine?.container).toBeTruthy();
   });
 });

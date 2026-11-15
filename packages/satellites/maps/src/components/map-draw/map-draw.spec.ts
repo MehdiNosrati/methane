@@ -35,3 +35,23 @@ export const mapDrawSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...mapDrawMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Interactive GeoJSON drawing surface supporting points, lines, polygons, keyboard drawing, and undo/redo.',
+  propDescriptions: {
+    mode: 'Active drawing mode (`select`, `point`, `line`, `polygon`).',
+    features: 'Current GeoJSON FeatureCollection.',
+    label: 'Accessible region label.',
+    disabled: 'Disables toolbar controls and drawing input.',
+  },
+  eventDescriptions: {
+    'mth-draw-change': 'Fired when features are added, undone, redone, or cleared.',
+    'mth-draw-mode': 'Fired when the active drawing mode changes.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Drawing container surface background.' },
+    { name: '--mth-color-accent', description: 'Active drawing mode and shape stroke/fill accent color.' },
+    { name: '--mth-color-accent-fg', description: 'Pressed mode button foreground color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};

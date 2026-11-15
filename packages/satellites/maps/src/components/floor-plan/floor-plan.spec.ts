@@ -39,3 +39,27 @@ export const floorPlanSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...floorPlanMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Interactive indoor vector floor plan with zoom/pan controls and roving accessible room directory.',
+  propDescriptions: {
+    rooms: 'Array of `FloorPlanRoom` definitions.',
+    selectedIds: 'Currently selected room identifiers.',
+    level: 'Active building floor/level identifier.',
+    zoom: 'Viewport zoom multiplier (`0.5` to `4`).',
+    panX: 'Horizontal pan offset in pixels.',
+    panY: 'Vertical pan offset in pixels.',
+    multiple: 'Allows selecting multiple rooms concurrently.',
+    label: 'Accessible region label.',
+  },
+  eventDescriptions: {
+    'mth-room-select': 'Fired when an enabled room is selected or toggled.',
+    'mth-floor-zoom': 'Fired when viewport zoom or pan changes.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Floor plan surface background.' },
+    { name: '--mth-color-border', description: 'Viewport and room button border color.' },
+    { name: '--mth-color-accent', description: 'Selected room highlight accent color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};

@@ -84,4 +84,30 @@ describe('mth-map', () => {
     btn.click();
     expect(events).toEqual([{ id: 'a', lng: -122.3, lat: 37.8, label: 'Spot A' }]);
   });
+
+  it('re-attaches canvas on same-instance reconnect, sanitizes mapStyle, and disables controls when non-interactive', async () => {
+    const el = document.createElement('mth-map') as MthMap;
+    el.mapStyle = 'javascript:alert(1)';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(typeof el.engine?.style).toBe('object');
+    expect(el.engine?.container).toBeTruthy();
+
+    el.mapStyle = 'https://tiles.example.com/style.json';
+    await el.updateComplete;
+    expect(el.engine?.style).toBe('https://tiles.example.com/style.json');
+
+    el.interactive = false;
+    await el.updateComplete;
+    const ctrlBtns = Array.from(el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.control-btn'));
+    expect(ctrlBtns.length).toBe(3);
+    expect(ctrlBtns.every((b) => b.disabled)).toBe(true);
+
+    el.remove();
+    expect(el.engine).toBeNull();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine?.container).toBeTruthy();
+  });
 });

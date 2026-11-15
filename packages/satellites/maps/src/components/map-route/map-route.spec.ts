@@ -34,3 +34,24 @@ export const mapRouteSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...mapRouteMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Route path visualizer computing Haversine distance and interactive bounds fitting across ordered stops.',
+  propDescriptions: {
+    origin: 'Starting route waypoint (`lng`, `lat`, optional `label`).',
+    destination: 'Ending route waypoint (`lng`, `lat`, optional `label`).',
+    waypoints: 'Intermediate ordered route waypoints.',
+    unit: 'Distance unit displayed in the summary (`km` or `mi`).',
+    label: 'Accessible region label.',
+  },
+  eventDescriptions: {
+    'mth-route-fit': 'Fired when bounds are fitted across route stops.',
+    'mth-waypoint-select': 'Fired when a route stop button is selected.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Route card surface background.' },
+    { name: '--mth-color-border', description: 'Container and stop button border color.' },
+    { name: '--mth-color-accent', description: 'Route polyline and active stop accent color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};

@@ -94,5 +94,16 @@ describe('mth-floor-plan', () => {
 
     el.zoomIn();
     expect(el.zoom).toBe(1.25);
+
+    const floorFirstDisabled = document.createElement('mth-floor-plan') as MthFloorPlan;
+    floorFirstDisabled.rooms = [
+      { id: 'r1', name: 'Locked', x: 10, y: 10, width: 90, height: 60, disabled: true },
+      { id: 'r2', name: 'Open', x: 110, y: 10, width: 90, height: 60 },
+    ];
+    document.body.appendChild(floorFirstDisabled);
+    await floorFirstDisabled.updateComplete;
+    const roomBtns = floorFirstDisabled.shadowRoot!.querySelectorAll<HTMLButtonElement>('.room-btn');
+    expect(roomBtns[0]?.getAttribute('tabindex')).toBe('-1');
+    expect(roomBtns[1]?.getAttribute('tabindex')).toBe('0');
   });
 });

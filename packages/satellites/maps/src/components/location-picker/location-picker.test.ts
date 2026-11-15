@@ -106,5 +106,18 @@ describe('mth-location-picker', () => {
     pin.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true }));
     await el.updateComplete;
     expect(el.value).toBe('');
+
+    el.required = true;
+    el.checkValidity();
+    await el.updateComplete;
+    expect(pin.getAttribute('aria-describedby')).toBe('mth-loc-readout');
+    expect(pin.getAttribute('aria-errormessage')).toBe('mth-loc-error');
+    expect(pin.getAttribute('aria-invalid')).toBe('true');
+
+    el.remove();
+    expect(el.engine).toBeNull();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine?.container).toBeTruthy();
   });
 });

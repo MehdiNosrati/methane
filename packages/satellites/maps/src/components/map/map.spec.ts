@@ -18,6 +18,7 @@ export const mapSpec: ComponentBehaviorSpec = {
     { name: 'pitch', attr: 'pitch', type: 'number', default: 0 },
     { name: 'interactive', attr: 'interactive', type: 'boolean', default: true },
     { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'mapStyle', attr: false, type: 'string | StyleSpecification | undefined' },
     { name: 'markers', attr: false, type: 'ReadonlyArray<MapMarker>' },
   ],
   events: [
@@ -45,4 +46,32 @@ export const mapSpec: ComponentBehaviorSpec = {
     { key: 'Home', when: 'viewport focused', expect: 'Resets map view' },
   ],
   messages: { ...mapMessages },
+};
+
+export const CEM_METADATA = {
+  description: 'Interactive MapLibre GL JS map canvas with RTL-aware panning, zoom controls, markers, and SSR fallback.',
+  propDescriptions: {
+    centerLat: 'Viewport center latitude in decimal degrees.',
+    centerLng: 'Viewport center longitude in decimal degrees.',
+    zoom: 'Current map zoom level.',
+    minZoom: 'Minimum allowed zoom level.',
+    maxZoom: 'Maximum allowed zoom level.',
+    bearing: 'Map bearing rotation in degrees.',
+    pitch: 'Map tilt pitch in degrees.',
+    interactive: 'Enables interactive pan/zoom controls and keyboard navigation.',
+    label: 'Accessible region label for the map.',
+    mapStyle: 'Safe HTTP/HTTPS/relative style URL or MapLibre StyleSpecification object.',
+    markers: 'Array of interactive markers plotted inside the map viewport.',
+  },
+  eventDescriptions: {
+    'mth-map-move': 'Fired after programmatic, button, or keyboard pan/zoom view changes.',
+    'mth-marker-select': 'Fired when an interactive map marker is activated.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Map container surface background.' },
+    { name: '--mth-color-border', description: 'Map container border color.' },
+    { name: '--mth-color-accent', description: 'Interactive marker accent background.' },
+    { name: '--mth-color-accent-fg', description: 'Interactive marker foreground text color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
 };

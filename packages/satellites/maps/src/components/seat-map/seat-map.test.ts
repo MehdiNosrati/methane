@@ -161,5 +161,13 @@ describe('mth-seat-map', () => {
     await el.updateComplete;
     expect(el.selectedSeats).toEqual(['B1']);
     expect(el.value).toBe('B1');
+
+    el.value = '';
+    el.required = true;
+    el.checkValidity();
+    await el.updateComplete;
+    const grid = el.shadowRoot!.querySelector<HTMLElement>('[part="grid"]')!;
+    expect(grid.getAttribute('aria-invalid')).toBe('true');
+    expect(grid.getAttribute('aria-errormessage')).toBe('mth-seat-error');
   });
 });

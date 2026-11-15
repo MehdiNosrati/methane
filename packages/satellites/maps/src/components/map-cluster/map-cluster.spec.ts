@@ -36,3 +36,24 @@ export const mapClusterSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...mapClusterMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Spatial point clustering layer over MapLibre with accessible cluster controls and zoom expansion.',
+  propDescriptions: {
+    points: 'Array of spatial cluster points (`id`, `lng`, `lat`, optional `label`).',
+    radius: 'Spatial clustering bucket radius in pixels.',
+    zoom: 'Initial zoom level used for spatial bucketing.',
+    maxZoom: 'Zoom threshold above which individual points are rendered unclustered.',
+    label: 'Accessible region label.',
+  },
+  eventDescriptions: {
+    'mth-cluster-expand': 'Fired when a multi-point cluster is expanded.',
+    'mth-cluster-select': 'Fired when a single point cluster item is activated.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Cluster panel surface background.' },
+    { name: '--mth-color-border', description: 'Cluster panel and button border color.' },
+    { name: '--mth-color-accent', description: 'Primary cluster highlight accent color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};

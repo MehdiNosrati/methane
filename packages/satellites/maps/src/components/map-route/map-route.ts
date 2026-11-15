@@ -1,4 +1,5 @@
 import { html, property, query, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
+import { ObserverPoolController } from '@methane/primitives';
 import { createMapEngine, type BoundsTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapRouteMessages } from './map-route.messages.js';
 import { mapRouteStyles } from './map-route.styles.js';
@@ -36,9 +37,24 @@ export class MthMapRoute extends UIElement {
   @query('.canvas') private canvasEl?: HTMLElement | null;
 
   private _engine: MapEngineHandle | null = null;
+  private readonly observerCtrl = new ObserverPoolController(this);
+  private observedCanvasEl: HTMLElement | null = null;
 
   get engine(): MapEngineHandle | null {
     return this._engine;
+  }
+
+  private syncEngineCanvas(): void {
+    if (this._engine && this.canvasEl) {
+      this._engine.attachContainer(this.canvasEl);
+      this._engine.syncThemeTokens();
+      if (this.observedCanvasEl !== this.canvasEl) {
+        this.observedCanvasEl = this.canvasEl;
+        this.observerCtrl.observeResize(this.canvasEl, () => {
+          this._engine?.resize();
+        });
+      }
+    }
   }
 
   override connectedCallback(): void {
@@ -47,9 +63,13 @@ export class MthMapRoute extends UIElement {
       this._engine = createMapEngine({ host: this });
       this.syncRouteBounds(false);
     }
+    if (this.hasUpdated) {
+      this.syncEngineCanvas();
+    }
   }
 
   override disconnectedCallback(): void {
+    this.observedCanvasEl = null;
     if (this._engine) {
       this._engine.remove();
       this._engine = null;
@@ -66,10 +86,7 @@ export class MthMapRoute extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
-    if (this._engine && this.canvasEl) {
-      this._engine.attachContainer(this.canvasEl);
-      this._engine.syncThemeTokens();
-    }
+    this.syncEngineCanvas();
   }
 
   get allStops(): ReadonlyArray<RouteWaypoint> {

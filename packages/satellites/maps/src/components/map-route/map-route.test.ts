@@ -68,5 +68,11 @@ describe('mth-map-route', () => {
     el.addEventListener('mth-route-fit', (e) => fitEvents.push((e as CustomEvent).detail));
     el.fitRouteBounds();
     expect(fitEvents.length).toBe(1);
+
+    el.remove();
+    expect(el.engine).toBeNull();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine?.container).toBeTruthy();
   });
 });

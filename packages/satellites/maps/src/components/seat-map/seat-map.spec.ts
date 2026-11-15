@@ -46,3 +46,30 @@ export const seatMapSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...seatMapMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Form-associated 2D ARIA grid seat picker supporting multi-select, seat tiers, and validation.',
+  propDescriptions: {
+    name: 'Form field name.',
+    value: 'Comma-separated selected seat identifiers.',
+    defaultValue: 'Default reset seat value.',
+    seats: 'Array of `SeatDefinition` entries.',
+    columns: 'Number of grid columns used for row layout.',
+    multiple: 'Allows selecting multiple seats.',
+    required: 'Requires at least one selected seat.',
+    disabled: 'Disables interaction and submission.',
+    readOnly: 'Prevents changing seat selection.',
+    label: 'Accessible field label.',
+  },
+  eventDescriptions: {
+    input: 'Native composed event fired when selection changes.',
+    change: 'Native composed event fired when selection commits.',
+    'mth-seat-select': 'Fired when an available seat is toggled.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Seat map surface background.' },
+    { name: '--mth-color-accent', description: 'Selected seat accent background.' },
+    { name: '--mth-color-danger', description: 'Validation error color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};

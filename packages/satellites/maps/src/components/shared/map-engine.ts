@@ -1,4 +1,5 @@
-import maplibregl, { type Map as MapLibreMap, type StyleSpecification } from 'maplibre-gl';
+import { isSafeUrl } from '@methane/sanitize';
+import type { Map as MapLibreMap, StyleSpecification } from 'maplibre-gl';
 
 export type LngLatTuple = readonly [number, number];
 
@@ -67,8 +68,10 @@ export interface MapEngineHandle {
   readonly zoom: number;
   readonly bearing: number;
   readonly pitch: number;
+  readonly style: string | StyleSpecification;
   readonly container: HTMLElement | null;
   attachContainer(container: HTMLElement | null): void;
+  setStyle(style?: string | StyleSpecification): void;
   setView(next: {
     center?: LngLatTuple;
     zoom?: number;
@@ -138,6 +141,16 @@ function readHostCssToken(host: HTMLElement, tokenName: string): string {
   return '';
 }
 
+function resolveSafeMapStyle(
+  style: string | StyleSpecification | undefined,
+): string | StyleSpecification {
+  if (typeof style === 'string') {
+    const trimmed = style.trim();
+    return trimmed && isSafeUrl(trimmed) ? trimmed : DEFAULT_EMPTY_MAP_STYLE;
+  }
+  return style ?? DEFAULT_EMPTY_MAP_STYLE;
+}
+
 export function createMapEngine(options: MapEngineOptions): MapEngineHandle {
   const minZoom = options.minZoom ?? 0;
   const maxZoom = options.maxZoom ?? 22;
@@ -153,7 +166,9 @@ export function createMapEngine(options: MapEngineOptions): MapEngineHandle {
   let currentZoom = clampNumber(options.zoom ?? 2, minZoom, maxZoom);
   let currentBearing = clampNumber(options.bearing ?? 0, -180, 180);
   let currentPitch = clampNumber(options.pitch ?? 0, 0, 85);
+  let currentStyle: string | StyleSpecification = resolveSafeMapStyle(options.style);
   let isDisposed = false;
+  let attachToken = 0;
   let activeContainer: HTMLElement | null = null;
   let nativeMap: MapLibreMap | null = null;
   const appliedTokens: Record<string, string> = {};
@@ -182,25 +197,21 @@ export function createMapEngine(options: MapEngineOptions): MapEngineHandle {
     return appliedTokens[tokenName] ?? '';
   }
 
-  function attachContainer(container: HTMLElement | null): void {
-    if (isDisposed || activeContainer === container) return;
-    activeContainer = container;
-    if (!container || !canUseWebGLContext()) {
-      return;
-    }
-    if (nativeMap) {
-      nativeMap.remove();
-      nativeMap = null;
-    }
+  async function mountNativeMap(container: HTMLElement, token: number): Promise<void> {
     try {
-      const MapConstructor = (maplibregl as unknown as { Map?: typeof MapLibreMap })?.Map;
+      const mod = await import('maplibre-gl');
+      if (isDisposed || attachToken !== token || activeContainer !== container) {
+        return;
+      }
+      const MapConstructor = (mod.default?.Map ??
+        (mod as unknown as { Map?: typeof MapLibreMap }).Map) as typeof MapLibreMap | undefined;
       if (typeof MapConstructor !== 'function') {
         nativeMap = null;
         return;
       }
       nativeMap = new MapConstructor({
         container,
-        style: options.style ?? DEFAULT_EMPTY_MAP_STYLE,
+        style: currentStyle,
         center: [currentCenter[0], currentCenter[1]],
         zoom: currentZoom,
         minZoom,
@@ -213,6 +224,26 @@ export function createMapEngine(options: MapEngineOptions): MapEngineHandle {
     } catch {
       nativeMap = null;
     }
+  }
+
+  function attachContainer(container: HTMLElement | null): void {
+    if (isDisposed || activeContainer === container) return;
+    activeContainer = container;
+    const token = ++attachToken;
+    if (nativeMap) {
+      nativeMap.remove();
+      nativeMap = null;
+    }
+    if (!container || !canUseWebGLContext()) {
+      return;
+    }
+    void mountNativeMap(container, token);
+  }
+
+  function setStyle(style?: string | StyleSpecification): void {
+    if (isDisposed) return;
+    currentStyle = resolveSafeMapStyle(style);
+    nativeMap?.setStyle(currentStyle);
   }
 
   function setView(next: {
@@ -324,10 +355,14 @@ export function createMapEngine(options: MapEngineOptions): MapEngineHandle {
     get pitch() {
       return currentPitch;
     },
+    get style() {
+      return currentStyle;
+    },
     get container() {
       return activeContainer;
     },
     attachContainer,
+    setStyle,
     setView,
     panBy,
     zoomBy,

@@ -1,5 +1,5 @@
 import { html, property, query, state, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { ObserverPoolController, RovingFocusController } from '@methane/primitives';
 import {
   createMapEngine,
   normalizeLngLat,
@@ -28,10 +28,13 @@ export class MthMapDraw extends UIElement {
   @state() private draftVertices: ReadonlyArray<LngLatTuple> = [];
   @state() private undoStack: ReadonlyArray<MapGeoJsonFeatureCollection> = [];
   @state() private redoStack: ReadonlyArray<MapGeoJsonFeatureCollection> = [];
+  @state() private cursorCoord: LngLatTuple = [0, 0];
 
   @query('.canvas') private canvasEl?: HTMLElement | null;
 
   private _engine: MapEngineHandle | null = null;
+  private readonly observerCtrl = new ObserverPoolController(this);
+  private observedCanvasEl: HTMLElement | null = null;
   private featureCounter = 0;
   private readonly rovingCtrl: RovingFocusController;
 
@@ -60,15 +63,32 @@ export class MthMapDraw extends UIElement {
     return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
   }
 
+  private syncEngineCanvas(): void {
+    if (this._engine && this.canvasEl) {
+      this._engine.attachContainer(this.canvasEl);
+      this._engine.syncThemeTokens();
+      if (this.observedCanvasEl !== this.canvasEl) {
+        this.observedCanvasEl = this.canvasEl;
+        this.observerCtrl.observeResize(this.canvasEl, () => {
+          this._engine?.resize();
+        });
+      }
+    }
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (!this._engine) {
       this._engine = createMapEngine({ host: this });
     }
     this.setCustomState('disabled', this.disabled);
+    if (this.hasUpdated) {
+      this.syncEngineCanvas();
+    }
   }
 
   override disconnectedCallback(): void {
+    this.observedCanvasEl = null;
     if (this._engine) {
       this._engine.remove();
       this._engine = null;
@@ -86,10 +106,7 @@ export class MthMapDraw extends UIElement {
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
-    if (this._engine && this.canvasEl) {
-      this._engine.attachContainer(this.canvasEl);
-      this._engine.syncThemeTokens();
-    }
+    this.syncEngineCanvas();
   }
 
   setMode(nextMode: DrawMode): void {
@@ -188,6 +205,60 @@ export class MthMapDraw extends UIElement {
     const relY = 0.5 - (event.clientY - rect.top) / height;
     const baseCenter = this._engine?.center ?? [0, 0];
     this.addVertex(baseCenter[0] + relX * 2, baseCenter[1] + relY * 2);
+  }
+
+  private handleSurfaceKeydown(event: KeyboardEvent): void {
+    if (this.disabled) return;
+    const step = 0.2;
+    const rtlFactor = this.isRtl ? -1 : 1;
+    switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        event.stopPropagation();
+        this.cursorCoord = normalizeLngLat(this.cursorCoord[0] - step * rtlFactor, this.cursorCoord[1]);
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        event.stopPropagation();
+        this.cursorCoord = normalizeLngLat(this.cursorCoord[0] + step * rtlFactor, this.cursorCoord[1]);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        event.stopPropagation();
+        this.cursorCoord = normalizeLngLat(this.cursorCoord[0], this.cursorCoord[1] + step);
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        event.stopPropagation();
+        this.cursorCoord = normalizeLngLat(this.cursorCoord[0], this.cursorCoord[1] - step);
+        break;
+      case ' ':
+      case 'Spacebar':
+        if (this.mode !== 'select') {
+          event.preventDefault();
+          event.stopPropagation();
+          this.addVertex(this.cursorCoord[0], this.cursorCoord[1]);
+        }
+        break;
+      case 'Enter':
+        event.preventDefault();
+        event.stopPropagation();
+        this.finishFeature();
+        break;
+      case 'Escape':
+        if (this.draftVertices.length > 0) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.draftVertices = [];
+        }
+        break;
+      case 'Home':
+      case 'End':
+        event.stopPropagation();
+        break;
+      default:
+        break;
+    }
   }
 
   private projectToSvg(coord: LngLatTuple): readonly [number, number] {
@@ -296,6 +367,7 @@ export class MthMapDraw extends UIElement {
           aria-label=${this.t('surfaceLabel')}
           tabindex=${this.disabled ? '-1' : '0'}
           @click=${this.handleSurfaceClick}
+          @keydown=${this.handleSurfaceKeydown}
         >
           ${this.features.features.map((feat) => {
             if (feat.geometry.type === 'Point') {

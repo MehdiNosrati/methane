@@ -161,16 +161,30 @@ export class MthFloorPlan extends UIElement {
     });
   }
 
+  private handleControlsKeydown(event: KeyboardEvent): void {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  }
+
   protected override render(): TemplateResult {
     const visible = this.visibleRooms;
     const regionLabel = this.label || this.t('regionLabel');
     const selectedSet = this.selectionCtrl.selectedSet;
+    const firstEnabledIdx = visible.findIndex((r) => !r.disabled);
 
     return html`
       <div class="base" part="base" role="region" aria-label=${regionLabel}>
         <div class="header">
           <span class="level-badge">${this.t('levelLabel', { level: this.level })}</span>
-          <div class="controls">
+          <div class="controls" @keydown=${this.handleControlsKeydown}>
             <button type="button" class="ctrl-btn" aria-label=${this.t('zoomIn')} @click=${() => this.zoomIn()}>
               +
             </button>
@@ -225,7 +239,7 @@ export class MthFloorPlan extends UIElement {
                 type="button"
                 class="room-btn"
                 part="room-button"
-                tabindex=${idx === 0 && !room.disabled ? '0' : '-1'}
+                tabindex=${idx === firstEnabledIdx ? '0' : '-1'}
                 aria-pressed=${isSelected ? 'true' : 'false'}
                 aria-disabled=${room.disabled ? 'true' : 'false'}
                 aria-label=${ariaLabel}

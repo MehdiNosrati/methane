@@ -88,4 +88,34 @@ describe('mth-map-draw', () => {
     el.redo();
     expect(el.features.features.length).toBe(1);
   });
+
+  it('supports keyboard drawing on surface and re-attaches container on reconnect', async () => {
+    const el = document.createElement('mth-map-draw') as MthMapDraw;
+    el.setMode('line');
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const surface = el.shadowRoot!.querySelector<SVGElement>('[part="surface"]')!;
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await el.updateComplete;
+
+    expect(el.features.features.length).toBe(1);
+    expect(el.features.features[0]?.geometry.type).toBe('LineString');
+
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    await el.updateComplete;
+    surface.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('[part="status"]')?.textContent).toContain('0');
+
+    el.remove();
+    expect(el.engine).toBeNull();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.engine?.container).toBeTruthy();
+  });
 });

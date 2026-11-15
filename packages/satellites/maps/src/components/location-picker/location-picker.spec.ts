@@ -44,3 +44,28 @@ export const locationPickerSpec: ComponentBehaviorSpec = {
   ],
   messages: { ...locationPickerMessages },
 };
+
+export const CEM_METADATA = {
+  description: 'Form-associated geographic coordinate picker (`lat,lng`) with keyboard nudging and validation.',
+  propDescriptions: {
+    name: 'Form field name.',
+    value: 'Selected `lat,lng` string value.',
+    defaultValue: 'Default reset `lat,lng` string value.',
+    label: 'Accessible field label.',
+    step: 'Keyboard and button coordinate nudge step in degrees.',
+    required: 'Marks a coordinate selection as required.',
+    disabled: 'Disables interaction and form submission.',
+    readOnly: 'Prevents changing the coordinate value.',
+  },
+  eventDescriptions: {
+    input: 'Native composed event fired when coordinate changes.',
+    change: 'Native composed event fired when coordinate commits.',
+    'mth-location-select': 'Fired with parsed `lat`, `lng`, and formatted `value`.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Picker surface background.' },
+    { name: '--mth-color-accent', description: 'Pin target accent color.' },
+    { name: '--mth-color-danger', description: 'Validation error text and invalid border color.' },
+    { name: '--mth-color-border-focus', description: 'Focus-visible outline color.' },
+  ],
+};
