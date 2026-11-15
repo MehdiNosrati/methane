@@ -4,7 +4,7 @@ export const sliderStyles = css`
   :host {
     display: block;
     font-family: inherit;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
     --_track-size: 0.375rem;
     --_thumb-size: 1.125rem;
     --_slider-pct: 0%;
@@ -41,13 +41,13 @@ export const sliderStyles = css`
   .label {
     font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: 500;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
   }
 
   .value-readout {
     font-size: var(--mth-font-size-xs, 0.75rem);
     font-variant-numeric: tabular-nums;
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .track-wrap {
@@ -77,7 +77,7 @@ export const sliderStyles = css`
     inline-size: 100%;
     block-size: var(--_track-size);
     border-radius: 9999px;
-    background-color: var(--mth-slider-track-bg, var(--mth-color-border, light-dark(#cbd5e1, #334155)));
+    background-color: var(--mth-slider-track-bg, var(--mth-color-border, light-dark(oklch(0.869 0.022 253), oklch(0.372 0.044 257))));
     overflow: hidden;
   }
 
@@ -111,7 +111,7 @@ export const sliderStyles = css`
     inline-size: var(--_thumb-size);
     block-size: var(--_thumb-size);
     border-radius: 9999px;
-    background-color: var(--mth-slider-thumb-bg, var(--mth-color-surface, light-dark(#ffffff, #0f172a)));
+    background-color: var(--mth-slider-thumb-bg, var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.208 0.042 266))));
     border: 2px solid var(--mth-slider-thumb-border, var(--mth-color-accent, oklch(0.55 0.22 255)));
     box-sizing: border-box;
     outline: none;
@@ -136,7 +136,7 @@ export const sliderStyles = css`
 
   .hint {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .error {

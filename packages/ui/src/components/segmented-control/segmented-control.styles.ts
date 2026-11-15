@@ -4,7 +4,7 @@ export const segmentedControlStyles = css`
   :host {
     display: inline-block;
     font-family: inherit;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
     --_seg-count: 1;
     --_seg-index: 0;
     --_seg-pad-y: 0.375rem;
@@ -52,8 +52,8 @@ export const segmentedControlStyles = css`
     grid-auto-columns: 1fr;
     padding: 0.1875rem;
     border-radius: 0.5rem;
-    background-color: var(--mth-segmented-bg, var(--mth-color-bg-subtle, light-dark(#f1f5f9, #1e293b)));
-    border: 1px solid var(--mth-color-border, light-dark(#e2e8f0, #334155));
+    background-color: var(--mth-segmented-bg, var(--mth-color-bg-subtle, light-dark(oklch(0.968 0.007 248), oklch(0.279 0.041 260))));
+    border: 1px solid var(--mth-color-border, light-dark(oklch(0.929 0.013 256), oklch(0.372 0.044 257)));
     isolation: isolate;
   }
 
@@ -66,7 +66,7 @@ export const segmentedControlStyles = css`
     border-radius: 0.375rem;
     background-color: var(
       --mth-segmented-indicator-bg,
-      var(--mth-color-surface, light-dark(#ffffff, #0f172a))
+      var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.208 0.042 266)))
     );
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.08);
     transform: translateX(calc(var(--_seg-index) * 100%));
@@ -79,7 +79,7 @@ export const segmentedControlStyles = css`
     transform: translateX(calc(var(--_seg-index) * -100%));
   }
 
-  :host([data-has-selection='false']) .indicator {
+  :host(:not(:state(selected))) .indicator {
     opacity: 0;
   }
 
@@ -95,7 +95,7 @@ export const segmentedControlStyles = css`
     appearance: none;
     border: none;
     background: transparent;
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
     font-family: inherit;
     font-size: var(--_seg-font);
     font-weight: 500;
@@ -109,7 +109,7 @@ export const segmentedControlStyles = css`
   }
 
   .segment[aria-checked='true'] {
-    color: var(--mth-segmented-fg-active, var(--mth-color-fg, light-dark(#0f172a, #f8fafc)));
+    color: var(--mth-segmented-fg-active, var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248))));
   }
 
   .segment:disabled {
@@ -128,7 +128,7 @@ export const segmentedControlStyles = css`
 
   .hint {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .error {

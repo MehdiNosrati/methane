@@ -89,7 +89,7 @@ export class MthRating extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -264,9 +264,13 @@ export class MthRating extends UIElement {
     const maxStars = this.getSafeMax();
     const displayValue = this.hoverRating ?? this.numericValue;
     const selectedCeil = Math.ceil(this.numericValue);
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-rating-hint');
     if (hasError) describedByIds.push('mth-rating-error');
@@ -276,7 +280,7 @@ export class MthRating extends UIElement {
     return html`
       <div part="base" class="base">
         <span id="mth-rating-label" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </span>
 
         <div
@@ -284,7 +288,7 @@ export class MthRating extends UIElement {
           class="group"
           role="radiogroup"
           aria-labelledby=${ifDefined(hasLabel ? 'mth-rating-label' : undefined)}
-          aria-label=${ifDefined(!hasLabel ? this.label || 'Rating' : undefined)}
+          aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
           aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
           aria-disabled=${this.isEffectivelyDisabled ? 'true' : 'false'}
           @mouseleave=${() => {
@@ -302,9 +306,7 @@ export class MthRating extends UIElement {
                 role="radio"
                 data-state=${state}
                 aria-checked=${isChecked ? 'true' : 'false'}
-                aria-label=${ratingMessages.starAriaPattern
-                  .replace('{index}', String(index))
-                  .replace('{max}', String(maxStars))}
+                aria-label=${this.t('starAriaPattern', { index: String(index), max: String(maxStars) })}
                 ?disabled=${this.isEffectivelyDisabled}
                 aria-disabled=${this.isEffectivelyDisabled ? 'true' : 'false'}
                 @mousemove=${(e: MouseEvent) => {
@@ -327,11 +329,11 @@ export class MthRating extends UIElement {
         </div>
 
         <div id="mth-rating-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-rating-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

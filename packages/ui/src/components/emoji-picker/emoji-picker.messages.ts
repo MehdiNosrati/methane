@@ -5,6 +5,8 @@ export const emojiPickerMessages = {
   skinToneLabel: 'Skin tone',
   allCategory: 'All',
   recentCategory: 'Recent',
+  categoriesLabel: 'Emoji categories',
+  gridLabel: 'Emojis',
   emptyText: 'No matching emojis',
   pickerLabel: 'Emoji picker',
 } as const satisfies Record<string, string>;

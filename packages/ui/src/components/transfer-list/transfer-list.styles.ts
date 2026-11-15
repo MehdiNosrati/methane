@@ -4,7 +4,7 @@ export const transferListStyles = css`
   :host {
     display: block;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    color: var(--mth-color-text, light-dark(oklch(0.2 0.02 250), oklch(0.92 0.01 250)));
+    color: var(--mth-color-fg, light-dark(oklch(0.2 0.02 250), oklch(0.92 0.01 250)));
   }
 
   .base {
@@ -14,7 +14,7 @@ export const transferListStyles = css`
   }
 
   .label {
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: 500;
   }
 
@@ -54,8 +54,8 @@ export const transferListStyles = css`
     padding-block: var(--mth-space-2, 0.5rem);
     padding-inline: var(--mth-space-3, 0.75rem);
     border-block-end: 1px solid var(--mth-color-border, light-dark(oklch(0.88 0.01 250), oklch(0.3 0.01 250)));
-    background: var(--mth-color-surface-subtle, light-dark(oklch(0.97 0.01 250), oklch(0.22 0.01 250)));
-    font-size: var(--mth-text-sm, 0.875rem);
+    background: var(--mth-color-bg-subtle, light-dark(oklch(0.97 0.01 250), oklch(0.22 0.01 250)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: 500;
   }
 
@@ -67,8 +67,8 @@ export const transferListStyles = css`
   }
 
   .pane-count {
-    font-size: var(--mth-text-xs, 0.75rem);
-    color: var(--mth-color-text-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
   }
 
   .search-wrap {
@@ -86,7 +86,7 @@ export const transferListStyles = css`
     background: inherit;
     color: inherit;
     font: inherit;
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
   }
 
   .list {
@@ -108,11 +108,11 @@ export const transferListStyles = css`
     padding-inline: var(--mth-space-2, 0.5rem);
     border-radius: var(--mth-radius-sm, 0.375rem);
     cursor: pointer;
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
   }
 
   .item:hover:not([data-disabled='true']) {
-    background: var(--mth-color-surface-hover, light-dark(oklch(0.95 0.01 250), oklch(0.26 0.02 250)));
+    background: var(--mth-color-bg-subtle, light-dark(oklch(0.95 0.01 250), oklch(0.26 0.02 250)));
   }
 
   .item[data-disabled='true'] {
@@ -123,8 +123,8 @@ export const transferListStyles = css`
   .empty {
     padding: var(--mth-space-4, 1rem);
     text-align: center;
-    font-size: var(--mth-text-sm, 0.875rem);
-    color: var(--mth-color-text-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
   }
 
   .actions {
@@ -155,17 +155,17 @@ export const transferListStyles = css`
 
   .action-button:focus-visible,
   .search:focus-visible {
-    outline: 2px solid var(--mth-color-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
     outline-offset: 2px;
   }
 
   .hint {
-    font-size: var(--mth-text-xs, 0.75rem);
-    color: var(--mth-color-text-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
   }
 
   .error {
-    font-size: var(--mth-text-xs, 0.75rem);
+    font-size: var(--mth-font-size-xs, 0.75rem);
     color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.68 0.18 25)));
   }
 

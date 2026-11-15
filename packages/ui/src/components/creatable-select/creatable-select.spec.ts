@@ -27,7 +27,7 @@ export const creatableSelectSpec: ComponentBehaviorSpec = {
     { name: 'multiple', attr: 'multiple', type: 'boolean', default: false },
     { name: 'allowCreate', attr: 'allow-create', type: 'boolean', default: true },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Select or type to create...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'open', attr: 'open', type: 'boolean', default: false },

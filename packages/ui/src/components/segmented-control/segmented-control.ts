@@ -99,7 +99,7 @@ export class MthSegmentedControl extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -217,7 +217,7 @@ export class MthSegmentedControl extends UIElement {
     this.ensureDynamicSheet();
     const count = Math.max(1, this.resolvedItems.length);
     const idx = this.resolvedItems.findIndex((item) => item.value === this.value);
-    this.dataset.hasSelection = idx >= 0 ? 'true' : 'false';
+    this.setCustomState('selected', idx >= 0);
     if (!this.dynamicSheet) return;
     const safeIdx = idx >= 0 ? idx : 0;
     this.dynamicSheet.replaceSync(`:host { --_seg-count: ${count}; --_seg-index: ${safeIdx}; }`);
@@ -323,9 +323,13 @@ export class MthSegmentedControl extends UIElement {
   }
 
   override render() {
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-sc-hint');
     if (hasError) describedByIds.push('mth-sc-error');
@@ -333,7 +337,7 @@ export class MthSegmentedControl extends UIElement {
     return html`
       <div part="base" class="base">
         <span id="mth-sc-label" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </span>
 
         <div
@@ -341,7 +345,7 @@ export class MthSegmentedControl extends UIElement {
           class="track"
           role="radiogroup"
           aria-labelledby=${ifDefined(hasLabel ? 'mth-sc-label' : undefined)}
-          aria-label=${ifDefined(!hasLabel ? this.label || 'Segmented control' : undefined)}
+          aria-label=${ifDefined(!hasLabel ? this.t('groupLabel') : undefined)}
           aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
           aria-disabled=${this.isEffectivelyDisabled ? 'true' : 'false'}
         >
@@ -372,11 +376,11 @@ export class MthSegmentedControl extends UIElement {
         </div>
 
         <div id="mth-sc-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-sc-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

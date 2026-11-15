@@ -5,7 +5,7 @@ export const mentionInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-mention-input',
   package: '@methane/ui',
   conformance: ['form-control', 'overlay', 'listbox'],
-  controllers: ['FormControlController', 'OverlayController', 'PositioningController', 'ListboxController'],
+  controllers: ['FormControlController', 'OverlayController', 'PositioningController', 'ListboxController', 'InputController'],
   focusModel: 'delegates-focus',
   states: ['dirty', 'touched', 'user-invalid', 'disabled', 'readonly', 'required'],
   keyboard: [
@@ -20,7 +20,7 @@ export const mentionInputSpec: ComponentBehaviorSpec = {
     { name: 'trigger', attr: 'trigger', type: 'string', default: '@' },
     { name: 'options', attr: false, type: 'ReadonlyArray<MentionOption> | null', default: null },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Type @ to mention someone...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'multiline', attr: 'multiline', type: 'boolean', default: false },

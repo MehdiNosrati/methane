@@ -4,8 +4,8 @@ import { transferListMessages } from './transfer-list.messages.js';
 export const transferListSpec: ComponentBehaviorSpec = {
   tag: 'mth-transfer-list',
   package: '@methane/ui',
-  conformance: ['form-control'],
-  controllers: ['FormControlController', 'SelectionController'],
+  conformance: ['form-control', 'listbox'],
+  controllers: ['FormControlController', 'SelectionController', 'ListboxController'],
   focusModel: 'delegates-focus',
   states: ['dirty', 'touched', 'user-invalid', 'disabled', 'required'],
   keyboard: [
@@ -19,9 +19,9 @@ export const transferListSpec: ComponentBehaviorSpec = {
     { name: 'defaultValue', attr: 'default-value', type: 'string', default: '' },
     { name: 'options', attr: false, type: 'ReadonlyArray<TransferListItem> | null', default: null },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'sourceTitle', attr: 'source-title', type: 'string', default: 'Available' },
-    { name: 'targetTitle', attr: 'target-title', type: 'string', default: 'Selected' },
-    { name: 'searchPlaceholder', attr: 'search-placeholder', type: 'string', default: 'Filter items...' },
+    { name: 'sourceTitle', attr: 'source-title', type: 'string', default: '' },
+    { name: 'targetTitle', attr: 'target-title', type: 'string', default: '' },
+    { name: 'searchPlaceholder', attr: 'search-placeholder', type: 'string', default: '' },
     { name: 'searchable', attr: 'searchable', type: 'boolean', default: true },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },

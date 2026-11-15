@@ -45,7 +45,7 @@ export class MthMultiSelect extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = multiSelectMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -113,7 +113,7 @@ export class MthMultiSelect extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -351,19 +351,35 @@ export class MthMultiSelect extends UIElement {
     this.slottedErrorText = slot.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '').join('').trim();
   }
 
+  override updated(changed: PropertyValues<this>): void {
+    const lbActive = this.listboxEl?.getAttribute('aria-activedescendant');
+    if (lbActive && (!this.open || !this.shadowRoot?.getElementById(lbActive))) {
+      this.listboxEl?.removeAttribute('aria-activedescendant');
+    }
+    super.updated(changed);
+  }
+
   override render() {
     const filtered = this.getFilteredOptions();
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-ms-hint');
     if (hasError) describedByIds.push('mth-ms-error');
+    const renderedIds = filtered.map((_, idx) => `mth-ms-opt-${idx}`);
+    const candidateActiveId = this.listboxCtrl.activeOption?.id;
+    const activeId = this.open && candidateActiveId && renderedIds.includes(candidateActiveId) ? candidateActiveId : undefined;
+    const effPlaceholder = this.placeholder || this.t('placeholder');
 
     return html`
       <div part="base" class="base">
         <label id="mth-ms-label" for="mth-ms-input" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </label>
 
         <div
@@ -385,7 +401,7 @@ export class MthMultiSelect extends UIElement {
                   type="button"
                   part="tag-remove"
                   class="tag-remove"
-                  aria-label="${multiSelectMessages.removeTag} ${this.resolveOptionLabel(val)}"
+                  aria-label="${this.t('removeTag')} ${this.resolveOptionLabel(val)}"
                   ?disabled=${this.isEffectivelyDisabled}
                   @click=${(e: Event) => {
                     e.stopPropagation();
@@ -407,12 +423,12 @@ export class MthMultiSelect extends UIElement {
             aria-autocomplete="list"
             aria-expanded=${this.open ? 'true' : 'false'}
             aria-controls="mth-ms-listbox"
-            aria-activedescendant=${ifDefined(this.open ? this.listboxCtrl.activeOption?.id : undefined)}
+            aria-activedescendant=${ifDefined(activeId)}
             aria-labelledby=${ifDefined(hasLabel ? 'mth-ms-label' : undefined)}
-            aria-label=${ifDefined(!hasLabel ? this.label || multiSelectMessages.defaultLabel : undefined)}
+            aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
             aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
             .value=${this.queryText}
-            placeholder=${this.selectedList.length === 0 ? this.placeholder : ''}
+            placeholder=${this.selectedList.length === 0 ? effPlaceholder : ''}
             ?disabled=${this.isEffectivelyDisabled}
             @focus=${() => {
               if (!this.isEffectivelyDisabled && !this.open) void this.show();
@@ -430,7 +446,7 @@ export class MthMultiSelect extends UIElement {
                   type="button"
                   part="clear"
                   class="clear-btn"
-                  aria-label=${multiSelectMessages.clearAll}
+                  aria-label=${this.t('clearAll')}
                   @click=${(e: Event) => {
                     e.stopPropagation();
                     this.clear();
@@ -449,16 +465,17 @@ export class MthMultiSelect extends UIElement {
           role="listbox"
           aria-multiselectable="true"
           aria-labelledby=${ifDefined(hasLabel ? 'mth-ms-label' : undefined)}
-          aria-label=${ifDefined(!hasLabel ? this.label || multiSelectMessages.defaultLabel : undefined)}
+          aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
           tabindex="-1"
           data-open=${this.open ? 'true' : 'false'}
         >
           ${filtered.length === 0
-            ? html`<div class="empty">${multiSelectMessages.emptyResults}</div>`
-            : filtered.map((opt) => {
+            ? html`<div class="empty">${this.t('emptyResults')}</div>`
+            : filtered.map((opt, idx) => {
                 const isSelected = this.selectedList.includes(opt.value);
                 return html`
                   <div
+                    id=${`mth-ms-opt-${idx}`}
                     part="option"
                     class="option"
                     role="option"
@@ -475,11 +492,11 @@ export class MthMultiSelect extends UIElement {
         </div>
 
         <div id="mth-ms-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-ms-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

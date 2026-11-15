@@ -50,7 +50,7 @@ export class MthCreatableSelect extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = creatableSelectMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -115,7 +115,7 @@ export class MthCreatableSelect extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -399,20 +399,39 @@ export class MthCreatableSelect extends UIElement {
     this.slottedErrorText = slot.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '').join('').trim();
   }
 
+  override updated(changed: PropertyValues<this>): void {
+    const lbActive = this.listboxEl?.getAttribute('aria-activedescendant');
+    if (lbActive && (!this.open || !this.shadowRoot?.getElementById(lbActive))) {
+      this.listboxEl?.removeAttribute('aria-activedescendant');
+    }
+    super.updated(changed);
+  }
+
   override render() {
     const filtered = this.getFilteredOptions();
     const showCreate = this.canCreateQuery();
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-cs-hint');
     if (hasError) describedByIds.push('mth-cs-error');
+    const renderedIds = [
+      ...filtered.map((_, idx) => `mth-cs-opt-${idx}`),
+      ...(showCreate ? ['mth-cs-opt-create'] : []),
+    ];
+    const candidateActiveId = this.listboxCtrl.activeOption?.id;
+    const activeId = this.open && candidateActiveId && renderedIds.includes(candidateActiveId) ? candidateActiveId : undefined;
+    const effPlaceholder = this.placeholder || this.t('placeholder');
 
     return html`
       <div part="base" class="base">
         <label id="mth-cs-label" for="mth-cs-input" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </label>
 
         <div
@@ -435,7 +454,7 @@ export class MthCreatableSelect extends UIElement {
                       type="button"
                       part="tag-remove"
                       class="tag-remove"
-                      aria-label="${creatableSelectMessages.removeTag} ${this.resolveLabel(val)}"
+                      aria-label="${this.t('removeTag')} ${this.resolveLabel(val)}"
                       ?disabled=${this.isEffectivelyDisabled}
                       @click=${(e: Event) => {
                         e.stopPropagation();
@@ -461,12 +480,12 @@ export class MthCreatableSelect extends UIElement {
             aria-autocomplete="list"
             aria-expanded=${this.open ? 'true' : 'false'}
             aria-controls="mth-cs-listbox"
-            aria-activedescendant=${ifDefined(this.open ? this.listboxCtrl.activeOption?.id : undefined)}
+            aria-activedescendant=${ifDefined(activeId)}
             aria-labelledby=${ifDefined(hasLabel ? 'mth-cs-label' : undefined)}
-            aria-label=${ifDefined(!hasLabel ? this.label || creatableSelectMessages.defaultLabel : undefined)}
+            aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
             aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
             .value=${this.queryText}
-            placeholder=${!this.multiple || this.selectedList.length === 0 ? this.placeholder : ''}
+            placeholder=${!this.multiple || this.selectedList.length === 0 ? effPlaceholder : ''}
             ?disabled=${this.isEffectivelyDisabled}
             @focus=${() => {
               if (!this.isEffectivelyDisabled && !this.open) void this.show();
@@ -484,7 +503,7 @@ export class MthCreatableSelect extends UIElement {
                   type="button"
                   part="clear"
                   class="clear-btn"
-                  aria-label=${creatableSelectMessages.clearLabel}
+                  aria-label=${this.t('clearLabel')}
                   @click=${(e: Event) => {
                     e.stopPropagation();
                     this.clear();
@@ -503,14 +522,15 @@ export class MthCreatableSelect extends UIElement {
           role="listbox"
           aria-multiselectable=${this.multiple ? 'true' : 'false'}
           aria-labelledby=${ifDefined(hasLabel ? 'mth-cs-label' : undefined)}
-          aria-label=${ifDefined(!hasLabel ? this.label || creatableSelectMessages.defaultLabel : undefined)}
+          aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
           tabindex="-1"
           data-open=${this.open ? 'true' : 'false'}
         >
-          ${filtered.map((opt) => {
+          ${filtered.map((opt, idx) => {
             const isSelected = this.selectedList.includes(opt.value);
             return html`
               <div
+                id=${`mth-cs-opt-${idx}`}
                 part="option"
                 class="option"
                 role="option"
@@ -528,6 +548,7 @@ export class MthCreatableSelect extends UIElement {
           ${showCreate
             ? html`
                 <div
+                  id="mth-cs-opt-create"
                   part="create-option"
                   class="option create-option"
                   role="option"
@@ -536,20 +557,20 @@ export class MthCreatableSelect extends UIElement {
                   aria-selected="false"
                   @click=${() => this.createOptionFromQuery(this.queryText)}
                 >
-                  ${creatableSelectMessages.createPrefix} "${this.queryText.trim()}"
+                  ${this.t('createPrefix')} "${this.queryText.trim()}"
                 </div>
               `
             : filtered.length === 0
-              ? html`<div class="empty">${creatableSelectMessages.emptyResults}</div>`
+              ? html`<div class="empty">${this.t('emptyResults')}</div>`
               : nothing}
         </div>
 
         <div id="mth-cs-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-cs-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

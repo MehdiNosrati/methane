@@ -5,7 +5,7 @@ export const multiSelectStyles = css`
     display: block;
     position: relative;
     font-family: inherit;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
   }
 
   :host([disabled]) {
@@ -33,8 +33,8 @@ export const multiSelectStyles = css`
     padding-block: 0.25rem;
     padding-inline: 0.5rem;
     border-radius: 0.375rem;
-    border: 1px solid var(--mth-multi-select-border, var(--mth-color-border, light-dark(#cbd5e1, #334155)));
-    background-color: var(--mth-multi-select-bg, var(--mth-color-surface, light-dark(#ffffff, #0f172a)));
+    border: 1px solid var(--mth-multi-select-border, var(--mth-color-border, light-dark(oklch(0.869 0.022 253), oklch(0.372 0.044 257))));
+    background-color: var(--mth-multi-select-bg, var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.208 0.042 266))));
     box-sizing: border-box;
   }
 
@@ -53,9 +53,9 @@ export const multiSelectStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
     background-color: var(
       --mth-multi-select-tag-bg,
-      var(--mth-color-accent-subtle, light-dark(#eff6ff, #1e3a8a))
+      var(--mth-color-accent-subtle, light-dark(oklch(0.97 0.014 255), oklch(0.379 0.146 266)))
     );
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
   }
 
   .tag-remove {
@@ -91,7 +91,7 @@ export const multiSelectStyles = css`
     appearance: none;
     border: none;
     background: transparent;
-    color: var(--mth-color-fg-muted, light-dark(#64748b, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.554 0.046 257), oklch(0.704 0.04 257)));
     cursor: pointer;
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
@@ -101,8 +101,8 @@ export const multiSelectStyles = css`
     margin: 0;
     padding: var(--mth-space-1, 0.25rem);
     border-radius: 0.375rem;
-    border: 1px solid var(--mth-color-border, light-dark(#cbd5e1, #334155));
-    background-color: var(--mth-color-surface-raised, light-dark(#ffffff, #1e293b));
+    border: 1px solid var(--mth-color-border, light-dark(oklch(0.869 0.022 253), oklch(0.372 0.044 257)));
+    background-color: var(--mth-color-surface-raised, light-dark(oklch(1 0 0), oklch(0.279 0.041 260)));
     box-shadow: 0 8px 20px oklch(0 0 0 / 0.12);
     max-block-size: 14rem;
     overflow-block: auto;
@@ -125,7 +125,7 @@ export const multiSelectStyles = css`
   }
 
   .option[data-active='true'] {
-    background-color: var(--mth-color-bg-subtle, light-dark(#f1f5f9, #334155));
+    background-color: var(--mth-color-bg-subtle, light-dark(oklch(0.968 0.007 248), oklch(0.372 0.044 257)));
   }
 
   .option[aria-selected='true'] {
@@ -141,12 +141,12 @@ export const multiSelectStyles = css`
   .empty {
     padding: var(--mth-space-2, 0.5rem);
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#64748b, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.554 0.046 257), oklch(0.704 0.04 257)));
   }
 
   .hint {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .error {

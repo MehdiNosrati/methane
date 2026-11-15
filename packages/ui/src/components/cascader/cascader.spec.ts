@@ -4,8 +4,8 @@ import { cascaderMessages } from './cascader.messages.js';
 export const cascaderSpec: ComponentBehaviorSpec = {
   tag: 'mth-cascader',
   package: '@methane/ui',
-  conformance: ['form-control', 'overlay'],
-  controllers: ['FormControlController', 'OverlayController', 'PositioningController'],
+  conformance: ['form-control', 'overlay', 'listbox'],
+  controllers: ['FormControlController', 'OverlayController', 'PositioningController', 'ListboxController'],
   focusModel: 'delegates-focus',
   states: ['dirty', 'touched', 'user-invalid', 'disabled', 'required'],
   keyboard: [
@@ -22,7 +22,7 @@ export const cascaderSpec: ComponentBehaviorSpec = {
     { name: 'separator', attr: 'separator', type: 'string', default: '/' },
     { name: 'options', attr: false, type: 'ReadonlyArray<CascaderOption> | null', default: null },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Select an option...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'open', attr: 'open', type: 'boolean', default: false },

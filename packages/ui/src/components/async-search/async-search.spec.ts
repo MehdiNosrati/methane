@@ -26,7 +26,7 @@ export const asyncSearchSpec: ComponentBehaviorSpec = {
     { name: 'dataSource', attr: false, type: 'DataSource<AsyncSearchOption, string> | null', default: null },
     { name: 'debounceMs', attr: 'debounce-ms', type: 'number', default: 200 },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Search...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'open', attr: 'open', type: 'boolean', default: false },

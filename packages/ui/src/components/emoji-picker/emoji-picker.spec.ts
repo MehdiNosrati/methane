@@ -5,7 +5,7 @@ export const emojiPickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-emoji-picker',
   package: '@methane/ui',
   conformance: ['roving-focus', 'overlay'],
-  controllers: ['RovingFocusController', 'OverlayController', 'PositioningController'],
+  controllers: ['RovingFocusController', 'OverlayController', 'PositioningController', 'InputController'],
   focusModel: 'delegates-focus',
   states: ['open', 'disabled'],
   keyboard: [

@@ -5,7 +5,7 @@ export const emojiPickerStyles = css`
     display: inline-block;
     position: relative;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    color: var(--mth-color-text, light-dark(oklch(0.2 0.02 250), oklch(0.92 0.01 250)));
+    color: var(--mth-color-fg, light-dark(oklch(0.2 0.02 250), oklch(0.92 0.01 250)));
   }
 
   .trigger {
@@ -31,7 +31,7 @@ export const emojiPickerStyles = css`
     inline-size: var(--mth-emoji-panel-inline-size, 18rem);
     border: 1px solid var(--mth-color-border, light-dark(oklch(0.8 0.01 250), oklch(0.35 0.01 250)));
     border-radius: var(--mth-radius-md, 0.5rem);
-    background: var(--mth-color-surface-elevated, light-dark(oklch(1 0 0), oklch(0.2 0.01 250)));
+    background: var(--mth-color-surface-raised, light-dark(oklch(1 0 0), oklch(0.2 0.01 250)));
     box-shadow: var(--mth-shadow-md, 0 8px 24px light-dark(oklch(0.2 0.02 250 / 0.12), oklch(0 0 0 / 0.45)));
     padding: var(--mth-space-2, 0.5rem);
     display: flex;
@@ -41,7 +41,7 @@ export const emojiPickerStyles = css`
 
   .panel.popover {
     position: fixed;
-    z-index: var(--mth-z-popover, 40);
+    z-index: var(--mth-z-index-popover, 40);
     margin: 0;
     inset: auto;
   }
@@ -66,7 +66,7 @@ export const emojiPickerStyles = css`
     background: transparent;
     color: inherit;
     font: inherit;
-    font-size: var(--mth-text-sm, 0.875rem);
+    font-size: var(--mth-font-size-sm, 0.875rem);
   }
 
   .skin-tones {
@@ -86,7 +86,7 @@ export const emojiPickerStyles = css`
   }
 
   .tone-btn[aria-pressed='true'] {
-    border-color: var(--mth-color-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
+    border-color: var(--mth-color-border-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
   }
 
   .categories {
@@ -100,12 +100,12 @@ export const emojiPickerStyles = css`
   .category {
     border: none;
     background: transparent;
-    color: var(--mth-color-text-muted, light-dark(oklch(0.45 0.01 250), oklch(0.7 0.01 250)));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.01 250), oklch(0.7 0.01 250)));
     padding-block: 2px;
     padding-inline: var(--mth-space-2, 0.5rem);
     border-radius: var(--mth-radius-sm, 0.25rem);
     font: inherit;
-    font-size: var(--mth-text-xs, 0.75rem);
+    font-size: var(--mth-font-size-xs, 0.75rem);
     cursor: pointer;
   }
 
@@ -117,7 +117,7 @@ export const emojiPickerStyles = css`
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(var(--mth-emoji-columns, 6), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--mth-emoji-columns, var(--_emoji-columns, 6)), minmax(0, 1fr));
     gap: 4px;
     max-block-size: var(--mth-emoji-grid-max-block-size, 12rem);
     overflow-block: auto;
@@ -137,7 +137,7 @@ export const emojiPickerStyles = css`
   }
 
   .emoji-button:hover:not(:disabled) {
-    background: var(--mth-color-surface-hover, light-dark(oklch(0.95 0.01 250), oklch(0.28 0.02 250)));
+    background: var(--mth-color-bg-subtle, light-dark(oklch(0.95 0.01 250), oklch(0.28 0.02 250)));
   }
 
   .emoji-button[aria-pressed='true'] {
@@ -149,7 +149,7 @@ export const emojiPickerStyles = css`
   .tone-btn:focus-visible,
   .category:focus-visible,
   .emoji-button:focus-visible {
-    outline: 2px solid var(--mth-color-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.2 255), oklch(0.72 0.18 255)));
     outline-offset: 2px;
   }
 
@@ -157,8 +157,8 @@ export const emojiPickerStyles = css`
     grid-column: 1 / -1;
     padding: var(--mth-space-4, 1rem);
     text-align: center;
-    font-size: var(--mth-text-sm, 0.875rem);
-    color: var(--mth-color-text-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.52 0.01 250), oklch(0.68 0.01 250)));
   }
 
   @media (forced-colors: active) {

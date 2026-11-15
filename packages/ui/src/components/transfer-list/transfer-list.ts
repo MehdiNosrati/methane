@@ -1,5 +1,5 @@
 import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, SelectionController } from '@methane/primitives';
+import { FormControlController, ListboxController, SelectionController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { transferListMessages } from './transfer-list.messages.js';
@@ -47,13 +47,13 @@ export class MthTransferList extends UIElement {
   label = '';
 
   @property({ type: String, attribute: 'source-title' })
-  sourceTitle: string = transferListMessages.sourceTitle;
+  sourceTitle = '';
 
   @property({ type: String, attribute: 'target-title' })
-  targetTitle: string = transferListMessages.targetTitle;
+  targetTitle = '';
 
   @property({ type: String, attribute: 'search-placeholder' })
-  searchPlaceholder: string = transferListMessages.searchPlaceholder;
+  searchPlaceholder = '';
 
   @property({ type: Boolean })
   searchable = true;
@@ -81,9 +81,11 @@ export class MthTransferList extends UIElement {
 
   private readonly uid = `mth-transfer-${++transferListIdCounter}`;
   private syncingValue = false;
+  private activePane: 'source' | 'target' = 'source';
   private readonly formCtrl: FormControlController;
   private readonly sourceSelection: SelectionController<string>;
   private readonly targetSelection: SelectionController<string>;
+  private readonly listboxCtrl: ListboxController;
 
   constructor() {
     super();
@@ -94,7 +96,12 @@ export class MthTransferList extends UIElement {
       required: this.required,
       disabled: this.disabled,
       messages: {
+        ...transferListMessages,
         required: transferListMessages.requiredError,
+      },
+      validator: () => {
+        const err = this.error || this.formCtrl.fieldContext?.error || '';
+        return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
       onValueSync: (val) => {
         const next = val ?? '';
@@ -124,6 +131,23 @@ export class MthTransferList extends UIElement {
       allowEmpty: true,
       onChange: () => {
         this.requestUpdate();
+      },
+    });
+
+    this.listboxCtrl = new ListboxController(this, {
+      focusMode: 'activedescendant',
+      multiple: true,
+      loop: true,
+      getListboxElement: () =>
+        this.shadowRoot?.querySelector<HTMLElement>(`[data-pane="${this.activePane}"] [role="listbox"]`) ?? null,
+      getOptionElements: () =>
+        Array.from(
+          this.shadowRoot?.querySelectorAll<HTMLElement>(`[data-pane="${this.activePane}"] [role="option"]`) ?? [],
+        ),
+      onSelectionChange: (selected) => {
+        const ctrl = this.activePane === 'source' ? this.sourceSelection : this.targetSelection;
+        ctrl.setSelection(selected);
+        this.formCtrl.markTouched();
       },
     });
   }
@@ -172,7 +196,8 @@ export class MthTransferList extends UIElement {
     this.formCtrl.handleFormStateRestore(state, mode);
   }
 
-  protected override firstUpdated(): void {
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.formCtrl.setDefaultValue(this.defaultValue || this.value);
     if (this.value) {
       this.formCtrl.setValue(this.value, { markDirty: false });
@@ -180,7 +205,8 @@ export class MthTransferList extends UIElement {
     this.syncSelectionItems();
   }
 
-  protected override updated(changed: PropertyValues): void {
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
     if (changed.has('defaultValue')) {
       this.formCtrl.setDefaultValue(this.defaultValue);
     }
@@ -191,7 +217,7 @@ export class MthTransferList extends UIElement {
       this.formCtrl.hostDisabled = this.disabled;
     }
     if (changed.has('error')) {
-      this.formCtrl.setValidity(this.error ? { customError: true } : {}, this.error);
+      this.formCtrl.validate();
     }
     if (changed.has('value') && !this.syncingValue) {
       this.formCtrl.setValue(this.value, { markDirty: false });
@@ -318,6 +344,7 @@ export class MthTransferList extends UIElement {
     const enabledVisible = visible.filter((i) => !i.disabled);
     const checkedCount = enabledVisible.filter((i) => selectedSet.has(i.key)).length;
     const allChecked = enabledVisible.length > 0 && checkedCount === enabledVisible.length;
+    const searchPlaceholder = this.searchPlaceholder || this.t('searchPlaceholder');
 
     return html`
       <div class="pane" part="pane" data-pane=${pane}>
@@ -325,7 +352,7 @@ export class MthTransferList extends UIElement {
           <label class="pane-title-wrap">
             <input
               type="checkbox"
-              aria-label=${`${transferListMessages.selectAllLabel} ${title}`}
+              aria-label=${`${this.t('selectAllLabel')} ${title}`}
               .checked=${allChecked}
               .indeterminate=${checkedCount > 0 && !allChecked}
               ?disabled=${this.isEffectivelyDisabled || enabledVisible.length === 0}
@@ -346,8 +373,8 @@ export class MthTransferList extends UIElement {
                   type="search"
                   class="search"
                   part="search"
-                  aria-label=${`${title} ${this.searchPlaceholder}`}
-                  placeholder=${this.searchPlaceholder}
+                  aria-label=${`${title} ${searchPlaceholder}`}
+                  placeholder=${searchPlaceholder}
                   .value=${query}
                   ?disabled=${this.isEffectivelyDisabled}
                   @input=${(e: Event) => {
@@ -358,21 +385,41 @@ export class MthTransferList extends UIElement {
             `
           : nothing}
 
-        <ul class="list" part="list" aria-label=${title}>
+        <ul
+          class="list"
+          part="list"
+          role="listbox"
+          tabindex=${pane === this.activePane ? 0 : -1}
+          aria-multiselectable="true"
+          aria-label=${title}
+          @focusin=${() => {
+            if (this.activePane !== pane) {
+              this.activePane = pane;
+            }
+          }}
+        >
           ${visible.length === 0
-            ? html`<li class="empty">${transferListMessages.emptyText}</li>`
-            : visible.map((item) => {
+            ? html`<li class="empty">${this.t('emptyText')}</li>`
+            : visible.map((item, idx) => {
                 const itemDisabled = this.isEffectivelyDisabled || Boolean(item.disabled);
                 const isChecked = selectedSet.has(item.key);
                 return html`
-                  <li>
+                  <li
+                    id=${`${this.uid}-${pane}-opt-${idx}`}
+                    role="option"
+                    data-value=${item.key}
+                    aria-selected=${isChecked ? 'true' : 'false'}
+                    aria-disabled=${itemDisabled ? 'true' : 'false'}
+                  >
                     <label class="item" part="item" data-key=${item.key} data-disabled=${itemDisabled ? 'true' : 'false'}>
                       <input
                         type="checkbox"
                         .checked=${isChecked}
                         ?disabled=${itemDisabled}
                         @change=${() => {
+                          this.activePane = pane;
                           ctrl.select(item.key, { toggle: true });
+                          this.listboxCtrl.setSelectedValues(ctrl.selectedValues);
                           this.formCtrl.markTouched();
                         }}
                       />
@@ -390,11 +437,17 @@ export class MthTransferList extends UIElement {
     const labelId = `${this.uid}-label`;
     const hintId = `${this.uid}-hint`;
     const errorId = `${this.uid}-error`;
-    const effectiveError = this.error || (this.invalid ? this.validationMessage : '');
-    const describedBy = [this.hint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || ctx?.label || '';
+    const effHint = this.hint || ctx?.hint || '';
+    const rawError = this.error || ctx?.error || '';
+    const effectiveError = rawError || (this.invalid ? this.validationMessage : '');
+    const describedBy = [effHint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
 
+    const effSourceTitle = this.sourceTitle || this.t('sourceTitle');
+    const effTargetTitle = this.targetTitle || this.t('targetTitle');
     const { source, target } = this.splitItems();
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
 
     const hasMovableSource = this.filterItems(source, this.sourceQuery).some((i) => !i.disabled);
     const hasMovableTarget = this.filterItems(target, this.targetQuery).some((i) => !i.disabled);
@@ -404,17 +457,17 @@ export class MthTransferList extends UIElement {
         class="base"
         part="base"
         role="group"
-        aria-labelledby=${this.label ? labelId : nothing}
+        aria-labelledby=${effLabel ? labelId : nothing}
         aria-describedby=${describedBy ?? nothing}
       >
-        ${this.label
+        ${effLabel
           ? html`<div class="label" part="label" id=${labelId}>
-              <slot name="label">${this.label}</slot>
+              <slot name="label">${effLabel}</slot>
             </div>`
           : html`<slot name="label"></slot>`}
 
         <div class="panes" part="panes">
-          ${this.renderPane('source', this.sourceTitle, source, this.sourceQuery, (q) => {
+          ${this.renderPane('source', effSourceTitle, source, this.sourceQuery, (q) => {
             this.sourceQuery = q;
           })}
 
@@ -424,7 +477,7 @@ export class MthTransferList extends UIElement {
               class="action-button"
               part="action-button"
               data-action="move-all-right"
-              aria-label=${transferListMessages.moveAllRightLabel}
+              aria-label=${this.t('moveAllRightLabel')}
               ?disabled=${this.isEffectivelyDisabled || !hasMovableSource}
               @click=${() => this.moveItems('right', true)}
             >
@@ -435,7 +488,7 @@ export class MthTransferList extends UIElement {
               class="action-button"
               part="action-button"
               data-action="move-right"
-              aria-label=${transferListMessages.moveRightLabel}
+              aria-label=${this.t('moveRightLabel')}
               ?disabled=${this.isEffectivelyDisabled || this.sourceSelection.selectedValues.length === 0}
               @click=${() => this.moveItems('right', false)}
             >
@@ -446,7 +499,7 @@ export class MthTransferList extends UIElement {
               class="action-button"
               part="action-button"
               data-action="move-left"
-              aria-label=${transferListMessages.moveLeftLabel}
+              aria-label=${this.t('moveLeftLabel')}
               ?disabled=${this.isEffectivelyDisabled || this.targetSelection.selectedValues.length === 0}
               @click=${() => this.moveItems('left', false)}
             >
@@ -457,7 +510,7 @@ export class MthTransferList extends UIElement {
               class="action-button"
               part="action-button"
               data-action="move-all-left"
-              aria-label=${transferListMessages.moveAllLeftLabel}
+              aria-label=${this.t('moveAllLeftLabel')}
               ?disabled=${this.isEffectivelyDisabled || !hasMovableTarget}
               @click=${() => this.moveItems('left', true)}
             >
@@ -465,14 +518,14 @@ export class MthTransferList extends UIElement {
             </button>
           </div>
 
-          ${this.renderPane('target', this.targetTitle, target, this.targetQuery, (q) => {
+          ${this.renderPane('target', effTargetTitle, target, this.targetQuery, (q) => {
             this.targetQuery = q;
           })}
         </div>
 
-        ${this.hint
+        ${effHint
           ? html`<div class="hint" part="hint" id=${hintId}>
-              <slot name="hint">${this.hint}</slot>
+              <slot name="hint">${effHint}</slot>
             </div>`
           : html`<slot name="hint"></slot>`}
 

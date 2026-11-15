@@ -54,7 +54,7 @@ export class MthAsyncSearch extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = asyncSearchMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -117,7 +117,7 @@ export class MthAsyncSearch extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -345,20 +345,36 @@ export class MthAsyncSearch extends UIElement {
     this.slottedErrorText = slot.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '').join('').trim();
   }
 
+  override updated(changed: PropertyValues<this>): void {
+    const lbActive = this.listboxEl?.getAttribute('aria-activedescendant');
+    if (lbActive && (!this.open || !this.shadowRoot?.getElementById(lbActive))) {
+      this.listboxEl?.removeAttribute('aria-activedescendant');
+    }
+    super.updated(changed);
+  }
+
   override render() {
     const items = this.resolveCurrentItems();
     const status = this.dataSource ? this.dataCtrl.status : items.length === 0 ? 'empty' : 'ready';
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-as-hint');
     if (hasError) describedByIds.push('mth-as-error');
+    const renderedIds = items.map((_, idx) => `mth-as-opt-${idx}`);
+    const candidateActiveId = this.listboxCtrl.activeOption?.id;
+    const activeId = this.open && candidateActiveId && renderedIds.includes(candidateActiveId) ? candidateActiveId : undefined;
+    const effPlaceholder = this.placeholder || this.t('placeholder');
 
     return html`
       <div part="base" class="base">
         <label id="mth-as-label" for="mth-as-input" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </label>
 
         <div id="mth-as-control" part="control" class="control">
@@ -371,12 +387,12 @@ export class MthAsyncSearch extends UIElement {
             aria-autocomplete="list"
             aria-expanded=${this.open ? 'true' : 'false'}
             aria-controls="mth-as-listbox"
-            aria-activedescendant=${ifDefined(this.open ? this.listboxCtrl.activeOption?.id : undefined)}
+            aria-activedescendant=${ifDefined(activeId)}
             aria-labelledby=${ifDefined(hasLabel ? 'mth-as-label' : undefined)}
-            aria-label=${ifDefined(!hasLabel ? this.label || asyncSearchMessages.defaultLabel : undefined)}
+            aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
             aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
             .value=${this.queryText}
-            placeholder=${this.placeholder}
+            placeholder=${effPlaceholder}
             ?disabled=${this.isEffectivelyDisabled}
             @focus=${() => {
               if (!this.isEffectivelyDisabled && !this.open) void this.show();
@@ -396,7 +412,7 @@ export class MthAsyncSearch extends UIElement {
                   type="button"
                   part="clear"
                   class="clear-btn"
-                  aria-label=${asyncSearchMessages.clearLabel}
+                  aria-label=${this.t('clearLabel')}
                   @click=${() => this.clear()}
                 >
                   ×
@@ -411,21 +427,22 @@ export class MthAsyncSearch extends UIElement {
           class="listbox"
           role="listbox"
           aria-labelledby=${ifDefined(hasLabel ? 'mth-as-label' : undefined)}
-          aria-label=${ifDefined(!hasLabel ? this.label || asyncSearchMessages.defaultLabel : undefined)}
+          aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
           tabindex="-1"
           data-open=${this.open ? 'true' : 'false'}
         >
           ${status === 'loading' || status === 'refreshing'
-            ? html`<div part="status" class="status" data-status=${status}>${asyncSearchMessages.loading}</div>`
+            ? html`<div part="status" class="status" data-status=${status}>${this.t('loading')}</div>`
             : status === 'error'
-              ? html`<div part="status" class="status" data-status="error">${asyncSearchMessages.errorMessage}</div>`
+              ? html`<div part="status" class="status" data-status="error">${this.t('errorMessage')}</div>`
               : nothing}
 
-          ${items.map((opt) => {
+          ${items.map((opt, idx) => {
             const val = this.resolveItemValue(opt);
             const isSelected = this.value === val;
             return html`
               <div
+                id=${`mth-as-opt-${idx}`}
                 part="option"
                 class="option"
                 role="option"
@@ -441,16 +458,16 @@ export class MthAsyncSearch extends UIElement {
           })}
 
           ${items.length === 0 && (status === 'empty' || status === 'ready')
-            ? html`<div part="status" class="status" data-status="empty">${asyncSearchMessages.emptyResults}</div>`
+            ? html`<div part="status" class="status" data-status="empty">${this.t('emptyResults')}</div>`
             : nothing}
         </div>
 
         <div id="mth-as-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-as-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import {
   FormControlController,
+  InputController,
   ListboxController,
   OverlayController,
   PositioningController,
@@ -59,7 +60,7 @@ export class MthMentionInput extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = mentionInputMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -109,6 +110,7 @@ export class MthMentionInput extends UIElement {
   private readonly uid = `mth-mention-${++mentionInputIdCounter}`;
   private syncingValue = false;
   private readonly formCtrl: FormControlController;
+  private readonly inputCtrl: InputController;
   private readonly overlayCtrl: OverlayController;
   private readonly positionCtrl: PositioningController;
   private readonly listboxCtrl: ListboxController;
@@ -123,7 +125,12 @@ export class MthMentionInput extends UIElement {
       disabled: this.disabled,
       readOnly: this.readOnly,
       messages: {
+        ...mentionInputMessages,
         required: mentionInputMessages.requiredError,
+      },
+      validator: () => {
+        const err = this.error || this.formCtrl.fieldContext?.error || '';
+        return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
       onValueSync: (val) => {
         const next = val ?? '';
@@ -137,6 +144,8 @@ export class MthMentionInput extends UIElement {
         this.formDisabled = isDisabled;
       },
     });
+
+    this.inputCtrl = new InputController(this);
 
     this.overlayCtrl = new OverlayController(this, {
       mode: 'popover',
@@ -242,14 +251,28 @@ export class MthMentionInput extends UIElement {
     this.formCtrl.handleFormStateRestore(state, mode);
   }
 
-  protected override firstUpdated(): void {
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.formCtrl.setDefaultValue(this.defaultValue);
     if (this.value) {
       this.formCtrl.setValue(this.value, { markDirty: false });
     }
+  }
+
+  protected override firstUpdated(): void {
+    this.inputCtrl.bind(this.inputEl ?? null);
     if (this.open && !this.isEffectivelyDisabled) {
       void this.show();
     }
+  }
+
+  override updated(changed: PropertyValues): void {
+    const lbActive = this.listboxEl?.getAttribute('aria-activedescendant');
+    if (lbActive && (!this.open || !this.shadowRoot?.getElementById(lbActive))) {
+      this.listboxEl?.removeAttribute('aria-activedescendant');
+    }
+    super.updated(changed);
+    this.inputCtrl.bind(this.inputEl ?? null);
   }
 
   override willUpdate(changed: PropertyValues): void {
@@ -375,6 +398,7 @@ export class MthMentionInput extends UIElement {
   }
 
   private handleInput = (e: Event): void => {
+    if (this.inputCtrl.isComposing) return;
     const target = e.currentTarget as HTMLInputElement | HTMLTextAreaElement;
     const nextValue = target.value;
     this.syncingValue = true;
@@ -402,7 +426,7 @@ export class MthMentionInput extends UIElement {
   };
 
   private handleInputKeyDown = (e: KeyboardEvent): void => {
-    if (!this.open) return;
+    if (!this.open || this.inputCtrl.isComposing || e.isComposing) return;
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End' || e.key === 'Enter') {
       if (e.key === 'Enter' && this.getFilteredOptions().length === 0) return;
       e.preventDefault();
@@ -425,17 +449,23 @@ export class MthMentionInput extends UIElement {
     const listboxId = `${this.uid}-listbox`;
     const hintId = `${this.uid}-hint`;
     const errorId = `${this.uid}-error`;
-    const effectiveError = this.error || (this.invalid ? this.validationMessage : '');
-    const describedBy = [this.hint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || ctx?.label || '';
+    const effHint = this.hint || ctx?.hint || '';
+    const rawError = this.error || ctx?.error || '';
+    const effectiveError = rawError || (this.invalid ? this.validationMessage : '');
+    const describedBy = [effHint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
     const filtered = this.getFilteredOptions();
-
-    const activeId = this.open ? this.listboxCtrl.activeOption?.id : undefined;
+    const effPlaceholder = this.placeholder || this.t('placeholder');
+    const renderedIds = filtered.map((_, idx) => `${this.uid}-opt-${idx}`);
+    const candidateActiveId = this.listboxCtrl.activeOption?.id;
+    const activeId = this.open && candidateActiveId && renderedIds.includes(candidateActiveId) ? candidateActiveId : undefined;
 
     return html`
       <div class="base" part="base">
-        ${this.label
+        ${effLabel
           ? html`<label class="label" part="label" id=${labelId} for=${inputId}>
-              <slot name="label">${this.label}</slot>
+              <slot name="label">${effLabel}</slot>
             </label>`
           : html`<slot name="label"></slot>`}
 
@@ -448,7 +478,7 @@ export class MthMentionInput extends UIElement {
                   part="input"
                   role="combobox"
                   rows=${this.rows}
-                  placeholder=${this.placeholder}
+                  placeholder=${effPlaceholder}
                   .value=${this.value}
                   ?disabled=${this.isEffectivelyDisabled}
                   ?readonly=${this.readOnly}
@@ -456,8 +486,8 @@ export class MthMentionInput extends UIElement {
                   aria-expanded=${this.open ? 'true' : 'false'}
                   aria-controls=${listboxId}
                   aria-activedescendant=${activeId || nothing}
-                  aria-labelledby=${this.label ? labelId : nothing}
-                  aria-label=${!this.label ? this.placeholder || mentionInputMessages.suggestionsLabel : nothing}
+                  aria-labelledby=${effLabel ? labelId : nothing}
+                  aria-label=${!effLabel ? this.placeholder || this.t('suggestionsLabel') : nothing}
                   aria-describedby=${describedBy ?? nothing}
                   @input=${this.handleInput}
                   @keydown=${this.handleInputKeyDown}
@@ -471,7 +501,7 @@ export class MthMentionInput extends UIElement {
                   class="input"
                   part="input"
                   role="combobox"
-                  placeholder=${this.placeholder}
+                  placeholder=${effPlaceholder}
                   .value=${this.value}
                   ?disabled=${this.isEffectivelyDisabled}
                   ?readonly=${this.readOnly}
@@ -479,8 +509,8 @@ export class MthMentionInput extends UIElement {
                   aria-expanded=${this.open ? 'true' : 'false'}
                   aria-controls=${listboxId}
                   aria-activedescendant=${activeId || nothing}
-                  aria-labelledby=${this.label ? labelId : nothing}
-                  aria-label=${!this.label ? this.placeholder || mentionInputMessages.suggestionsLabel : nothing}
+                  aria-labelledby=${effLabel ? labelId : nothing}
+                  aria-label=${!effLabel ? this.placeholder || this.t('suggestionsLabel') : nothing}
                   aria-describedby=${describedBy ?? nothing}
                   @input=${this.handleInput}
                   @keydown=${this.handleInputKeyDown}
@@ -496,15 +526,16 @@ export class MthMentionInput extends UIElement {
             part="listbox"
             role="listbox"
             tabindex="-1"
-            aria-label=${this.label || mentionInputMessages.suggestionsLabel}
+            aria-label=${effLabel || this.t('suggestionsLabel')}
           >
             ${filtered.length === 0
-              ? html`<li class="empty">${mentionInputMessages.noResults}</li>`
-              : filtered.map((opt) => {
+              ? html`<li class="empty">${this.t('noResults')}</li>`
+              : filtered.map((opt, idx) => {
                   const isActive = this.listboxCtrl.activeOption?.value === opt.value;
                   const isSelected = this.listboxCtrl.selectedValues.includes(opt.value);
                   return html`
                     <li
+                      id=${`${this.uid}-opt-${idx}`}
                       class="option"
                       part="option"
                       role="option"
@@ -523,9 +554,9 @@ export class MthMentionInput extends UIElement {
           </ul>
         </div>
 
-        ${this.hint
+        ${effHint
           ? html`<div class="hint" part="hint" id=${hintId}>
-              <slot name="hint">${this.hint}</slot>
+              <slot name="hint">${effHint}</slot>
             </div>`
           : html`<slot name="hint"></slot>`}
 

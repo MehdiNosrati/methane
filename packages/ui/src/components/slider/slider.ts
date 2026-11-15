@@ -103,7 +103,7 @@ export class MthSlider extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -357,9 +357,13 @@ export class MthSlider extends UIElement {
 
   override render() {
     const { min, max } = this.getRange();
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-slider-hint');
     if (hasError) describedByIds.push('mth-slider-error');
@@ -369,7 +373,7 @@ export class MthSlider extends UIElement {
       <div part="base" class="base">
         <div part="header" class="header" ?hidden=${!hasLabel && !this.showValue}>
           <span id="mth-slider-label" part="label" class="label" ?hidden=${!hasLabel}>
-            <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+            <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
           </span>
           ${this.showValue
             ? html`<span part="value" class="value-readout">${formatted}</span>`
@@ -402,14 +406,14 @@ export class MthSlider extends UIElement {
             aria-disabled=${this.isEffectivelyDisabled ? 'true' : 'false'}
             aria-readonly=${this.readonly ? 'true' : 'false'}
             aria-labelledby=${ifDefined(hasLabel ? 'mth-slider-label' : undefined)}
-            aria-label=${ifDefined(!hasLabel ? this.label || 'Slider' : undefined)}
+            aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
             aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
             @keydown=${this.handleKeyDown}
           ></div>
         </div>
 
         <div id="mth-slider-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div
@@ -419,7 +423,7 @@ export class MthSlider extends UIElement {
           role="alert"
           ?hidden=${!hasError}
         >
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

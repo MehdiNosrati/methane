@@ -157,7 +157,7 @@ describe('<mth-segmented-control>', () => {
     await sc.updateComplete;
     expect(sc.value).toBe('yearly');
     expect(changedValue).toBe('yearly');
-    expect(sc.dataset.hasSelection).toBe('true');
+    expect(sc.hasCustomState('selected')).toBe(true);
   });
 
   it('hydrates cleanly under SSR DSD', async () => {

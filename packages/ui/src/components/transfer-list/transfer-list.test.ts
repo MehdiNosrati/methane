@@ -1,5 +1,5 @@
 import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { FormControlSuite, HydrationPuritySuite, ListboxSuite, scanSameRootAria } from '@methane/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
@@ -55,9 +55,68 @@ describe('<mth-transfer-list>', () => {
           Boolean((el as MthTransferList).shadowRoot!.querySelector<HTMLInputElement>('input')?.disabled),
         isRequiredInvalid: (el) => !(el as MthTransferList).checkValidity(),
       },
+      listbox: {
+        mount: async () => {
+          const el = document.createElement('mth-transfer-list') as MthTransferList;
+          el.label = 'Permissions';
+          el.options = SAMPLE_ITEMS;
+          document.body.appendChild(el);
+          await el.updateComplete;
+          return el;
+        },
+        getListboxRoot: (el) => (el as MthTransferList).shadowRoot!,
+        getOptions: (el) =>
+          Array.from(
+            (el as MthTransferList).shadowRoot!.querySelectorAll<HTMLElement>('[data-pane="source"] [role="option"]'),
+          ),
+        getActiveOption: (el) => {
+          const tl = el as MthTransferList;
+          const id = tl.shadowRoot!
+            .querySelector('[data-pane="source"] [role="listbox"]')
+            ?.getAttribute('aria-activedescendant');
+          return id ? tl.shadowRoot!.getElementById(id) : null;
+        },
+        getSelectedOptions: (el) =>
+          Array.from(
+            (el as MthTransferList).shadowRoot!.querySelectorAll<HTMLElement>(
+              '[data-pane="source"] [role="option"][aria-selected="true"]',
+            ),
+          ),
+      },
     });
     expect(specReport.failures).toEqual([]);
     expect(specReport.passed).toBe(true);
+
+    const listboxReport = await ListboxSuite.run({
+      mount: async () => {
+        const el = document.createElement('mth-transfer-list') as MthTransferList;
+        el.label = 'Permissions';
+        el.options = SAMPLE_ITEMS;
+        document.body.appendChild(el);
+        await el.updateComplete;
+        return el;
+      },
+      getListboxRoot: (el) => (el as MthTransferList).shadowRoot!,
+      getOptions: (el) =>
+        Array.from(
+          (el as MthTransferList).shadowRoot!.querySelectorAll<HTMLElement>('[data-pane="source"] [role="option"]'),
+        ),
+      getActiveOption: (el) => {
+        const tl = el as MthTransferList;
+        const id = tl.shadowRoot!
+          .querySelector('[data-pane="source"] [role="listbox"]')
+          ?.getAttribute('aria-activedescendant');
+        return id ? tl.shadowRoot!.getElementById(id) : null;
+      },
+      getSelectedOptions: (el) =>
+        Array.from(
+          (el as MthTransferList).shadowRoot!.querySelectorAll<HTMLElement>(
+            '[data-pane="source"] [role="option"][aria-selected="true"]',
+          ),
+        ),
+    });
+    expect(listboxReport.failures).toEqual([]);
+    expect(listboxReport.passed).toBe(true);
 
     let standalone: MthTransferList | null = null;
     const formReport = await FormControlSuite.run({

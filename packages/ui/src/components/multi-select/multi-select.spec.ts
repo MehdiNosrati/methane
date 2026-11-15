@@ -26,7 +26,7 @@ export const multiSelectSpec: ComponentBehaviorSpec = {
     { name: 'defaultValue', attr: 'default-value', type: 'string', default: '' },
     { name: 'options', attr: false, type: 'ReadonlyArray<MultiSelectOption> | null', default: null },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Select options...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'open', attr: 'open', type: 'boolean', default: false },

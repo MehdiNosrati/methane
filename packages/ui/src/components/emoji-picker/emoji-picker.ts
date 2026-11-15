@@ -1,5 +1,6 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import {
+  InputController,
   OverlayController,
   PositioningController,
   RovingFocusController,
@@ -87,7 +88,7 @@ export class MthEmojiPicker extends UIElement {
   private queryText = '';
 
   @state()
-  private activeCategory = 'All';
+  private activeCategory = '__all__';
 
   @state()
   private recentList: ReadonlyArray<EmojiEntry> = [];
@@ -98,13 +99,24 @@ export class MthEmojiPicker extends UIElement {
   @query('.panel')
   private panelEl!: HTMLElement;
 
+  @query('.search')
+  private searchEl!: HTMLInputElement;
+
   private syncingOpen = false;
+  private dynamicSheet: CSSStyleSheet | null = null;
+  private readonly inputCtrl: InputController;
   private readonly rovingCtrl: RovingFocusController;
   private readonly overlayCtrl: OverlayController;
   private readonly positionCtrl: PositioningController;
 
   constructor() {
     super();
+
+    this.inputCtrl = new InputController(this, {
+      onCommitValue: (val) => {
+        this.queryText = val;
+      },
+    });
 
     this.rovingCtrl = new RovingFocusController(this, {
       getItems: () =>
@@ -158,20 +170,38 @@ export class MthEmojiPicker extends UIElement {
 
   protected override firstUpdated(): void {
     this.rovingCtrl.updateOptions({ columns: Math.max(1, this.columns) });
+    this.syncColumnsSheet();
+    this.inputCtrl.bind(this.searchEl ?? null);
     if (!this.inline && this.open && !this.disabled) {
       void this.syncOverlay(true);
     }
   }
 
   protected override updated(changed: PropertyValues): void {
+    this.inputCtrl.bind(this.searchEl ?? null);
     if (changed.has('columns')) {
       this.rovingCtrl.updateOptions({ columns: Math.max(1, this.columns) });
-      this.style.setProperty('--mth-emoji-columns', String(Math.max(1, this.columns)));
+      this.syncColumnsSheet();
     }
     if (changed.has('open') && !this.inline && !this.syncingOpen) {
       void this.syncOverlay(this.open);
     }
     this.rovingCtrl.syncTabIndices();
+  }
+
+  private syncColumnsSheet(): void {
+    const root = this.shadowRoot;
+    if (!root || !('adoptedStyleSheets' in root) || typeof CSSStyleSheet === 'undefined') return;
+    if (!this.dynamicSheet) {
+      this.dynamicSheet = new CSSStyleSheet();
+    }
+    if (typeof this.dynamicSheet.replaceSync === 'function') {
+      const cols = Math.max(1, Math.trunc(Number.isFinite(this.columns) ? this.columns : 6));
+      this.dynamicSheet.replaceSync(`:host { --_emoji-columns: ${cols}; }`);
+      if (!root.adoptedStyleSheets.includes(this.dynamicSheet)) {
+        root.adoptedStyleSheets = [...root.adoptedStyleSheets, this.dynamicSheet];
+      }
+    }
   }
 
   private async syncOverlay(nextOpen: boolean): Promise<void> {
@@ -200,27 +230,29 @@ export class MthEmojiPicker extends UIElement {
     return this.emojis ?? DEFAULT_EMOJIS;
   }
 
-  private getCategories(): ReadonlyArray<string> {
-    const names: string[] = [emojiPickerMessages.allCategory];
+  private getCategories(): ReadonlyArray<{ key: string; label: string }> {
+    const cats: Array<{ key: string; label: string }> = [
+      { key: '__all__', label: this.t('allCategory') },
+    ];
     if (this.recentList.length > 0) {
-      names.push(emojiPickerMessages.recentCategory);
+      cats.push({ key: '__recent__', label: this.t('recentCategory') });
     }
     for (const entry of this.getDataset()) {
-      if (!names.includes(entry.category)) {
-        names.push(entry.category);
+      if (!cats.some((c) => c.key === entry.category)) {
+        cats.push({ key: entry.category, label: entry.category });
       }
     }
-    return names;
+    return cats;
   }
 
   private getFilteredEmojis(): ReadonlyArray<EmojiEntry> {
     const q = this.queryText.trim().toLowerCase();
     const source =
-      this.activeCategory === emojiPickerMessages.recentCategory
+      this.activeCategory === '__recent__'
         ? this.recentList
         : this.getDataset().filter(
             (e) =>
-              this.activeCategory === emojiPickerMessages.allCategory || e.category === this.activeCategory,
+              this.activeCategory === '__all__' || e.category === this.activeCategory,
           );
 
     if (!q) return source;
@@ -292,7 +324,7 @@ export class MthEmojiPicker extends UIElement {
                 part="trigger"
                 aria-haspopup="dialog"
                 aria-expanded=${this.open ? 'true' : 'false'}
-                aria-label=${this.label || emojiPickerMessages.triggerLabel}
+                aria-label=${this.label || this.t('triggerLabel')}
                 ?disabled=${this.disabled}
                 @click=${this.handleTriggerClick}
               >
@@ -305,7 +337,7 @@ export class MthEmojiPicker extends UIElement {
           class="panel ${this.inline ? '' : 'popover'}"
           part="panel"
           role=${this.inline ? 'region' : 'dialog'}
-          aria-label=${this.label || emojiPickerMessages.pickerLabel}
+          aria-label=${this.label || this.t('pickerLabel')}
           ?hidden=${!isPanelVisible}
         >
           <div class="header" part="header">
@@ -313,22 +345,23 @@ export class MthEmojiPicker extends UIElement {
               type="search"
               class="search"
               part="search"
-              aria-label=${emojiPickerMessages.searchLabel}
-              placeholder=${emojiPickerMessages.searchPlaceholder}
+              aria-label=${this.t('searchLabel')}
+              placeholder=${this.t('searchPlaceholder')}
               .value=${this.queryText}
               ?disabled=${this.disabled}
               @input=${(e: Event) => {
+                if (this.inputCtrl.isComposing) return;
                 this.queryText = (e.currentTarget as HTMLInputElement).value;
               }}
             />
 
-            <div class="skin-tones" part="skin-tones" role="group" aria-label=${emojiPickerMessages.skinToneLabel}>
+            <div class="skin-tones" part="skin-tones" role="group" aria-label=${this.t('skinToneLabel')}>
               ${SKIN_TONE_SWATCHES.map(
                 (swatch, idx) => html`
                   <button
                     type="button"
                     class="tone-btn"
-                    aria-label=${`${emojiPickerMessages.skinToneLabel} ${idx}`}
+                    aria-label=${`${this.t('skinToneLabel')} ${idx}`}
                     aria-pressed=${this.skinTone === idx ? 'true' : 'false'}
                     ?disabled=${this.disabled}
                     @click=${() => {
@@ -342,28 +375,28 @@ export class MthEmojiPicker extends UIElement {
             </div>
           </div>
 
-          <div class="categories" part="categories" role="group" aria-label="Emoji categories">
+          <div class="categories" part="categories" role="group" aria-label=${this.t('categoriesLabel')}>
             ${categories.map(
               (cat) => html`
                 <button
                   type="button"
                   class="category"
                   part="category"
-                  aria-pressed=${this.activeCategory === cat ? 'true' : 'false'}
+                  aria-pressed=${this.activeCategory === cat.key ? 'true' : 'false'}
                   ?disabled=${this.disabled}
                   @click=${() => {
-                    this.activeCategory = cat;
+                    this.activeCategory = cat.key;
                   }}
                 >
-                  ${cat}
+                  ${cat.label}
                 </button>
               `,
             )}
           </div>
 
-          <div class="grid" part="grid" role="group" aria-label="Emojis">
+          <div class="grid" part="grid" role="group" aria-label=${this.t('gridLabel')}>
             ${visible.length === 0
-              ? html`<div class="empty">${emojiPickerMessages.emptyText}</div>`
+              ? html`<div class="empty">${this.t('emptyText')}</div>`
               : visible.map((entry) => {
                   const char = this.applySkinTone(entry);
                   return html`

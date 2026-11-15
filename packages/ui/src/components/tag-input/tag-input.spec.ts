@@ -5,7 +5,7 @@ export const tagInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-tag-input',
   package: '@methane/ui',
   conformance: ['form-control'],
-  controllers: ['FormControlController'],
+  controllers: ['FormControlController', 'InputController', 'SelectionController'],
   focusModel: 'delegates-focus',
   states: ['dirty', 'touched', 'user-invalid', 'disabled', 'required'],
   keyboard: [
@@ -20,7 +20,7 @@ export const tagInputSpec: ComponentBehaviorSpec = {
     { name: 'allowDuplicates', attr: 'allow-duplicates', type: 'boolean', default: false },
     { name: 'delimiter', attr: 'delimiter', type: 'string', default: ',' },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Add tag...' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },

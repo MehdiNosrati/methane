@@ -2,6 +2,7 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
+  ListboxSuite,
   OverlaySuite,
   scanSameRootAria,
 } from '@methane/test-conformance';
@@ -93,9 +94,68 @@ describe('<mth-cascader>', () => {
         supportsCancelableOpen: true,
         supportsLightDismiss: true,
       },
+      listbox: {
+        mount: async () => {
+          const el = document.createElement('mth-cascader') as MthCascader;
+          el.label = 'Region';
+          el.options = [
+            { value: 'a', label: 'Alpha' },
+            { value: 'b', label: 'Beta' },
+            { value: 'c', label: 'Gamma', disabled: true },
+          ];
+          document.body.appendChild(el);
+          await el.updateComplete;
+          await el.show();
+          await el.updateComplete;
+          return el;
+        },
+        getListboxRoot: (el) => (el as MthCascader).shadowRoot!,
+        getOptions: (el) =>
+          Array.from((el as MthCascader).shadowRoot!.querySelectorAll<HTMLElement>('[role="option"]')),
+        getActiveOption: (el) => {
+          const cs = el as MthCascader;
+          const id = cs.shadowRoot!.querySelector('[role="listbox"]')?.getAttribute('aria-activedescendant');
+          return id ? cs.shadowRoot!.getElementById(id) : null;
+        },
+        getSelectedOptions: (el) =>
+          Array.from(
+            (el as MthCascader).shadowRoot!.querySelectorAll<HTMLElement>('[role="option"][aria-selected="true"]'),
+          ),
+      },
     });
     expect(specReport.failures).toEqual([]);
     expect(specReport.passed).toBe(true);
+
+    const listboxReport = await ListboxSuite.run({
+      mount: async () => {
+        const el = document.createElement('mth-cascader') as MthCascader;
+        el.label = 'Region';
+        el.options = [
+          { value: 'a', label: 'Alpha' },
+          { value: 'b', label: 'Beta' },
+          { value: 'c', label: 'Gamma', disabled: true },
+        ];
+        document.body.appendChild(el);
+        await el.updateComplete;
+        await el.show();
+        await el.updateComplete;
+        return el;
+      },
+      getListboxRoot: (el) => (el as MthCascader).shadowRoot!,
+      getOptions: (el) =>
+        Array.from((el as MthCascader).shadowRoot!.querySelectorAll<HTMLElement>('[role="option"]')),
+      getActiveOption: (el) => {
+        const cs = el as MthCascader;
+        const id = cs.shadowRoot!.querySelector('[role="listbox"]')?.getAttribute('aria-activedescendant');
+        return id ? cs.shadowRoot!.getElementById(id) : null;
+      },
+      getSelectedOptions: (el) =>
+        Array.from(
+          (el as MthCascader).shadowRoot!.querySelectorAll<HTMLElement>('[role="option"][aria-selected="true"]'),
+        ),
+    });
+    expect(listboxReport.failures).toEqual([]);
+    expect(listboxReport.passed).toBe(true);
 
     let standaloneFormEl: MthCascader | null = null;
     const formReport = await FormControlSuite.run({

@@ -112,7 +112,7 @@ export class MthRangeSlider extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
     });
@@ -422,22 +422,26 @@ export class MthRangeSlider extends UIElement {
   override render() {
     const { min, max } = this.getRange();
     const gap = this.getSafeMinDistance();
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-rs-hint');
     if (hasError) describedByIds.push('mth-rs-error');
     const describedBy = describedByIds.length > 0 ? describedByIds.join(' ') : undefined;
     const startText = this.formatNumber(this.start);
     const endText = this.formatNumber(this.end);
-    const groupPrefix = this.label || this.slottedLabelText;
+    const groupPrefix = effLabel;
 
     return html`
       <div part="base" class="base">
         <div part="header" class="header" ?hidden=${!hasLabel && !this.showValue}>
           <span id="mth-rs-label" part="label" class="label" ?hidden=${!hasLabel}>
-            <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+            <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
           </span>
           ${this.showValue
             ? html`<span part="value" class="value-readout">${startText} – ${endText}</span>`
@@ -464,8 +468,8 @@ export class MthRangeSlider extends UIElement {
             role="slider"
             tabindex=${this.isEffectivelyDisabled ? -1 : 0}
             aria-label=${groupPrefix
-              ? `${groupPrefix} ${rangeSliderMessages.startThumbLabel}`
-              : rangeSliderMessages.startThumbLabel}
+              ? `${groupPrefix} ${this.t('startThumbLabel')}`
+              : this.t('startThumbLabel')}
             aria-valuemin=${String(min)}
             aria-valuemax=${String(this.end - gap)}
             aria-valuenow=${String(this.start)}
@@ -483,8 +487,8 @@ export class MthRangeSlider extends UIElement {
             role="slider"
             tabindex=${this.isEffectivelyDisabled ? -1 : 0}
             aria-label=${groupPrefix
-              ? `${groupPrefix} ${rangeSliderMessages.endThumbLabel}`
-              : rangeSliderMessages.endThumbLabel}
+              ? `${groupPrefix} ${this.t('endThumbLabel')}`
+              : this.t('endThumbLabel')}
             aria-valuemin=${String(this.start + gap)}
             aria-valuemax=${String(max)}
             aria-valuenow=${String(this.end)}
@@ -497,11 +501,11 @@ export class MthRangeSlider extends UIElement {
         </div>
 
         <div id="mth-rs-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-rs-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;

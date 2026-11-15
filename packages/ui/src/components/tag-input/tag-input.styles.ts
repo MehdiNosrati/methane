@@ -4,7 +4,7 @@ export const tagInputStyles = css`
   :host {
     display: block;
     font-family: inherit;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
   }
 
   :host([disabled]) {
@@ -32,8 +32,8 @@ export const tagInputStyles = css`
     padding-block: 0.25rem;
     padding-inline: 0.5rem;
     border-radius: 0.375rem;
-    border: 1px solid var(--mth-tag-input-border, var(--mth-color-border, light-dark(#cbd5e1, #334155)));
-    background-color: var(--mth-tag-input-bg, var(--mth-color-surface, light-dark(#ffffff, #0f172a)));
+    border: 1px solid var(--mth-tag-input-border, var(--mth-color-border, light-dark(oklch(0.869 0.022 253), oklch(0.372 0.044 257))));
+    background-color: var(--mth-tag-input-bg, var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.208 0.042 266))));
     box-sizing: border-box;
   }
 
@@ -52,7 +52,7 @@ export const tagInputStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
     background-color: var(
       --mth-tag-input-chip-bg,
-      var(--mth-color-accent-subtle, light-dark(#eff6ff, #1e3a8a))
+      var(--mth-color-accent-subtle, light-dark(oklch(0.97 0.014 255), oklch(0.379 0.146 266)))
     );
   }
 
@@ -85,7 +85,7 @@ export const tagInputStyles = css`
 
   .hint {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .error {

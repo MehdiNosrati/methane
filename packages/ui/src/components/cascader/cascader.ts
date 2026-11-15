@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import {
   FormControlController,
+  ListboxController,
   OverlayController,
   PositioningController,
 } from '@methane/primitives';
@@ -53,7 +54,7 @@ export class MthCascader extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = cascaderMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -100,6 +101,7 @@ export class MthCascader extends UIElement {
   private readonly uid = `mth-cascader-${++cascaderIdCounter}`;
   private syncingValue = false;
   private syncingOpen = false;
+  private inHostUpdate = false;
   private readonly formCtrl: FormControlController;
   private readonly overlayCtrl: OverlayController;
   private readonly positionCtrl: PositioningController;
@@ -113,7 +115,12 @@ export class MthCascader extends UIElement {
       required: this.required,
       disabled: this.disabled,
       messages: {
+        ...cascaderMessages,
         required: cascaderMessages.requiredError,
+      },
+      validator: () => {
+        const err = this.error || this.formCtrl.fieldContext?.error || '';
+        return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
       onValueSync: (val) => {
         const next = val ?? '';
@@ -156,6 +163,40 @@ export class MthCascader extends UIElement {
       offset: 6,
       flip: true,
       shift: true,
+    });
+
+    new ListboxController(this, {
+      focusMode: 'activedescendant',
+      multiple: false,
+      loop: true,
+      getListboxElement: () => {
+        const lists = this.shadowRoot?.querySelectorAll<HTMLElement>('[role="listbox"]');
+        if (!lists || lists.length === 0) return null;
+        return lists[Math.min(this.focusedColumn, lists.length - 1)] ?? lists[0] ?? null;
+      },
+      getOptionElements: () => {
+        const lists = this.shadowRoot?.querySelectorAll<HTMLElement>('[role="listbox"]');
+        if (!lists || lists.length === 0) return [];
+        const activeList = lists[Math.min(this.focusedColumn, lists.length - 1)] ?? lists[0];
+        return Array.from(activeList?.querySelectorAll<HTMLElement>('[role="option"]') ?? []);
+      },
+      onActiveChange: (_opt, index) => {
+        if (!this.inHostUpdate && index >= 0 && this.focusedRow !== index) {
+          this.focusedRow = index;
+        }
+      },
+      onSelectionChange: (selected) => {
+        const val = selected[0];
+        if (!val) return;
+        const columns = this.computeColumns();
+        const colIdx = Math.min(this.focusedColumn, Math.max(0, columns.length - 1));
+        const colItems = columns[colIdx] ?? [];
+        const rowIndex = colItems.findIndex((o) => o.value === val);
+        const match = rowIndex >= 0 ? colItems[rowIndex] : undefined;
+        if (match) {
+          this.selectOrExpandOption(colIdx, rowIndex, match, true);
+        }
+      },
     });
   }
 
@@ -223,18 +264,17 @@ export class MthCascader extends UIElement {
     this.formCtrl.handleFormStateRestore(state, mode);
   }
 
-  protected override firstUpdated(): void {
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.formCtrl.setDefaultValue(this.defaultValue || this.value);
     if (this.value) {
       this.formCtrl.setValue(this.value, { markDirty: false });
       this.activePath = this.parsePath(this.value);
     }
-    if (this.open && !this.isEffectivelyDisabled) {
-      void this.syncOverlay(true);
-    }
   }
 
-  protected override updated(changed: PropertyValues): void {
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
     if (changed.has('defaultValue')) {
       this.formCtrl.setDefaultValue(this.defaultValue);
     }
@@ -248,14 +288,38 @@ export class MthCascader extends UIElement {
       }
     }
     if (changed.has('error')) {
-      this.formCtrl.setValidity(this.error ? { customError: true } : {}, this.error);
+      this.formCtrl.validate();
     }
     if (changed.has('value') && !this.syncingValue) {
       this.formCtrl.setValue(this.value, { markDirty: false });
       this.activePath = this.parsePath(this.value);
     }
-    if (changed.has('open') && !this.syncingOpen) {
-      void this.syncOverlay(this.open);
+    if (changed.has('open') && this.open) {
+      this.prepareOpenState();
+    }
+  }
+
+  protected override updated(changed: PropertyValues): void {
+    const lists = this.shadowRoot?.querySelectorAll<HTMLElement>('[role="listbox"]');
+    lists?.forEach((lb) => {
+      const lbActive = lb.getAttribute('aria-activedescendant');
+      if (lbActive && (!this.open || !this.shadowRoot?.getElementById(lbActive))) {
+        lb.removeAttribute('aria-activedescendant');
+      }
+    });
+    this.inHostUpdate = true;
+    try {
+      super.updated(changed);
+    } finally {
+      this.inHostUpdate = false;
+    }
+    if (changed.has('open') && !this.syncingOpen && (changed.get('open') !== undefined || this.open)) {
+      const desiredOpen = this.open;
+      queueMicrotask(() => {
+        if (this.isConnected && !this.syncingOpen && this.open === desiredOpen) {
+          void this.syncOverlay(desiredOpen);
+        }
+      });
     }
   }
 
@@ -264,18 +328,21 @@ export class MthCascader extends UIElement {
     try {
       if (nextOpen) {
         if (this.isEffectivelyDisabled) {
-          this.open = false;
+          if (this.open) this.open = false;
           return;
         }
-        this.prepareOpenState();
         const opened = await this.overlayCtrl.show();
-        this.open = opened;
+        if (this.open !== opened) {
+          this.open = opened;
+        }
         if (opened) {
           this.positionCtrl.reposition();
         }
       } else {
         const closed = await this.overlayCtrl.hide();
-        this.open = !closed;
+        if (this.open !== !closed) {
+          this.open = !closed;
+        }
       }
     } finally {
       this.syncingOpen = false;
@@ -395,14 +462,16 @@ export class MthCascader extends UIElement {
     const colItems = columns[colIdx] ?? [];
     if (colItems.length === 0) return;
 
-    const isRtl = typeof window !== 'undefined' && getComputedStyle(this).direction === 'rtl';
+    const isRtl = this.resolvedDir === 'rtl';
     const drillKey = isRtl ? 'ArrowLeft' : 'ArrowRight';
     const backKey = isRtl ? 'ArrowRight' : 'ArrowLeft';
 
     if (e.key === 'ArrowDown') {
+      if (e.defaultPrevented) return;
       e.preventDefault();
       this.focusedRow = (this.focusedRow + 1) % colItems.length;
     } else if (e.key === 'ArrowUp') {
+      if (e.defaultPrevented) return;
       e.preventDefault();
       this.focusedRow = (this.focusedRow - 1 + colItems.length) % colItems.length;
     } else if (e.key === drillKey) {
@@ -424,6 +493,7 @@ export class MthCascader extends UIElement {
         this.focusedRow = parentRow >= 0 ? parentRow : 0;
       }
     } else if (e.key === 'Enter' || e.key === ' ') {
+      if (e.defaultPrevented) return;
       e.preventDefault();
       const active = colItems[this.focusedRow];
       if (active && !active.disabled) {
@@ -452,19 +522,24 @@ export class MthCascader extends UIElement {
     const popupId = `${this.uid}-popup`;
     const hintId = `${this.uid}-hint`;
     const errorId = `${this.uid}-error`;
-    const effectiveError = this.error || (this.invalid ? this.validationMessage : '');
-    const describedBy = [this.hint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || ctx?.label || '';
+    const effHint = this.hint || ctx?.hint || '';
+    const rawError = this.error || ctx?.error || '';
+    const effectiveError = rawError || (this.invalid ? this.validationMessage : '');
+    const describedBy = [effHint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
 
+    const effPlaceholder = this.placeholder || this.t('placeholder');
     const displayText = this.renderDisplayValue();
     const columns = this.computeColumns();
-    const isRtl = typeof document !== 'undefined' && (this.dir === 'rtl' || document.documentElement.dir === 'rtl');
+    const isRtl = this.resolvedDir === 'rtl';
     const arrowGlyph = isRtl ? '‹' : '›';
 
     return html`
       <div class="base" part="base">
-        ${this.label
+        ${effLabel
           ? html`<label class="label" part="label" id=${labelId}>
-              <slot name="label">${this.label}</slot>
+              <slot name="label">${effLabel}</slot>
             </label>`
           : html`<slot name="label"></slot>`}
 
@@ -476,8 +551,8 @@ export class MthCascader extends UIElement {
             aria-haspopup="dialog"
             aria-expanded=${this.open ? 'true' : 'false'}
             aria-controls=${popupId}
-            aria-labelledby=${this.label ? labelId : nothing}
-            aria-label=${!this.label ? this.placeholder : nothing}
+            aria-labelledby=${effLabel ? labelId : nothing}
+            aria-label=${!effLabel ? effPlaceholder : nothing}
             aria-describedby=${describedBy ?? nothing}
             ?disabled=${this.isEffectivelyDisabled}
             @click=${this.handleTriggerClick}
@@ -485,7 +560,7 @@ export class MthCascader extends UIElement {
             @blur=${this.handleBlur}
           >
             <span class="value-text ${displayText ? '' : 'placeholder'}" part="value">
-              ${displayText || this.placeholder}
+              ${displayText || effPlaceholder}
             </span>
             <span class="caret" part="caret" aria-hidden="true">${this.open ? '▴' : '▾'}</span>
           </button>
@@ -496,7 +571,7 @@ export class MthCascader extends UIElement {
                   type="button"
                   class="clear"
                   part="clear"
-                  aria-label=${cascaderMessages.clearLabel}
+                  aria-label=${this.t('clearLabel')}
                   @click=${this.handleClearClick}
                 >
                   ✕
@@ -510,55 +585,64 @@ export class MthCascader extends UIElement {
           class="popup"
           part="popup"
           role="dialog"
-          aria-label=${this.label || cascaderMessages.placeholder}
+          aria-label=${effLabel || effPlaceholder}
           ?hidden=${!this.open}
           @keydown=${this.handlePopupKeyDown}
         >
           ${columns.length === 0
-            ? html`<div class="empty">${cascaderMessages.noOptions}</div>`
+            ? html`<div class="empty">${this.t('noOptions')}</div>`
             : html`
                 <div class="columns" part="columns">
-                  ${columns.map((items, colIndex) => html`
-                    <ul
-                      class="column"
-                      part="column"
-                      role="listbox"
-                      aria-label=${`${cascaderMessages.levelLabel} ${colIndex + 1}`}
-                    >
-                      ${items.map((opt, rowIndex) => {
-                        const isSelected = this.activePath[colIndex] === opt.value;
-                        const isActive = this.focusedColumn === colIndex && this.focusedRow === rowIndex;
-                        const hasChildren = Boolean(opt.children && opt.children.length > 0);
-                        return html`
-                          <li
-                            class="option"
-                            part="option"
-                            role="option"
-                            aria-selected=${isSelected ? 'true' : 'false'}
-                            aria-disabled=${opt.disabled ? 'true' : 'false'}
-                            data-active=${isActive ? 'true' : 'false'}
-                            data-value=${opt.value}
-                            @click=${() => this.selectOrExpandOption(colIndex, rowIndex, opt, true)}
-                            @mouseenter=${() => {
-                              if (this.expandTrigger === 'hover' && hasChildren) {
-                                this.selectOrExpandOption(colIndex, rowIndex, opt, false);
-                              }
-                            }}
-                          >
-                            <span>${opt.label}</span>
-                            ${hasChildren ? html`<span aria-hidden="true">${arrowGlyph}</span>` : nothing}
-                          </li>
-                        `;
-                      })}
-                    </ul>
-                  `)}
+                  ${columns.map((items, colIndex) => {
+                    const activeOptId =
+                      this.open && this.focusedColumn === colIndex && items[this.focusedRow]
+                        ? `${this.uid}-c${colIndex}-r${this.focusedRow}`
+                        : undefined;
+                    return html`
+                      <ul
+                        class="column"
+                        part="column"
+                        role="listbox"
+                        tabindex="-1"
+                        aria-activedescendant=${activeOptId ?? nothing}
+                        aria-label=${`${this.t('levelLabel')} ${colIndex + 1}`}
+                      >
+                        ${items.map((opt, rowIndex) => {
+                          const isSelected = this.activePath[colIndex] === opt.value;
+                          const isActive = this.focusedColumn === colIndex && this.focusedRow === rowIndex;
+                          const hasChildren = Boolean(opt.children && opt.children.length > 0);
+                          return html`
+                            <li
+                              id=${`${this.uid}-c${colIndex}-r${rowIndex}`}
+                              class="option"
+                              part="option"
+                              role="option"
+                              aria-selected=${isSelected ? 'true' : 'false'}
+                              aria-disabled=${opt.disabled ? 'true' : 'false'}
+                              data-active=${isActive ? 'true' : 'false'}
+                              data-value=${opt.value}
+                              @click=${() => this.selectOrExpandOption(colIndex, rowIndex, opt, true)}
+                              @mouseenter=${() => {
+                                if (this.expandTrigger === 'hover' && hasChildren) {
+                                  this.selectOrExpandOption(colIndex, rowIndex, opt, false);
+                                }
+                              }}
+                            >
+                              <span>${opt.label}</span>
+                              ${hasChildren ? html`<span aria-hidden="true">${arrowGlyph}</span>` : nothing}
+                            </li>
+                          `;
+                        })}
+                      </ul>
+                    `;
+                  })}
                 </div>
               `}
         </div>
 
-        ${this.hint
+        ${effHint
           ? html`<div class="hint" part="hint" id=${hintId}>
-              <slot name="hint">${this.hint}</slot>
+              <slot name="hint">${effHint}</slot>
             </div>`
           : html`<slot name="hint"></slot>`}
 

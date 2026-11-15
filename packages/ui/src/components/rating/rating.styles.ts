@@ -4,7 +4,7 @@ export const ratingStyles = css`
   :host {
     display: inline-block;
     font-family: inherit;
-    color: var(--mth-color-fg, light-dark(#0f172a, #f8fafc));
+    color: var(--mth-color-fg, light-dark(oklch(0.208 0.042 266), oklch(0.984 0.003 248)));
     --_star-size: 1.5rem;
   }
 
@@ -47,7 +47,7 @@ export const ratingStyles = css`
     border: none;
     border-radius: 0.25rem;
     background: transparent;
-    color: var(--mth-rating-color-empty, var(--mth-color-border-strong, light-dark(#cbd5e1, #475569)));
+    color: var(--mth-rating-color-empty, var(--mth-color-border-strong, light-dark(oklch(0.869 0.022 253), oklch(0.446 0.043 257))));
     cursor: pointer;
     line-height: 1;
     transition: transform var(--mth-motion-duration-fast, 120ms) ease,
@@ -59,7 +59,7 @@ export const ratingStyles = css`
   }
 
   .star[data-state='half'] {
-    color: var(--mth-rating-color-empty, var(--mth-color-border-strong, light-dark(#cbd5e1, #475569)));
+    color: var(--mth-rating-color-empty, var(--mth-color-border-strong, light-dark(oklch(0.869 0.022 253), oklch(0.446 0.043 257))));
   }
 
   .star-icon {
@@ -101,7 +101,7 @@ export const ratingStyles = css`
 
   .hint {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, light-dark(#475569, #94a3b8));
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.446 0.043 257), oklch(0.704 0.04 257)));
   }
 
   .error {

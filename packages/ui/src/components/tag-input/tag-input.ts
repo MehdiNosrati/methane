@@ -1,5 +1,5 @@
 import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { FormControlController, InputController, SelectionController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -41,7 +41,7 @@ export class MthTagInput extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder: string = tagInputMessages.placeholder;
+  placeholder = '';
 
   @property({ type: String })
   hint = '';
@@ -77,6 +77,8 @@ export class MthTagInput extends UIElement {
   private inputEl!: HTMLInputElement | null;
 
   private readonly formCtrl: FormControlController;
+  private readonly inputCtrl: InputController;
+  private readonly selectionCtrl: SelectionController<string>;
   private syncingValue = false;
 
   constructor() {
@@ -96,9 +98,15 @@ export class MthTagInput extends UIElement {
         this.setCustomState(stateName, active);
       },
       validator: () => {
-        const err = this.error || this.slottedErrorText || '';
+        const err = this.error || this.slottedErrorText || this.formCtrl.fieldContext?.error || '';
         return err.length > 0 ? { flags: { customError: true }, message: err } : null;
       },
+    });
+
+    this.inputCtrl = new InputController(this);
+    this.selectionCtrl = new SelectionController<string>(this, {
+      mode: 'multiple',
+      allowEmpty: true,
     });
   }
 
@@ -147,6 +155,11 @@ export class MthTagInput extends UIElement {
       this.formCtrl.hostReadOnly = this.readonly;
       this.formCtrl.validate();
     }
+  }
+
+  override updated(changed: PropertyValues<this>): void {
+    super.updated(changed);
+    this.inputCtrl.bind(this.inputEl ?? null);
   }
 
   override focus(options?: FocusOptions): void {
@@ -207,6 +220,8 @@ export class MthTagInput extends UIElement {
   private syncTags(next: Array<string>, fromUser: boolean): void {
     this.syncingValue = true;
     this.tagList = next;
+    this.selectionCtrl.setItems(next.map((t) => ({ value: t })));
+    this.selectionCtrl.setSelection(next);
     const joined = next.join(',');
     this.value = joined;
     this.formCtrl.setValue(joined, { markDirty: fromUser });
@@ -229,7 +244,7 @@ export class MthTagInput extends UIElement {
   }
 
   private handleInput(event: Event): void {
-    if (this.isEffectivelyDisabled || this.readonly) return;
+    if (this.isEffectivelyDisabled || this.readonly || this.inputCtrl.isComposing) return;
     const val = (event.target as HTMLInputElement).value;
     const delims = this.getDelimiterList();
     const matchedDelim = delims.find((d) => val.includes(d));
@@ -247,7 +262,7 @@ export class MthTagInput extends UIElement {
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
-    if (this.isEffectivelyDisabled || this.readonly) return;
+    if (this.isEffectivelyDisabled || this.readonly || this.inputCtrl.isComposing || event.isComposing) return;
     if (event.key === 'Enter' || this.getDelimiterList().includes(event.key)) {
       if (this.draftText.trim().length > 0) {
         event.preventDefault();
@@ -296,17 +311,22 @@ export class MthTagInput extends UIElement {
   }
 
   override render() {
-    const hasLabel = Boolean(this.label || this.slottedLabelText);
-    const hasHint = Boolean(this.hint || this.slottedHintText);
-    const hasError = Boolean(this.error || this.slottedErrorText);
+    const ctx = this.formCtrl.fieldContext;
+    const effLabel = this.label || this.slottedLabelText || ctx?.label || '';
+    const effHint = this.hint || this.slottedHintText || ctx?.hint || '';
+    const rawError = this.error || this.slottedErrorText || ctx?.error || '';
+    const hasLabel = Boolean(effLabel);
+    const hasHint = Boolean(effHint);
+    const hasError = Boolean(rawError);
     const describedByIds: Array<string> = [];
     if (hasHint) describedByIds.push('mth-ti-hint');
     if (hasError) describedByIds.push('mth-ti-error');
+    const effPlaceholder = this.placeholder || this.t('placeholder');
 
     return html`
       <div part="base" class="base">
         <label id="mth-ti-label" for="mth-ti-input" part="label" class="label" ?hidden=${!hasLabel}>
-          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${this.label}</slot>
+          <slot name="label" @slotchange=${this.handleLabelSlotChange}>${effLabel}</slot>
         </label>
 
         <div
@@ -326,7 +346,7 @@ export class MthTagInput extends UIElement {
                         type="button"
                         part="tag-remove"
                         class="tag-remove"
-                        aria-label="${tagInputMessages.removeTag} ${tag}"
+                        aria-label="${this.t('removeTag')} ${tag}"
                         ?disabled=${this.isEffectivelyDisabled}
                         @click=${(e: Event) => {
                           e.stopPropagation();
@@ -347,10 +367,10 @@ export class MthTagInput extends UIElement {
             class="input"
             type="text"
             aria-labelledby=${ifDefined(hasLabel ? 'mth-ti-label' : undefined)}
-            aria-label=${ifDefined(!hasLabel ? this.label || tagInputMessages.defaultLabel : undefined)}
+            aria-label=${ifDefined(!hasLabel ? this.t('defaultLabel') : undefined)}
             aria-describedby=${ifDefined(describedByIds.length > 0 ? describedByIds.join(' ') : undefined)}
             .value=${this.draftText}
-            placeholder=${this.tagList.length === 0 ? this.placeholder : ''}
+            placeholder=${this.tagList.length === 0 ? effPlaceholder : ''}
             ?disabled=${this.isEffectivelyDisabled}
             ?readonly=${this.readonly}
             @input=${this.handleInput}
@@ -360,11 +380,11 @@ export class MthTagInput extends UIElement {
         </div>
 
         <div id="mth-ti-hint" part="hint" class="hint" ?hidden=${!hasHint}>
-          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${this.hint}</slot>
+          <slot name="hint" @slotchange=${this.handleHintSlotChange}>${effHint}</slot>
         </div>
 
         <div id="mth-ti-error" part="error" class="error" role="alert" ?hidden=${!hasError}>
-          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${this.error}</slot>
+          <slot name="error" @slotchange=${this.handleErrorSlotChange}>${rawError}</slot>
         </div>
       </div>
     `;
