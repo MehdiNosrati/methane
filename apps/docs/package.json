@@ -14,14 +14,14 @@
     "test": "vitest run --testTimeout=30000"
   },
   "dependencies": {
-    "@methane/bundle-budget": "workspace:*",
-    "@methane/css": "workspace:*",
-    "@methane/primitives": "workspace:*",
-    "@methane/spec-compiler": "workspace:*",
-    "@methane/ssr-astro": "workspace:*",
-    "@methane/tokens": "workspace:*",
-    "@methane/ui": "workspace:*",
-    "@methane/wrapper-codegen": "workspace:*",
+    "@methane/bundle-budget": "workspace:^",
+    "@methane/css": "workspace:^",
+    "@methane/primitives": "workspace:^",
+    "@methane/spec-compiler": "workspace:^",
+    "@methane/ssr-astro": "workspace:^",
+    "@methane/tokens": "workspace:^",
+    "@methane/ui": "workspace:^",
+    "@methane/wrapper-codegen": "workspace:^",
     "astro": "^7.4.12"
   }
 }

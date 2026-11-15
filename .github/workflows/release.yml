@@ -70,7 +70,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            pnpm -r --filter "./packages/*" --no-git-checks publish --provenance --access public --dry-run
+            pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public --dry-run
           else
-            pnpm -r --filter "./packages/*" --no-git-checks publish --provenance --access public
+            pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public
           fi

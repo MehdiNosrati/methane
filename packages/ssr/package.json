@@ -34,6 +34,6 @@
     "lit": "^3.3.3"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:*"
+    "@methane/test-conformance": "workspace:^"
   }
 }

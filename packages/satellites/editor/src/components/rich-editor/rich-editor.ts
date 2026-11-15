@@ -3,22 +3,84 @@ import { FormControlController, RovingFocusController } from '@methane/primitive
 import { escapeHtml, parseSafeFragment, sanitizeToTrustedHTML } from '@methane/sanitize';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import { baseKeymap, setBlockType, toggleMark } from 'prosemirror-commands';
-import { history, redo, undo } from 'prosemirror-history';
-import { keymap } from 'prosemirror-keymap';
-import { DOMParser as PmDOMParser, DOMSerializer, Schema } from 'prosemirror-model';
-import { schema as basicSchema } from 'prosemirror-schema-basic';
-import { addListNodes, wrapInList } from 'prosemirror-schema-list';
-import { EditorState, type Command, type Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import type { baseKeymap as pmBaseKeymap, setBlockType as pmSetBlockType, toggleMark as pmToggleMark } from 'prosemirror-commands';
+import type { history as pmHistory, redo as pmRedo, undo as pmUndo } from 'prosemirror-history';
+import type { keymap as pmKeymap } from 'prosemirror-keymap';
+import type { DOMParser as PmDOMParserType, DOMSerializer as PmDOMSerializerType, Node as PmNode, Schema } from 'prosemirror-model';
+import type { wrapInList as pmWrapInList } from 'prosemirror-schema-list';
+import type { Command, EditorState, Transaction } from 'prosemirror-state';
+import type { EditorView } from 'prosemirror-view';
 import { readHostTokenValue, syncTokenStylesheet } from '../../shared/theme-sync.js';
 import { richEditorMessages } from './rich-editor.messages.js';
 import { richEditorStyles } from './rich-editor.styles.js';
 
-const RICH_SCHEMA = new Schema({
-  nodes: addListNodes(basicSchema.spec.nodes, 'paragraph block*', 'block'),
-  marks: basicSchema.spec.marks,
-});
+interface LoadedProseMirror {
+  readonly schema: Schema;
+  readonly baseKeymap: typeof pmBaseKeymap;
+  readonly setBlockType: typeof pmSetBlockType;
+  readonly toggleMark: typeof pmToggleMark;
+  readonly history: typeof pmHistory;
+  readonly redo: typeof pmRedo;
+  readonly undo: typeof pmUndo;
+  readonly keymap: typeof pmKeymap;
+  readonly DOMParser: typeof PmDOMParserType;
+  readonly DOMSerializer: typeof PmDOMSerializerType;
+  readonly wrapInList: typeof pmWrapInList;
+  readonly EditorState: typeof EditorState;
+  readonly EditorView: typeof EditorView;
+}
+
+let pmModulesCache: LoadedProseMirror | null = null;
+let pmModulesPromise: Promise<LoadedProseMirror> | null = null;
+
+function isBrowserDom(): boolean {
+  return typeof document !== 'undefined' && Boolean(document.documentElement?.style);
+}
+
+function loadProseMirrorModules(): Promise<LoadedProseMirror> {
+  if (pmModulesCache) {
+    return Promise.resolve(pmModulesCache);
+  }
+  if (!pmModulesPromise) {
+    pmModulesPromise = Promise.all([
+      import('prosemirror-commands'),
+      import('prosemirror-history'),
+      import('prosemirror-keymap'),
+      import('prosemirror-model'),
+      import('prosemirror-schema-basic'),
+      import('prosemirror-schema-list'),
+      import('prosemirror-state'),
+      import('prosemirror-view'),
+    ]).then(([commands, hist, km, model, basic, list, state, view]) => {
+      const schema = new model.Schema({
+        nodes: list.addListNodes(basic.schema.spec.nodes, 'paragraph block*', 'block'),
+        marks: basic.schema.spec.marks,
+      });
+      const loaded: LoadedProseMirror = {
+        schema,
+        baseKeymap: commands.baseKeymap,
+        setBlockType: commands.setBlockType,
+        toggleMark: commands.toggleMark,
+        history: hist.history,
+        redo: hist.redo,
+        undo: hist.undo,
+        keymap: km.keymap,
+        DOMParser: model.DOMParser,
+        DOMSerializer: model.DOMSerializer,
+        wrapInList: list.wrapInList,
+        EditorState: state.EditorState,
+        EditorView: view.EditorView,
+      };
+      pmModulesCache = loaded;
+      return loaded;
+    });
+  }
+  return pmModulesPromise;
+}
+
+function stripHtmlTags(rawHtml: string): string {
+  return rawHtml.replace(/<[^>]*>/g, '');
+}
 
 const TRACKED_TOKENS = [
   '--mth-color-surface',
@@ -50,15 +112,15 @@ function serializeFragmentSafe(fragment: DocumentFragment | HTMLElement): string
   return String(sanitizeToTrustedHTML(parts.join('')));
 }
 
-function parseHtmlToPmDoc(rawHtml: string) {
-  const doc = typeof document !== 'undefined' ? document : undefined;
+function parseHtmlToPmDoc(pm: LoadedProseMirror, rawHtml: string): PmNode {
+  const doc = isBrowserDom() ? document : undefined;
   if (!doc || !rawHtml.trim()) {
-    return RICH_SCHEMA.nodes.doc!.createAndFill()!;
+    return pm.schema.nodes.doc!.createAndFill()!;
   }
   const frag = parseSafeFragment(rawHtml, { ownerDocument: doc });
   const container = doc.createElement('div');
   container.appendChild(frag);
-  return PmDOMParser.fromSchema(RICH_SCHEMA).parse(container);
+  return pm.DOMParser.fromSchema(pm.schema).parse(container);
 }
 
 /**
@@ -108,7 +170,8 @@ export class MthRichEditor extends UIElement {
   private readonly rovingCtrl: RovingFocusController;
 
   private _engine: RichEditorEngine | null = null;
-  private setEngineState: ((nextState: EditorState) => void) | null = null;
+  private pm: LoadedProseMirror | null = null;
+  private syncHeadlessHtml: ((nextHtml: string) => void) | null = null;
   private mountContainer: HTMLDivElement | null = null;
   private tokenSheet: CSSStyleSheet | null = null;
   private readonly tokenCache = new Map<string, string>();
@@ -116,6 +179,8 @@ export class MthRichEditor extends UIElement {
   private deferMountTimer: ReturnType<typeof setTimeout> | null = null;
   private wasSsrHydrated = false;
   private updatingFromEngine = false;
+  private mountToken = 0;
+  private pendingEnginePromise: Promise<void> | null = null;
 
   constructor() {
     super();
@@ -197,13 +262,15 @@ export class MthRichEditor extends UIElement {
     this.ensureEngine();
     this.syncThemeTokens();
     this.attachStyleObserver();
-    if (this.hasUpdated) {
+    if (this.hasUpdated && !this.wasSsrHydrated) {
       this.attachMountToSurface();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.mountToken += 1;
+    this.pendingEnginePromise = null;
     if (this.deferMountTimer !== null) {
       clearTimeout(this.deferMountTimer);
       this.deferMountTimer = null;
@@ -213,7 +280,8 @@ export class MthRichEditor extends UIElement {
     this.styleObserver = null;
     this._engine?.destroy();
     this._engine = null;
-    this.setEngineState = null;
+    this.pm = null;
+    this.syncHeadlessHtml = null;
     this.mountContainer?.remove();
     this.mountContainer = null;
   }
@@ -236,11 +304,25 @@ export class MthRichEditor extends UIElement {
     return this._engine.exec(command);
   }
 
+  private execToolbarCommand(buildCommand: (pm: LoadedProseMirror) => Command): boolean {
+    if (!this.pm) return false;
+    return this.execCommand(buildCommand(this.pm));
+  }
+
+  protected override async getUpdateComplete(): Promise<boolean> {
+    const result = await super.getUpdateComplete();
+    if (!this.wasSsrHydrated && this.pendingEnginePromise) {
+      await this.pendingEnginePromise;
+    }
+    return result;
+  }
+
   protected override firstUpdated(changed: PropertyValues): void {
     super.firstUpdated(changed);
     this.syncThemeTokens();
     if (this.wasSsrHydrated) {
       this.deferMountTimer = setTimeout(() => {
+        this.wasSsrHydrated = false;
         this.deferMountTimer = null;
         this.attachMountToSurface();
       }, 0);
@@ -276,7 +358,7 @@ export class MthRichEditor extends UIElement {
       this.syncEditorAccess(false);
     }
     if (changed.has('value')) {
-      const safe = String(sanitizeToTrustedHTML(this.value));
+      const safe = isBrowserDom() ? String(sanitizeToTrustedHTML(this.value)) : this.value;
       if (safe !== this.value) {
         this.value = safe;
       }
@@ -305,29 +387,46 @@ export class MthRichEditor extends UIElement {
 
   private ensureEngine(): void {
     if (this._engine) return;
-    const initialDoc = parseHtmlToPmDoc(this.value);
-    let currentState = EditorState.create({
-      schema: RICH_SCHEMA,
-      doc: initialDoc,
-      plugins: [
-        history(),
-        keymap({
-          'Mod-z': undo,
-          'Mod-y': redo,
-          'Mod-b': toggleMark(RICH_SCHEMA.marks.strong!),
-          'Mod-i': toggleMark(RICH_SCHEMA.marks.em!),
-        }),
-        keymap(baseKeymap),
-      ],
-    });
+    this.mountToken += 1;
+    const token = this.mountToken;
 
-    const container = typeof document !== 'undefined' ? document.createElement('div') : null;
-    this.mountContainer = container;
-
+    let headlessHtml = this.value;
+    let currentState: EditorState | null = null;
     let view: EditorView | null = null;
-    if (container) {
+    let destroyed = false;
+
+    const getHeadlessState = (): EditorState =>
+      ({
+        doc: {
+          textContent: stripHtmlTags(headlessHtml),
+        },
+      }) as unknown as EditorState;
+
+    const mountProseMirror = (pm: LoadedProseMirror): void => {
+      if (destroyed || token !== this.mountToken || !this.isConnected) return;
+      this.pm = pm;
+
+      const initialDoc = parseHtmlToPmDoc(pm, headlessHtml);
+      currentState = pm.EditorState.create({
+        schema: pm.schema,
+        doc: initialDoc,
+        plugins: [
+          pm.history(),
+          pm.keymap({
+            'Mod-z': pm.undo,
+            'Mod-y': pm.redo,
+            'Mod-b': pm.toggleMark(pm.schema.marks.strong!),
+            'Mod-i': pm.toggleMark(pm.schema.marks.em!),
+          }),
+          pm.keymap(pm.baseKeymap),
+        ],
+      });
+
+      const container = document.createElement('div');
+      this.mountContainer = container;
+
       try {
-        view = new EditorView(container, {
+        view = new pm.EditorView(container, {
           state: currentState,
           editable: () => !this.formCtrl.disabled && !this.formCtrl.readOnly,
           attributes: () => this.buildPmAttributes(),
@@ -353,10 +452,15 @@ export class MthRichEditor extends UIElement {
       } catch {
         view = null;
       }
-    }
 
-    this.setEngineState = (nextState: EditorState) => {
-      currentState = nextState;
+      this.syncToolbarMarks(currentState);
+      if (!this.wasSsrHydrated) {
+        this.attachMountToSurface();
+      }
+    };
+
+    this.syncHeadlessHtml = (nextHtml: string) => {
+      headlessHtml = nextHtml;
     };
 
     this._engine = {
@@ -364,30 +468,47 @@ export class MthRichEditor extends UIElement {
         return view;
       },
       get state() {
-        return view?.state ?? currentState;
+        return view?.state ?? currentState ?? getHeadlessState();
       },
       exec: (command: Command): boolean => {
+        if (destroyed) return false;
         if (view) {
           const ok = command(view.state, view.dispatch, view);
           if (ok) view.focus();
           return ok;
         }
-        return command(currentState, (tr) => {
-          currentState = currentState.apply(tr);
-          this.syncToolbarMarks(currentState);
-          if (tr.docChanged) {
-            this.handleDocChanged(currentState);
-          }
-        });
+        if (currentState) {
+          return command(currentState, (tr) => {
+            if (!currentState) return;
+            currentState = currentState.apply(tr);
+            this.syncToolbarMarks(currentState);
+            if (tr.docChanged) {
+              this.handleDocChanged(currentState);
+            }
+          });
+        }
+        return false;
       },
       getThemeToken: (tokenName: string): string => {
         return readHostTokenValue(this, tokenName) || this.tokenCache.get(tokenName) || '';
       },
       destroy: () => {
+        destroyed = true;
         view?.destroy();
         view = null;
+        currentState = null;
       },
     };
+
+    if (isBrowserDom()) {
+      this.pendingEnginePromise = loadProseMirrorModules()
+        .then((pm) => {
+          mountProseMirror(pm);
+        })
+        .catch(() => {
+          // Graceful headless fallback if ProseMirror chunk fails to load
+        });
+    }
   }
 
   private buildPmAttributes(): Record<string, string> {
@@ -424,22 +545,24 @@ export class MthRichEditor extends UIElement {
   }
 
   private loadValueIntoEngine(htmlValue: string): void {
-    if (!this._engine) return;
-    const nextDoc = parseHtmlToPmDoc(htmlValue);
-    const nextState = EditorState.create({
-      schema: RICH_SCHEMA,
+    this.syncHeadlessHtml?.(htmlValue);
+    if (!this._engine || !this.pm || !this._engine.view) return;
+    const pm = this.pm;
+    const nextDoc = parseHtmlToPmDoc(pm, htmlValue);
+    const nextState = pm.EditorState.create({
+      schema: pm.schema,
       doc: nextDoc,
-      plugins: this._engine.state.plugins,
+      plugins: this._engine.view.state.plugins,
     });
-    this.setEngineState?.(nextState);
-    this._engine.view?.updateState(nextState);
+    this._engine.view.updateState(nextState);
     this.syncToolbarMarks(nextState);
   }
 
   private syncToolbarMarks(pmState: EditorState): void {
+    if (!this.pm) return;
     const { from, $from, to, empty } = pmState.selection;
-    const strong = RICH_SCHEMA.marks.strong!;
-    const em = RICH_SCHEMA.marks.em!;
+    const strong = this.pm.schema.marks.strong!;
+    const em = this.pm.schema.marks.em!;
     if (empty) {
       this.activeBold = Boolean(strong.isInSet(pmState.storedMarks || $from.marks()));
       this.activeItalic = Boolean(em.isInSet(pmState.storedMarks || $from.marks()));
@@ -450,7 +573,8 @@ export class MthRichEditor extends UIElement {
   }
 
   private handleDocChanged(pmState: EditorState): void {
-    const frag = DOMSerializer.fromSchema(RICH_SCHEMA).serializeFragment(pmState.doc.content);
+    if (!this.pm) return;
+    const frag = this.pm.DOMSerializer.fromSchema(this.pm.schema).serializeFragment(pmState.doc.content);
     const serialized = serializeFragmentSafe(frag);
     const isEmptyDoc = pmState.doc.textContent.trim() === '' && serialized === '<p></p>';
     const safeHtml = isEmptyDoc ? '' : serialized;
@@ -483,7 +607,7 @@ export class MthRichEditor extends UIElement {
             type="button"
             ?disabled=${isBlocked}
             aria-pressed=${this.activeBold ? 'true' : 'false'}
-            @click=${() => this.execCommand(toggleMark(RICH_SCHEMA.marks.strong!))}
+            @click=${() => this.execToolbarCommand((pm) => pm.toggleMark(pm.schema.marks.strong!))}
           >
             ${this.t('boldLabel')}
           </button>
@@ -492,7 +616,7 @@ export class MthRichEditor extends UIElement {
             type="button"
             ?disabled=${isBlocked}
             aria-pressed=${this.activeItalic ? 'true' : 'false'}
-            @click=${() => this.execCommand(toggleMark(RICH_SCHEMA.marks.em!))}
+            @click=${() => this.execToolbarCommand((pm) => pm.toggleMark(pm.schema.marks.em!))}
           >
             ${this.t('italicLabel')}
           </button>
@@ -500,7 +624,7 @@ export class MthRichEditor extends UIElement {
             part="tool-button"
             type="button"
             ?disabled=${isBlocked}
-            @click=${() => this.execCommand(setBlockType(RICH_SCHEMA.nodes.heading!, { level: 2 }))}
+            @click=${() => this.execToolbarCommand((pm) => pm.setBlockType(pm.schema.nodes.heading!, { level: 2 }))}
           >
             ${this.t('headingLabel')}
           </button>
@@ -508,7 +632,7 @@ export class MthRichEditor extends UIElement {
             part="tool-button"
             type="button"
             ?disabled=${isBlocked}
-            @click=${() => this.execCommand(wrapInList(RICH_SCHEMA.nodes.bullet_list!))}
+            @click=${() => this.execToolbarCommand((pm) => pm.wrapInList(pm.schema.nodes.bullet_list!))}
           >
             ${this.t('listLabel')}
           </button>
@@ -516,7 +640,7 @@ export class MthRichEditor extends UIElement {
             part="tool-button"
             type="button"
             ?disabled=${isBlocked}
-            @click=${() => this.execCommand(undo)}
+            @click=${() => this.execToolbarCommand((pm) => pm.undo)}
           >
             ${this.t('undoLabel')}
           </button>
@@ -524,7 +648,7 @@ export class MthRichEditor extends UIElement {
             part="tool-button"
             type="button"
             ?disabled=${isBlocked}
-            @click=${() => this.execCommand(redo)}
+            @click=${() => this.execToolbarCommand((pm) => pm.redo)}
           >
             ${this.t('redoLabel')}
           </button>

@@ -15,13 +15,13 @@
   ],
   "dependencies": {
     "@lit/context": "^1.1.4",
-    "@methane/core": "workspace:*",
-    "@methane/sanitize": "workspace:*",
-    "@methane/tokens": "workspace:*",
+    "@methane/core": "workspace:^",
+    "@methane/sanitize": "workspace:^",
+    "@methane/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:*",
+    "@methane/test-conformance": "workspace:^",
     "fast-check": "^4.10.2"
   },
   "scripts": {
@@ -29,5 +29,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@methane/core": "^0.1.0 || ^1.0.0"
   }
 }

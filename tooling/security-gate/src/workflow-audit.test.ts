@@ -65,5 +65,37 @@ jobs:
     expect(rules).toContain('release-oidc-permissions');
     expect(rules).toContain('release-provenance-env');
     expect(rules).toContain('release-publish-flags');
+    expect(rules).toContain('release-nested-package-filter');
+  });
+
+  it('rejects shallow ./packages/* filter in release.yml that misses nested kits and satellites', () => {
+    const dir = makeTempDir();
+    writeFileSync(
+      join(dir, 'release.yml'),
+      `name: Release
+permissions:
+  contents: read
+  id-token: write
+env:
+  NPM_CONFIG_PROVENANCE: 'true'
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+jobs:
+  release:
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
+      - run: echo "bundle-budget"
+      - run: pnpm -r --filter "./packages/*" --dry-run publish --provenance --access public
+`,
+      'utf8',
+    );
+    const audit = auditWorkflowFiles(dir);
+    expect(audit.passed).toBe(false);
+    expect(audit.findings.map((f) => f.rule)).toContain('release-nested-package-filter');
   });
 });

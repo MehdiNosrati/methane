@@ -14,20 +14,20 @@
     "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
-    "@methane/core": "workspace:*",
-    "@methane/css": "workspace:*",
-    "@methane/primitives": "workspace:*",
-    "@methane/react": "workspace:*",
-    "@methane/ssr": "workspace:*",
-    "@methane/ssr-next": "workspace:*",
-    "@methane/tokens": "workspace:*",
-    "@methane/ui": "workspace:*",
+    "@methane/core": "workspace:^",
+    "@methane/css": "workspace:^",
+    "@methane/primitives": "workspace:^",
+    "@methane/react": "workspace:^",
+    "@methane/ssr": "workspace:^",
+    "@methane/ssr-next": "workspace:^",
+    "@methane/tokens": "workspace:^",
+    "@methane/ui": "workspace:^",
     "next": "^15.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:*",
+    "@methane/test-conformance": "workspace:^",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0"
   }

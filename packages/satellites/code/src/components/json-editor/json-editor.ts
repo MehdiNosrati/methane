@@ -1,10 +1,14 @@
-import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { Compartment, EditorState } from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import type { Compartment, EditorState } from '@codemirror/state';
+import type { EditorView } from '@codemirror/view';
 import { UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
 import { FormControlController, RovingFocusController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
+import {
+  isBrowserDom,
+  loadCodeMirrorModules,
+  type LoadedCodeMirror,
+} from '../../shared/codemirror-loader.js';
 import { readHostTokenValue, syncTokenStylesheet } from '../../shared/theme-sync.js';
 import { jsonEditorMessages } from './json-editor.messages.js';
 import type { JsonEditorMode } from './json-editor.spec.js';
@@ -99,17 +103,20 @@ export class MthJsonEditor extends UIElement {
   private readonly rovingCtrl: RovingFocusController;
 
   private _engine: JsonEditorEngine | null = null;
+  private cm: LoadedCodeMirror | null = null;
   private syncHeadlessDoc: ((nextVal: string) => void) | null = null;
   private mountContainer: HTMLDivElement | null = null;
-  private editableCompartment = new Compartment();
-  private readonlyCompartment = new Compartment();
-  private ariaCompartment = new Compartment();
+  private editableCompartment: Compartment | null = null;
+  private readonlyCompartment: Compartment | null = null;
+  private ariaCompartment: Compartment | null = null;
   private tokenSheet: CSSStyleSheet | null = null;
   private readonly tokenCache = new Map<string, string>();
   private styleObserver: MutationObserver | null = null;
   private deferMountTimer: ReturnType<typeof setTimeout> | null = null;
   private wasSsrHydrated = false;
   private updatingFromEngine = false;
+  private mountToken = 0;
+  private pendingEnginePromise: Promise<void> | null = null;
 
   constructor() {
     super();
@@ -198,13 +205,15 @@ export class MthJsonEditor extends UIElement {
     this.ensureEngine();
     this.attachStyleObserver();
     this.syncThemeTokens();
-    if (this.hasUpdated) {
+    if (this.hasUpdated && !this.wasSsrHydrated) {
       this.attachMountToSurface();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.mountToken += 1;
+    this.pendingEnginePromise = null;
     if (this.deferMountTimer !== null) {
       clearTimeout(this.deferMountTimer);
       this.deferMountTimer = null;
@@ -214,6 +223,10 @@ export class MthJsonEditor extends UIElement {
     this.styleObserver = null;
     this._engine?.destroy();
     this._engine = null;
+    this.cm = null;
+    this.editableCompartment = null;
+    this.readonlyCompartment = null;
+    this.ariaCompartment = null;
     this.syncHeadlessDoc = null;
     this.mountContainer?.remove();
     this.mountContainer = null;
@@ -232,11 +245,20 @@ export class MthJsonEditor extends UIElement {
     );
   }
 
+  protected override async getUpdateComplete(): Promise<boolean> {
+    const result = await super.getUpdateComplete();
+    if (!this.wasSsrHydrated && this.pendingEnginePromise) {
+      await this.pendingEnginePromise;
+    }
+    return result;
+  }
+
   protected override firstUpdated(changed: PropertyValues): void {
     super.firstUpdated(changed);
     this.syncThemeTokens();
     if (this.wasSsrHydrated) {
       this.deferMountTimer = setTimeout(() => {
+        this.wasSsrHydrated = false;
         this.deferMountTimer = null;
         this.attachMountToSurface();
       }, 0);
@@ -326,76 +348,99 @@ export class MthJsonEditor extends UIElement {
 
   private ensureEngine(): void {
     if (this._engine) return;
-    this.editableCompartment = new Compartment();
-    this.readonlyCompartment = new Compartment();
-    this.ariaCompartment = new Compartment();
+    this.mountToken += 1;
+    const token = this.mountToken;
 
-    const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
-    let currentState = EditorState.create({
-      doc: this.value,
-      extensions: [
-        history(),
-        keymap.of([...defaultKeymap, ...historyKeymap]),
-        this.ariaCompartment.of(EditorView.contentAttributes.of(this.buildCmContentAttributes())),
-        this.editableCompartment.of(EditorView.editable.of(!blocked)),
-        this.readonlyCompartment.of(EditorState.readOnly.of(blocked)),
-        EditorView.theme({
-          '&': {
-            backgroundColor: 'var(--_je-surface)',
-            color: 'var(--_je-fg)',
-          },
-          '&.cm-focused': {
-            outline: '2px solid var(--_je-focus)',
-            outlineOffset: '-2px',
-          },
-        }),
-        EditorView.updateListener.of((update) => {
-          currentState = update.state;
-          if (update.docChanged && !this.updatingFromEngine) {
-            const nextVal = update.state.doc.toString();
-            this.updatingFromEngine = true;
-            this.value = nextVal;
-            this.updatingFromEngine = false;
-            const valid = this.validateJsonState(nextVal);
-            this.formCtrl.setValue(nextVal);
-            this.emitEvent('mth-input', { detail: { value: nextVal, valid } });
-          }
-        }),
-        EditorView.domEventHandlers({
-          blur: () => {
-            this.emitEvent('mth-change', {
-              detail: { value: this.value, valid: this.parseError.length === 0 },
-            });
-            return false;
-          },
-        }),
-      ],
-    });
-
-    const container = typeof document !== 'undefined' ? document.createElement('div') : null;
-    this.mountContainer = container;
-
+    let headlessValue = this.value;
+    let currentState: EditorState | null = null;
     let view: EditorView | null = null;
-    if (container) {
+    let destroyed = false;
+
+    const getHeadlessState = (): EditorState =>
+      ({
+        doc: {
+          toString: () => headlessValue,
+          get length() {
+            return headlessValue.length;
+          },
+        },
+      }) as unknown as EditorState;
+
+    const mountCodeMirror = (cm: LoadedCodeMirror): void => {
+      if (destroyed || token !== this.mountToken || !this.isConnected) return;
+      this.cm = cm;
+      const editableComp = new cm.Compartment();
+      const readonlyComp = new cm.Compartment();
+      const ariaComp = new cm.Compartment();
+      this.editableCompartment = editableComp;
+      this.readonlyCompartment = readonlyComp;
+      this.ariaCompartment = ariaComp;
+
+      const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
+      currentState = cm.EditorState.create({
+        doc: headlessValue,
+        extensions: [
+          cm.history(),
+          cm.keymap.of([...cm.defaultKeymap, ...cm.historyKeymap]),
+          ariaComp.of(cm.EditorView.contentAttributes.of(this.buildCmContentAttributes())),
+          editableComp.of(cm.EditorView.editable.of(!blocked)),
+          readonlyComp.of(cm.EditorState.readOnly.of(blocked)),
+          cm.EditorView.theme({
+            '&': {
+              backgroundColor: 'var(--_je-surface)',
+              color: 'var(--_je-fg)',
+            },
+            '&.cm-focused': {
+              outline: '2px solid var(--_je-focus)',
+              outlineOffset: '-2px',
+            },
+          }),
+          cm.EditorView.updateListener.of((update) => {
+            currentState = update.state;
+            if (update.docChanged && !this.updatingFromEngine) {
+              const nextVal = update.state.doc.toString();
+              headlessValue = nextVal;
+              this.updatingFromEngine = true;
+              this.value = nextVal;
+              this.updatingFromEngine = false;
+              const valid = this.validateJsonState(nextVal);
+              this.formCtrl.setValue(nextVal);
+              this.emitEvent('mth-input', { detail: { value: nextVal, valid } });
+            }
+          }),
+          cm.EditorView.domEventHandlers({
+            blur: () => {
+              this.emitEvent('mth-change', {
+                detail: { value: this.value, valid: this.parseError.length === 0 },
+              });
+              return false;
+            },
+          }),
+        ],
+      });
+
+      const container = document.createElement('div');
+      this.mountContainer = container;
+
       try {
-        view = new EditorView({
+        view = new cm.EditorView({
           state: currentState,
           parent: container,
         });
       } catch {
         view = null;
       }
-    }
+
+      if (!this.wasSsrHydrated) {
+        this.attachMountToSurface();
+      }
+    };
 
     const readParsed = () => this.parsedData;
     const readValid = () => this.parseError.length === 0;
 
     this.syncHeadlessDoc = (nextVal: string) => {
-      const current = currentState.doc.toString();
-      if (current === nextVal) return;
-      currentState = currentState.update({
-        changes: { from: 0, to: current.length, insert: nextVal },
-      }).state;
+      headlessValue = nextVal;
     };
 
     this._engine = {
@@ -403,7 +448,7 @@ export class MthJsonEditor extends UIElement {
         return view;
       },
       get state() {
-        return view?.state ?? currentState;
+        return view?.state ?? currentState ?? getHeadlessState();
       },
       get isValid() {
         return readValid();
@@ -413,10 +458,22 @@ export class MthJsonEditor extends UIElement {
       getThemeToken: (tokenName: string) =>
         readHostTokenValue(this, tokenName) || this.tokenCache.get(tokenName) || '',
       destroy: () => {
+        destroyed = true;
         view?.destroy();
         view = null;
+        currentState = null;
       },
     };
+
+    if (isBrowserDom()) {
+      this.pendingEnginePromise = loadCodeMirrorModules()
+        .then((cm) => {
+          mountCodeMirror(cm);
+        })
+        .catch(() => {
+          // Graceful headless fallback if CodeMirror chunk fails to load
+        });
+    }
   }
 
   private validateJsonState(raw: string): boolean {
@@ -435,14 +492,23 @@ export class MthJsonEditor extends UIElement {
 
   private reconfigureAccess(): void {
     const view = this._engine?.view;
-    if (!view) return;
+    const cm = this.cm;
+    if (
+      !view ||
+      !cm ||
+      !this.editableCompartment ||
+      !this.readonlyCompartment ||
+      !this.ariaCompartment
+    ) {
+      return;
+    }
     const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
     view.dispatch({
       effects: [
-        this.editableCompartment.reconfigure(EditorView.editable.of(!blocked)),
-        this.readonlyCompartment.reconfigure(EditorState.readOnly.of(blocked)),
+        this.editableCompartment.reconfigure(cm.EditorView.editable.of(!blocked)),
+        this.readonlyCompartment.reconfigure(cm.EditorState.readOnly.of(blocked)),
         this.ariaCompartment.reconfigure(
-          EditorView.contentAttributes.of(this.buildCmContentAttributes()),
+          cm.EditorView.contentAttributes.of(this.buildCmContentAttributes()),
         ),
       ],
     });

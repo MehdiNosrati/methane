@@ -1,10 +1,14 @@
-import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
-import { Compartment, EditorState } from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import type { Compartment, EditorState } from '@codemirror/state';
+import type { EditorView } from '@codemirror/view';
 import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import {
+  isBrowserDom,
+  loadCodeMirrorModules,
+  type LoadedCodeMirror,
+} from '../../shared/codemirror-loader.js';
 import { readHostTokenValue, syncTokenStylesheet } from '../../shared/theme-sync.js';
 import { codeEditorMessages } from './code-editor.messages.js';
 import { codeEditorStyles } from './code-editor.styles.js';
@@ -70,19 +74,21 @@ export class MthCodeEditor extends UIElement {
   private readonly formCtrl: FormControlController;
 
   private _engine: CodeEditorEngine | null = null;
+  private cm: LoadedCodeMirror | null = null;
   private syncHeadlessDoc: ((nextVal: string) => void) | null = null;
   private mountContainer: HTMLDivElement | null = null;
-  private tabCompartment = new Compartment();
-  private editableCompartment = new Compartment();
-  private readonlyCompartment = new Compartment();
-  private ariaCompartment = new Compartment();
-  private themeCompartment = new Compartment();
+  private tabCompartment: Compartment | null = null;
+  private editableCompartment: Compartment | null = null;
+  private readonlyCompartment: Compartment | null = null;
+  private ariaCompartment: Compartment | null = null;
   private tokenSheet: CSSStyleSheet | null = null;
   private readonly tokenCache = new Map<string, string>();
   private styleObserver: MutationObserver | null = null;
   private deferMountTimer: ReturnType<typeof setTimeout> | null = null;
   private wasSsrHydrated = false;
   private updatingFromEngine = false;
+  private mountToken = 0;
+  private pendingEnginePromise: Promise<void> | null = null;
 
   constructor() {
     super();
@@ -147,13 +153,15 @@ export class MthCodeEditor extends UIElement {
     this.ensureEngine();
     this.attachStyleObserver();
     this.syncThemeTokens();
-    if (this.hasUpdated) {
+    if (this.hasUpdated && !this.wasSsrHydrated) {
       this.attachMountToSurface();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
+    this.mountToken += 1;
+    this.pendingEnginePromise = null;
     if (this.deferMountTimer !== null) {
       clearTimeout(this.deferMountTimer);
       this.deferMountTimer = null;
@@ -163,6 +171,11 @@ export class MthCodeEditor extends UIElement {
     this.styleObserver = null;
     this._engine?.destroy();
     this._engine = null;
+    this.cm = null;
+    this.tabCompartment = null;
+    this.editableCompartment = null;
+    this.readonlyCompartment = null;
+    this.ariaCompartment = null;
     this.syncHeadlessDoc = null;
     this.mountContainer?.remove();
     this.mountContainer = null;
@@ -181,11 +194,20 @@ export class MthCodeEditor extends UIElement {
     );
   }
 
+  protected override async getUpdateComplete(): Promise<boolean> {
+    const result = await super.getUpdateComplete();
+    if (!this.wasSsrHydrated && this.pendingEnginePromise) {
+      await this.pendingEnginePromise;
+    }
+    return result;
+  }
+
   protected override firstUpdated(changed: PropertyValues): void {
     super.firstUpdated(changed);
     this.syncThemeTokens();
     if (this.wasSsrHydrated) {
       this.deferMountTimer = setTimeout(() => {
+        this.wasSsrHydrated = false;
         this.deferMountTimer = null;
         this.attachMountToSurface();
       }, 0);
@@ -239,8 +261,8 @@ export class MthCodeEditor extends UIElement {
     }
   }
 
-  private buildCmThemeExtension() {
-    return EditorView.theme({
+  private buildCmThemeExtension(cm: LoadedCodeMirror) {
+    return cm.EditorView.theme({
       '&': {
         backgroundColor: 'var(--_ce-surface)',
         color: 'var(--_ce-fg)',
@@ -273,72 +295,96 @@ export class MthCodeEditor extends UIElement {
 
   private ensureEngine(): void {
     if (this._engine) return;
-    this.tabCompartment = new Compartment();
-    this.editableCompartment = new Compartment();
-    this.readonlyCompartment = new Compartment();
-    this.ariaCompartment = new Compartment();
-    this.themeCompartment = new Compartment();
+    this.mountToken += 1;
+    const token = this.mountToken;
 
-    const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
-    let currentState = EditorState.create({
-      doc: this.value,
-      extensions: [
-        history(),
-        keymap.of([...defaultKeymap, ...historyKeymap]),
-        this.ariaCompartment.of(EditorView.contentAttributes.of(this.buildCmContentAttributes())),
-        this.tabCompartment.of(this.tabTrapsFocus ? keymap.of([indentWithTab]) : []),
-        this.editableCompartment.of(EditorView.editable.of(!blocked)),
-        this.readonlyCompartment.of(EditorState.readOnly.of(blocked)),
-        this.themeCompartment.of(this.buildCmThemeExtension()),
-        EditorView.updateListener.of((update) => {
-          currentState = update.state;
-          if (update.docChanged && !this.updatingFromEngine) {
-            const nextVal = update.state.doc.toString();
-            this.updatingFromEngine = true;
-            this.value = nextVal;
-            this.updatingFromEngine = false;
-            this.formCtrl.setValue(nextVal);
-            this.emitEvent('mth-input', { detail: { value: nextVal } });
-          }
-        }),
-        EditorView.domEventHandlers({
-          blur: () => {
-            this.emitEvent('mth-change', { detail: { value: this.value } });
-            return false;
-          },
-          keydown: (event) => {
-            if (event.key === 'Escape' && this.tabTrapsFocus) {
-              this.tabTrapsFocus = false;
-              this.reconfigureTabKeymap();
-              return false;
-            }
-            return false;
-          },
-        }),
-      ],
-    });
-
-    const container = typeof document !== 'undefined' ? document.createElement('div') : null;
-    this.mountContainer = container;
-
+    let headlessValue = this.value;
+    let currentState: EditorState | null = null;
     let view: EditorView | null = null;
-    if (container) {
+    let destroyed = false;
+
+    const getHeadlessState = (): EditorState =>
+      ({
+        doc: {
+          toString: () => headlessValue,
+          get length() {
+            return headlessValue.length;
+          },
+        },
+      }) as unknown as EditorState;
+
+    const mountCodeMirror = (cm: LoadedCodeMirror): void => {
+      if (destroyed || token !== this.mountToken || !this.isConnected) return;
+      this.cm = cm;
+      const tabComp = new cm.Compartment();
+      const editableComp = new cm.Compartment();
+      const readonlyComp = new cm.Compartment();
+      const ariaComp = new cm.Compartment();
+      const themeComp = new cm.Compartment();
+      this.tabCompartment = tabComp;
+      this.editableCompartment = editableComp;
+      this.readonlyCompartment = readonlyComp;
+      this.ariaCompartment = ariaComp;
+
+      const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
+      currentState = cm.EditorState.create({
+        doc: headlessValue,
+        extensions: [
+          cm.history(),
+          cm.keymap.of([...cm.defaultKeymap, ...cm.historyKeymap]),
+          ariaComp.of(cm.EditorView.contentAttributes.of(this.buildCmContentAttributes())),
+          tabComp.of(this.tabTrapsFocus ? cm.keymap.of([cm.indentWithTab]) : []),
+          editableComp.of(cm.EditorView.editable.of(!blocked)),
+          readonlyComp.of(cm.EditorState.readOnly.of(blocked)),
+          themeComp.of(this.buildCmThemeExtension(cm)),
+          cm.EditorView.updateListener.of((update) => {
+            currentState = update.state;
+            if (update.docChanged && !this.updatingFromEngine) {
+              const nextVal = update.state.doc.toString();
+              headlessValue = nextVal;
+              this.updatingFromEngine = true;
+              this.value = nextVal;
+              this.updatingFromEngine = false;
+              this.formCtrl.setValue(nextVal);
+              this.emitEvent('mth-input', { detail: { value: nextVal } });
+            }
+          }),
+          cm.EditorView.domEventHandlers({
+            blur: () => {
+              this.emitEvent('mth-change', { detail: { value: this.value } });
+              return false;
+            },
+            keydown: (event) => {
+              if (event.key === 'Escape' && this.tabTrapsFocus) {
+                this.tabTrapsFocus = false;
+                this.reconfigureTabKeymap();
+                return false;
+              }
+              return false;
+            },
+          }),
+        ],
+      });
+
+      const container = document.createElement('div');
+      this.mountContainer = container;
+
       try {
-        view = new EditorView({
+        view = new cm.EditorView({
           state: currentState,
           parent: container,
         });
       } catch {
         view = null;
       }
-    }
+
+      if (!this.wasSsrHydrated) {
+        this.attachMountToSurface();
+      }
+    };
 
     this.syncHeadlessDoc = (nextVal: string) => {
-      const current = currentState.doc.toString();
-      if (current === nextVal) return;
-      currentState = currentState.update({
-        changes: { from: 0, to: current.length, insert: nextVal },
-      }).state;
+      headlessValue = nextVal;
     };
 
     this._engine = {
@@ -346,7 +392,7 @@ export class MthCodeEditor extends UIElement {
         return view;
       },
       get state() {
-        return view?.state ?? currentState;
+        return view?.state ?? currentState ?? getHeadlessState();
       },
       setTabTrapsFocus: (enabled: boolean) => {
         this.tabTrapsFocus = enabled;
@@ -355,22 +401,43 @@ export class MthCodeEditor extends UIElement {
       getThemeToken: (tokenName: string) =>
         readHostTokenValue(this, tokenName) || this.tokenCache.get(tokenName) || '',
       destroy: () => {
+        destroyed = true;
         view?.destroy();
         view = null;
+        currentState = null;
       },
     };
+
+    if (isBrowserDom()) {
+      this.pendingEnginePromise = loadCodeMirrorModules()
+        .then((cm) => {
+          mountCodeMirror(cm);
+        })
+        .catch(() => {
+          // Graceful headless fallback if CodeMirror chunk fails to load
+        });
+    }
   }
 
   private reconfigureAccess(): void {
     const view = this._engine?.view;
-    if (!view) return;
+    const cm = this.cm;
+    if (
+      !view ||
+      !cm ||
+      !this.editableCompartment ||
+      !this.readonlyCompartment ||
+      !this.ariaCompartment
+    ) {
+      return;
+    }
     const blocked = this.formCtrl.disabled || this.formCtrl.readOnly;
     view.dispatch({
       effects: [
-        this.editableCompartment.reconfigure(EditorView.editable.of(!blocked)),
-        this.readonlyCompartment.reconfigure(EditorState.readOnly.of(blocked)),
+        this.editableCompartment.reconfigure(cm.EditorView.editable.of(!blocked)),
+        this.readonlyCompartment.reconfigure(cm.EditorState.readOnly.of(blocked)),
         this.ariaCompartment.reconfigure(
-          EditorView.contentAttributes.of(this.buildCmContentAttributes()),
+          cm.EditorView.contentAttributes.of(this.buildCmContentAttributes()),
         ),
       ],
     });
@@ -378,10 +445,11 @@ export class MthCodeEditor extends UIElement {
 
   private reconfigureTabKeymap(): void {
     const view = this._engine?.view;
-    if (!view) return;
+    const cm = this.cm;
+    if (!view || !cm || !this.tabCompartment) return;
     view.dispatch({
       effects: this.tabCompartment.reconfigure(
-        this.tabTrapsFocus ? keymap.of([indentWithTab]) : [],
+        this.tabTrapsFocus ? cm.keymap.of([cm.indentWithTab]) : [],
       ),
     });
   }

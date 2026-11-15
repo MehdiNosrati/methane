@@ -42,17 +42,20 @@
     "@codemirror/commands": "^6.7.0",
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.34.0",
-    "@methane/core": "workspace:*",
-    "@methane/primitives": "workspace:*",
-    "@methane/sanitize": "workspace:*",
-    "@methane/tokens": "workspace:*",
+    "@methane/core": "workspace:^",
+    "@methane/primitives": "workspace:^",
+    "@methane/sanitize": "workspace:^",
+    "@methane/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
     "@lit-labs/ssr": "^4.1.0",
     "@lit-labs/ssr-client": "^1.1.8",
     "@lit-labs/ssr-dom-shim": "^1.6.0",
-    "@methane/spec-compiler": "workspace:*",
-    "@methane/test-conformance": "workspace:*"
+    "@methane/spec-compiler": "workspace:^",
+    "@methane/test-conformance": "workspace:^"
+  },
+  "peerDependencies": {
+    "@methane/core": "^0.1.0 || ^1.0.0"
   }
 }

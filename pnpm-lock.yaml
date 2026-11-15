@@ -48,28 +48,28 @@ importers:
   apps/docs:
     dependencies:
       '@methane/bundle-budget':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/bundle-budget
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/spec-compiler
       '@methane/ssr-astro':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr-astro
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ui
       '@methane/wrapper-codegen':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       astro:
         specifier: ^7.4.12
@@ -99,22 +99,22 @@ importers:
         specifier: ^19.2.0
         version: 19.2.27(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-server@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@19.2.25)(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@angular/router@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))
       '@methane/angular':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/angular
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/ssr-angular':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr-angular
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ui
       rxjs:
         specifier: ^7.8.0
@@ -136,7 +136,7 @@ importers:
         specifier: ^19.2.0
         version: 19.2.25(@angular/compiler@19.2.25)(typescript@5.9.3)
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@types/node':
         specifier: ^22.0.0
@@ -157,28 +157,28 @@ importers:
   apps/verify-next:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/react':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/react
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr
       '@methane/ssr-next':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr-next
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ui
       next:
         specifier: ^15.5.0
@@ -191,7 +191,7 @@ importers:
         version: 19.3.1(react@19.3.1)
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@types/react':
         specifier: ^19.0.0
@@ -203,28 +203,28 @@ importers:
   apps/verify-nuxt:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr
       '@methane/ssr-nuxt':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr-nuxt
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ui
       '@methane/vue':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/vue
       nuxt:
         specifier: ^3.16.0
@@ -234,35 +234,35 @@ importers:
         version: 3.5.45(typescript@5.9.3)
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
 
   apps/verify-sveltekit:
     dependencies:
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/ssr-sveltekit':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr-sveltekit
       '@methane/svelte':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/svelte
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ui
       svelte:
         specifier: ^5.57.3
         version: 5.57.3(@typescript-eslint/types@8.72.2)
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@sveltejs/adapter-node':
         specifier: ^5.0.0
@@ -328,17 +328,17 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
       lit:
         specifier: ^3.2.1
         version: 3.3.3
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       fast-check:
         specifier: ^4.10.2
@@ -347,28 +347,28 @@ importers:
   packages/css:
     dependencies:
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
 
   packages/kits/admin:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../ui
       lit:
         specifier: ^3.2.1
@@ -384,28 +384,28 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/ai:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../ui
       lit:
         specifier: ^3.2.1
@@ -421,25 +421,25 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/auth:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../ui
       lit:
         specifier: ^3.2.1
@@ -455,28 +455,28 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/chat:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../ui
       lit:
         specifier: ^3.2.1
@@ -492,28 +492,28 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/commerce:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@methane/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../ui
       lit:
         specifier: ^3.2.1
@@ -529,10 +529,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/locales: {}
@@ -543,20 +543,20 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
       lit:
         specifier: ^3.2.1
         version: 3.3.3
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       fast-check:
         specifier: ^4.10.2
@@ -584,19 +584,19 @@ importers:
   packages/satellites/3d:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -615,10 +615,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
       '@types/three':
         specifier: ^0.187.0
@@ -627,19 +627,19 @@ importers:
   packages/satellites/charts:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       echarts:
         specifier: ^6.1.0
@@ -658,10 +658,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/code:
@@ -676,16 +676,16 @@ importers:
         specifier: ^6.34.0
         version: 6.43.15
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -701,10 +701,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/datagrid:
@@ -713,13 +713,13 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       '@tanstack/table-core':
         specifier: ^8.21.3
@@ -741,25 +741,25 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/editor:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       katex:
         specifier: ^0.16.11
@@ -802,10 +802,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/flow:
@@ -814,19 +814,19 @@ importers:
         specifier: ^3.1.3
         version: 3.1.3
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -842,10 +842,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/maps:
@@ -854,19 +854,19 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -885,10 +885,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/media:
@@ -897,19 +897,19 @@ importers:
         specifier: ~0.83.2
         version: 0.83.2
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -925,28 +925,28 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/pdf:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -965,28 +965,28 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/rtc:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../sanitize
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -1002,10 +1002,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/spreadsheet:
@@ -1014,13 +1014,13 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../primitives
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tokens
       lit:
         specifier: ^3.2.1
@@ -1036,10 +1036,10 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/ssr:
@@ -1058,13 +1058,13 @@ importers:
         version: 3.3.3
     devDependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
 
   packages/ssr-angular:
     dependencies:
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ssr
       lit:
         specifier: ^3.3.3
@@ -1073,7 +1073,7 @@ importers:
   packages/ssr-astro:
     dependencies:
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ssr
       lit:
         specifier: ^3.3.3
@@ -1082,7 +1082,7 @@ importers:
   packages/ssr-next:
     dependencies:
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ssr
       lit:
         specifier: ^3.3.3
@@ -1091,7 +1091,7 @@ importers:
   packages/ssr-nuxt:
     dependencies:
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ssr
       lit:
         specifier: ^3.3.3
@@ -1100,7 +1100,7 @@ importers:
   packages/ssr-sveltekit:
     dependencies:
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ssr
       lit:
         specifier: ^3.3.3
@@ -1120,16 +1120,16 @@ importers:
         specifier: ^1.1.4
         version: 1.1.6
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@methane/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../css
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../primitives
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
       lit:
         specifier: ^3.2.1
@@ -1145,13 +1145,13 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/spec-compiler
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@methane/wrapper-codegen':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
 
   packages/vue:
@@ -1169,13 +1169,13 @@ importers:
   tooling/figma-sync:
     dependencies:
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../spec-compiler
       '@methane/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/tokens
       '@methane/wrapper-codegen':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../wrapper-codegen
 
   tooling/lint-plugin:
@@ -1193,16 +1193,16 @@ importers:
   tooling/security-gate:
     dependencies:
       '@methane/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/core
       '@methane/primitives':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/primitives
       '@methane/sanitize':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/sanitize
       '@methane/ssr':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/ssr
       lit:
         specifier: ^3.2.1
@@ -1211,7 +1211,7 @@ importers:
   tooling/spec-compiler:
     dependencies:
       '@methane/test-conformance':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../test-conformance
 
   tooling/test-conformance: {}
@@ -1219,7 +1219,7 @@ importers:
   tooling/wrapper-codegen:
     dependencies:
       '@methane/spec-compiler':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../spec-compiler
 
 packages:
@@ -9969,7 +9969,7 @@ snapshots:
       tree-kill: 1.2.2
       tslib: 2.8.1
       typescript: 5.9.3
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
       webpack-dev-middleware: 7.4.2(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       webpack-dev-server: 5.2.2(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       webpack-merge: 6.0.1
@@ -10012,7 +10012,7 @@ snapshots:
     dependencies:
       '@angular-devkit/architect': 0.1902.27(chokidar@4.0.3)
       rxjs: 7.8.1
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
       webpack-dev-server: 5.2.2(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
     transitivePeerDependencies:
       - chokidar
@@ -12362,7 +12362,7 @@ snapshots:
     dependencies:
       '@angular/compiler-cli': 19.2.25(@angular/compiler@19.2.25)(typescript@5.9.3)
       typescript: 5.9.3
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -14300,7 +14300,7 @@ snapshots:
       '@babel/core': 7.26.10
       find-cache-dir: 4.0.0
       schema-utils: 4.8.3(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   babel-plugin-polyfill-corejs2@0.4.17(@babel/core@7.26.10):
     dependencies:
@@ -14734,7 +14734,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.8.3(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       serialize-javascript: 6.0.2
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   core-js-compat@3.51.0:
     dependencies:
@@ -14796,7 +14796,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.8.6
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   css-select@5.2.2:
     dependencies:
@@ -16045,7 +16045,7 @@ snapshots:
     dependencies:
       less: 4.2.2
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   less@4.2.2:
     dependencies:
@@ -16070,7 +16070,7 @@ snapshots:
     dependencies:
       webpack-sources: 3.7.0
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -16405,7 +16405,7 @@ snapshots:
     dependencies:
       schema-utils: 4.8.3(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       tapable: 2.3.4
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   minimalistic-assert@1.0.1: {}
 
@@ -17316,7 +17316,7 @@ snapshots:
       postcss: 8.5.12
       semver: 7.8.6
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
     transitivePeerDependencies:
       - typescript
 
@@ -17886,7 +17886,7 @@ snapshots:
       neo-async: 2.6.2
     optionalDependencies:
       sass: 1.85.0
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   sass@1.85.0:
     dependencies:
@@ -17930,7 +17930,7 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   schema-utils@4.8.3(webpack@5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.33)):
     dependencies:
@@ -18191,7 +18191,7 @@ snapshots:
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.2
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   source-map-support@0.5.21:
     dependencies:
@@ -18451,7 +18451,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.8.3(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       terser: 5.51.2
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
     optionalDependencies:
       esbuild: 0.28.0
       lightningcss: 1.33.0
@@ -19156,7 +19156,7 @@ snapshots:
       range-parser: 1.3.0
       schema-utils: 4.8.3(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   webpack-dev-server@5.2.2(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)):
     dependencies:
@@ -19189,7 +19189,7 @@ snapshots:
       webpack-dev-middleware: 7.4.2(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12))
       ws: 8.23.0
     optionalDependencies:
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -19207,11 +19207,11 @@ snapshots:
   webpack-subresource-integrity@5.1.0(webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12)
+      webpack: 5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12)
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.105.0(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.12):
+  webpack@5.105.0(esbuild@0.28.0)(lightningcss@1.33.0)(postcss@8.5.12):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.10
