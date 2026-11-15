@@ -1,0 +1,16 @@
+export const screenRecorderMessages = {
+  regionLabel: 'Screen recorder',
+  shareLabel: 'Share & record screen',
+  pauseLabel: 'Pause',
+  resumeLabel: 'Resume',
+  stopLabel: 'Stop sharing',
+  systemAudioLabel: 'Include system audio',
+  statusIdle: 'Ready to capture screen',
+  statusRequesting: 'Waiting for screen selection…',
+  statusRecording: 'Screen recording active',
+  statusPaused: 'Screen recording paused',
+  statusStopped: 'Screen recording complete',
+  statusUnsupported: 'Screen capture unavailable in this environment',
+  statusError: 'Screen capture error: {message}',
+  playbackLabel: 'Recorded screen playback',
+} as const;

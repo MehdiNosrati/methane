@@ -1,0 +1,1318 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/audio-recorder/audio-recorder.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAudioRecorder",
+          "tagName": "mth-audio-recorder",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible MediaRecorder audio capture control with pause/resume, live input level meter, and duration limit.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mimeType",
+              "attribute": "mime-type",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"audio/webm\"",
+              "description": "Preferred audio recording MIME type."
+            },
+            {
+              "kind": "field",
+              "name": "maxDuration",
+              "attribute": "max-duration",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum recording duration in seconds (0 for unlimited)."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables recorder controls."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mime-type",
+              "fieldName": "mimeType",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"audio/webm\"",
+              "description": "Preferred audio recording MIME type."
+            },
+            {
+              "name": "max-duration",
+              "fieldName": "maxDuration",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Maximum recording duration in seconds (0 for unlimited)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables recorder controls."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-state-change",
+              "type": {
+                "text": "CustomEvent<{ state: AudioRecorderState }>"
+              },
+              "description": "Fired when recorder state transitions."
+            },
+            {
+              "name": "mth-record-complete",
+              "type": {
+                "text": "CustomEvent<{ blob: Blob | null; url: string; durationMs: number; mimeType: string }>"
+              },
+              "description": "Fired when recording stops with blob/URL/duration payload."
+            },
+            {
+              "name": "mth-level",
+              "type": {
+                "text": "CustomEvent<{ level: number }>"
+              },
+              "description": "Fired when input level updates."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Fired on microphone or recorder errors."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or unsupported-browser fallback UI."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer audio recorder region."
+            },
+            {
+              "name": "controls",
+              "description": "Transport control buttons."
+            },
+            {
+              "name": "meter",
+              "description": "Accessible audio input level meter."
+            },
+            {
+              "name": "timer",
+              "description": "Elapsed recording duration readout."
+            },
+            {
+              "name": "status",
+              "description": "Polite recorder status region."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Recorder container background"
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Active recording indicator color"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Audio level meter fill color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "recording",
+              "description": "Custom element state :state(recording)."
+            },
+            {
+              "name": "paused",
+              "description": "Custom element state :state(paused)."
+            },
+            {
+              "name": "stopped",
+              "description": "Custom element state :state(stopped)."
+            },
+            {
+              "name": "unsupported",
+              "description": "Custom element state :state(unsupported)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-audio-recorder",
+            "package": "@methane/rtc",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "recording",
+              "paused",
+              "stopped",
+              "unsupported"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "Focus is on Record, Pause, Resume, or Stop button",
+                "expect": "Transitions recorder state and emits mth-state-change"
+              }
+            ],
+            "props": [
+              {
+                "name": "mimeType",
+                "attr": "mime-type",
+                "type": "string",
+                "default": "audio/webm"
+              },
+              {
+                "name": "maxDuration",
+                "attr": "max-duration",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-state-change",
+                "cancelable": false,
+                "detailType": "{ state: AudioRecorderState }"
+              },
+              {
+                "name": "mth-record-complete",
+                "cancelable": false,
+                "detailType": "{ blob: Blob | null; url: string; durationMs: number; mimeType: string }"
+              },
+              {
+                "name": "mth-level",
+                "cancelable": false,
+                "detailType": "{ level: number }"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or unsupported-browser fallback UI."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer audio recorder region."
+              },
+              {
+                "name": "controls",
+                "description": "Transport control buttons."
+              },
+              {
+                "name": "meter",
+                "description": "Accessible audio input level meter."
+              },
+              {
+                "name": "timer",
+                "description": "Elapsed recording duration readout."
+              },
+              {
+                "name": "status",
+                "description": "Polite recorder status region."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Audio recorder",
+              "recordLabel": "Record",
+              "pauseLabel": "Pause",
+              "resumeLabel": "Resume",
+              "stopLabel": "Stop",
+              "resetLabel": "Reset",
+              "meterLabel": "Microphone input level",
+              "statusIdle": "Ready to record",
+              "statusRecording": "Recording…",
+              "statusPaused": "Recording paused",
+              "statusStopped": "Recording complete",
+              "statusUnsupported": "Audio recording unavailable in this environment",
+              "statusError": "Recording error: {message}",
+              "playbackLabel": "Recorded audio playback"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAudioRecorder",
+          "declaration": {
+            "name": "MthAudioRecorder",
+            "module": "src/components/audio-recorder/audio-recorder.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-audio-recorder",
+          "declaration": {
+            "name": "MthAudioRecorder",
+            "module": "src/components/audio-recorder/audio-recorder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/camera-capture/camera-capture.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCameraCapture",
+          "tagName": "mth-camera-capture",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible camera capture component wrapping MediaDevices.getUserMedia with graceful JSDOM/SSR fallback.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "facingMode",
+              "attribute": "facing-mode",
+              "type": {
+                "text": "'user' | 'environment'"
+              },
+              "default": "\"user\"",
+              "description": "Preferred camera facing mode (user or environment)."
+            },
+            {
+              "kind": "field",
+              "name": "deviceId",
+              "attribute": "device-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit video input device ID."
+            },
+            {
+              "kind": "field",
+              "name": "mimeType",
+              "attribute": "mime-type",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"image/png\"",
+              "description": "Snapshot image MIME type."
+            },
+            {
+              "kind": "field",
+              "name": "quality",
+              "attribute": "quality",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.92",
+              "description": "Encoder quality (0..1) for lossy image formats."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables camera controls."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "facing-mode",
+              "fieldName": "facingMode",
+              "type": {
+                "text": "'user' | 'environment'"
+              },
+              "default": "\"user\"",
+              "description": "Preferred camera facing mode (user or environment)."
+            },
+            {
+              "name": "device-id",
+              "fieldName": "deviceId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Explicit video input device ID."
+            },
+            {
+              "name": "mime-type",
+              "fieldName": "mimeType",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"image/png\"",
+              "description": "Snapshot image MIME type."
+            },
+            {
+              "name": "quality",
+              "fieldName": "quality",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.92",
+              "description": "Encoder quality (0..1) for lossy image formats."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables camera controls."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-capture",
+              "type": {
+                "text": "CustomEvent<{ dataUrl: string; width: number; height: number }>"
+              },
+              "description": "Fired when a still frame snapshot is captured."
+            },
+            {
+              "name": "mth-permission-change",
+              "type": {
+                "text": "CustomEvent<{ status: CameraPermissionStatus }>"
+              },
+              "description": "Fired when camera permission or stream status changes."
+            },
+            {
+              "name": "mth-device-change",
+              "type": {
+                "text": "CustomEvent<{ deviceId: string }>"
+              },
+              "description": "Fired when the selected camera device changes."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Fired when camera access or capture encounters an error."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or camera-unavailable fallback UI."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer camera capture container."
+            },
+            {
+              "name": "preview",
+              "description": "Live video preview element."
+            },
+            {
+              "name": "controls",
+              "description": "Device selector and capture actions toolbar."
+            },
+            {
+              "name": "snapshot",
+              "description": "Captured still frame preview image."
+            },
+            {
+              "name": "status",
+              "description": "Polite live permission/capture status text."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Capture container surface"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary action highlight"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "active",
+              "description": "Custom element state :state(active)."
+            },
+            {
+              "name": "denied",
+              "description": "Custom element state :state(denied)."
+            },
+            {
+              "name": "unsupported",
+              "description": "Custom element state :state(unsupported)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-camera-capture",
+            "package": "@methane/rtc",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "active",
+              "denied",
+              "unsupported"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "Focus is on Start/Stop or Capture button",
+                "expect": "Triggers camera stream toggle or captures a snapshot"
+              }
+            ],
+            "props": [
+              {
+                "name": "facingMode",
+                "attr": "facing-mode",
+                "type": "'user' | 'environment'",
+                "default": "user"
+              },
+              {
+                "name": "deviceId",
+                "attr": "device-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "mimeType",
+                "attr": "mime-type",
+                "type": "string",
+                "default": "image/png"
+              },
+              {
+                "name": "quality",
+                "type": "number",
+                "default": 0.92
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-capture",
+                "cancelable": false,
+                "detailType": "{ dataUrl: string; width: number; height: number }"
+              },
+              {
+                "name": "mth-permission-change",
+                "cancelable": false,
+                "detailType": "{ status: CameraPermissionStatus }"
+              },
+              {
+                "name": "mth-device-change",
+                "cancelable": false,
+                "detailType": "{ deviceId: string }"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or camera-unavailable fallback UI."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer camera capture container."
+              },
+              {
+                "name": "preview",
+                "description": "Live video preview element."
+              },
+              {
+                "name": "controls",
+                "description": "Device selector and capture actions toolbar."
+              },
+              {
+                "name": "snapshot",
+                "description": "Captured still frame preview image."
+              },
+              {
+                "name": "status",
+                "description": "Polite live permission/capture status text."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Camera capture",
+              "deviceSelectLabel": "Camera device",
+              "defaultDeviceLabel": "Camera {index}",
+              "startLabel": "Start camera",
+              "stopLabel": "Stop camera",
+              "captureLabel": "Capture photo",
+              "statusIdle": "Camera idle",
+              "statusActive": "Camera preview active",
+              "statusRequesting": "Requesting camera permission…",
+              "statusDenied": "Camera permission denied",
+              "statusUnsupported": "Camera API unavailable in this environment",
+              "statusError": "Camera error: {message}",
+              "capturedAlt": "Captured camera snapshot"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCameraCapture",
+          "declaration": {
+            "name": "MthCameraCapture",
+            "module": "src/components/camera-capture/camera-capture.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-camera-capture",
+          "declaration": {
+            "name": "MthCameraCapture",
+            "module": "src/components/camera-capture/camera-capture.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/screen-recorder/screen-recorder.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthScreenRecorder",
+          "tagName": "mth-screen-recorder",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible getDisplayMedia + MediaRecorder screen capture control with system audio toggle and SSR fallback.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "systemAudio",
+              "attribute": "system-audio",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Requests system/tab audio when starting display capture."
+            },
+            {
+              "kind": "field",
+              "name": "mimeType",
+              "attribute": "mime-type",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"video/webm\"",
+              "description": "Preferred recorded video MIME type."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables screen capture controls."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "system-audio",
+              "fieldName": "systemAudio",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Requests system/tab audio when starting display capture."
+            },
+            {
+              "name": "mime-type",
+              "fieldName": "mimeType",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"video/webm\"",
+              "description": "Preferred recorded video MIME type."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables screen capture controls."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-state-change",
+              "type": {
+                "text": "CustomEvent<{ state: ScreenRecorderState }>"
+              },
+              "description": "Fired when screen recorder state changes."
+            },
+            {
+              "name": "mth-record-complete",
+              "type": {
+                "text": "CustomEvent<{ blob: Blob | null; url: string; durationMs: number; mimeType: string; systemAudio: boolean }>"
+              },
+              "description": "Fired when screen recording stops with output payload."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Fired on permission or display-capture errors."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or unsupported-browser fallback UI."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer screen recorder region."
+            },
+            {
+              "name": "controls",
+              "description": "Screen capture controls and system audio toggle."
+            },
+            {
+              "name": "timer",
+              "description": "Elapsed screen recording duration."
+            },
+            {
+              "name": "status",
+              "description": "Polite screen capture status readout."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Recorder container background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary share action highlight"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "recording",
+              "description": "Custom element state :state(recording)."
+            },
+            {
+              "name": "paused",
+              "description": "Custom element state :state(paused)."
+            },
+            {
+              "name": "stopped",
+              "description": "Custom element state :state(stopped)."
+            },
+            {
+              "name": "unsupported",
+              "description": "Custom element state :state(unsupported)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-screen-recorder",
+            "package": "@methane/rtc",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "recording",
+              "paused",
+              "stopped",
+              "unsupported"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "Focus is on Share, Pause, Resume, or Stop button",
+                "expect": "Transitions screen recorder state and emits mth-state-change"
+              }
+            ],
+            "props": [
+              {
+                "name": "systemAudio",
+                "attr": "system-audio",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "mimeType",
+                "attr": "mime-type",
+                "type": "string",
+                "default": "video/webm"
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-state-change",
+                "cancelable": false,
+                "detailType": "{ state: ScreenRecorderState }"
+              },
+              {
+                "name": "mth-record-complete",
+                "cancelable": false,
+                "detailType": "{ blob: Blob | null; url: string; durationMs: number; mimeType: string; systemAudio: boolean }"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or unsupported-browser fallback UI."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer screen recorder region."
+              },
+              {
+                "name": "controls",
+                "description": "Screen capture controls and system audio toggle."
+              },
+              {
+                "name": "timer",
+                "description": "Elapsed screen recording duration."
+              },
+              {
+                "name": "status",
+                "description": "Polite screen capture status readout."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Screen recorder",
+              "shareLabel": "Share & record screen",
+              "pauseLabel": "Pause",
+              "resumeLabel": "Resume",
+              "stopLabel": "Stop sharing",
+              "systemAudioLabel": "Include system audio",
+              "statusIdle": "Ready to capture screen",
+              "statusRequesting": "Waiting for screen selection…",
+              "statusRecording": "Screen recording active",
+              "statusPaused": "Screen recording paused",
+              "statusStopped": "Screen recording complete",
+              "statusUnsupported": "Screen capture unavailable in this environment",
+              "statusError": "Screen capture error: {message}",
+              "playbackLabel": "Recorded screen playback"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthScreenRecorder",
+          "declaration": {
+            "name": "MthScreenRecorder",
+            "module": "src/components/screen-recorder/screen-recorder.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-screen-recorder",
+          "declaration": {
+            "name": "MthScreenRecorder",
+            "module": "src/components/screen-recorder/screen-recorder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/video-grid/video-grid.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthVideoGrid",
+          "tagName": "mth-video-grid",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible WebRTC participant video grid with speaker/gallery layouts and roving focus.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "participants",
+              "type": {
+                "text": "ReadonlyArray<VideoParticipant>"
+              },
+              "description": "Array of participant media descriptors rendered in the grid."
+            },
+            {
+              "kind": "field",
+              "name": "layout",
+              "attribute": "layout",
+              "reflect": true,
+              "type": {
+                "text": "'gallery' | 'speaker'"
+              },
+              "default": "\"gallery\"",
+              "description": "Active layout mode: gallery grid or spotlight speaker view."
+            },
+            {
+              "kind": "field",
+              "name": "pinnedId",
+              "attribute": "pinned-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the pinned participant."
+            },
+            {
+              "kind": "field",
+              "name": "activeSpeakerId",
+              "attribute": "active-speaker-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the currently speaking participant."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "attribute": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Explicit grid column count (0 uses responsive auto-fit)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the video grid."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "layout",
+              "fieldName": "layout",
+              "type": {
+                "text": "'gallery' | 'speaker'"
+              },
+              "default": "\"gallery\"",
+              "description": "Active layout mode: gallery grid or spotlight speaker view."
+            },
+            {
+              "name": "pinned-id",
+              "fieldName": "pinnedId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the pinned participant."
+            },
+            {
+              "name": "active-speaker-id",
+              "fieldName": "activeSpeakerId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "ID of the currently speaking participant."
+            },
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Explicit grid column count (0 uses responsive auto-fit)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the video grid."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-pin-change",
+              "type": {
+                "text": "CustomEvent<{ pinnedId: string }>"
+              },
+              "description": "Fired when a participant is pinned or unpinned."
+            },
+            {
+              "name": "mth-layout-change",
+              "type": {
+                "text": "CustomEvent<{ layout: 'gallery' | 'speaker' }>"
+              },
+              "description": "Fired when the user switches between gallery and speaker layout."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or unsupported-browser fallback content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "toolbar",
+              "description": "Layout toggle toolbar."
+            },
+            {
+              "name": "grid",
+              "description": "Participant tile grid."
+            },
+            {
+              "name": "tile",
+              "description": "Individual participant video tile."
+            },
+            {
+              "name": "stage",
+              "description": "Primary speaker stage container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Tile surface color"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active speaker highlight color"
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Tile border color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "speaker-layout",
+              "description": "Custom element state :state(speaker-layout)."
+            },
+            {
+              "name": "gallery-layout",
+              "description": "Custom element state :state(gallery-layout)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-video-grid",
+            "package": "@methane/rtc",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "speaker-layout",
+              "gallery-layout",
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Focus is on a participant control in gallery or strip",
+                "expect": "Moves focus to the next participant control"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "Focus is on a participant control after the first item",
+                "expect": "Moves focus to the previous participant control"
+              },
+              {
+                "key": "Enter",
+                "when": "Focus is on a participant pin button",
+                "expect": "Toggles pin state and emits mth-pin-change"
+              }
+            ],
+            "props": [
+              {
+                "name": "participants",
+                "attr": false,
+                "type": "ReadonlyArray<VideoParticipant>"
+              },
+              {
+                "name": "layout",
+                "type": "'gallery' | 'speaker'",
+                "default": "gallery"
+              },
+              {
+                "name": "pinnedId",
+                "attr": "pinned-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "activeSpeakerId",
+                "attr": "active-speaker-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "columns",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-pin-change",
+                "cancelable": false,
+                "detailType": "{ pinnedId: string }"
+              },
+              {
+                "name": "mth-layout-change",
+                "cancelable": false,
+                "detailType": "{ layout: 'gallery' | 'speaker' }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or unsupported-browser fallback content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "toolbar",
+                "description": "Layout toggle toolbar."
+              },
+              {
+                "name": "grid",
+                "description": "Participant tile grid."
+              },
+              {
+                "name": "tile",
+                "description": "Individual participant video tile."
+              },
+              {
+                "name": "stage",
+                "description": "Primary speaker stage container."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Video participants grid",
+              "emptyText": "No active participants",
+              "mutedLabel": "Microphone muted",
+              "unmutedLabel": "Microphone live",
+              "videoOffLabel": "Camera off",
+              "speakingLabel": "Speaking",
+              "pinLabel": "Pin {name}",
+              "unpinLabel": "Unpin {name}",
+              "galleryLayoutLabel": "Gallery view",
+              "speakerLayoutLabel": "Speaker view",
+              "stageLabel": "Pinned speaker stage: {name}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthVideoGrid",
+          "declaration": {
+            "name": "MthVideoGrid",
+            "module": "src/components/video-grid/video-grid.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-video-grid",
+          "declaration": {
+            "name": "MthVideoGrid",
+            "module": "src/components/video-grid/video-grid.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
