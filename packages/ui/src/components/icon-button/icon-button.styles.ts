@@ -5,12 +5,15 @@ export const iconButtonStyles = css`
     display: inline-flex;
     box-sizing: border-box;
     vertical-align: middle;
-    --_ib-size: 2.25rem;
+    --_ib-size: 2.375rem;
     --_ib-bg: transparent;
-    --_ib-bg-hover: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
-    --_ib-bg-active: var(--mth-color-border, oklch(0.91 0.009 255));
+    --_ib-bg-hover: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
+    --_ib-bg-active: var(--mth-color-border, oklch(0.89 0.01 262));
     --_ib-fg: var(--mth-color-fg, CanvasText);
     --_ib-border: transparent;
+    --_ib-border-hover: transparent;
+    --_ib-shadow: none;
+    --_ib-shadow-hover: none;
   }
 
   :host([size='sm']) {
@@ -22,27 +25,57 @@ export const iconButtonStyles = css`
   }
 
   :host([variant='solid']) {
-    --_ib-bg: var(--mth-color-accent, oklch(0.56 0.21 255));
-    --_ib-bg-hover: var(--mth-color-accent-hover, oklch(0.48 0.21 255));
-    --_ib-bg-active: var(--mth-color-accent-active, oklch(0.4 0.19 255));
+    --_ib-bg: var(--mth-color-accent, oklch(0.55 0.23 264));
+    --_ib-bg-hover: var(--mth-color-accent-hover, oklch(0.49 0.24 264));
+    --_ib-bg-active: var(--mth-color-accent-active, oklch(0.42 0.22 264));
     --_ib-fg: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    --_ib-border: oklch(from var(--_ib-bg) calc(l - 0.06) c h / 0.5);
+    --_ib-border-hover: oklch(from var(--_ib-bg-hover) calc(l - 0.06) c h / 0.6);
+    --_ib-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.22),
+      var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
+    --_ib-shadow-hover:
+      inset 0 1px 0 oklch(1 0 0 / 0.25),
+      var(--mth-shadow-sm, 0 1px 3px oklch(0.14 0.014 262 / 0.08));
   }
 
-  :host([variant='outline']) {
+  :host([variant='soft']) {
+    --_ib-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
+    --_ib-bg-hover: color-mix(in oklch, var(--_ib-bg) 86%, var(--_ib-fg));
+    --_ib-bg-active: color-mix(in oklch, var(--_ib-bg) 76%, var(--_ib-fg));
+    --_ib-fg: var(--mth-color-accent, oklch(0.55 0.23 264));
+    --_ib-border: transparent;
+    --_ib-border-hover: oklch(from var(--_ib-fg) l c h / 0.28);
+    --_ib-shadow-hover: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
+  }
+
+  :host([variant='outline']),
+  :host([variant='outlined']) {
     --_ib-bg: var(--mth-color-surface, Canvas);
-    --_ib-border: var(--mth-color-border-strong, oklch(0.84 0.011 255));
+    --_ib-bg-hover: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
+    --_ib-bg-active: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
+    --_ib-border: var(--mth-color-border-strong, oklch(0.76 0.016 262));
+    --_ib-border-hover: var(--mth-color-accent, oklch(0.55 0.23 264));
+    --_ib-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
+    --_ib-shadow-hover: var(--mth-shadow-sm, 0 1px 3px oklch(0.14 0.014 262 / 0.08));
   }
 
   :host([variant='danger']) {
     --_ib-bg: var(--mth-color-danger, oklch(0.57 0.22 25));
-    --_ib-bg-hover: oklch(0.5 0.22 25);
-    --_ib-bg-active: oklch(0.43 0.2 25);
-    --_ib-fg: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    --_ib-bg-hover: oklch(from var(--_ib-bg) calc(l - 0.05) c h);
+    --_ib-bg-active: oklch(from var(--_ib-bg) calc(l - 0.1) c h);
+    --_ib-fg: var(--mth-color-danger-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 25)));
+    --_ib-border: oklch(from var(--_ib-bg) calc(l - 0.06) c h / 0.5);
+    --_ib-border-hover: oklch(from var(--_ib-bg-hover) calc(l - 0.06) c h / 0.6);
+    --_ib-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.22),
+      var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
   :host(:state(pressed)) [part='control'] {
-    background-color: var(--mth-color-accent-subtle, oklch(0.95 0.03 255));
-    border-color: var(--mth-color-accent, oklch(0.56 0.21 255));
+    background-color: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
+    border-color: var(--mth-color-accent, oklch(0.55 0.23 264));
+    color: var(--mth-color-accent, oklch(0.55 0.23 264));
   }
 
   [part='base'] {
@@ -57,34 +90,45 @@ export const iconButtonStyles = css`
     block-size: var(--_ib-size);
     padding: 0;
     border: 1px solid var(--_ib-border);
-    border-radius: var(--mth-radius-md, 0.375rem);
+    border-radius: var(--mth-radius-md, 0.5rem);
     background-color: var(--_ib-bg);
     color: var(--_ib-fg);
+    box-shadow: var(--_ib-shadow);
     cursor: pointer;
     user-select: none;
     box-sizing: border-box;
     transition:
-      background-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, ease),
-      border-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, ease);
+      background-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      border-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      transform var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  [part='control']:focus-visible {
+    outline: var(--mth-focus-ring-width, 2px) solid var(--mth-color-border-focus, Highlight);
+    outline-offset: var(--mth-focus-ring-offset, 2px);
   }
 
   [part='control']:hover:not(:disabled, [aria-disabled='true']) {
     background-color: var(--_ib-bg-hover);
+    border-color: var(--_ib-border-hover);
+    box-shadow: var(--_ib-shadow-hover);
   }
 
   [part='control']:active:not(:disabled, [aria-disabled='true']) {
     background-color: var(--_ib-bg-active);
-  }
-
-  [part='control']:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, Highlight);
-    outline-offset: 2px;
+    transform: translateY(1px);
   }
 
   :host(:state(disabled)) [part='control'],
   :host([disabled]) [part='control'] {
     opacity: 0.52;
     cursor: not-allowed;
+    box-shadow: none;
   }
 
   :host(:state(loading)) [part='control'],
@@ -112,6 +156,10 @@ export const iconButtonStyles = css`
       transition: none;
     }
 
+    [part='control']:active:not(:disabled, [aria-disabled='true']) {
+      transform: none;
+    }
+
     [part='spinner'] {
       animation: none;
     }
@@ -122,6 +170,7 @@ export const iconButtonStyles = css`
       background-color: ButtonFace;
       color: ButtonText;
       border-color: ButtonBorder;
+      box-shadow: none;
     }
 
     :host(:state(pressed)) [part='control'] {

@@ -5,12 +5,15 @@ export const splitButtonStyles = css`
     display: inline-block;
     position: relative;
     box-sizing: border-box;
-    --_sb-bg: var(--mth-color-accent, oklch(0.56 0.21 255));
-    --_sb-bg-hover: var(--mth-color-accent-hover, oklch(0.48 0.21 255));
+    --_sb-bg: var(--mth-color-accent, oklch(0.55 0.23 264));
+    --_sb-bg-hover: var(--mth-color-accent-hover, oklch(0.49 0.24 264));
     --_sb-fg: var(--mth-color-accent-fg, oklch(0.99 0 0));
-    --_sb-border: transparent;
+    --_sb-border: oklch(from var(--_sb-bg) calc(l - 0.06) c h / 0.5);
     --_sb-divider: oklch(0.99 0 0 / 0.28);
-    --_sb-min-block: 2.25rem;
+    --_sb-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.22),
+      var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
+    --_sb-min-block: 2.375rem;
     --_sb-pad-inline: var(--mth-space-3, 0.75rem);
   }
 
@@ -24,25 +27,39 @@ export const splitButtonStyles = css`
     --_sb-pad-inline: var(--mth-space-4, 1rem);
   }
 
-  :host([variant='outline']) {
+  :host([variant='soft']) {
+    --_sb-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
+    --_sb-bg-hover: color-mix(in oklch, var(--_sb-bg) 86%, var(--_sb-fg));
+    --_sb-fg: var(--mth-color-accent, oklch(0.55 0.23 264));
+    --_sb-border: transparent;
+    --_sb-divider: oklch(from var(--_sb-fg) l c h / 0.22);
+    --_sb-shadow: none;
+  }
+
+  :host([variant='outline']),
+  :host([variant='outlined']) {
     --_sb-bg: var(--mth-color-surface, Canvas);
-    --_sb-bg-hover: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    --_sb-bg-hover: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
     --_sb-fg: var(--mth-color-fg, CanvasText);
-    --_sb-border: var(--mth-color-border-strong, oklch(0.84 0.011 255));
-    --_sb-divider: var(--mth-color-border-strong, oklch(0.84 0.011 255));
+    --_sb-border: var(--mth-color-border-strong, oklch(0.76 0.016 262));
+    --_sb-divider: var(--mth-color-border-strong, oklch(0.76 0.016 262));
+    --_sb-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
   :host([variant='ghost']) {
     --_sb-bg: transparent;
-    --_sb-bg-hover: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    --_sb-bg-hover: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_sb-fg: var(--mth-color-fg, CanvasText);
     --_sb-border: transparent;
-    --_sb-divider: var(--mth-color-border, oklch(0.91 0.009 255));
+    --_sb-divider: var(--mth-color-border, oklch(0.89 0.01 262));
+    --_sb-shadow: none;
   }
 
   [part='group'] {
     display: inline-flex;
     align-items: stretch;
+    border-radius: var(--mth-radius-md, 0.5rem);
+    box-shadow: var(--_sb-shadow);
   }
 
   [part='primary'],
@@ -56,23 +73,46 @@ export const splitButtonStyles = css`
     color: var(--_sb-fg);
     font-family: var(--mth-font-sans, system-ui, sans-serif);
     font-size: var(--mth-font-size-sm, 0.875rem);
-    font-weight: var(--mth-font-weight-medium, 500);
+    font-weight: var(--mth-font-weight-semibold, 600);
+    letter-spacing: -0.01em;
     cursor: pointer;
     box-sizing: border-box;
+    transition:
+      background-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      transform var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   [part='primary'] {
     padding-inline: var(--_sb-pad-inline);
-    border-start-start-radius: var(--mth-radius-md, 0.375rem);
-    border-end-start-radius: var(--mth-radius-md, 0.375rem);
+    border-start-start-radius: var(--mth-radius-md, 0.5rem);
+    border-end-start-radius: var(--mth-radius-md, 0.5rem);
   }
 
   [part='trigger'] {
-    min-inline-size: 2rem;
-    padding-inline: var(--mth-space-1, 0.25rem);
+    min-inline-size: 2.125rem;
+    padding-inline: var(--mth-space-2, 0.5rem);
     border-inline-start: 1px solid var(--_sb-divider);
-    border-start-end-radius: var(--mth-radius-md, 0.375rem);
-    border-end-end-radius: var(--mth-radius-md, 0.375rem);
+    border-start-end-radius: var(--mth-radius-md, 0.5rem);
+    border-end-end-radius: var(--mth-radius-md, 0.5rem);
+  }
+
+  [part='trigger'] svg {
+    flex-shrink: 0;
+    transition: transform var(--mth-motion-duration-fast, 120ms)
+      var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  [part='trigger'][aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  [part='primary']:focus-visible,
+  [part='trigger']:focus-visible,
+  [part='item']:focus-visible {
+    outline: var(--mth-focus-ring-width, 2px) solid var(--mth-color-border-focus, Highlight);
+    outline-offset: var(--mth-focus-ring-offset, 2px);
   }
 
   [part='primary']:hover:not(:disabled),
@@ -80,11 +120,9 @@ export const splitButtonStyles = css`
     background-color: var(--_sb-bg-hover);
   }
 
-  [part='primary']:focus-visible,
-  [part='trigger']:focus-visible,
-  [part='item']:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, Highlight);
-    outline-offset: 2px;
+  [part='primary']:active:not(:disabled),
+  [part='trigger']:active:not(:disabled) {
+    transform: translateY(1px);
   }
 
   :host(:state(disabled)) [part='primary'],
@@ -98,12 +136,12 @@ export const splitButtonStyles = css`
   [part='menu'] {
     margin: 0;
     padding: var(--mth-space-1, 0.25rem);
-    min-inline-size: 10rem;
+    min-inline-size: 11rem;
     background-color: var(--mth-color-surface-raised, Canvas);
     color: var(--mth-color-fg, CanvasText);
-    border: 1px solid var(--mth-color-border, oklch(0.91 0.009 255));
-    border-radius: var(--mth-radius-md, 0.375rem);
-    box-shadow: var(--mth-shadow-md, 0px 4px 8px -2px oklch(0.15 0.01 255 / 0.12));
+    border: 1px solid var(--mth-color-border, oklch(0.89 0.01 262));
+    border-radius: var(--mth-radius-md, 0.5rem);
+    box-shadow: var(--mth-shadow-lg, 0 12px 24px -4px oklch(0.14 0.014 262 / 0.14));
     flex-direction: column;
     gap: 2px;
     z-index: var(--mth-z-index-popover, 500);
@@ -125,7 +163,7 @@ export const splitButtonStyles = css`
     padding-block: var(--mth-space-control-block, 0.5rem);
     padding-inline: var(--mth-space-control-inline, 0.75rem);
     border: 0;
-    border-radius: var(--mth-radius-sm, 0.25rem);
+    border-radius: var(--mth-radius-sm, 0.375rem);
     background-color: transparent;
     color: var(--mth-color-fg, CanvasText);
     font-family: inherit;
@@ -134,7 +172,7 @@ export const splitButtonStyles = css`
   }
 
   [part='item']:hover:not(:disabled) {
-    background-color: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    background-color: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
   }
 
   [part='item']:disabled {
@@ -142,7 +180,24 @@ export const splitButtonStyles = css`
     cursor: not-allowed;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    [part='primary'],
+    [part='trigger'],
+    [part='trigger'] svg {
+      transition: none;
+    }
+
+    [part='primary']:active:not(:disabled),
+    [part='trigger']:active:not(:disabled) {
+      transform: none;
+    }
+  }
+
   @media (forced-colors: active) {
+    [part='group'] {
+      box-shadow: none;
+    }
+
     [part='primary'],
     [part='trigger'],
     [part='item'] {
@@ -155,6 +210,7 @@ export const splitButtonStyles = css`
       background-color: Canvas;
       color: CanvasText;
       border-color: CanvasText;
+      box-shadow: none;
     }
 
     [part='primary']:disabled,

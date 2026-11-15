@@ -4,7 +4,7 @@ import { property } from 'lit/decorators.js';
 import { iconButtonMessages } from './icon-button.messages.js';
 import { iconButtonStyles } from './icon-button.styles.js';
 
-export type MthIconButtonVariant = 'solid' | 'outline' | 'ghost' | 'danger';
+export type MthIconButtonVariant = 'solid' | 'soft' | 'outline' | 'outlined' | 'ghost' | 'danger';
 export type MthIconButtonSize = 'sm' | 'md' | 'lg';
 
 const optionalBooleanConverter = {

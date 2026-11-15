@@ -77,6 +77,7 @@ const DENSITY_PRESETS = {
 const FORCED_COLORS_MAP: ReadonlyArray<readonly [string, string]> = [
   ['--mth-color-bg', 'Canvas'],
   ['--mth-color-bg-subtle', 'Canvas'],
+  ['--mth-color-bg-muted', 'Canvas'],
   ['--mth-color-surface', 'Canvas'],
   ['--mth-color-surface-raised', 'Canvas'],
   ['--mth-color-fg', 'CanvasText'],
@@ -91,6 +92,7 @@ const FORCED_COLORS_MAP: ReadonlyArray<readonly [string, string]> = [
   ['--mth-color-accent-subtle', 'Canvas'],
   ['--mth-color-accent-fg', 'HighlightText'],
   ['--mth-color-danger', 'LinkText'],
+  ['--mth-color-danger-fg', 'HighlightText'],
   ['--mth-color-warning', 'LinkText'],
   ['--mth-color-success', 'LinkText'],
   ['--mth-color-info', 'LinkText'],

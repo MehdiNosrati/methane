@@ -8,10 +8,12 @@ export const searchInputStyles = css`
     --_search-fg: var(--mth-color-fg, CanvasText);
     --_search-muted: var(--mth-color-fg-muted, GrayText);
     --_search-subtle-bg: var(--mth-color-bg-subtle, Field);
-    --_search-border: var(--mth-color-border, ButtonBorder);
+    --_search-border: var(--mth-color-border-strong, ButtonBorder);
+    --_search-accent: var(--mth-color-accent, Highlight);
     --_search-focus: var(--mth-color-border-focus, Highlight);
     --_search-danger: var(--mth-color-danger, crimson);
-    --_search-radius: var(--mth-radius-md, 0.375rem);
+    --_search-radius: var(--mth-radius-md, 0.5rem);
+    --_search-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     --_search-pad-inline: calc(var(--mth-space-control-inline, 0.75rem) * var(--mth-density, 1));
     --_search-pad-block: calc(var(--mth-space-control-block, 0.5rem) * var(--mth-density, 1));
   }
@@ -55,17 +57,35 @@ export const searchInputStyles = css`
     color: var(--_search-fg);
     border: 1px solid var(--_search-border);
     border-radius: var(--_search-radius);
+    box-shadow: var(--_search-shadow);
+    transition:
+      border-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .wrapper:focus-within {
     border-color: var(--_search-focus);
-    outline: 2px solid var(--_search-focus);
-    outline-offset: 1px;
+    box-shadow:
+      0 0 0 3px oklch(from var(--_search-focus) l c h / 0.22),
+      var(--_search-shadow);
+  }
+
+  :host(:not(:state(disabled))) .wrapper:hover {
+    border-color: var(--_search-accent);
   }
 
   :host(:state(user-invalid)) .wrapper,
   .wrapper[data-invalid='true'] {
     border-color: var(--_search-danger);
+  }
+
+  :host(:state(user-invalid)) .wrapper:focus-within,
+  .wrapper[data-invalid='true']:focus-within {
+    box-shadow:
+      0 0 0 3px oklch(from var(--_search-danger) l c h / 0.22),
+      var(--_search-shadow);
   }
 
   :host(:state(disabled)) .wrapper {
@@ -161,15 +181,23 @@ export const searchInputStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .wrapper {
+      transition: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .wrapper {
       border-color: ButtonBorder;
+      box-shadow: none;
     }
 
     .wrapper:focus-within,
     .clear:focus-visible {
       outline-color: Highlight;
       border-color: Highlight;
+      box-shadow: none;
     }
 
     .shortcut {

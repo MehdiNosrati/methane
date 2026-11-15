@@ -9,7 +9,7 @@ import { property, query } from 'lit/decorators.js';
 import { splitButtonMessages } from './split-button.messages.js';
 import { splitButtonStyles } from './split-button.styles.js';
 
-export type MthSplitButtonVariant = 'solid' | 'outline' | 'ghost';
+export type MthSplitButtonVariant = 'solid' | 'soft' | 'outline' | 'outlined' | 'ghost';
 export type MthSplitButtonSize = 'sm' | 'md' | 'lg';
 
 export interface MthSplitButtonItem {
@@ -208,7 +208,20 @@ export class MthSplitButton extends UIElement {
             @click=${this.handleTriggerClick}
             @keydown=${this.handleTriggerKeyDown}
           >
-            ▾
+            <svg
+              part="caret-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m4 6 4 4 4-4" />
+            </svg>
           </button>
         </div>
         <div

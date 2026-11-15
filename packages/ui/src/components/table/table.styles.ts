@@ -8,8 +8,8 @@ export const tableStyles = css`
     --_tbl-bg: var(--mth-color-surface, Canvas);
     --_tbl-fg: var(--mth-color-fg, CanvasText);
     --_tbl-muted: var(--mth-color-fg-muted, GrayText);
-    --_tbl-header-bg: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
-    --_tbl-selected-bg: var(--mth-color-accent-subtle, oklch(0.95 0.03 255));
+    --_tbl-header-bg: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
+    --_tbl-selected-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
     --_tbl-border: var(--mth-color-border, ButtonBorder);
     --_tbl-focus-ring: var(--mth-color-border-focus, Highlight);
     --_tbl-accent: var(--mth-color-accent, Highlight);
@@ -19,9 +19,10 @@ export const tableStyles = css`
   .base {
     overflow-inline: auto;
     border: 1px solid var(--_tbl-border);
-    border-radius: var(--mth-radius-lg, 0.5rem);
+    border-radius: var(--mth-radius-lg, 0.75rem);
     background-color: var(--_tbl-bg);
     color: var(--_tbl-fg);
+    box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
   .slot-host {
@@ -114,8 +115,10 @@ export const tableStyles = css`
   }
 
   .sort-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: var(--_tbl-accent);
-    font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
   .status-cell {

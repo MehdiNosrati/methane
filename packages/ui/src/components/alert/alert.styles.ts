@@ -10,7 +10,8 @@ export const alertStyles = css`
     --_alert-muted: var(--mth-color-fg-muted, GrayText);
     --_alert-accent: var(--mth-color-info, oklch(0.62 0.16 230));
     --_alert-border: var(--mth-color-border, ButtonBorder);
-    --_alert-radius: var(--mth-radius-md, 0.375rem);
+    --_alert-radius: var(--mth-radius-md, 0.5rem);
+    --_alert-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     --_alert-pad-block: calc(var(--mth-space-3, 0.75rem) * var(--mth-density, 1));
     --_alert-pad-inline: calc(var(--mth-space-4, 1rem) * var(--mth-density, 1));
     --_alert-gap: calc(var(--mth-space-3, 0.75rem) * var(--mth-density, 1));
@@ -47,6 +48,7 @@ export const alertStyles = css`
     border-radius: var(--_alert-radius);
     background-color: var(--_alert-bg);
     color: var(--_alert-fg);
+    box-shadow: var(--_alert-shadow);
   }
 
   .icon {

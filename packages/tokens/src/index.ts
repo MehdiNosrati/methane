@@ -59,6 +59,7 @@ export const tokenVars = {
     },
     bg: '--mth-color-bg',
     bgSubtle: '--mth-color-bg-subtle',
+    bgMuted: '--mth-color-bg-muted',
     surface: '--mth-color-surface',
     surfaceRaised: '--mth-color-surface-raised',
     fg: '--mth-color-fg',
@@ -74,6 +75,7 @@ export const tokenVars = {
     accentFg: '--mth-color-accent-fg',
     danger: '--mth-color-danger',
     dangerSubtle: '--mth-color-danger-subtle',
+    dangerFg: '--mth-color-danger-fg',
     warning: '--mth-color-warning',
     warningSubtle: '--mth-color-warning-subtle',
     success: '--mth-color-success',
@@ -168,6 +170,10 @@ export const tokenVars = {
     popover: '--mth-z-index-popover',
     toast: '--mth-z-index-toast',
     tooltip: '--mth-z-index-tooltip',
+  },
+  focus: {
+    ringWidth: '--mth-focus-ring-width',
+    ringOffset: '--mth-focus-ring-offset',
   },
 } as const;
 

@@ -8,8 +8,8 @@ export const cardStyles = css`
     --_card-bg: var(--mth-color-surface-raised, Canvas);
     --_card-fg: var(--mth-color-fg, CanvasText);
     --_card-border: var(--mth-color-border, ButtonBorder);
-    --_card-radius: var(--mth-radius-lg, 0.5rem);
-    --_card-shadow: var(--mth-shadow-sm, 0 1px 3px oklch(0.15 0.01 255 / 0.1));
+    --_card-radius: var(--mth-radius-lg, 0.75rem);
+    --_card-shadow: var(--mth-shadow-sm, 0 1px 3px oklch(0.14 0.014 262 / 0.08));
     --_card-pad-block: calc(var(--mth-space-4, 1rem) * var(--mth-density, 1));
     --_card-pad-inline: calc(var(--mth-space-4, 1rem) * var(--mth-density, 1));
   }
@@ -34,11 +34,12 @@ export const cardStyles = css`
 
   .base[data-variant='outlined'] {
     --_card-bg: var(--mth-color-surface, Canvas);
-    --_card-shadow: var(--mth-shadow-none, none);
+    --_card-border: var(--mth-color-border-strong, ButtonBorder);
+    --_card-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
   .base[data-variant='subtle'] {
-    --_card-bg: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    --_card-bg: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
     --_card-border: transparent;
     --_card-shadow: var(--mth-shadow-none, none);
   }

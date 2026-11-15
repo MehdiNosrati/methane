@@ -11,7 +11,8 @@ export const checkboxStyles = css`
     --_cb-accent-fg: var(--mth-color-accent-fg, HighlightText);
     --_cb-focus: var(--mth-color-border-focus, Highlight);
     --_cb-danger: var(--mth-color-danger, oklch(0.57 0.22 25));
-    --_cb-radius: var(--mth-radius-sm, 0.25rem);
+    --_cb-radius: var(--mth-radius-sm, 0.375rem);
+    --_cb-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
   .base {
@@ -39,21 +40,62 @@ export const checkboxStyles = css`
     border-radius: var(--_cb-radius);
     background: var(--_cb-bg);
     color: var(--_cb-accent-fg);
+    box-shadow: var(--_cb-shadow);
     font: inherit;
     font-size: var(--mth-font-size-xs, 0.75rem);
     line-height: 1;
     cursor: pointer;
+    transition:
+      background-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      border-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      transform var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  [part='indicator'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.75);
+    opacity: 0;
+    transition:
+      transform var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      opacity var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .control:focus-visible {
     outline: 2px solid var(--_cb-focus);
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px oklch(from var(--_cb-focus) l c h / 0.18);
+  }
+
+  :host(:not(:state(disabled))) .control:hover {
+    border-color: var(--_cb-accent);
+  }
+
+  :host(:not(:state(disabled))) .control:active {
+    transform: scale(0.95);
   }
 
   :host(:state(checked)) .control,
   :host(:state(indeterminate)) .control {
     background: var(--_cb-accent);
     border-color: var(--_cb-accent);
+    box-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.2),
+      var(--_cb-shadow);
+  }
+
+  :host(:state(checked)) [part='indicator'],
+  :host(:state(indeterminate)) [part='indicator'] {
+    transform: scale(1);
+    opacity: 1;
   }
 
   :host(:state(user-invalid)) .control,
@@ -110,11 +152,23 @@ export const checkboxStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .control,
+    [part='indicator'] {
+      transition: none;
+    }
+
+    :host(:not(:state(disabled))) .control:active {
+      transform: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .control {
       background: Canvas;
       color: CanvasText;
       border-color: ButtonBorder;
+      box-shadow: none;
     }
 
     :host(:state(checked)) .control,

@@ -139,4 +139,42 @@ describe('<mth-switch>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('handles readonly, disabled, thumb/control shadow parts, and FACE reset/disable callbacks', async () => {
+    const sw = document.createElement('mth-switch') as MthSwitch;
+    sw.label = 'Sync';
+    sw.required = true;
+    document.body.appendChild(sw);
+    await sw.updateComplete;
+
+    const ctrl = sw.shadowRoot!.querySelector<HTMLButtonElement>('#mth-switch-control')!;
+    const thumb = sw.shadowRoot!.querySelector('[part="thumb"]');
+    expect(ctrl).not.toBeNull();
+    expect(thumb).not.toBeNull();
+    expect(sw.checkValidity()).toBe(false);
+
+    sw.readonly = true;
+    await sw.updateComplete;
+    ctrl.click();
+    await sw.updateComplete;
+    expect(sw.checked).toBe(false);
+
+    sw.readonly = false;
+    await sw.updateComplete;
+    ctrl.click();
+    await sw.updateComplete;
+    expect(sw.checked).toBe(true);
+    expect(sw.checkValidity()).toBe(true);
+    expect(sw.hasCustomState('checked')).toBe(true);
+
+    sw.formDisabledCallback(true);
+    await sw.updateComplete;
+    expect(sw.effectivelyDisabled).toBe(true);
+    expect(ctrl.disabled).toBe(true);
+    sw.formDisabledCallback(false);
+
+    sw.formResetCallback();
+    await sw.updateComplete;
+    expect(sw.checked).toBe(false);
+  });
 });

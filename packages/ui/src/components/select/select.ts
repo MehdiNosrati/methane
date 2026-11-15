@@ -751,7 +751,21 @@ export class MthSelect extends UIElement {
           @click=${() => this.handleOptionClick(opt)}
         >
           <span>${opt.label}</span>
-          ${isSelected ? html`<span aria-hidden="true">✓</span>` : nothing}
+          ${isSelected
+            ? html`<svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
+              </svg>`
+            : nothing}
         </div>
       `;
     };
@@ -897,7 +911,20 @@ export class MthSelect extends UIElement {
                 <span part="value" data-placeholder=${display.isPlaceholder ? 'true' : 'false'}>
                   ${display.text}
                 </span>
-                <span part="caret" aria-hidden="true">▾</span>
+                <span part="caret" aria-hidden="true">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m4 6 4 4 4-4" />
+                  </svg>
+                </span>
               </button>
             `}
 
@@ -909,7 +936,18 @@ export class MthSelect extends UIElement {
                 aria-label=${this.t('clearSelection')}
                 @click=${() => this.clear()}
               >
-                ×
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 4 12 12M12 4 4 12" />
+                </svg>
               </button>
             `
           : nothing}

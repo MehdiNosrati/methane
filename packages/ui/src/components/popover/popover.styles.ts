@@ -7,8 +7,8 @@ export const popoverStyles = css`
     --_popover-bg: var(--mth-color-surface-raised, Canvas);
     --_popover-fg: var(--mth-color-fg, CanvasText);
     --_popover-border: var(--mth-color-border, ButtonBorder);
-    --_popover-radius: var(--mth-radius-md, 0.5rem);
-    --_popover-shadow: var(--mth-shadow-lg, 0 12px 28px oklch(0 0 0 / 0.18));
+    --_popover-radius: var(--mth-radius-lg, 0.75rem);
+    --_popover-shadow: var(--mth-shadow-lg, 0 12px 24px -4px oklch(0.14 0.014 262 / 0.14));
     --_popover-pad: calc(var(--mth-space-3, 0.75rem) * var(--mth-density, 1));
   }
 

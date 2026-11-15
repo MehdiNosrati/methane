@@ -606,11 +606,23 @@
     flex-direction: column;
     gap: var(--mth-space-3, 0.75rem);
     padding: var(--mth-space-5, 1.25rem);
-    background-color: var(--mth-color-surface, light-dark(oklch(1 0 0), oklch(0.2 0.012 255)));
-    color: var(--mth-color-fg, light-dark(oklch(0.145 0.01 255), oklch(0.985 0.005 255)));
+    background-color: var(
+      --mth-color-surface,
+      light-dark(oklch(1 0 0), oklch(0.185 0.014 262))
+    );
+    color: var(--mth-color-fg, light-dark(oklch(0.17 0.014 262), oklch(0.96 0.008 262)));
     border: 1px solid
-      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
-    border-radius: var(--mth-radius-lg, 0.5rem);
+      var(--mth-color-border, light-dark(oklch(0.89 0.01 262), oklch(0.28 0.016 262)));
+    border-radius: var(--mth-radius-lg, 0.75rem);
+    box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
+    transition:
+      border-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .mth-bento-item:hover {
+    border-color: var(--mth-color-border-strong, light-dark(oklch(0.76 0.016 262), oklch(0.4 0.02 262)));
+    box-shadow: var(--mth-shadow-sm, 0 1px 3px oklch(0.14 0.014 262 / 0.08));
   }
 
   @container (inline-size >= 40rem) {
@@ -626,6 +638,12 @@
   @container (inline-size >= 60rem) {
     .mth-bento-grid > [data-span='3'] {
       grid-column: span 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mth-bento-item {
+      transition: none;
     }
   }
 

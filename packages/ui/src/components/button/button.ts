@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { buttonMessages } from './button.messages.js';
 import { buttonStyles } from './button.styles.js';
 
-export type MthButtonVariant = 'solid' | 'outline' | 'ghost' | 'danger';
+export type MthButtonVariant = 'solid' | 'soft' | 'outline' | 'outlined' | 'ghost' | 'danger';
 export type MthButtonSize = 'sm' | 'md' | 'lg';
 export type MthButtonType = 'button' | 'submit' | 'reset';
 
@@ -39,8 +39,19 @@ export class MthButton extends UIElement {
   static override messages = buttonMessages;
   static override styles = buttonStyles;
 
+  private _variant: MthButtonVariant = 'solid';
+
   @property({ type: String, reflect: true })
-  variant: MthButtonVariant = 'solid';
+  get variant(): MthButtonVariant {
+    return this._variant === 'outlined' ? 'outline' : this._variant;
+  }
+
+  set variant(value: MthButtonVariant) {
+    const normalized = value === 'outlined' ? 'outline' : value;
+    const old = this._variant;
+    this._variant = normalized;
+    this.requestUpdate('variant', old);
+  }
 
   @property({ type: String, reflect: true })
   size: MthButtonSize = 'md';
@@ -120,7 +131,7 @@ export class MthButton extends UIElement {
     if (!form) return;
 
     if (this.type === 'submit') {
-      if (this.name && this.internals) {
+      if (this.name && typeof this.internals?.setFormValue === 'function') {
         this.internals.setFormValue(this.value || '');
       }
       if (typeof form.requestSubmit === 'function') {

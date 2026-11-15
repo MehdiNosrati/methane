@@ -103,4 +103,95 @@ describe('<mth-button>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('supports all variants (solid, soft, outline, outlined alias, ghost, danger), sizes, loading, and slots', async () => {
+    const variants = ['solid', 'soft', 'outline', 'ghost', 'danger'] as const;
+    for (const variant of variants) {
+      const btn = document.createElement('mth-button') as MthButton;
+      btn.variant = variant;
+      btn.textContent = variant;
+      document.body.appendChild(btn);
+      await btn.updateComplete;
+      expect(btn.variant).toBe(variant);
+      expect(btn.getAttribute('variant')).toBe(variant);
+      btn.remove();
+    }
+
+    const aliased = document.createElement('mth-button') as MthButton;
+    aliased.setAttribute('variant', 'outlined');
+    aliased.textContent = 'Aliased';
+    document.body.appendChild(aliased);
+    await aliased.updateComplete;
+    expect(aliased.variant).toBe('outline');
+
+    const propAliased = document.createElement('mth-button') as MthButton;
+    propAliased.variant = 'outlined';
+    document.body.appendChild(propAliased);
+    await propAliased.updateComplete;
+    expect(propAliased.variant).toBe('outline');
+    expect(propAliased.getAttribute('variant')).toBe('outline');
+    propAliased.remove();
+
+    for (const size of ['sm', 'md', 'lg'] as const) {
+      aliased.size = size;
+      await aliased.updateComplete;
+      expect(aliased.getAttribute('size')).toBe(size);
+    }
+
+    let presses = 0;
+    aliased.addEventListener('mth-press', () => {
+      presses += 1;
+    });
+
+    aliased.loading = true;
+    await aliased.updateComplete;
+    const ctrl = aliased.shadowRoot!.querySelector<HTMLButtonElement>('[part="control"]')!;
+    expect(aliased.shadowRoot!.querySelector('[part="spinner"]')).not.toBeNull();
+    expect(ctrl.getAttribute('aria-busy')).toBe('true');
+    ctrl.click();
+    expect(presses).toBe(0);
+
+    aliased.loading = false;
+    aliased.disabled = true;
+    await aliased.updateComplete;
+    expect(ctrl.disabled).toBe(true);
+    ctrl.click();
+    expect(presses).toBe(0);
+
+    aliased.disabled = false;
+    await aliased.updateComplete;
+    ctrl.click();
+    expect(presses).toBe(1);
+    expect(scanSameRootAria(aliased).valid).toBe(true);
+  });
+
+  it('supports relative href links and FACE form reset/submit', async () => {
+    const relLink = document.createElement('mth-button') as MthButton;
+    relLink.href = '/docs/getting-started';
+    relLink.textContent = 'Start';
+    document.body.appendChild(relLink);
+    await relLink.updateComplete;
+    const anchor = relLink.shadowRoot!.querySelector<HTMLAnchorElement>('a[part="control"]');
+    expect(anchor?.getAttribute('href')).toBe('/docs/getting-started');
+    expect(anchor?.hasAttribute('rel')).toBe(false);
+
+    const form = document.createElement('form');
+    const submitBtn = document.createElement('mth-button') as MthButton;
+    submitBtn.type = 'submit';
+    submitBtn.name = 'action';
+    submitBtn.value = 'publish';
+    submitBtn.textContent = 'Publish';
+    form.appendChild(submitBtn);
+    document.body.appendChild(form);
+    await submitBtn.updateComplete;
+
+    let submitted = false;
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      submitted = true;
+    });
+    submitBtn.shadowRoot!.querySelector<HTMLButtonElement>('[part="control"]')!.click();
+    expect(submitted).toBe(true);
+    expect(submitBtn.type).toBe('submit');
+  });
 });

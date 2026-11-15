@@ -281,7 +281,32 @@ export class MthCheckbox extends UIElement {
             @blur=${this.handleControlBlur}
           >
             <span part="indicator" aria-hidden="true">
-              ${this.indeterminate ? '−' : this.checked ? '✓' : ''}
+              ${this.indeterminate
+                ? html`<svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  >
+                    <path d="M2.5 6h7" />
+                  </svg>`
+                : this.checked
+                  ? html`<svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M2.5 6.2 5 8.7 9.5 3.3" />
+                    </svg>`
+                  : nothing}
             </span>
           </button>
           <label

@@ -7,10 +7,12 @@ export const textareaStyles = css`
     --_ta-bg: var(--mth-color-surface, Canvas);
     --_ta-fg: var(--mth-color-fg, CanvasText);
     --_ta-muted: var(--mth-color-fg-muted, GrayText);
-    --_ta-border: var(--mth-color-border, ButtonBorder);
+    --_ta-border: var(--mth-color-border-strong, ButtonBorder);
+    --_ta-accent: var(--mth-color-accent, Highlight);
     --_ta-focus: var(--mth-color-border-focus, Highlight);
     --_ta-danger: var(--mth-color-danger, oklch(0.57 0.22 25));
-    --_ta-radius: var(--mth-radius-md, 0.375rem);
+    --_ta-radius: var(--mth-radius-md, 0.5rem);
+    --_ta-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     --_ta-pad-inline: calc(var(--mth-space-control-inline, 0.75rem) * var(--mth-density, 1));
     --_ta-pad-block: calc(var(--mth-space-control-block, 0.5rem) * var(--mth-density, 1));
   }
@@ -54,17 +56,35 @@ export const textareaStyles = css`
     color: var(--_ta-fg);
     border: 1px solid var(--_ta-border);
     border-radius: var(--_ta-radius);
+    box-shadow: var(--_ta-shadow);
+    transition:
+      border-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .wrapper:focus-within {
     border-color: var(--_ta-focus);
-    outline: 2px solid var(--_ta-focus);
-    outline-offset: 1px;
+    box-shadow:
+      0 0 0 3px oklch(from var(--_ta-focus) l c h / 0.22),
+      var(--_ta-shadow);
+  }
+
+  :host(:not(:state(disabled))) .wrapper:hover {
+    border-color: var(--_ta-accent);
   }
 
   :host(:state(user-invalid)) .wrapper,
   .wrapper[data-invalid='true'] {
     border-color: var(--_ta-danger);
+  }
+
+  :host(:state(user-invalid)) .wrapper:focus-within,
+  .wrapper[data-invalid='true']:focus-within {
+    box-shadow:
+      0 0 0 3px oklch(from var(--_ta-danger) l c h / 0.22),
+      var(--_ta-shadow);
   }
 
   :host(:state(disabled)) .wrapper {
@@ -131,16 +151,24 @@ export const textareaStyles = css`
     color: var(--_ta-danger);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .wrapper {
+      transition: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .wrapper {
       background: Field;
       color: FieldText;
       border-color: ButtonBorder;
+      box-shadow: none;
     }
 
     .wrapper:focus-within {
       outline: 2px solid Highlight;
       border-color: Highlight;
+      box-shadow: none;
     }
 
     :host(:state(disabled)) .wrapper {

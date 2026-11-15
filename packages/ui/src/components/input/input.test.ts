@@ -217,4 +217,36 @@ describe('<mth-input>', () => {
     expect(input.type).toBe('password');
     expect(lightInput.getAttribute('aria-label')).toBe('Passphrase');
   });
+
+  it('handles readonly, required validation, formResetCallback, and formDisabledCallback', async () => {
+    const input = document.createElement('mth-input') as MthInput;
+    input.label = 'Username';
+    input.value = '';
+    input.required = true;
+    document.body.appendChild(input);
+    await input.updateComplete;
+
+    expect(input.checkValidity()).toBe(false);
+    const nativeInput = input.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+    nativeInput.value = 'ada_lovelace';
+    nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
+    await input.updateComplete;
+    expect(input.value).toBe('ada_lovelace');
+    expect(input.checkValidity()).toBe(true);
+
+    input.readonly = true;
+    await input.updateComplete;
+    expect(nativeInput.readOnly).toBe(true);
+
+    input.formDisabledCallback(true);
+    await input.updateComplete;
+    expect(input.effectivelyDisabled).toBe(true);
+    expect(nativeInput.disabled).toBe(true);
+
+    input.formDisabledCallback(false);
+    input.formResetCallback();
+    await input.updateComplete;
+    expect(input.value).toBe('');
+    expect(scanSameRootAria(input).valid).toBe(true);
+  });
 });

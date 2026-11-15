@@ -70,14 +70,29 @@ export const dialogStyles = css`
   }
 
   .close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
     border: 1px solid transparent;
-    border-radius: var(--mth-radius-sm, 0.25rem);
+    border-radius: var(--mth-radius-sm, 0.375rem);
     background: transparent;
     color: var(--_dialog-muted);
     cursor: pointer;
-    padding-block: var(--mth-space-1, 0.25rem);
-    padding-inline: var(--mth-space-2, 0.5rem);
+    padding-block: 0;
+    padding-inline: 0;
     font: inherit;
+    transition:
+      background-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .close-btn:hover {
+    background: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
+    color: var(--_dialog-fg);
   }
 
   .close-btn:focus-visible {
@@ -109,11 +124,19 @@ export const dialogStyles = css`
     inline-size: 100%;
     padding-block: var(--mth-space-2, 0.5rem);
     padding-inline: var(--mth-space-3, 0.75rem);
-    border: 1px solid var(--_dialog-border);
-    border-radius: var(--mth-radius-md, 0.375rem);
+    border: 1px solid var(--mth-color-border-strong, var(--_dialog-border));
+    border-radius: var(--mth-radius-md, 0.5rem);
     background: var(--mth-color-surface, Canvas);
     color: var(--_dialog-fg);
     font: inherit;
+    box-shadow: var(--mth-shadow-xs, none);
+    box-sizing: border-box;
+  }
+
+  .prompt-input:focus-visible {
+    outline: none;
+    border-color: var(--mth-color-border-focus, Highlight);
+    box-shadow: 0 0 0 3px oklch(from var(--mth-color-border-focus, Highlight) l c h / 0.22);
   }
 
   .footer {
@@ -128,18 +151,29 @@ export const dialogStyles = css`
   .action-btn {
     padding-block: var(--mth-space-2, 0.5rem);
     padding-inline: var(--mth-space-4, 1rem);
-    border-radius: var(--mth-radius-md, 0.375rem);
-    border: 1px solid var(--_dialog-border);
-    background: transparent;
+    border-radius: var(--mth-radius-md, 0.5rem);
+    border: 1px solid var(--mth-color-border-strong, var(--_dialog-border));
+    background: var(--mth-color-surface, transparent);
     color: var(--_dialog-fg);
     font: inherit;
+    font-weight: var(--mth-font-weight-semibold, 600);
+    box-shadow: var(--mth-shadow-xs, none);
     cursor: pointer;
   }
 
   .action-btn.primary {
     background: var(--_dialog-accent);
-    border-color: var(--_dialog-accent);
+    border-color: oklch(from var(--_dialog-accent) calc(l - 0.06) c h / 0.5);
     color: var(--_dialog-accent-fg);
+    box-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.22),
+      var(--mth-shadow-xs, none);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .close-btn {
+      transition: none;
+    }
   }
 
   @media (forced-colors: active) {

@@ -4,7 +4,7 @@ export const tabsStyles = css`
   :host {
     display: block;
     box-sizing: border-box;
-    --_tabs-border: var(--mth-color-border, oklch(0.91 0.009 255));
+    --_tabs-border: var(--mth-color-border, oklch(0.89 0.01 262));
     --_tabs-gap: var(--mth-space-1, 0.25rem);
   }
 
@@ -38,5 +38,11 @@ export const tabsStyles = css`
   [part='panels'] {
     flex: 1 1 auto;
     min-inline-size: 0;
+  }
+
+  @media (forced-colors: active) {
+    [part='tablist'] {
+      border-color: ButtonBorder;
+    }
   }
 `;

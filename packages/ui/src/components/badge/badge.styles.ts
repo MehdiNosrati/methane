@@ -6,11 +6,11 @@ export const badgeStyles = css`
     vertical-align: middle;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_badge-bg: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    --_badge-bg: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
     --_badge-fg: var(--mth-color-fg, CanvasText);
     --_badge-border: var(--mth-color-border, ButtonBorder);
     --_badge-dot: var(--mth-color-fg-muted, GrayText);
-    --_badge-radius: var(--mth-radius-sm, 0.25rem);
+    --_badge-radius: var(--mth-radius-sm, 0.375rem);
     --_badge-pad-block: calc(var(--mth-space-1, 0.25rem) * 0.5);
     --_badge-pad-inline: var(--mth-space-2, 0.5rem);
     --_badge-font-size: var(--mth-font-size-xs, 0.75rem);
@@ -18,30 +18,30 @@ export const badgeStyles = css`
   }
 
   .base[data-variant='accent'] {
-    --_badge-bg: var(--mth-color-accent-subtle, oklch(0.95 0.03 255));
+    --_badge-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
     --_badge-fg: var(--mth-color-accent, Highlight);
-    --_badge-border: var(--mth-color-accent, Highlight);
+    --_badge-border: oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) l c h / 0.28);
     --_badge-dot: var(--mth-color-accent, Highlight);
   }
 
   .base[data-variant='success'] {
-    --_badge-bg: var(--mth-color-success-subtle, oklch(0.96 0.03 150));
-    --_badge-fg: var(--mth-color-success, oklch(0.45 0.17 150));
-    --_badge-border: var(--mth-color-success, oklch(0.6 0.17 150));
-    --_badge-dot: var(--mth-color-success, oklch(0.6 0.17 150));
+    --_badge-bg: var(--mth-color-success-subtle, oklch(0.95 0.04 152));
+    --_badge-fg: var(--mth-color-success, oklch(0.45 0.17 152));
+    --_badge-border: oklch(from var(--mth-color-success, oklch(0.54 0.16 152)) l c h / 0.28);
+    --_badge-dot: var(--mth-color-success, oklch(0.54 0.16 152));
   }
 
   .base[data-variant='warning'] {
-    --_badge-bg: var(--mth-color-warning-subtle, oklch(0.96 0.04 75));
-    --_badge-fg: var(--mth-color-warning, oklch(0.5 0.17 75));
-    --_badge-border: var(--mth-color-warning, oklch(0.7 0.17 75));
-    --_badge-dot: var(--mth-color-warning, oklch(0.7 0.17 75));
+    --_badge-bg: var(--mth-color-warning-subtle, oklch(0.96 0.05 80));
+    --_badge-fg: var(--mth-color-warning, oklch(0.5 0.17 80));
+    --_badge-border: oklch(from var(--mth-color-warning, oklch(0.68 0.16 80)) l c h / 0.32);
+    --_badge-dot: var(--mth-color-warning, oklch(0.68 0.16 80));
   }
 
   .base[data-variant='danger'] {
-    --_badge-bg: var(--mth-color-danger-subtle, oklch(0.96 0.04 25));
+    --_badge-bg: var(--mth-color-danger-subtle, oklch(0.95 0.04 25));
     --_badge-fg: var(--mth-color-danger, oklch(0.5 0.22 25));
-    --_badge-border: var(--mth-color-danger, oklch(0.57 0.22 25));
+    --_badge-border: oklch(from var(--mth-color-danger, oklch(0.57 0.22 25)) l c h / 0.28);
     --_badge-dot: var(--mth-color-danger, oklch(0.57 0.22 25));
   }
 

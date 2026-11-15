@@ -579,10 +579,43 @@ export class MthTable extends UIElement {
                             <span>${col.header}</span>
                             <span class="sort-indicator" aria-hidden="true">
                               ${sortRule?.direction === 'asc'
-                                ? '▲'
+                                ? html`<svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.75"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path d="m4 10 4-4 4 4" />
+                                  </svg>`
                                 : sortRule?.direction === 'desc'
-                                  ? '▼'
-                                  : '⇅'}
+                                  ? html`<svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 16 16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="1.75"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <path d="m4 6 4 4 4-4" />
+                                    </svg>`
+                                  : html`<svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 16 16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="1.5"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <path d="m5 6 3-3 3 3M5 10l3 3 3-3" />
+                                    </svg>`}
                             </span>
                           </button>
                         `
