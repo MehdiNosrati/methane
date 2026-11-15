@@ -152,7 +152,6 @@
     gap: var(--mth-dl-gap, var(--mth-space-2, 0.5rem)) var(--mth-space-6, 1.5rem);
     margin-block: 0;
     margin-inline: 0;
-    container-type: inline-size;
   }
 
   .mth-dl > dt {
@@ -171,6 +170,18 @@
     padding-block-end: var(--mth-space-3, 0.75rem);
     border-block-end: 1px solid
       var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+  }
+
+  @media (width >= 30rem) {
+    .mth-dl:not([data-layout='stacked']) {
+      grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
+    }
+
+    .mth-dl[data-variant='bordered']:not([data-layout='stacked']) > dt {
+      padding-block-end: var(--mth-space-3, 0.75rem);
+      border-block-end: 1px solid
+        var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    }
   }
 
   @container (inline-size >= 30rem) {

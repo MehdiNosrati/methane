@@ -441,7 +441,6 @@
     min-block-size: 100dvb;
     background-color: var(--mth-color-bg, light-dark(oklch(0.995 0.002 255), oklch(0.145 0.01 255)));
     color: var(--mth-color-fg, light-dark(oklch(0.145 0.01 255), oklch(0.985 0.005 255)));
-    container-type: inline-size;
   }
 
   .mth-app-shell-header,
@@ -487,6 +486,42 @@
     );
   }
 
+  @media (width >= 60rem) {
+    .mth-app-shell {
+      grid-template:
+        'header header header' auto
+        'sidebar main aside' 1fr
+        'footer footer footer' auto
+        / var(--mth-app-shell-sidebar-size, 16rem)
+        minmax(0, 1fr)
+        var(--mth-app-shell-aside-size, auto);
+    }
+
+    .mth-app-shell:not(:has(> .mth-app-shell-aside, > [data-region='aside'])) {
+      grid-template:
+        'header header' auto
+        'sidebar main' 1fr
+        'footer footer' auto
+        / var(--mth-app-shell-sidebar-size, 16rem)
+        minmax(0, 1fr);
+    }
+
+    .mth-app-shell-sidebar,
+    .mth-app-shell > [data-region='sidebar'] {
+      border-block-end: 0;
+      border-inline-end: 1px solid
+        var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    }
+
+    .mth-app-shell-aside,
+    .mth-app-shell > [data-region='aside'] {
+      border-block-start: 0;
+      border-inline-start: 1px solid
+        var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
+    }
+  }
+
+  /* Also support embedded .mth-app-shell demos inside an ancestor .mth-container */
   @container (inline-size >= 60rem) {
     .mth-app-shell {
       grid-template:
@@ -496,6 +531,15 @@
         / var(--mth-app-shell-sidebar-size, 16rem)
         minmax(0, 1fr)
         var(--mth-app-shell-aside-size, auto);
+    }
+
+    .mth-app-shell:not(:has(> .mth-app-shell-aside, > [data-region='aside'])) {
+      grid-template:
+        'header header' auto
+        'sidebar main' 1fr
+        'footer footer' auto
+        / var(--mth-app-shell-sidebar-size, 16rem)
+        minmax(0, 1fr);
     }
 
     .mth-app-shell-sidebar,

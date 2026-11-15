@@ -119,4 +119,127 @@ describe('@methane/css Light-DOM layout, typography, and surface primitives', ()
       expect(computed.animationName).toBe('none');
     }
   });
+
+  it('never relies on @container self-queries without a matching @media fallback rule', () => {
+    const cssFiles = ['layout.css', 'prose.css', 'marketing.css'].map((file) => ({
+      file,
+      css: readFileSync(resolve(srcDir, file), 'utf8'),
+    }));
+
+    const stripComments = (source: string): string => source.replace(/\/\*[\s\S]*?\*\//g, '');
+    const splitSelectors = (header: string): string[] => {
+      const out: string[] = [];
+      let parenDepth = 0;
+      let bracketDepth = 0;
+      let start = 0;
+      for (let idx = 0; idx < header.length; idx++) {
+        const ch = header[idx];
+        if (ch === '(') parenDepth++;
+        else if (ch === ')' && parenDepth > 0) parenDepth--;
+        else if (ch === '[') bracketDepth++;
+        else if (ch === ']' && bracketDepth > 0) bracketDepth--;
+        else if (ch === ',' && parenDepth === 0 && bracketDepth === 0) {
+          const item = header.slice(start, idx).trim().replace(/\s+/g, ' ');
+          if (item) out.push(item);
+          start = idx + 1;
+        }
+      }
+      const tail = header.slice(start).trim().replace(/\s+/g, ' ');
+      if (tail) out.push(tail);
+      return out;
+    };
+    const subjectBaseClass = (selector: string): string | null => {
+      // Find the last compound selector after top-level combinators (ignoring spaces inside () / []).
+      let parenDepth = 0;
+      let bracketDepth = 0;
+      let lastCombinatorEnd = 0;
+      for (let idx = 0; idx < selector.length; idx++) {
+        const ch = selector[idx];
+        if (ch === '(') parenDepth++;
+        else if (ch === ')' && parenDepth > 0) parenDepth--;
+        else if (ch === '[') bracketDepth++;
+        else if (ch === ']' && bracketDepth > 0) bracketDepth--;
+        else if (parenDepth === 0 && bracketDepth === 0 && /[\s>~+]/.test(ch ?? '')) {
+          lastCombinatorEnd = idx + 1;
+        }
+      }
+      const subject = selector.slice(lastCombinatorEnd).trim();
+      const match = subject.match(/^\.[a-z0-9-]+/i);
+      return match ? match[0] : null;
+    };
+
+    const parseBlocks = (
+      source: string,
+      atContext: 'root' | 'media' | 'container' = 'root',
+      containerDeclarations: Set<string> = new Set(),
+      containerTargets: Array<{ file: string; selector: string; baseClass: string }> = [],
+      mediaSelectors: Set<string> = new Set(),
+    ) => {
+      let i = 0;
+      while (i < source.length) {
+        const braceOpen = source.indexOf('{', i);
+        if (braceOpen === -1) break;
+        const header = source.slice(i, braceOpen).trim().replace(/\s+/g, ' ');
+        let depth = 1;
+        let j = braceOpen + 1;
+        while (j < source.length && depth > 0) {
+          if (source[j] === '{') depth++;
+          else if (source[j] === '}') depth--;
+          j++;
+        }
+        const body = source.slice(braceOpen + 1, j - 1);
+        if (header.startsWith('@layer ')) {
+          parseBlocks(body, atContext, containerDeclarations, containerTargets, mediaSelectors);
+        } else if (header.startsWith('@media')) {
+          parseBlocks(body, 'media', containerDeclarations, containerTargets, mediaSelectors);
+        } else if (header.startsWith('@container')) {
+          parseBlocks(body, 'container', containerDeclarations, containerTargets, mediaSelectors);
+        } else if (header.startsWith('@')) {
+          parseBlocks(body, atContext, containerDeclarations, containerTargets, mediaSelectors);
+        } else {
+          const selectors = splitSelectors(header);
+          if (/container-type\s*:\s*(?!normal\b)/i.test(body)) {
+            for (const sel of selectors) {
+              const base = subjectBaseClass(sel);
+              if (base) containerDeclarations.add(base);
+            }
+          }
+          if (atContext === 'media') {
+            for (const sel of selectors) mediaSelectors.add(sel);
+          } else if (atContext === 'container') {
+            for (const sel of selectors) {
+              const base = subjectBaseClass(sel);
+              if (base) containerTargets.push({ file: '', selector: sel, baseClass: base });
+            }
+          }
+        }
+        i = j;
+      }
+      return { containerDeclarations, containerTargets, mediaSelectors };
+    };
+
+    for (const { file, css } of cssFiles) {
+      const { containerDeclarations, containerTargets, mediaSelectors } = parseBlocks(
+        stripComments(css),
+      );
+      for (const target of containerTargets) {
+        if (containerDeclarations.has(target.baseClass)) {
+          expect(
+            mediaSelectors.has(target.selector),
+            `${file}: "${target.selector}" targets a selector whose base class (${target.baseClass}) declares container-type without a @media rule`,
+          ).toBe(true);
+        }
+      }
+    }
+
+    // Explicitly verify app-shell, hero split, article-layout, and dl provide @media layout rules
+    // and app-shell collapses empty aside track when no aside child exists.
+    const marketingCss = readFileSync(resolve(srcDir, 'marketing.css'), 'utf8');
+    expect(layoutCss).toContain('@media (width >= 60rem)');
+    expect(layoutCss).toContain(
+      ".mth-app-shell:not(:has(> .mth-app-shell-aside, > [data-region='aside']))",
+    );
+    expect(marketingCss).toContain('@media (width >= 56rem)');
+    expect(proseCss).toContain('@media (width >= 30rem)');
+  });
 });
