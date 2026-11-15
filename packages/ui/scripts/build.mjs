@@ -44,6 +44,7 @@ async function main() {
   const registerTags = [];
   const cemModules = [];
   const specs = [];
+  const seenBarrelExports = new Map();
 
   for (const dirName of components) {
     const specModUrl = pathToFileURL(resolve(distComponentsDir, dirName, `${dirName}.spec.js`)).href;
@@ -51,6 +52,21 @@ async function main() {
 
     const specMod = await import(specModUrl);
     const elemMod = await import(elemModUrl);
+
+    for (const exportName of Object.keys(elemMod)) {
+      if (exportName === 'CEM_METADATA') {
+        throw new Error(
+          `Conflicting barrel export '${exportName}' in ${dirName}/element.ts; keep CEM_METADATA scoped to ${dirName}.spec.ts.`,
+        );
+      }
+      const existingOwner = seenBarrelExports.get(exportName);
+      if (existingOwner) {
+        throw new Error(
+          `Conflicting barrel export '${exportName}' in ${dirName}/element.ts (already exported by ${existingOwner}/element.ts).`,
+        );
+      }
+      seenBarrelExports.set(exportName, dirName);
+    }
 
     const spec = Object.values(specMod).find(
       (v) => v && typeof v === 'object' && 'tag' in v && 'conformance' in v,
