@@ -180,6 +180,31 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
             'release.yml must filter `./packages/**` and `./tooling/*` (never shallow `./packages/*`) so nested kits, satellites, and tooling publish.',
         });
       }
+      const hasPlaywrightBrowsers =
+        /playwright\s+install\b[^\n]*\bchromium\b[^\n]*\bwebkit\b/.test(content) ||
+        (/playwright\s+install\b/.test(content) &&
+          content.includes('chromium') &&
+          content.includes('webkit'));
+      if (!hasPlaywrightBrowsers || !/\bpnpm\s+test:e2e\b/.test(content)) {
+        findings.push({
+          file: fileName,
+          rule: 'release-browser-e2e',
+          message:
+            'release.yml must install Playwright `chromium` and `webkit` browsers and run `pnpm test:e2e` before publishing.',
+        });
+      }
+      if (
+        !content.includes('METHANE_EXPECTED_VERSION') ||
+        !content.includes('GITHUB_REF_NAME') ||
+        !content.includes('auditWorkspacePackages')
+      ) {
+        findings.push({
+          file: fileName,
+          rule: 'release-tag-version-parity',
+          message:
+            'release.yml must verify `GITHUB_REF_NAME` tag parity against package manifest versions via `METHANE_EXPECTED_VERSION` and `auditWorkspacePackages`.',
+        });
+      }
     }
 
     if (fileName === 'pages.yml') {

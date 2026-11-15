@@ -128,15 +128,15 @@ describe('@methane-ui/security-gate', () => {
     expect(fakeAudit.violations[0]?.name).toBe('hyperformula');
   });
 
-  it('enforces ADR-007 workspace package hygiene (no dual dep+peerDep, strict ^0.1.0 peers, uniform 0.1.0 versions, README.md >= 300B)', () => {
+  it('enforces ADR-007 workspace package hygiene (no dual dep+peerDep, strict ^X.Y.Z peers, uniform versions, public-depends-on-private, README.md >= 300B)', () => {
     const realAudit = auditWorkspacePackages();
     expect(realAudit.totalManifests).toBeGreaterThanOrEqual(45);
-    expect(realAudit.publishableCount).toBe(41);
+    expect(realAudit.publishableCount).toBe(35);
     expect(realAudit.violations).toEqual([]);
     expect(realAudit.passed).toBe(true);
 
     const fakeWs = makeTempDir();
-    writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n", 'utf8');
+    writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n  - 'tooling/*'\n", 'utf8');
     writeFileSync(
       join(fakeWs, 'package.json'),
       JSON.stringify({
@@ -146,27 +146,169 @@ describe('@methane-ui/security-gate', () => {
       }),
       'utf8',
     );
+    mkdirSync(join(fakeWs, 'tooling/internal-tool'), { recursive: true });
+    writeFileSync(
+      join(fakeWs, 'tooling/internal-tool/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/internal-tool',
+        version: '0.1.0',
+        private: true,
+      }),
+      'utf8',
+    );
     mkdirSync(join(fakeWs, 'packages/bad-pkg'), { recursive: true });
     writeFileSync(
       join(fakeWs, 'packages/bad-pkg/package.json'),
       JSON.stringify({
         name: '@methane-ui/bad-pkg',
         version: '1.0.0',
-        dependencies: { '@methane-ui/core': 'workspace:^' },
+        dependencies: {
+          '@methane-ui/core': 'workspace:^',
+          '@methane-ui/internal-tool': 'workspace:^',
+        },
         peerDependencies: { '@methane-ui/core': '^0.1.0 || ^1.0.0' },
       }),
       'utf8',
     );
 
-    const badAudit = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    const badAudit = auditWorkspacePackages({ workspaceRoot: fakeWs, expectedVersion: '0.1.0' });
     expect(badAudit.passed).toBe(false);
     expect(badAudit.violations.map((v) => v.rule).sort()).toEqual([
       'duplicate-dep-and-peer',
       'forbidden-peer-dependency-rules',
       'invalid-methane-peer-range',
       'missing-readme',
+      'public-depends-on-private',
       'publishable-core-dependency',
       'version-skew',
     ]);
+  });
+
+  it('infers uniform semver version and ^X.Y.Z peer range when expectedVersion is omitted, and rejects version skew or tag mismatch', () => {
+    const fakeWs = makeTempDir();
+    writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n", 'utf8');
+    writeFileSync(
+      join(fakeWs, 'package.json'),
+      JSON.stringify({ name: 'ws-root', private: true }),
+      'utf8',
+    );
+    const readmeBody = 'x'.repeat(350);
+    for (const [dirName, pkgName, ver] of [
+      ['pkg-a', '@methane-ui/pkg-a', '0.2.0'],
+      ['pkg-b', '@methane-ui/pkg-b', '0.2.0'],
+    ]) {
+      mkdirSync(join(fakeWs, 'packages', dirName), { recursive: true });
+      writeFileSync(
+        join(fakeWs, 'packages', dirName, 'package.json'),
+        JSON.stringify({
+          name: pkgName,
+          version: ver,
+          peerDependencies: dirName === 'pkg-b' ? { '@methane-ui/pkg-a': '^0.2.0' } : undefined,
+        }),
+        'utf8',
+      );
+      writeFileSync(join(fakeWs, 'packages', dirName, 'README.md'), readmeBody, 'utf8');
+    }
+
+    // Uniform 0.2.0 infers cleanly when expectedVersion is omitted
+    const inferredOk = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    expect(inferredOk.passed).toBe(true);
+    expect(inferredOk.publishableCount).toBe(2);
+
+    // Explicit expectedVersion or METHANE_EXPECTED_VERSION mismatch fails
+    const explicitMismatch = auditWorkspacePackages({ workspaceRoot: fakeWs, expectedVersion: '0.3.0' });
+    expect(explicitMismatch.passed).toBe(false);
+    expect(explicitMismatch.violations.some((v) => v.rule === 'version-skew')).toBe(true);
+    expect(explicitMismatch.violations.some((v) => v.rule === 'invalid-methane-peer-range')).toBe(true);
+
+    const prevEnv = process.env['METHANE_EXPECTED_VERSION'];
+    try {
+      process.env['METHANE_EXPECTED_VERSION'] = '0.3.0';
+      const envMismatch = auditWorkspacePackages({ workspaceRoot: fakeWs });
+      expect(envMismatch.passed).toBe(false);
+      expect(envMismatch.violations.filter((v) => v.rule === 'version-skew')).toHaveLength(2);
+
+      process.env['METHANE_EXPECTED_VERSION'] = '0.2.0';
+      const envMatch = auditWorkspacePackages({ workspaceRoot: fakeWs });
+      expect(envMatch.passed).toBe(true);
+    } finally {
+      if (prevEnv === undefined) {
+        delete process.env['METHANE_EXPECTED_VERSION'];
+      } else {
+        process.env['METHANE_EXPECTED_VERSION'] = prevEnv;
+      }
+    }
+
+    // Skew between two publishable packages without expectedVersion is also caught
+    writeFileSync(
+      join(fakeWs, 'packages/pkg-b/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/pkg-b',
+        version: '0.2.1',
+        peerDependencies: { '@methane-ui/pkg-a': '^0.2.0' },
+      }),
+      'utf8',
+    );
+    const skewAudit = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    expect(skewAudit.passed).toBe(false);
+    expect(skewAudit.violations.map((v) => v.rule)).toEqual(['version-skew']);
+  });
+
+  it('forbids publishable packages from depending on private workspace packages in dependencies or peerDependencies while allowing devDependencies', () => {
+    const fakeWs = makeTempDir();
+    writeFileSync(join(fakeWs, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n  - 'tooling/*'\n", 'utf8');
+    writeFileSync(
+      join(fakeWs, 'package.json'),
+      JSON.stringify({ name: 'ws-root', private: true }),
+      'utf8',
+    );
+    mkdirSync(join(fakeWs, 'tooling/priv'), { recursive: true });
+    writeFileSync(
+      join(fakeWs, 'tooling/priv/package.json'),
+      JSON.stringify({ name: '@methane-ui/priv', version: '0.1.0', private: true }),
+      'utf8',
+    );
+    mkdirSync(join(fakeWs, 'packages/pub'), { recursive: true });
+    writeFileSync(join(fakeWs, 'packages/pub/README.md'), 'x'.repeat(350), 'utf8');
+
+    // Allowed in devDependencies
+    writeFileSync(
+      join(fakeWs, 'packages/pub/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/pub',
+        version: '0.1.0',
+        devDependencies: { '@methane-ui/priv': 'workspace:^' },
+      }),
+      'utf8',
+    );
+    expect(auditWorkspacePackages({ workspaceRoot: fakeWs }).passed).toBe(true);
+
+    // Forbidden in peerDependencies
+    writeFileSync(
+      join(fakeWs, 'packages/pub/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/pub',
+        version: '0.1.0',
+        peerDependencies: { '@methane-ui/priv': '^0.1.0' },
+      }),
+      'utf8',
+    );
+    const peerBad = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    expect(peerBad.passed).toBe(false);
+    expect(peerBad.violations.map((v) => v.rule)).toEqual(['public-depends-on-private']);
+
+    // Forbidden in dependencies
+    writeFileSync(
+      join(fakeWs, 'packages/pub/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/pub',
+        version: '0.1.0',
+        dependencies: { '@methane-ui/priv': 'workspace:^' },
+      }),
+      'utf8',
+    );
+    const depBad = auditWorkspacePackages({ workspaceRoot: fakeWs });
+    expect(depBad.passed).toBe(false);
+    expect(depBad.violations.map((v) => v.rule)).toEqual(['public-depends-on-private']);
   });
 });

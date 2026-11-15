@@ -121,15 +121,22 @@ flowchart TB
 
 ### Tooling
 
+#### Public Developer Tooling
+
 | Package | Path | Description |
 | --- | --- | --- |
 | [`@methane-ui/lint-plugin`](./tooling/lint-plugin/README.md) | `tooling/lint-plugin` | ESLint & Stylelint architectural invariant rules (XSS sinks, logical CSS, Shadow DOM focus/ARIA checks) |
-| [`@methane-ui/spec-compiler`](./tooling/spec-compiler/README.md) | `tooling/spec-compiler` | `ComponentBehaviorSpec` validator, Markdown docs compiler, CEM verifier & a11y checklist generator |
-| [`@methane-ui/test-conformance`](./tooling/test-conformance/README.md) | `tooling/test-conformance` | `FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`, `scanSameRootAria` |
-| [`@methane-ui/bundle-budget`](./tooling/bundle-budget/README.md) | `tooling/bundle-budget` | Cold standalone & marginal brotli/gzip bundle budget measurement (`esbuild` + `node:zlib`) |
-| [`@methane-ui/security-gate`](./tooling/security-gate/README.md) | `tooling/security-gate` | Strict CSP + Trusted Types compliance suite, DSD HTML CSP audit, license audit & CI workflow gate |
-| [`@methane-ui/wrapper-codegen`](./tooling/wrapper-codegen/README.md) | `tooling/wrapper-codegen` | CEM + BehaviorSpec code generator CLI (`methane-wrapper-codegen`) for React, Vue, Angular, Svelte & IDEs |
-| [`@methane-ui/figma-sync`](./tooling/figma-sync/README.md) | `tooling/figma-sync` | Two-way Figma Variables REST API ↔ W3C DTCG token sync (`oklch()`) & `@figma/code-connect` generator |
+
+#### Internal Monorepo Tooling (`private`)
+
+| Package | Path | Description |
+| --- | --- | --- |
+| [`@methane-ui/spec-compiler`](./tooling/spec-compiler/README.md) | `tooling/spec-compiler` | `ComponentBehaviorSpec` validator, Markdown docs compiler, CEM verifier & a11y checklist generator (`private`) |
+| [`@methane-ui/test-conformance`](./tooling/test-conformance/README.md) | `tooling/test-conformance` | `FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`, `scanSameRootAria` (`private`) |
+| [`@methane-ui/bundle-budget`](./tooling/bundle-budget/README.md) | `tooling/bundle-budget` | Cold standalone & marginal brotli/gzip bundle budget measurement (`esbuild` + `node:zlib`) (`private`) |
+| [`@methane-ui/security-gate`](./tooling/security-gate/README.md) | `tooling/security-gate` | Strict CSP + Trusted Types compliance suite, DSD HTML CSP audit, license audit & CI workflow gate (`private`) |
+| [`@methane-ui/wrapper-codegen`](./tooling/wrapper-codegen/README.md) | `tooling/wrapper-codegen` | CEM + BehaviorSpec code generator CLI (`methane-wrapper-codegen`) for React, Vue, Angular, Svelte & IDEs (`private`) |
+| [`@methane-ui/figma-sync`](./tooling/figma-sync/README.md) | `tooling/figma-sync` | Two-way Figma Variables REST API ↔ W3C DTCG token sync (`oklch()`) & `@figma/code-connect` generator (`private`) |
 
 ## Multi-Framework Quickstart
 
@@ -314,11 +321,11 @@ pnpm run release:dry-run
 
 ## Releasing & npm Publish CI
 
-All 41 publishable `@methane-ui/*` packages are released via [`.github/workflows/release.yml`](./.github/workflows/release.yml) with Sigstore provenance (`--provenance --access public`):
+All 35 publishable `@methane-ui/*` packages (`packages/**` and `@methane-ui/lint-plugin`) are released via [`.github/workflows/release.yml`](./.github/workflows/release.yml) with Sigstore provenance (`--provenance --access public`):
 
 - **Triggers**: pushing a `v*` git tag, publishing a GitHub Release (`release: [published]`), or running `workflow_dispatch` (defaults to `dry_run: true`).
 - **Auth**: supports both `NPM_TOKEN` (`secrets.NPM_TOKEN`) and **npm OIDC Trusted Publishing** (`id-token: write`, upgrading `npm@latest` automatically when `NPM_TOKEN` is unset).
-- **Local commands**: `pnpm run release:dry-run` validates packing/publish across `./packages/**` and `./tooling/*`; `pnpm run release:publish` publishes all workspace packages.
+- **Local commands**: `pnpm run release:dry-run` validates packing/publish across the 35 public workspace packages (skipping `"private": true` internal tooling); `pnpm run release:publish` publishes them.
 
 ## License
 

@@ -43,6 +43,24 @@ jobs:
       - name: Build packages
         run: pnpm build
 
+      - name: Verify git tag matches package versions
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ -z "$TAG_VERSION" ] || [ "$TAG_VERSION" = "$GITHUB_REF_NAME" ]; then
+            echo "Invalid release tag: $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+          METHANE_EXPECTED_VERSION="$TAG_VERSION" node --input-type=module -e "
+            import { auditWorkspacePackages } from './tooling/security-gate/dist/index.js';
+            const res = auditWorkspacePackages({ expectedVersion: process.env.METHANE_EXPECTED_VERSION });
+            if (!res.passed) {
+              console.error(JSON.stringify(res.violations, null, 2));
+              process.exit(1);
+            }
+            console.log('Verified ' + res.publishableCount + ' publishable packages match tag v' + process.env.METHANE_EXPECTED_VERSION);
+          "
+
       - name: Verify custom-elements.json & codegen are up to date
         run: |
           git diff --exit-code -- '**/custom-elements.json'
@@ -57,6 +75,12 @@ jobs:
 
       - name: Test (including security & license gates)
         run: pnpm test
+
+      - name: Install Playwright Browsers (Chromium & WebKit)
+        run: pnpm exec playwright install --with-deps chromium webkit
+
+      - name: Browser E2E (Components, ADR-010 Modern/Fallback, SSR Hydration, Docs QA)
+        run: pnpm test:e2e
 
       - name: Bundle budget check (@methane-ui/bundle-budget)
         run: |

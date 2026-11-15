@@ -10,9 +10,13 @@ export interface PackageAuditViolation {
     | 'version-skew'
     | 'missing-readme'
     | 'forbidden-peer-dependency-rules'
-    | 'publishable-core-dependency';
+    | 'publishable-core-dependency'
+    | 'public-depends-on-private';
   readonly message: string;
 }
+
+const SEMVER_RE =
+  /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 
 export interface PackageAuditOptions {
   readonly workspaceRoot?: string;
@@ -90,26 +94,45 @@ function walkPackageManifests(dir: string, out: string[]): void {
 }
 
 /**
- * Audits workspace `package.json` manifests for ADR-007 invariants:
+ * Audits workspace `package.json` manifests for ADR-007 & release hygiene invariants:
  * 1. No package lists the same dependency in both `dependencies` and `peerDependencies`.
- * 2. All `@methane-ui/*` `peerDependencies` ranges equal `"^0.1.0"` (never `||` or `*`).
- * 3. Every publishable (`private !== true`) package has uniform `"0.1.0"` version.
+ * 2. All `@methane-ui/*` `peerDependencies` ranges equal `"^<expectedVersion>"` (never `||` or `*`).
+ * 3. Every publishable (`private !== true`) package has uniform valid semver matching `expectedVersion` (or the inferred uniform version).
  * 4. Every publishable (`private !== true`) package includes a non-empty `README.md` (>= 300 bytes).
+ * 5. No publishable (`private !== true`) package lists a `private: true` workspace package in `dependencies` or `peerDependencies`.
  */
 export function auditWorkspacePackages(options: PackageAuditOptions = {}): PackageAuditResult {
   const workspaceRoot = options.workspaceRoot ? resolve(options.workspaceRoot) : findWorkspaceRoot();
-  const expectedVersion = options.expectedVersion ?? '0.1.0';
-  const expectedPeerRange = options.expectedMethanePeerRange ?? '^0.1.0';
   const minReadmeBytes = options.minReadmeBytes ?? 300;
 
   const manifestPaths = collectWorkspacePackageJsonPaths(workspaceRoot);
-  const violations: PackageAuditViolation[] = [];
-  let publishableCount = 0;
-
-  for (const manifestPath of manifestPaths) {
+  const manifests = manifestPaths.map((manifestPath) => {
     const raw = JSON.parse(readFileSync(manifestPath, 'utf8')) as PackageManifestShape;
     const pkgName = raw.name ?? relative(workspaceRoot, manifestPath);
     const location = relative(workspaceRoot, manifestPath) || 'package.json';
+    return { manifestPath, raw, pkgName, location };
+  });
+
+  const privatePackageNames = new Set(
+    manifests
+      .filter((m) => m.raw.private === true && typeof m.raw.name === 'string')
+      .map((m) => m.raw.name as string),
+  );
+
+  const envExpectedVersion = process.env['METHANE_EXPECTED_VERSION'];
+  const explicitExpectedVersion =
+    options.expectedVersion ?? (envExpectedVersion ? envExpectedVersion : undefined);
+  const inferredVersion = manifests.find(
+    (m) => m.raw.private !== true && typeof m.raw.version === 'string' && SEMVER_RE.test(m.raw.version),
+  )?.raw.version;
+  const expectedVersion = explicitExpectedVersion ?? inferredVersion;
+  const expectedPeerRange =
+    options.expectedMethanePeerRange ?? (expectedVersion ? `^${expectedVersion}` : undefined);
+
+  const violations: PackageAuditViolation[] = [];
+  let publishableCount = 0;
+
+  for (const { manifestPath, raw, pkgName, location } of manifests) {
     const deps = raw.dependencies ?? {};
     const peers = raw.peerDependencies ?? {};
 
@@ -135,6 +158,22 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
       });
     }
 
+    if (raw.private !== true) {
+      for (const field of ['dependencies', 'peerDependencies'] as const) {
+        const record = raw[field] ?? {};
+        for (const depName of Object.keys(record)) {
+          if (privatePackageNames.has(depName)) {
+            violations.push({
+              packageName: pkgName,
+              location,
+              rule: 'public-depends-on-private',
+              message: `publishable package must not depend on private workspace package "${depName}" in ${field}`,
+            });
+          }
+        }
+      }
+    }
+
     for (const depName of Object.keys(deps)) {
       if (Object.prototype.hasOwnProperty.call(peers, depName)) {
         violations.push({
@@ -147,7 +186,11 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
     }
 
     for (const [peerName, range] of Object.entries(peers)) {
-      if (peerName.startsWith('@methane-ui/') && range !== expectedPeerRange) {
+      if (
+        peerName.startsWith('@methane-ui/') &&
+        expectedPeerRange !== undefined &&
+        range !== expectedPeerRange
+      ) {
         violations.push({
           packageName: pkgName,
           location,
@@ -159,12 +202,19 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
 
     if (raw.private !== true) {
       publishableCount += 1;
-      if (raw.version !== expectedVersion) {
+      if (typeof raw.version !== 'string' || !SEMVER_RE.test(raw.version)) {
         violations.push({
           packageName: pkgName,
           location,
           rule: 'version-skew',
-          message: `publishable package version is "${raw.version ?? 'missing'}" instead of "${expectedVersion}"`,
+          message: `publishable package version "${raw.version ?? 'missing'}" is not valid semver`,
+        });
+      } else if (expectedVersion !== undefined && raw.version !== expectedVersion) {
+        violations.push({
+          packageName: pkgName,
+          location,
+          rule: 'version-skew',
+          message: `publishable package version is "${raw.version}" instead of "${expectedVersion}"`,
         });
       }
 
