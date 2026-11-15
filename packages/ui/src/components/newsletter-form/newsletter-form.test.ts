@@ -67,6 +67,20 @@ describe('<mth-newsletter-form>', () => {
     await nf.updateComplete;
     expect(nf.submit()).toBe(false);
     expect(nf.invalid).toBe(true);
+    await nf.updateComplete;
+    const input = nf.shadowRoot?.querySelector<HTMLInputElement>('input');
+    expect(input?.getAttribute('aria-errormessage')).toBe('mth-nf-status');
+
+    // Reconnect preserves InputController binding
+    nf.remove();
+    document.body.appendChild(nf);
+    await nf.updateComplete;
+    if (input) {
+      input.value = 'reconnected@methane.dev';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    await nf.updateComplete;
+    expect(nf.value).toBe('reconnected@methane.dev');
 
     let submittedEmail = '';
     nf.addEventListener('mth-submit', (e: Event) => {

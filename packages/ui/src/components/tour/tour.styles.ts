@@ -18,9 +18,6 @@ export const tourStyles = css`
 
   .card {
     position: fixed;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    transform: translate3d(var(--_tour-x, 24px), var(--_tour-y, 24px), 0);
     z-index: var(--_z);
     inline-size: min(24rem, calc(100vi - 2rem));
     padding-block: var(--mth-space-4, 1rem);

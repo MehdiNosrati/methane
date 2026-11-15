@@ -91,7 +91,6 @@ export class MthBottomSheet extends UIElement {
     });
 
     this.dragCtrl = new DragSortController(this, {
-      container: () => this.dialogEl,
       getItems: () => (this.handleEl ? [this.handleEl] : []),
       orientation: 'vertical',
     });

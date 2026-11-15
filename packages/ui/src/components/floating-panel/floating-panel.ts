@@ -56,7 +56,8 @@ export class MthFloatingPanel extends UIElement {
   private syncingFromController = false;
   private triggerEl: HTMLElement | null = null;
   private dragging = false;
-  private dragOffsetX = 0;
+  private dragStartClientX = 0;
+  private dragStartX = 0;
   private dragOffsetY = 0;
 
   constructor() {
@@ -165,12 +166,20 @@ export class MthFloatingPanel extends UIElement {
     this.positionSheet.replaceSync(`:host { --_panel-x: ${safeX}px; --_panel-y: ${safeY}px; }`);
   }
 
+  private isRtl(): boolean {
+    return (
+      this.resolvedDir === 'rtl' ||
+      (typeof getComputedStyle === 'function' && getComputedStyle(this).direction === 'rtl')
+    );
+  }
+
   private readonly handlePointerDown = (event: PointerEvent): void => {
     if (event.button !== 0) {
       return;
     }
     this.dragging = true;
-    this.dragOffsetX = event.clientX - this.x;
+    this.dragStartClientX = event.clientX;
+    this.dragStartX = this.x;
     this.dragOffsetY = event.clientY - this.y;
     this.setCustomState('dragging', true);
     const target = event.currentTarget as HTMLElement | null;
@@ -181,7 +190,9 @@ export class MthFloatingPanel extends UIElement {
     if (!this.dragging) {
       return;
     }
-    this.moveTo(event.clientX - this.dragOffsetX, event.clientY - this.dragOffsetY);
+    const deltaX = event.clientX - this.dragStartClientX;
+    const inlineDeltaX = this.isRtl() ? -deltaX : deltaX;
+    this.moveTo(this.dragStartX + inlineDeltaX, event.clientY - this.dragOffsetY);
   };
 
   private readonly handlePointerUp = (): void => {
@@ -194,14 +205,15 @@ export class MthFloatingPanel extends UIElement {
 
   private readonly handleDragKeyDown = (event: KeyboardEvent): void => {
     const step = event.shiftKey ? 32 : 12;
+    const rtl = this.isRtl();
     switch (event.key) {
       case 'ArrowLeft':
         event.preventDefault();
-        this.moveTo(this.x - step, this.y);
+        this.moveTo(this.x + (rtl ? step : -step), this.y);
         break;
       case 'ArrowRight':
         event.preventDefault();
-        this.moveTo(this.x + step, this.y);
+        this.moveTo(this.x + (rtl ? -step : step), this.y);
         break;
       case 'ArrowUp':
         event.preventDefault();

@@ -202,7 +202,8 @@ export class MthLightbox extends UIElement {
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
     if (!this.open || this.items.length <= 1) return;
     const rtl =
-      typeof getComputedStyle === 'function' && getComputedStyle(this).direction === 'rtl';
+      this.resolvedDir === 'rtl' ||
+      (typeof getComputedStyle === 'function' && getComputedStyle(this).direction === 'rtl');
     if (event.key === 'ArrowRight') {
       event.preventDefault();
       if (rtl) this.previous();

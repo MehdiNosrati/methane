@@ -99,8 +99,8 @@ export class MthNewsletterForm extends UIElement {
     this.syncStates();
   }
 
-  protected override firstUpdated(changedProperties: PropertyValues): void {
-    super.firstUpdated(changedProperties);
+  protected override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
     this.inputCtrl.bind(this.inputEl);
   }
 
@@ -262,6 +262,8 @@ export class MthNewsletterForm extends UIElement {
             placeholder=${resolvedPlaceholder}
             aria-label=${this.t('emailLabel')}
             aria-invalid=${this.formCtrl.invalid && (this.formCtrl.touched || this.formCtrl.submitted) ? 'true' : 'false'}
+            aria-describedby=${statusText ? 'mth-nf-status' : nothing}
+            aria-errormessage=${this.errorMessage ? 'mth-nf-status' : nothing}
             ?required=${this.required}
             ?disabled=${isDisabled}
             @input=${this.handleNativeInput}
@@ -280,6 +282,7 @@ export class MthNewsletterForm extends UIElement {
         <slot></slot>
 
         <p
+          id="mth-nf-status"
           class="status"
           part="status"
           role="status"

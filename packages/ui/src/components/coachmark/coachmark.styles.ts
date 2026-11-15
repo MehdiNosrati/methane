@@ -18,9 +18,6 @@ export const coachmarkStyles = css`
 
   .surface {
     position: fixed;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    transform: translate3d(var(--_cm-x, 16px), var(--_cm-y, 16px), 0);
     z-index: var(--_z);
     inline-size: min(20rem, calc(100vi - 2rem));
     padding-block: var(--mth-space-4, 1rem);
@@ -133,7 +130,7 @@ export const coachmarkStyles = css`
     block-size: 0.5rem;
     background: var(--_bg);
     border: 1px solid var(--_border);
-    transform: translate3d(var(--_cm-ax, 0px), var(--_cm-ay, 0px), 0) rotate(45deg);
+    transform: rotate(45deg);
     pointer-events: none;
   }
 

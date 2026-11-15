@@ -57,7 +57,6 @@ export class MthCoachmark extends UIElement {
 
   private readonly overlayCtrl: OverlayController;
   private readonly positioningCtrl: PositioningController;
-  private positionSheet: CSSStyleSheet | null = null;
   private explicitAnchor: PositioningAnchor | null = null;
   private triggerEl: HTMLElement | null = null;
   private syncingFromController = false;
@@ -72,9 +71,6 @@ export class MthCoachmark extends UIElement {
       placement: this.placement,
       offset: 10,
       forceFallback: this.forceFallback,
-      onPosition: (pos) => {
-        this.applyPositionSheet(pos.x, pos.y, pos.arrowX ?? 0, pos.arrowY ?? 0);
-      },
     });
 
     this.overlayCtrl = new OverlayController(this, {
@@ -160,20 +156,6 @@ export class MthCoachmark extends UIElement {
     } catch {
       return null;
     }
-  }
-
-  private applyPositionSheet(x: number, y: number, arrowX: number, arrowY: number): void {
-    const root = this.shadowRoot;
-    if (!root || typeof CSSStyleSheet === 'undefined' || !Array.isArray(root.adoptedStyleSheets)) {
-      return;
-    }
-    if (!this.positionSheet) {
-      this.positionSheet = new CSSStyleSheet();
-      root.adoptedStyleSheets = [...root.adoptedStyleSheets, this.positionSheet];
-    }
-    this.positionSheet.replaceSync(
-      `:host { --_cm-x: ${Math.round(x)}px; --_cm-y: ${Math.round(y)}px; --_cm-ax: ${Math.round(arrowX)}px; --_cm-ay: ${Math.round(arrowY)}px; }`,
-    );
   }
 
   private readonly handleDismissClick = (): void => {

@@ -52,7 +52,6 @@ export class MthTour extends UIElement {
   private readonly overlayCtrl: OverlayController;
   private readonly positioningCtrl: PositioningController;
   private readonly focusTrapCtrl: FocusTrapController;
-  private positionSheet: CSSStyleSheet | null = null;
   private triggerEl: HTMLElement | null = null;
   private syncingFromController = false;
 
@@ -65,9 +64,6 @@ export class MthTour extends UIElement {
       placement: 'bottom',
       offset: 12,
       forceFallback: this.forceFallback,
-      onPosition: (pos) => {
-        this.applyPositionSheet(pos.x, pos.y);
-      },
     });
 
     this.overlayCtrl = new OverlayController(this, {
@@ -128,7 +124,9 @@ export class MthTour extends UIElement {
       return [];
     }
     return Array.from(this.children).filter(
-      (el): el is TourStepElementLike => el.tagName.toLowerCase() === 'mth-tour-step',
+      (el): el is TourStepElementLike =>
+        el instanceof HTMLElement &&
+        (el.tagName.toLowerCase().endsWith('-tour-step') || 'stepId' in el),
     );
   }
 
@@ -228,20 +226,6 @@ export class MthTour extends UIElement {
     }
   }
 
-  private applyPositionSheet(x: number, y: number): void {
-    const root = this.shadowRoot;
-    if (!root || typeof CSSStyleSheet === 'undefined' || !Array.isArray(root.adoptedStyleSheets)) {
-      return;
-    }
-    if (!this.positionSheet) {
-      this.positionSheet = new CSSStyleSheet();
-      root.adoptedStyleSheets = [...root.adoptedStyleSheets, this.positionSheet];
-    }
-    this.positionSheet.replaceSync(
-      `:host { --_tour-x: ${Math.round(x)}px; --_tour-y: ${Math.round(y)}px; }`,
-    );
-  }
-
   private readonly handleSlotChange = (): void => {
     if (this.open) {
       this.syncStepsState();
@@ -252,12 +236,17 @@ export class MthTour extends UIElement {
     if (!this.open) {
       return;
     }
+    const rtl =
+      this.resolvedDir === 'rtl' ||
+      (typeof getComputedStyle === 'function' && getComputedStyle(this).direction === 'rtl');
     if (event.key === 'ArrowRight') {
       event.preventDefault();
-      this.next();
+      if (rtl) this.previous();
+      else this.next();
     } else if (event.key === 'ArrowLeft') {
       event.preventDefault();
-      this.previous();
+      if (rtl) this.next();
+      else this.previous();
     }
   };
 

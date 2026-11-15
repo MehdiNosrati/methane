@@ -92,6 +92,19 @@ describe('<mth-tour>', () => {
     await new Promise((r) => setTimeout(r, 20));
     expect(completed).toBe(true);
     expect(tour.open).toBe(false);
+
+    // RTL keyboard direction flips ArrowLeft / ArrowRight
+    tour.setAttribute('dir', 'rtl');
+    await tour.start(0);
+    await tour.updateComplete;
+    const base = tour.shadowRoot?.querySelector<HTMLElement>('[part="base"]');
+    base?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    await tour.updateComplete;
+    expect(tour.currentStep).toBe(1);
+    base?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    await tour.updateComplete;
+    expect(tour.currentStep).toBe(0);
+
     expect(scanSameRootAria(tour).valid).toBe(true);
   });
 

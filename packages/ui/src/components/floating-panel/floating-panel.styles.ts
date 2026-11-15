@@ -17,9 +17,8 @@ export const floatingPanelStyles = css`
 
   .panel {
     position: fixed;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    transform: translate3d(var(--_panel-x, 24px), var(--_panel-y, 24px), 0);
+    inset-block-start: var(--_panel-y, 24px);
+    inset-inline-start: var(--_panel-x, 24px);
     z-index: var(--_z);
     inline-size: min(22rem, calc(100vi - 2rem));
     max-block-size: calc(100dvh - 2rem);
@@ -41,7 +40,6 @@ export const floatingPanelStyles = css`
     inset-block: 0;
     inset-inline-start: auto;
     inset-inline-end: 0;
-    transform: none;
     inline-size: min(24rem, 90vi);
     max-block-size: 100dvh;
     border-radius: 0;
@@ -52,7 +50,7 @@ export const floatingPanelStyles = css`
   :host([dock='start']) .panel {
     inset-block: 0;
     inset-inline-start: 0;
-    transform: none;
+    inset-inline-end: auto;
     inline-size: min(24rem, 90vi);
     max-block-size: 100dvh;
     border-radius: 0;
@@ -64,7 +62,6 @@ export const floatingPanelStyles = css`
     inset-block-start: auto;
     inset-block-end: 0;
     inset-inline: 0;
-    transform: none;
     inline-size: 100vi;
     max-block-size: 45dvh;
     border-radius: 0;

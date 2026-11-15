@@ -79,6 +79,15 @@ describe('<mth-floating-panel>', () => {
     await panel.updateComplete;
     expect(panel.dock).toBe('end');
 
+    // RTL ArrowLeft advances inline-start x
+    panel.setDock('none');
+    panel.moveTo(20, 20);
+    panel.setAttribute('dir', 'rtl');
+    await panel.updateComplete;
+    handle?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    await panel.updateComplete;
+    expect(panel.x).toBe(32);
+
     expect(scanSameRootAria(panel).valid).toBe(true);
   });
 
