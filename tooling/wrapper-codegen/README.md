@@ -4,13 +4,9 @@
 
 Custom Elements Manifest (`custom-elements.json`) + `ComponentBehaviorSpec` multi-framework code generator (`methane-wrapper-codegen`) producing typed **React 19/18**, **Vue 3**, **Angular 17+**, **Svelte 5**, and **IDE custom-data metadata** from a single canonical source.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/wrapper-codegen
-# or
-npm install -D @methane-ui/wrapper-codegen
-```
+This package is `"private": true` and is not published to npm. Within the monorepo, workspace packages reference it via `"workspace:^"` in `devDependencies`, and root scripts invoke `pnpm run codegen` / `pnpm run codegen:check`.
 
 ## Package Exports & CLI Binary
 
@@ -40,10 +36,10 @@ methane-wrapper-codegen [options]
 
 ```bash
 # Regenerate @methane-ui/react, @methane-ui/vue, @methane-ui/angular, @methane-ui/svelte, and IDE files across the monorepo
-npx methane-wrapper-codegen --workspace
+pnpm run codegen
 
 # Dry-run verification in CI
-npx methane-wrapper-codegen --workspace --dry-run
+pnpm run codegen:check
 ```
 
 ```ts

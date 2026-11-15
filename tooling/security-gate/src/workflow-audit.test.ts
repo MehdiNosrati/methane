@@ -67,6 +67,8 @@ jobs:
     expect(rules).toContain('release-provenance-env');
     expect(rules).toContain('release-publish-flags');
     expect(rules).toContain('release-nested-package-filter');
+    expect(rules).toContain('release-browser-e2e');
+    expect(rules).toContain('release-tag-version-parity');
   });
 
   it('allows contents: write with id-token: write in release.yml and enforces CEM drift check in ci.yml', () => {
@@ -105,6 +107,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           registry-url: 'https://registry.npmjs.org'
+      - run: METHANE_EXPECTED_VERSION="\${GITHUB_REF_NAME#v}" node -e "auditWorkspacePackages()"
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm test:e2e
       - run: echo "bundle-budget"
       - run: pnpm -r --filter "./packages/**" --filter "./tooling/*" --dry-run publish --provenance --access public
 `,
@@ -113,6 +118,40 @@ jobs:
     const audit = auditWorkflowFiles(dir);
     expect(audit.passed).toBe(false);
     expect(audit.findings.map((f) => f.rule)).toEqual(['ci-cem-drift-check']);
+  });
+
+  it('rejects release.yml missing Playwright E2E (chromium+webkit) or tag-version parity check', () => {
+    const dir = makeTempDir();
+    writeFileSync(
+      join(dir, 'release.yml'),
+      `name: Release
+permissions:
+  contents: read
+  id-token: write
+env:
+  NPM_CONFIG_PROVENANCE: 'true'
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+jobs:
+  release:
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
+      - run: echo "bundle-budget"
+      - run: pnpm -r --filter "./packages/**" --filter "./tooling/*" --dry-run publish --provenance --access public
+`,
+      'utf8',
+    );
+    const audit = auditWorkflowFiles(dir);
+    expect(audit.passed).toBe(false);
+    expect(audit.findings.map((f) => f.rule).sort()).toEqual([
+      'release-browser-e2e',
+      'release-tag-version-parity',
+    ]);
   });
 
   it('rejects shallow ./packages/* filter in release.yml that misses nested kits and satellites', () => {

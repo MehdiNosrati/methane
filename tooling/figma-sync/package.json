@@ -1,6 +1,7 @@
 {
   "name": "@methane-ui/figma-sync",
   "version": "0.1.0",
+  "private": true,
   "description": "Two-way Figma Variables REST API <-> W3C DTCG token sync and multi-framework @figma/code-connect generator",
   "license": "MIT",
   "type": "module",
@@ -26,9 +27,6 @@
     "@methane-ui/spec-compiler": "workspace:^",
     "@methane-ui/tokens": "workspace:^",
     "@methane-ui/wrapper-codegen": "workspace:^"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "repository": {
     "type": "git",

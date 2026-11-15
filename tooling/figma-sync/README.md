@@ -4,13 +4,9 @@
 
 Two-way **Figma Variables REST API** ↔ **W3C DTCG** design token synchronization (`oklch()` ↔ Figma sRGB `RGBA` with perceptual conversion) and multi-framework **`@figma/code-connect`** snippet generator for **Methane UI**.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/figma-sync
-# or
-npm install -D @methane-ui/figma-sync
-```
+This package is `"private": true` and is not published to npm. Within the monorepo, workspace packages reference it via `"workspace:^"` and root codegen runs it via `pnpm run codegen`.
 
 ## Exported API
 

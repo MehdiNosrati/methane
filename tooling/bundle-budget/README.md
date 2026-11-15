@@ -4,12 +4,16 @@
 
 Cold standalone and marginal gzip/brotli bundle budget analyzer for **Methane UI** — bundling entrypoints with `esbuild`, compressing via Node's `zlib.brotliCompressSync` / `gzipSync`, and formatting CI Markdown budget reports.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/bundle-budget
-# or
-npm install -D @methane-ui/bundle-budget
+This package is `"private": true` and is not published to npm. Workspace packages reference it via `"workspace:^"`:
+
+```json
+{
+  "devDependencies": {
+    "@methane-ui/bundle-budget": "workspace:^"
+  }
+}
 ```
 
 ## Exported API
