@@ -53,7 +53,7 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
     this.host.requestUpdate();
   }
 
-  attachSlot(slot: HTMLSlotElement | null): void {
+  attachSlot(slot: HTMLSlotElement | null, deferRefresh = false): void {
     if (this.slotEl === slot) return;
     if (this.slotEl) {
       this.slotEl.removeEventListener('slotchange', this.handleSlotChange);
@@ -61,13 +61,25 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
     this.slotEl = slot;
     if (slot) {
       slot.addEventListener('slotchange', this.handleSlotChange);
-      this.refresh();
+      if (deferRefresh) {
+        queueMicrotask(() => {
+          if (this.slotEl === slot) {
+            this.refresh();
+          }
+        });
+      } else {
+        this.refresh();
+      }
     }
   }
 
   hostConnected(): void {
     this.startObserver();
-    this.refresh();
+    const isDsdHydration =
+      Boolean(this.host.shadowRoot) && !(this.host as { hasUpdated?: boolean }).hasUpdated;
+    if (!isDsdHydration) {
+      this.refresh();
+    }
   }
 
   hostUpdated(): void {
@@ -79,7 +91,7 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
           : 'slot:not([name])';
         const candidate = root.querySelector<HTMLSlotElement>(selector);
         if (candidate) {
-          this.attachSlot(candidate);
+          this.attachSlot(candidate, true);
         }
       }
     }
@@ -108,7 +120,7 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
   private collectSlotted(): Array<T> {
     const raw: Element[] = this.slotEl
       ? this.slotEl.assignedElements({ flatten: true })
-      : Array.from(this.host.children).filter((child) => {
+      : Array.from(this.host.children ?? []).filter((child) => {
           if (!this.options.slotName) {
             return !child.hasAttribute('slot');
           }

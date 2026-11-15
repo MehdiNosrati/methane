@@ -27,10 +27,38 @@ let shimInstalled = false;
  * Idempotent and no-ops when a real DOM or JSDOM `window` is already present.
  */
 export function installSsrDomShim(): boolean {
+  const patchRuntimeDom = (): void => {
+    const elementProto =
+      (globalThis as { Element?: { prototype?: object } }).Element?.prototype ?? Element.prototype;
+    if (elementProto && !('children' in elementProto)) {
+      Object.defineProperty(elementProto, 'children', {
+        configurable: true,
+        get: () => [],
+      });
+    }
+    if (elementProto && !('closest' in elementProto)) {
+      Object.defineProperty(elementProto, 'closest', {
+        configurable: true,
+        writable: true,
+        value: () => null,
+      });
+    }
+    const currentWindow = (globalThis as { window?: { location?: unknown } }).window;
+    if (typeof currentWindow === 'object' && currentWindow !== null && !currentWindow.location) {
+      Object.defineProperty(currentWindow, 'location', {
+        configurable: true,
+        writable: true,
+        value: new URL('http://localhost/'),
+      });
+    }
+  };
+
   if (shimInstalled) {
+    patchRuntimeDom();
     return false;
   }
   if (typeof globalThis.customElements !== 'undefined' && typeof globalThis.HTMLElement !== 'undefined') {
+    patchRuntimeDom();
     return false;
   }
 
@@ -63,6 +91,7 @@ export function installSsrDomShim(): boolean {
     }
   }
 
+  patchRuntimeDom();
   shimInstalled = true;
   return true;
 }

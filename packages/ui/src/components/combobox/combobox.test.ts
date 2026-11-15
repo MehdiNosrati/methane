@@ -325,4 +325,43 @@ describe('<mth-combobox>', () => {
     expect(cb.shadowRoot!.querySelectorAll('[style]')).toHaveLength(0);
     expect(scanSameRootAria(cb.shadowRoot!).valid).toBe(true);
   });
+
+  it('passes HydrationPuritySuite with slotted mth-option-group and mth-option and reconciles lazily on show()', async () => {
+    const rawSsr = await renderLitDsdHtml(
+      litHtml`<mth-combobox label="Framework" value="lit" clearable>
+        <mth-option-group label="Web Standards">
+          <mth-option value="lit">Lit 3</mth-option>
+          <mth-option value="wc">Custom Elements</mth-option>
+        </mth-option-group>
+      </mth-combobox>`,
+    );
+    expect(rawSsr).toContain('shadowrootmode="open"');
+
+    const ssrHtml = rawSsr
+      .replaceAll('<mth-combobox', '<hyd-slotted-combobox')
+      .replaceAll('</mth-combobox>', '</hyd-slotted-combobox>');
+
+    let hydratedHost: MthCombobox | null = null;
+    const report = await HydrationPuritySuite.run({
+      ssrHtml,
+      upgradeElement: async (host) => {
+        hydratedHost = host as MthCombobox;
+        registerMthCombobox('hyd-slotted');
+        customElements.upgrade(host);
+        await (host as MthCombobox).updateComplete;
+      },
+    });
+    expect(report.failures).toEqual([]);
+    expect(report.passed).toBe(true);
+
+    expect(hydratedHost).not.toBeNull();
+    document.body.appendChild(hydratedHost!);
+    await hydratedHost!.show();
+    await hydratedHost!.updateComplete;
+    expect(
+      Array.from(hydratedHost!.shadowRoot!.querySelectorAll('[role="option"]')).map((n) =>
+        n.getAttribute('data-value'),
+      ),
+    ).toEqual(['lit', 'wc']);
+  });
 });
