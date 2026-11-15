@@ -3,7 +3,7 @@ import { MthNewsletterForm } from './newsletter-form.js';
 
 export { MthNewsletterForm } from './newsletter-form.js';
 export { newsletterFormMessages } from './newsletter-form.messages.js';
-export { CEM_METADATA, newsletterFormSpec } from './newsletter-form.spec.js';
+export { newsletterFormSpec } from './newsletter-form.spec.js';
 export { newsletterFormStyles } from './newsletter-form.styles.js';
 
 export function registerMthNewsletterForm(prefix?: string): ReadonlyArray<string> {

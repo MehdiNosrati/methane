@@ -7,7 +7,7 @@ export {
   type CookieConsentDetail,
 } from './cookie-banner.js';
 export { cookieBannerMessages } from './cookie-banner.messages.js';
-export { CEM_METADATA, cookieBannerSpec } from './cookie-banner.spec.js';
+export { cookieBannerSpec } from './cookie-banner.spec.js';
 export { cookieBannerStyles } from './cookie-banner.styles.js';
 
 export function registerMthCookieBanner(prefix?: string): ReadonlyArray<string> {
