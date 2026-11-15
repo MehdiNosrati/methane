@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, extname, normalize, resolve } from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, URL } from 'node:url';
@@ -19,6 +19,70 @@ const MIME_TYPES = new Map([
   ['.svg', 'image/svg+xml'],
 ]);
 
+function findWorkspacePackageDir(pkgName) {
+  const candidates = [
+    resolve(repoRoot, `packages/${pkgName}`),
+    resolve(repoRoot, `packages/kits/${pkgName}`),
+    resolve(repoRoot, `packages/satellites/${pkgName}`),
+  ];
+  for (const dir of candidates) {
+    if (existsSync(resolve(dir, 'package.json'))) {
+      return dir;
+    }
+  }
+  return resolve(repoRoot, `packages/${pkgName}`);
+}
+
+function collectNodePaths() {
+  const paths = [resolve(repoRoot, 'node_modules')];
+  for (const base of ['packages', 'packages/kits', 'packages/satellites']) {
+    const baseDir = resolve(repoRoot, base);
+    if (!existsSync(baseDir)) continue;
+    for (const entry of readdirSync(baseDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const nm = resolve(baseDir, entry.name, 'node_modules');
+      if (existsSync(nm)) {
+        paths.push(nm);
+      }
+    }
+  }
+  return paths;
+}
+
+function resolveExportTarget(pkgDir, subpath) {
+  const pkgJsonPath = resolve(pkgDir, 'package.json');
+  const exportKey = subpath ? `./${subpath}` : '.';
+  if (existsSync(pkgJsonPath)) {
+    const pkgJson = JSON.parse(readFileSync(pkgJsonPath, 'utf8'));
+    const exportsMap = pkgJson.exports ?? {};
+    const extractDefault = (entry) =>
+      typeof entry === 'string' ? entry : (entry?.default ?? entry?.import ?? null);
+
+    if (Object.prototype.hasOwnProperty.call(exportsMap, exportKey)) {
+      const target = extractDefault(exportsMap[exportKey]);
+      if (target) return resolve(pkgDir, target);
+    }
+
+    for (const [pattern, value] of Object.entries(exportsMap)) {
+      const starIdx = pattern.indexOf('*');
+      if (starIdx === -1) continue;
+      const prefix = pattern.slice(0, starIdx);
+      const suffix = pattern.slice(starIdx + 1);
+      if (exportKey.startsWith(prefix) && exportKey.endsWith(suffix)) {
+        const matched = exportKey.slice(prefix.length, exportKey.length - suffix.length);
+        const template = extractDefault(value);
+        if (template) {
+          return resolve(pkgDir, template.replaceAll('*', matched));
+        }
+      }
+    }
+  }
+
+  return subpath
+    ? resolve(pkgDir, `dist/${subpath.replace(/\.js$/, '')}.js`)
+    : resolve(pkgDir, 'dist/index.js');
+}
+
 const methaneWorkspacePlugin = {
   name: 'methane-workspace-resolve',
   setup(build) {
@@ -26,37 +90,47 @@ const methaneWorkspacePlugin = {
       const parts = args.path.replace(/^@methane-ui\//, '').split('/');
       const pkgName = parts[0];
       const subpath = parts.slice(1).join('/');
-      const target = subpath
-        ? resolve(repoRoot, `packages/${pkgName}/dist/${subpath}.js`)
-        : resolve(repoRoot, `packages/${pkgName}/dist/index.js`);
-      return { path: target };
+      const pkgDir = findWorkspacePackageDir(pkgName);
+      return { path: resolveExportTarget(pkgDir, subpath) };
     });
   },
 };
 
-const buildResult = await esbuild.build({
-  entryPoints: [resolve(__dirname, 'fixtures/entry.ts')],
-  bundle: true,
-  format: 'esm',
-  platform: 'browser',
-  target: 'es2022',
-  sourcemap: 'inline',
-  write: false,
-  plugins: [methaneWorkspacePlugin],
-  nodePaths: [
-    resolve(repoRoot, 'node_modules'),
-    resolve(repoRoot, 'packages/core/node_modules'),
-    resolve(repoRoot, 'packages/primitives/node_modules'),
-    resolve(repoRoot, 'packages/ui/node_modules'),
-    resolve(repoRoot, 'packages/sanitize/node_modules'),
-  ],
-});
+const nodePaths = collectNodePaths();
 
-const bundleJs = buildResult.outputFiles[0]?.text ?? '';
+async function buildBundle(entryRelPath) {
+  const result = await esbuild.build({
+    entryPoints: [resolve(__dirname, entryRelPath)],
+    bundle: true,
+    format: 'esm',
+    platform: 'browser',
+    target: 'es2022',
+    sourcemap: 'inline',
+    write: false,
+    plugins: [methaneWorkspacePlugin],
+    nodePaths,
+  });
+  return result.outputFiles[0]?.text ?? '';
+}
+
+const [bundleJs, bundleKitsJs, bundleSatellitesJs] = await Promise.all([
+  buildBundle('fixtures/entry.ts'),
+  buildBundle('fixtures/kits-entry.ts'),
+  buildBundle('fixtures/satellites-entry.ts'),
+]);
+
 const tokensCssPath = resolve(repoRoot, 'packages/tokens/dist/tokens.css');
 const indexCssPath = resolve(repoRoot, 'packages/css/dist/index.css');
 
-const HARNESS_HTML = `<!doctype html>
+function renderHarnessHtml({ kits = false, satellites = false } = {}) {
+  const extraScripts = [
+    kits ? '<script type="module" src="/bundle-kits.js"></script>' : '',
+    satellites ? '<script type="module" src="/bundle-satellites.js"></script>' : '',
+  ]
+    .filter(Boolean)
+    .join('\n    ');
+
+  return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -79,26 +153,43 @@ const HARNESS_HTML = `<!doctype html>
       }
     </style>
     <script type="module" src="/bundle.js"></script>
+    ${extraScripts}
   </head>
   <body>
     <main id="harness-root"></main>
   </body>
 </html>
 `;
+}
 
 const server = createServer((req, res) => {
   const reqUrl = new URL(req.url ?? '/', `http://${host}:${port}`);
   const pathname = reqUrl.pathname;
 
-  if (pathname === '/' || pathname === '/index.html') {
+  if (pathname === '/' || pathname === '/index.html' || pathname === '/all' || pathname === '/kits' || pathname === '/satellites') {
+    const all = pathname === '/all' || reqUrl.searchParams.get('all') === '1';
+    const kits = all || pathname === '/kits' || reqUrl.searchParams.get('kits') === '1';
+    const satellites = all || pathname === '/satellites' || reqUrl.searchParams.get('satellites') === '1';
     res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    res.end(HARNESS_HTML);
+    res.end(renderHarnessHtml({ kits, satellites }));
     return;
   }
 
   if (pathname === '/bundle.js') {
     res.writeHead(200, { 'content-type': 'application/javascript; charset=utf-8' });
     res.end(bundleJs);
+    return;
+  }
+
+  if (pathname === '/bundle-kits.js') {
+    res.writeHead(200, { 'content-type': 'application/javascript; charset=utf-8' });
+    res.end(bundleKitsJs);
+    return;
+  }
+
+  if (pathname === '/bundle-satellites.js') {
+    res.writeHead(200, { 'content-type': 'application/javascript; charset=utf-8' });
+    res.end(bundleSatellitesJs);
     return;
   }
 

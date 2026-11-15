@@ -13,8 +13,9 @@ async function attachErrorCollectors(page: Page): Promise<{ pageErrors: string[]
 }
 
 test.describe('ADR-010 dual-path real-browser overlay & positioning', () => {
-  test('Modern Chromium path uses native showModal, :popover-open, customizable select, and CSS Anchor positioning', async ({
+  test('Native top-layer showModal, :popover-open, CSS Anchor positioning, and engine-appropriate <mth-select> mode', async ({
     page,
+    browserName,
   }) => {
     const errors = await attachErrorCollectors(page);
     await page.goto('/');
@@ -125,7 +126,7 @@ test.describe('ADR-010 dual-path real-browser overlay & positioning', () => {
     await page.keyboard.press('Escape');
     await expect(page.locator('#test-popover')).not.toHaveAttribute('open', '');
 
-    // 3. <mth-select> single customizable base-select + <mth-select multiple> popover (:popover-open)
+    // 3. <mth-select> single & multi: customizable base-select in Chromium, popover + css-anchor in WebKit
     await page.evaluate(() => {
       const root = document.getElementById('harness-root')!;
       root.replaceChildren();
@@ -170,19 +171,53 @@ test.describe('ADR-010 dual-path real-browser overlay & positioning', () => {
         multiMode: multi.renderMode,
       };
     });
-    expect(selectModes.singleHasNative).toBe(true);
-    expect(selectModes.multiHasNative).toBe(true);
-    expect(selectModes.singleMode).toBe('base-select');
-    expect(selectModes.multiMode).toBe('base-select');
+    if (browserName === 'chromium') {
+      expect(selectModes.singleHasNative).toBe(true);
+      expect(selectModes.multiHasNative).toBe(true);
+      expect(selectModes.singleMode).toBe('base-select');
+      expect(selectModes.multiMode).toBe('base-select');
 
-    await page
-      .locator('#test-select-single')
-      .locator('select[part="native-select"]')
-      .selectOption('eng');
-    await page
-      .locator('#test-select-multi')
-      .locator('select[part="native-select"]')
-      .selectOption(['a11y', 'ssr']);
+      await page
+        .locator('#test-select-single')
+        .locator('select[part="native-select"]')
+        .selectOption('eng');
+      await page
+        .locator('#test-select-multi')
+        .locator('select[part="native-select"]')
+        .selectOption(['a11y', 'ssr']);
+    } else {
+      // Safari/WebKit lacks appearance:base-select and uses top-layer :popover-open + css-anchor listbox
+      expect(selectModes.singleHasNative).toBe(false);
+      expect(selectModes.multiHasNative).toBe(false);
+      expect(selectModes.singleMode).toBe('fallback');
+      expect(selectModes.multiMode).toBe('fallback');
+
+      await page.locator('#test-select-single').locator('button[part="trigger"]').click();
+      await expect(page.locator('#test-select-single')).toHaveAttribute('open', '');
+      const singlePopup = await page.evaluate(() => {
+        const sel = document.getElementById('test-select-single') as HTMLElement & {
+          lastPositioningResult?: { strategy: string } | null;
+        };
+        const popup = sel.shadowRoot!.querySelector<HTMLElement>('#mth-select-popup')!;
+        return {
+          matchesPopoverOpen: popup.matches(':popover-open'),
+          strategy: sel.lastPositioningResult?.strategy,
+          width: popup.getBoundingClientRect().width,
+        };
+      });
+      expect(singlePopup.matchesPopoverOpen).toBe(true);
+      expect(singlePopup.strategy).toBe('css-anchor');
+      expect(singlePopup.width).toBeGreaterThan(0);
+      await page.keyboard.press('Enter');
+      await expect(page.locator('#test-select-single')).not.toHaveAttribute('open', '');
+
+      await page.locator('#test-select-multi').locator('button[part="trigger"]').click();
+      await expect(page.locator('#test-select-multi')).toHaveAttribute('open', '');
+      await page.locator('#test-select-multi').locator('[data-value="a11y"]').click();
+      await page.locator('#test-select-multi').locator('[data-value="ssr"]').click();
+      await page.keyboard.press('Escape');
+      await expect(page.locator('#test-select-multi')).not.toHaveAttribute('open', '');
+    }
 
     const selectedValues = await page.evaluate(() => ({
       single: (document.getElementById('test-select-single') as HTMLElement & { value: string }).value,

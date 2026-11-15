@@ -108,18 +108,17 @@ export class FocusTrapController implements ReactiveController {
     }
 
     const active = getDeepActiveElement();
-    const first = tabbables[0]!;
-    const last = tabbables[tabbables.length - 1]!;
     const idx = active ? tabbables.indexOf(active) : -1;
 
+    // Step explicitly across collected tabbables so browsers that skip <button>/<a>
+    // on plain Tab (e.g. macOS Safari without Full Keyboard Access) never escape the modal trap.
+    event.preventDefault();
     if (event.shiftKey) {
-      if (idx <= 0) {
-        event.preventDefault();
-        last.focus();
-      }
-    } else if (idx === -1 || idx >= tabbables.length - 1) {
-      event.preventDefault();
-      first.focus();
+      const prevIdx = idx <= 0 ? tabbables.length - 1 : idx - 1;
+      tabbables[prevIdx]!.focus();
+    } else {
+      const nextIdx = idx === -1 || idx >= tabbables.length - 1 ? 0 : idx + 1;
+      tabbables[nextIdx]!.focus();
     }
   };
 
