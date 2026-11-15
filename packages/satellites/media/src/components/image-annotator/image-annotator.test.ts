@@ -134,4 +134,35 @@ describe('<mth-image-annotator>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('removes annotations, clears history cleanly, and toggles disabled state', async () => {
+    const el = document.createElement('mth-image-annotator') as MthImageAnnotator;
+    el.annotations = SAMPLE_ANNOTATIONS;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.annotations.length).toBe(3);
+    el.removeAnnotation('r1');
+    await el.updateComplete;
+    expect(el.annotations.map((a) => a.id)).toEqual(['r2', 'r3']);
+
+    expect(el.undo()).toBe(true);
+    await el.updateComplete;
+    expect(el.annotations.length).toBe(3);
+
+    el.disabled = true;
+    await el.updateComplete;
+    expect(el.hasCustomState('disabled')).toBe(true);
+  });
+
+  it('blocks unsafe data: or javascript: src URLs and renders role="alert" without rendering img', async () => {
+    const el = document.createElement('mth-image-annotator') as MthImageAnnotator;
+    el.src = 'data:text/html,<svg onload=alert(1)>';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const alert = el.shadowRoot?.querySelector('[role="alert"]');
+    expect(alert?.textContent?.trim().length).toBeGreaterThan(0);
+    expect(el.shadowRoot?.querySelector('img')).toBeNull();
+  });
 });

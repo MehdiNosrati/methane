@@ -299,10 +299,6 @@ export class MthFormulaBar extends UIElement {
           ?disabled=${isDisabled}
           ?readonly=${this.readonly}
           ?required=${this.required}
-          @input=${(ev: Event) => {
-            if (this.inputCtrl.isComposing) return;
-            this.updateValueFromInput((ev.target as HTMLInputElement).value);
-          }}
           @keydown=${(ev: KeyboardEvent) => {
             if (ev.key === 'Enter' && !this.inputCtrl.isComposing) {
               ev.preventDefault();

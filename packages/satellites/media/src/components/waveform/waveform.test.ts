@@ -113,4 +113,50 @@ describe('<mth-waveform>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('emits mth-play, mth-pause, and mth-seek events and clamps seekTo bounds', async () => {
+    const el = document.createElement('mth-waveform') as MthWaveform;
+    el.duration = 50;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const events: string[] = [];
+    el.addEventListener('mth-play', () => events.push('play'));
+    el.addEventListener('mth-pause', () => events.push('pause'));
+    el.addEventListener('mth-seek', (ev) => {
+      events.push(`seek:${(ev as CustomEvent<{ currentTime: number }>).detail.currentTime}`);
+    });
+
+    el.togglePlay();
+    expect(el.playing).toBe(true);
+    el.togglePlay();
+    expect(el.playing).toBe(false);
+
+    el.seekTo(120);
+    expect(el.currentTime).toBe(50);
+    el.seekTo(-10);
+    expect(el.currentTime).toBe(0);
+    expect(events).toEqual(['play', 'pause', 'seek:50', 'seek:0']);
+  });
+
+  it('reverses ArrowLeft/ArrowRight scrubbing in RTL and blocks play/seek when disabled', async () => {
+    const el = document.createElement('mth-waveform') as MthWaveform;
+    el.duration = 100;
+    el.currentTime = 20;
+    el.dir = 'rtl';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const scrubber = el.shadowRoot!.querySelector<HTMLElement>('[part="scrubber"]')!;
+    scrubber.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(el.currentTime).toBeGreaterThan(20);
+
+    el.disabled = true;
+    await el.updateComplete;
+    const lockedTime = el.currentTime;
+    el.play();
+    el.seekTo(90);
+    expect(el.playing).toBe(false);
+    expect(el.currentTime).toBe(lockedTime);
+  });
 });

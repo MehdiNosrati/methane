@@ -118,4 +118,35 @@ describe('<mth-lottie>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('updates speed/loop playback parameters and respects disabled guard', async () => {
+    const el = document.createElement('mth-lottie') as MthLottie;
+    el.src = 'https://example.com/demo.lottie';
+    el.speed = -2;
+    el.loop = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    // Invalid non-positive speed normalizes to 1
+    expect(el.speed).toBe(1);
+    el.speed = 1.5;
+    await el.updateComplete;
+    expect(el.speed).toBe(1.5);
+
+    el.disabled = true;
+    await el.updateComplete;
+    expect(el.hasCustomState('disabled')).toBe(true);
+  });
+
+  it('accepts inline animationData object without src and blocks data: URI src', async () => {
+    const el = document.createElement('mth-lottie') as MthLottie;
+    el.animationData = { v: '5.5.7', fr: 30, ip: 0, op: 30, w: 100, h: 100, layers: [] } as never;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.play()).toBe(true);
+
+    el.src = 'data:text/html,<script>alert(1)</script>';
+    await el.updateComplete;
+    expect(el.play()).toBe(false);
+  });
 });

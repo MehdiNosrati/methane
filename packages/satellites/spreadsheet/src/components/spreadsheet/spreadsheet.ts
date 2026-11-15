@@ -255,8 +255,9 @@ export class MthSpreadsheet extends UIElement {
   selectCell(address: string): void {
     const key = this.normalizeAddr(address);
     this.activeCell = key;
-    this.selectionCtrl.select(key, { toggle: false });
     const coord = parseA1Address(key) ?? { row: 0, col: 0 };
+    this.rovingFocus.setActiveIndex(coord.row * this.safeCols + coord.col, false);
+    this.selectionCtrl.select(key, { toggle: false });
     const evaluated = this.getEvaluatedCell(key);
     this.emitEvent('mth-cell-select', {
       detail: {

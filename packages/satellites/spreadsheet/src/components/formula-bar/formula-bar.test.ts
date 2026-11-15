@@ -114,6 +114,62 @@ describe('<mth-formula-bar>', () => {
     expect(el.hasCustomState('disabled')).toBe(true);
   });
 
+  it('emits mth-formula-input with AST dependencies on typing and commits on Enter', async () => {
+    registerMthFormulaBar();
+    const el = document.createElement('mth-formula-bar') as MthFormulaBar;
+    el.cellAddress = 'D5';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const inputs: unknown[] = [];
+    const commits: unknown[] = [];
+    el.addEventListener('mth-formula-input', (ev) => inputs.push((ev as CustomEvent).detail));
+    el.addEventListener('mth-formula-commit', (ev) => commits.push((ev as CustomEvent).detail));
+
+    const input = el.shadowRoot!.querySelector<HTMLInputElement>('.formula-input')!;
+    input.value = '=A1+B2';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(inputs).toEqual([{ cellAddress: 'D5', value: '=A1+B2', dependencies: ['A1', 'B2'] }]);
+    expect(el.hasCustomState('formula')).toBe(true);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(commits).toEqual([{ cellAddress: 'D5', value: '=A1+B2', valid: true }]);
+  });
+
+  it('reverts draft value to last committed value on Escape', async () => {
+    registerMthFormulaBar();
+    const el = document.createElement('mth-formula-bar') as MthFormulaBar;
+    el.value = '=10+20';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const input = el.shadowRoot!.querySelector<HTMLInputElement>('.formula-input')!;
+    input.value = '=999';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(el.value).toBe('=999');
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(el.value).toBe('=10+20');
+  });
+
+  it('blocks input edits and disables commit button when readonly or disabled', async () => {
+    registerMthFormulaBar();
+    const el = document.createElement('mth-formula-bar') as MthFormulaBar;
+    el.value = 'initial';
+    el.readonly = true;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const commitBtn = el.shadowRoot!.querySelector<HTMLButtonElement>('.commit-btn')!;
+    expect(commitBtn.disabled).toBe(true);
+
+    const commits: unknown[] = [];
+    el.addEventListener('mth-formula-commit', (ev) => commits.push((ev as CustomEvent).detail));
+    commitBtn.click();
+    expect(commits).toEqual([]);
+  });
+
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {
     const rawSsr = await renderLitDsdHtml(
       litHtml`<mth-formula-bar cell-address="B2" value="=SUM(A1:A2)"><span slot="fallback">Formula fallback</span></mth-formula-bar>`,

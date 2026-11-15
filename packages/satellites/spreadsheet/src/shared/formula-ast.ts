@@ -565,7 +565,7 @@ export function evaluateSheet(
             const nums = flat.filter(isNumericValue);
             if (name === 'SUM') return nums.reduce((a, b) => a + b, 0);
             if (name === 'COUNT') return nums.length;
-            if (name === 'AVERAGE') {
+            if (name === 'AVERAGE' || name === 'AVG') {
               if (nums.length === 0) throw new EvalErrorSignal('#DIV/0!');
               return nums.reduce((a, b) => a + b, 0) / nums.length;
             }
