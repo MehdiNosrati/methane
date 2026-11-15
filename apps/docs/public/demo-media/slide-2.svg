@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="60%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g2)"/>
+  <rect x="72" y="72" width="656" height="306" rx="20" fill="#042f2e" fill-opacity="0.55" stroke="#5eead4" stroke-opacity="0.35"/>
+  <rect x="116" y="122" width="170" height="84" rx="12" fill="#14b8a6" fill-opacity="0.25" stroke="#5eead4"/>
+  <rect x="314" y="122" width="170" height="84" rx="12" fill="#14b8a6" fill-opacity="0.25" stroke="#5eead4"/>
+  <rect x="512" y="122" width="170" height="84" rx="12" fill="#14b8a6" fill-opacity="0.25" stroke="#5eead4"/>
+  <text x="116" y="278" fill="#f0fdfa" font-family="system-ui, sans-serif" font-size="32" font-weight="700">4-Tier Logical CSS Cascade</text>
+  <text x="116" y="320" fill="#99f6e4" font-family="system-ui, sans-serif" font-size="18">LTR and RTL layouts adapt automatically via logical properties</text>
+</svg>

@@ -299,11 +299,11 @@ const hasShowcase = SHOWCASE_TAGS.has(entry.tagName);
             <>
               <div class="docs-variant-cell">
                 <span class="docs-variant-label">default + hint</span>
-                <mth-input label="Domain" placeholder="app.methane.dev" hint="Lowercase DNS slug"></mth-input>
+                <mth-input style="inline-size:100%" label="Domain" placeholder="app.methane.dev" hint="Lowercase DNS slug"></mth-input>
               </div>
               <div class="docs-variant-cell">
                 <span class="docs-variant-label">error state</span>
-                <mth-input label="Token Key" value="invalid key" error="Spaces are not allowed"></mth-input>
+                <mth-input style="inline-size:100%" label="Token Key" value="invalid key" error="Spaces are not allowed"></mth-input>
               </div>
               <div class="docs-variant-cell">
                 <span class="docs-variant-label">readonly &amp; disabled</span>
@@ -321,7 +321,7 @@ const hasShowcase = SHOWCASE_TAGS.has(entry.tagName);
             <>
               <div class="docs-variant-cell">
                 <span class="docs-variant-label">default + placeholder</span>
-                <mth-select label="Runtime" placeholder="Select runtime...">
+                <mth-select style="inline-size:100%" label="Runtime" placeholder="Select runtime...">
                   <mth-option value="node" label="Node.js 22">Node.js 22</mth-option>
                   <mth-option value="deno" label="Deno 2">Deno 2</mth-option>
                   <mth-option value="bun" label="Bun 1.2">Bun 1.2</mth-option>
@@ -329,7 +329,7 @@ const hasShowcase = SHOWCASE_TAGS.has(entry.tagName);
               </div>
               <div class="docs-variant-cell">
                 <span class="docs-variant-label">clearable + selected</span>
-                <mth-select label="Framework" value="astro" clearable>
+                <mth-select style="inline-size:100%" label="Framework" value="astro" clearable>
                   <mth-option value="astro" label="Astro">Astro</mth-option>
                   <mth-option value="next" label="Next.js">Next.js</mth-option>
                   <mth-option value="nuxt" label="Nuxt">Nuxt</mth-option>

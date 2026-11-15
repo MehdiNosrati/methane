@@ -403,6 +403,7 @@ export const UI_DEMO_SPECS: Readonly<Record<string, DemoSpec>> = {
 
   'mth-audio-player': {
     attrs: {
+      src: '/methane/demo-media/sample.wav',
       title: 'Precision Atmospheric Synth',
       artist: 'Methane Audio Lab',
       label: 'Release walkthrough audio',
@@ -1679,8 +1680,29 @@ export const UI_DEMO_SPECS: Readonly<Record<string, DemoSpec>> = {
 
   'mth-gallery': {
     attrs: { label: 'Component showcase gallery', 'show-thumbnails': true },
-    style:
-      'inline-size:min(100%,28rem);min-block-size:7rem;padding:var(--mth-space-4);border:1px solid var(--mth-color-border);border-radius:var(--mth-radius-md)',
+    style: 'inline-size:min(100%,30rem)',
+    props: {
+      items: [
+        {
+          src: '/methane/demo-media/slide-1.svg',
+          thumbnail: '/methane/demo-media/slide-1.svg',
+          alt: 'Precision Atmospheric OKLCH Palette',
+          caption: 'Precision Atmospheric OKLCH — adaptive perceptual color ramps',
+        },
+        {
+          src: '/methane/demo-media/slide-2.svg',
+          thumbnail: '/methane/demo-media/slide-2.svg',
+          alt: '4-Tier Logical CSS Cascade',
+          caption: '4-Tier Logical CSS — automatic LTR/RTL mirroring',
+        },
+        {
+          src: '/methane/demo-media/slide-3.svg',
+          thumbnail: '/methane/demo-media/slide-3.svg',
+          alt: 'Declarative Shadow DOM SSR',
+          caption: 'Declarative Shadow DOM — zero-FOUC multi-framework streaming',
+        },
+      ],
+    },
     setup: defaultSetup('mth-gallery'),
   },
 
@@ -1731,11 +1753,13 @@ export const UI_DEMO_SPECS: Readonly<Record<string, DemoSpec>> = {
 
   'mth-image': {
     attrs: {
+      src: '/methane/demo-media/slide-1.svg',
       alt: 'Precision Atmospheric Surface',
       'aspect-ratio': '16 / 9',
       rounded: true,
+      loading: 'eager',
     },
-    style: 'inline-size:min(100%,22rem)',
+    style: 'inline-size:min(100%,24rem)',
     children: [
       {
         tag: 'div',
@@ -2303,6 +2327,7 @@ export const UI_DEMO_SPECS: Readonly<Record<string, DemoSpec>> = {
       length: 6,
       hint: 'Enter the 6-digit authenticator code',
     },
+    style: 'inline-size:min(100%,22rem)',
     setup: defaultSetup('mth-otp-input'),
   },
 
@@ -3279,8 +3304,11 @@ export const UI_DEMO_SPECS: Readonly<Record<string, DemoSpec>> = {
 
   'mth-video-player': {
     attrs: {
+      src: '/methane/demo-media/sample.mp4',
+      poster: '/methane/demo-media/slide-1.svg',
       label: 'Methane UI walkthrough video',
       preload: 'metadata',
+      muted: true,
       'playback-rate': 1,
     },
     style: 'inline-size:min(100%,30rem)',

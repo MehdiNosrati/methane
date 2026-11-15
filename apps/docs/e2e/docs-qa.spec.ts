@@ -548,4 +548,115 @@ test.describe('@methane-ui/docs visual, custom-element & interactive QA', () => 
       expect(consoleErrors).toEqual([]);
     });
   }
+
+  test('renders non-collapsed container-query inputs and populated offline media demos without error states', async ({
+    page,
+  }) => {
+    const { pageErrors, consoleErrors } = attachErrorListeners(page);
+
+    await page.goto(docsUrl('/methane/components/mth-otp-input/'), { waitUntil: 'networkidle' });
+    const otpWidth = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-otp-input');
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      return target?.getBoundingClientRect().width ?? 0;
+    });
+    expect(otpWidth).toBeGreaterThanOrEqual(180);
+
+    await page.goto(docsUrl('/methane/components/mth-input/'), { waitUntil: 'networkidle' });
+    const showcaseInputWidths = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-input');
+      const inputs = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-variants-showcase] mth-input'),
+      );
+      await Promise.all(
+        inputs.map(
+          (el) => (el as HTMLElement & { updateComplete?: Promise<unknown> }).updateComplete,
+        ),
+      );
+      return inputs.map((el) => el.getBoundingClientRect().width);
+    });
+    expect(showcaseInputWidths.length).toBeGreaterThanOrEqual(4);
+    for (const width of showcaseInputWidths) {
+      expect(width).toBeGreaterThanOrEqual(180);
+    }
+
+    await page.goto(docsUrl('/methane/components/mth-gallery/'), { waitUntil: 'networkidle' });
+    const galleryMetrics = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-gallery');
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      const sr = target?.shadowRoot;
+      const baseRect = sr?.querySelector<HTMLElement>('.base')?.getBoundingClientRect();
+      return {
+        thumbs: sr?.querySelectorAll('[part="thumbnail"]').length ?? 0,
+        innerHeight: baseRect?.height ?? 0,
+      };
+    });
+    expect(galleryMetrics.thumbs).toBe(3);
+    expect(galleryMetrics.innerHeight).toBeGreaterThanOrEqual(100);
+
+    await page.goto(docsUrl('/methane/components/mth-image/'), { waitUntil: 'networkidle' });
+    const imageMetrics = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-image');
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      const img = target?.shadowRoot?.querySelector<HTMLImageElement>('img');
+      if (img && !img.complete) {
+        await new Promise<void>((resolve) => {
+          img.addEventListener('load', () => resolve(), { once: true });
+          img.addEventListener('error', () => resolve(), { once: true });
+        });
+      }
+      return {
+        complete: Boolean(img?.complete),
+        naturalWidth: img?.naturalWidth ?? 0,
+        isErrorState: target?.matches(':state(error)') ?? false,
+      };
+    });
+    expect(imageMetrics.complete).toBe(true);
+    expect(imageMetrics.naturalWidth).toBeGreaterThan(0);
+    expect(imageMetrics.isErrorState).toBe(false);
+
+    await page.goto(docsUrl('/methane/components/mth-audio-player/'), { waitUntil: 'networkidle' });
+    const audioMetrics = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-audio-player');
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      const playBtn = target?.shadowRoot?.querySelector<HTMLButtonElement>('[part="play-button"]');
+      return {
+        hasPlayBtn: Boolean(playBtn),
+        playDisabled: Boolean(playBtn?.disabled),
+      };
+    });
+    expect(audioMetrics.hasPlayBtn).toBe(true);
+    expect(audioMetrics.playDisabled).toBe(false);
+
+    await page.goto(docsUrl('/methane/components/mth-video-player/'), { waitUntil: 'networkidle' });
+    const videoMetrics = await page.evaluate(async () => {
+      await customElements.whenDefined('mth-video-player');
+      const target = document.querySelector<HTMLElement>('[data-preview-target]') as
+        | (HTMLElement & { updateComplete?: Promise<unknown> })
+        | null;
+      await target?.updateComplete;
+      const sr = target?.shadowRoot;
+      return {
+        hasVideo: Boolean(sr?.querySelector('video')),
+        text: sr?.textContent ?? '',
+      };
+    });
+    expect(videoMetrics.hasVideo).toBe(true);
+    expect(videoMetrics.text).not.toContain('Video source unavailable');
+
+    expect(pageErrors).toEqual([]);
+    expect(consoleErrors).toEqual([]);
+  });
 });
