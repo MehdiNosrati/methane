@@ -219,4 +219,77 @@ test.describe('@methane/docs visual, custom-element & interactive QA', () => {
     expect(comfortableMetrics.padBlock).toBeGreaterThan(compactMetrics.padBlock);
     expect(comfortableMetrics.height).toBeGreaterThan(compactMetrics.height);
   });
+
+  test('theme-builder keeps Wave A defaults in sync and high fg/bg contrast across light and dark preview schemes', async ({
+    page,
+  }) => {
+    await page.goto(docsUrl('/methane/theme-builder/'), { waitUntil: 'networkidle' });
+
+    const initial = await page.evaluate(() => ({
+      l: (document.getElementById('tb-l') as HTMLInputElement).value,
+      c: (document.getElementById('tb-c') as HTMLInputElement).value,
+      h: (document.getElementById('tb-h') as HTMLInputElement).value,
+      badge: document.getElementById('tb-seed-badge')?.textContent?.trim() ?? '',
+      css: document.getElementById('tb-css-output')?.textContent ?? '',
+    }));
+
+    expect(initial.l).toBe('0.55');
+    expect(initial.c).toBe('0.23');
+    expect(initial.h).toBe('264');
+    expect(initial.badge).toBe('oklch(0.55 0.23 264)');
+    expect(initial.css).toContain('--mth-color-seed-brand: oklch(0.55 0.23 264);');
+    expect(initial.css).toContain('--mth-radius-sm: 0.375rem;');
+    expect(initial.css).toContain('--mth-radius-md: 0.5rem;');
+    expect(initial.css).toContain('--mth-radius-lg: 0.75rem;');
+    expect(initial.css).toContain('--mth-radius-xl: 1rem;');
+
+    await page.locator('#docs-theme-select').selectOption('light');
+    await page.locator('#tb-scheme').selectOption('light');
+
+    const getPreviewColors = () =>
+      page.evaluate(() => {
+        const preview = document.getElementById('tb-preview')!;
+        const cs = getComputedStyle(preview);
+        return { color: cs.color, bg: cs.backgroundColor };
+      });
+
+    const lightPreview = await getPreviewColors();
+    await page.locator('#tb-scheme').selectOption('dark');
+    const darkPreview = await getPreviewColors();
+
+    expect(darkPreview.bg).not.toBe(lightPreview.bg);
+    expect(darkPreview.color).not.toBe(lightPreview.color);
+    expect(darkPreview.color).not.toBe(darkPreview.bg);
+
+    const parseColorLightness = (value: string): number => {
+      const oklchMatch = /oklch\(\s*([0-9.]+)/.exec(value);
+      if (oklchMatch?.[1]) return parseFloat(oklchMatch[1]);
+      const rgbMatch = /rgba?\(\s*([0-9.]+)[,\s]+([0-9.]+)[,\s]+([0-9.]+)/.exec(value);
+      if (rgbMatch?.[1] && rgbMatch[2] && rgbMatch[3]) {
+        return (
+          (0.2126 * parseFloat(rgbMatch[1]) +
+            0.7152 * parseFloat(rgbMatch[2]) +
+            0.0722 * parseFloat(rgbMatch[3])) /
+          255
+        );
+      }
+      const srgbMatch = /color\(srgb\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)/.exec(value);
+      if (srgbMatch?.[1] && srgbMatch[2] && srgbMatch[3]) {
+        return (
+          0.2126 * parseFloat(srgbMatch[1]) +
+          0.7152 * parseFloat(srgbMatch[2]) +
+          0.0722 * parseFloat(srgbMatch[3])
+        );
+      }
+      throw new Error(`Unsupported computed color format: ${value}`);
+    };
+
+    const lightFgL = parseColorLightness(lightPreview.color);
+    const lightBgL = parseColorLightness(lightPreview.bg);
+    const darkFgL = parseColorLightness(darkPreview.color);
+    const darkBgL = parseColorLightness(darkPreview.bg);
+
+    expect(lightBgL - lightFgL).toBeGreaterThan(0.6);
+    expect(darkFgL - darkBgL).toBeGreaterThan(0.6);
+  });
 });

@@ -439,6 +439,7 @@
     border: 1px solid var(--mth-color-border);
     border-radius: var(--mth-radius-lg);
     background-color: var(--mth-color-surface);
+    color: var(--mth-color-fg);
     box-shadow: var(--mth-shadow-xs);
   }
 
@@ -653,23 +654,23 @@
   }
 
   #tb-preview:not([data-mth-contrast='high']) {
-    --mth-color-brand-50: oklch(from var(--mth-color-seed-brand) 0.97 calc(c * 0.18) h);
-    --mth-color-brand-100: oklch(from var(--mth-color-seed-brand) 0.93 calc(c * 0.32) h);
-    --mth-color-brand-200: oklch(from var(--mth-color-seed-brand) 0.86 calc(c * 0.5) h);
-    --mth-color-brand-300: oklch(from var(--mth-color-seed-brand) 0.77 calc(c * 0.72) h);
-    --mth-color-brand-400: oklch(from var(--mth-color-seed-brand) 0.67 calc(c * 0.9) h);
+    --mth-color-brand-50: oklch(from var(--mth-color-seed-brand) 0.97 calc(c * 0.16) h);
+    --mth-color-brand-100: oklch(from var(--mth-color-seed-brand) 0.935 calc(c * 0.28) h);
+    --mth-color-brand-200: oklch(from var(--mth-color-seed-brand) 0.87 calc(c * 0.48) h);
+    --mth-color-brand-300: oklch(from var(--mth-color-seed-brand) 0.78 calc(c * 0.7) h);
+    --mth-color-brand-400: oklch(from var(--mth-color-seed-brand) 0.68 calc(c * 0.88) h);
     --mth-color-brand-500: oklch(from var(--mth-color-seed-brand) l c h);
-    --mth-color-brand-600: oklch(from var(--mth-color-seed-brand) calc(l - 0.08) c h);
+    --mth-color-brand-600: oklch(from var(--mth-color-seed-brand) calc(l - 0.07) c h);
     --mth-color-brand-700: oklch(
-      from var(--mth-color-seed-brand) calc(l - 0.16) calc(c * 0.92) h
+      from var(--mth-color-seed-brand) calc(l - 0.14) calc(c * 0.92) h
     );
     --mth-color-brand-800: oklch(
-      from var(--mth-color-seed-brand) calc(l - 0.24) calc(c * 0.8) h
+      from var(--mth-color-seed-brand) calc(l - 0.22) calc(c * 0.82) h
     );
     --mth-color-brand-900: oklch(
-      from var(--mth-color-seed-brand) calc(l - 0.31) calc(c * 0.65) h
+      from var(--mth-color-seed-brand) calc(l - 0.3) calc(c * 0.68) h
     );
-    --mth-color-brand-950: oklch(from var(--mth-color-seed-brand) 0.2 calc(c * 0.5) h);
+    --mth-color-brand-950: oklch(from var(--mth-color-seed-brand) 0.22 calc(c * 0.48) h);
     --mth-color-border-focus: light-dark(var(--mth-color-brand-500), var(--mth-color-brand-400));
     --mth-color-accent: light-dark(var(--mth-color-brand-500), var(--mth-color-brand-400));
     --mth-color-accent-hover: light-dark(var(--mth-color-brand-600), var(--mth-color-brand-300));

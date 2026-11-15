@@ -2,10 +2,12 @@
 import DocsLayout from '../components/DocsLayout.astro';
 import {
   DEFAULT_THEME_CONFIG,
+  formatBrandSeedOklch,
   generateThemeCssOverrides,
   generateThemeDtcgDocument,
 } from '../lib/theme-builder.js';
 
+const initialSeed = formatBrandSeedOklch(DEFAULT_THEME_CONFIG);
 const initialCss = generateThemeCssOverrides(DEFAULT_THEME_CONFIG);
 const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_CONFIG), null, 2);
 ---
@@ -77,7 +79,7 @@ const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_C
           <mth-stack data-gap="4">
             <mth-flex data-justify="between" data-align="center">
               <strong>Live Token Preview</strong>
-              <span class="docs-badge" id="tb-seed-badge">oklch(0.55 0.23 264)</span>
+              <span class="docs-badge" id="tb-seed-badge">{initialSeed}</span>
             </mth-flex>
             <div class="mth-feature-grid" style="--mth-feature-min:11rem">
               <div class="mth-feature-card">
@@ -125,6 +127,7 @@ const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_C
 
   <script>
     import {
+      RADIUS_PRESET_MAP,
       formatBrandSeedOklch,
       generateThemeCssOverrides,
       generateThemeDtcgDocument,
@@ -148,14 +151,6 @@ const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_C
     const cssOutput = document.getElementById('tb-css-output')!;
     const dtcgOutput = document.getElementById('tb-dtcg-output')!;
 
-    const RADIUS_STYLE_MAP: Record<RadiusPreset, { sm: string; md: string; lg: string; xl: string }> = {
-      none: { sm: '0px', md: '0px', lg: '0px', xl: '0px' },
-      sharp: { sm: '0.125rem', md: '0.25rem', lg: '0.375rem', xl: '0.5rem' },
-      default: { sm: '0.25rem', md: '0.5rem', lg: '0.75rem', xl: '1rem' },
-      rounded: { sm: '0.375rem', md: '0.625rem', lg: '0.875rem', xl: '1.25rem' },
-      pill: { sm: '0.75rem', md: '1rem', lg: '1.5rem', xl: '2rem' },
-    };
-
     const getConfig = (): ThemeBuilderConfig => ({
       brandLightness: Number(lInput.value),
       brandChroma: Number(cInput.value),
@@ -167,7 +162,7 @@ const initialDtcgJson = JSON.stringify(generateThemeDtcgDocument(DEFAULT_THEME_C
     const update = () => {
       const cfg = getConfig();
       const seed = formatBrandSeedOklch(cfg);
-      const radii = RADIUS_STYLE_MAP[cfg.radiusPreset];
+      const radii = RADIUS_PRESET_MAP[cfg.radiusPreset];
 
       lVal.textContent = String(cfg.brandLightness);
       cVal.textContent = String(cfg.brandChroma);
