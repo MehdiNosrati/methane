@@ -45,6 +45,7 @@ export class MthSortable extends UIElement {
   private readonly slotCtrl: SlotCollectionController<HTMLElement>;
   private readonly rovingCtrl: RovingFocusController;
   private readonly dragSortCtrl: DragSortController<HTMLElement>;
+  private suppressRoving = false;
 
   constructor() {
     super();
@@ -57,28 +58,56 @@ export class MthSortable extends UIElement {
     });
 
     this.rovingCtrl = new RovingFocusController(this, {
-      getItems: () => this.getItemElements(),
+      getItems: () => (this.suppressRoving ? [] : this.getItemElements()),
       orientation: 'vertical',
       loop: true,
       dir: this.resolvedDir,
     });
 
-    this.dragSortCtrl = new DragSortController<HTMLElement>(this, {
-      container: () => this.baseEl,
+    const dragSortOptions = {
       getItems: () => this.getItemElements(),
-      orientation: 'vertical',
-      dir: 'auto',
       messages: sortableMessages,
-      onReorder: ({ fromIndex, toIndex, item }) => {
+      onReorder: ({
+        fromIndex,
+        toIndex,
+        item,
+      }: {
+        readonly fromIndex: number;
+        readonly toIndex: number;
+        readonly item: HTMLElement;
+      }) => {
         this.applyReorderedNodes(fromIndex, toIndex, item);
       },
+    };
+    Object.defineProperties(dragSortOptions, {
+      orientation: { get: () => this.orientation, enumerable: true },
+      dir: { get: () => this.resolvedDir, enumerable: true },
     });
+    this.dragSortCtrl = new DragSortController<HTMLElement>(this, dragSortOptions);
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.addEventListener('keydown', this.handleCaptureKeyDown, { capture: true });
     this.syncControllers();
   }
+
+  override disconnectedCallback(): void {
+    this.removeEventListener('keydown', this.handleCaptureKeyDown, { capture: true });
+    super.disconnectedCallback();
+  }
+
+  private readonly handleCaptureKeyDown = (event: KeyboardEvent): void => {
+    if (
+      this.dragSortCtrl.activeDragIndex !== -1 &&
+      (event.key.startsWith('Arrow') || event.key === 'Home' || event.key === 'End')
+    ) {
+      this.suppressRoving = true;
+      queueMicrotask(() => {
+        this.suppressRoving = false;
+      });
+    }
+  };
 
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
@@ -107,6 +136,7 @@ export class MthSortable extends UIElement {
   }
 
   private getItemElements(): HTMLElement[] {
+    if (this.disabled) return [];
     if (this.items.length > 0 && this.baseEl) {
       return Array.from(this.baseEl.querySelectorAll<HTMLElement>('[part="item"]')).filter(
         (el) => el.getAttribute('aria-disabled') !== 'true',
@@ -118,6 +148,7 @@ export class MthSortable extends UIElement {
   }
 
   private applyReorderedNodes(fromIndex: number, toIndex: number, item: HTMLElement): void {
+    this.suppressRoving = false;
     if (this.items.length > 0) {
       const next = [...this.items];
       const [moved] = next.splice(fromIndex, 1);
@@ -125,6 +156,11 @@ export class MthSortable extends UIElement {
         next.splice(toIndex, 0, moved);
         this.items = next;
       }
+      void this.updateComplete.then(() => {
+        if (!this.disabled) {
+          this.rovingCtrl.setActiveIndex(toIndex, true);
+        }
+      });
       return;
     }
 
@@ -138,6 +174,11 @@ export class MthSortable extends UIElement {
         reference.before(item);
       }
     }
+    void this.updateComplete.then(() => {
+      if (!this.disabled) {
+        this.rovingCtrl.setActiveIndex(toIndex, true);
+      }
+    });
   }
 
   override render() {

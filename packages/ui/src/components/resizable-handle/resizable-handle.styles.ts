@@ -27,7 +27,8 @@ export const resizableHandleStyles = css`
     cursor: row-resize;
   }
 
-  [part='base']:hover {
+  [part='base']:hover,
+  :host(:state(dragging)) [part='base'] {
     background-color: var(--mth-color-accent);
   }
 

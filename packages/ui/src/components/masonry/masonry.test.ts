@@ -31,6 +31,16 @@ describe('<mth-masonry>', () => {
     expect(el.computedColumns).toBe(3);
     expect(el.shadowRoot!.querySelector('[part="base"]')!.getAttribute('data-columns')).toBe('3');
     expect(scanSameRootAria(el).issues).toEqual([]);
+
+    // Unsafe gap CSS injection is rejected cleanly
+    el.gap = '1rem; } [part="base"] { color: red';
+    await el.updateComplete;
+    const sheets = el.shadowRoot!.adoptedStyleSheets;
+    const dynamic = sheets[sheets.length - 1];
+    if (dynamic) {
+      expect(dynamic.cssRules.length).toBe(2);
+      expect(dynamic.cssRules[0]?.cssText).not.toContain('red');
+    }
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {

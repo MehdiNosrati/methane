@@ -119,11 +119,13 @@ export class MthScrollArea extends UIElement {
     const scrollW = Math.max(clientW, vp.scrollWidth);
     const ratioX = Math.min(1, clientW / scrollW);
     const maxScrollX = Math.max(1, scrollW - clientW);
-    const offsetPctX = ((vp.scrollLeft / maxScrollX) * (1 - ratioX)) * 100;
+    const scrollLeftAbs = Math.abs(vp.scrollLeft);
+    const offsetPctX = ((scrollLeftAbs / maxScrollX) * (1 - ratioX)) * 100;
+    const signedX = this.resolvedDir === 'rtl' ? -Math.round(offsetPctX) : Math.round(offsetPctX);
 
     this.dynamicSheet.replaceSync(
       `[part="thumb-y"] { block-size: ${Math.max(10, Math.round(ratioY * 100))}%; transform: translateY(${Math.round(offsetPctY)}%); }
-       [part="thumb-x"] { inline-size: ${Math.max(10, Math.round(ratioX * 100))}%; transform: translateX(${Math.round(offsetPctX)}%); }`,
+       [part="thumb-x"] { inline-size: ${Math.max(10, Math.round(ratioX * 100))}%; transform: translateX(${signedX}%); }`,
     );
   }
 

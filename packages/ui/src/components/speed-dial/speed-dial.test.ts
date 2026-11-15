@@ -77,6 +77,30 @@ describe('<mth-speed-dial>', () => {
     const rovingReport = await RovingFocusSuite.run(rovingFocusAdapter);
     expect(rovingReport.failures).toEqual([]);
 
+    const horizontalRovingAdapter = {
+      mount: async (dir: 'ltr' | 'rtl' = 'ltr') => {
+        const el = document.createElement('mth-speed-dial') as MthSpeedDial;
+        el.dir = dir;
+        el.direction = 'end';
+        el.actions = [
+          { label: 'First', value: 'first' },
+          { label: 'Second', value: 'second' },
+          { label: 'Third', value: 'third' },
+        ];
+        document.body.appendChild(el);
+        await el.updateComplete;
+        await el.show();
+        await el.updateComplete;
+        return el;
+      },
+      getItems: (container: HTMLElement) =>
+        Array.from(container.shadowRoot!.querySelectorAll<HTMLElement>('[part="action"]')),
+      orientation: 'horizontal' as const,
+      loop: true,
+    };
+    const horizontalReport = await RovingFocusSuite.run(horizontalRovingAdapter);
+    expect(horizontalReport.failures).toEqual([]);
+
     const el = document.createElement('mth-speed-dial') as MthSpeedDial;
     el.actions = [{ label: 'Share', value: 'share' }];
     document.body.appendChild(el);

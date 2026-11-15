@@ -51,7 +51,7 @@ export const splitPaneStyles = css`
   }
 
   [part='divider']:hover,
-  :host([data-dragging='true']) [part='divider'] {
+  :host(:state(dragging)) [part='divider'] {
     background-color: var(--mth-color-accent);
   }
 

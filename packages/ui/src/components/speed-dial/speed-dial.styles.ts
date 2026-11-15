@@ -94,15 +94,11 @@ export const speedDialStyles = css`
   :host([direction='up']) [part='actions'] {
     flex-direction: column-reverse;
     inset-block-end: calc(100% + var(--mth-space-3));
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
   }
 
   :host([direction='down']) [part='actions'] {
     flex-direction: column;
     inset-block-start: calc(100% + var(--mth-space-3));
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
   }
 
   :host([direction='start']) [part='actions'] {

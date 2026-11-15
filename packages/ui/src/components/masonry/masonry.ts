@@ -3,6 +3,14 @@ import { ObserverPoolController } from '@methane/primitives';
 import { masonryMessages } from './masonry.messages.js';
 import { masonryStyles } from './masonry.styles.js';
 
+const SAFE_CSS_GAP_RE =
+  /^(?:0|\d+(?:\.\d+)?(?:px|rem|em|ch|ex|cap|ic|lh|rlh|vw|vh|vi|vb|vmin|vmax|%)|var\(--[a-zA-Z0-9_-]+(?:\s*,\s*(?:0|\d+(?:\.\d+)?(?:px|rem|em|ch|vw|vh|vmin|vmax|%)))?\))$/;
+
+function sanitizeCssGap(raw: string): string {
+  const trimmed = raw.trim();
+  return SAFE_CSS_GAP_RE.test(trimmed) ? trimmed : 'var(--mth-space-4, 1rem)';
+}
+
 /**
  * Responsive masonry layout container using `ObserverPoolController` resize observation.
  */
@@ -104,7 +112,7 @@ export class MthMasonry extends UIElement {
         this.dynamicSheet,
       ];
     }
-    const safeGap = this.gap.trim() || '1rem';
+    const safeGap = sanitizeCssGap(this.gap);
     this.dynamicSheet.replaceSync(
       `[part="base"] { column-count: ${cols}; column-gap: ${safeGap}; } ::slotted(*) { margin-block-end: ${safeGap}; }`,
     );

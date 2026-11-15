@@ -6,6 +6,7 @@ export const inlineEditStyles = css`
     font-family: var(--mth-font-sans);
     font-size: var(--mth-font-size-md);
     color: var(--mth-color-fg);
+    --_min-block: calc(2.25rem * var(--mth-density, 1));
   }
 
   :host([disabled]) {
@@ -24,7 +25,7 @@ export const inlineEditStyles = css`
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
-    min-block-size: var(--mth-space-control-md);
+    min-block-size: var(--_min-block);
     padding-block: var(--mth-space-1);
     padding-inline: var(--mth-space-2);
     border: 1px solid transparent;
@@ -48,7 +49,7 @@ export const inlineEditStyles = css`
   [part='input'] {
     box-sizing: border-box;
     inline-size: 100%;
-    min-block-size: var(--mth-space-control-md);
+    min-block-size: var(--_min-block);
     padding-block: var(--mth-space-1);
     padding-inline: var(--mth-space-2);
     border: 1px solid var(--mth-color-border-focus);

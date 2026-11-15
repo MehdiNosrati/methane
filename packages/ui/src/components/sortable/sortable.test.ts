@@ -67,6 +67,29 @@ describe('<mth-sortable>', () => {
     await el.updateComplete;
     expect(reordered).toEqual({ fromIndex: 0, toIndex: 2 });
     expect(el.items.map((item) => item.id)).toEqual(['b', 'c', 'a']);
+
+    // Keyboard Space -> ArrowDown -> Space reorder
+    const firstItem = el.shadowRoot!.querySelectorAll<HTMLElement>('[part="item"]')[0]!;
+    firstItem.focus();
+    firstItem.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+    firstItem.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    await el.updateComplete;
+    const movedItem = el.shadowRoot!.querySelectorAll<HTMLElement>('[part="item"]')[1]!;
+    movedItem.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(el.items.map((item) => item.id)).toEqual(['c', 'b', 'a']);
+
+    // Keyboard Space -> ArrowDown -> Escape cancels reorder
+    const item0 = el.shadowRoot!.querySelectorAll<HTMLElement>('[part="item"]')[0]!;
+    item0.focus();
+    item0.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+    item0.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    await el.updateComplete;
+    const item1 = el.shadowRoot!.querySelectorAll<HTMLElement>('[part="item"]')[1]!;
+    item1.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(el.items.map((item) => item.id)).toEqual(['c', 'b', 'a']);
+
     expect(scanSameRootAria(el).issues).toEqual([]);
   });
 

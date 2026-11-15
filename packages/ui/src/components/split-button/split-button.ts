@@ -122,8 +122,22 @@ export class MthSplitButton extends UIElement {
   }
 
   private getMenuButtons(): HTMLElement[] {
-    if (!this.menuEl) return [];
-    return Array.from(this.menuEl.querySelectorAll<HTMLElement>('[role="menuitem"]'));
+    const shadowButtons = this.menuEl
+      ? Array.from(this.menuEl.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+      : [];
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="menu"]');
+    const slotted: HTMLElement[] = [];
+    if (slot) {
+      for (const el of slot.assignedElements({ flatten: true })) {
+        if (!(el instanceof HTMLElement)) continue;
+        if (el.matches('[role="menuitem"], button, a')) {
+          slotted.push(el);
+        } else {
+          slotted.push(...Array.from(el.querySelectorAll<HTMLElement>('[role="menuitem"], button, a')));
+        }
+      }
+    }
+    return [...shadowButtons, ...slotted];
   }
 
   private syncStates(): void {
@@ -216,7 +230,7 @@ export class MthSplitButton extends UIElement {
               </button>
             `,
           )}
-          <slot name="menu"></slot>
+          <slot name="menu" @slotchange=${() => this.rovingCtrl.syncTabIndices()}></slot>
         </div>
       </div>
     `;

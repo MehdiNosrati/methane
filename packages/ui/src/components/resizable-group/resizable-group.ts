@@ -53,6 +53,7 @@ export class MthResizableGroup extends UIElement {
   private baseEl!: HTMLElement | null;
 
   private readonly slotCtrl: SlotCollectionController<HTMLElement>;
+  private readonly groupDisabledHandles = new WeakSet<HTMLElement>();
 
   constructor() {
     super();
@@ -121,7 +122,13 @@ export class MthResizableGroup extends UIElement {
     for (const handle of handles) {
       handle.orientation = this.orientation;
       if (this.disabled) {
-        handle.disabled = true;
+        if (!handle.disabled) {
+          this.groupDisabledHandles.add(handle);
+          handle.disabled = true;
+        }
+      } else if (this.groupDisabledHandles.has(handle)) {
+        this.groupDisabledHandles.delete(handle);
+        handle.disabled = false;
       }
       const idx = children.indexOf(handle);
       const prevPanel = [...children.slice(0, idx)].reverse().find(isPanelElement);

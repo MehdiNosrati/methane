@@ -4,6 +4,15 @@ export const shareButtonStyles = css`
   :host {
     display: inline-flex;
     vertical-align: middle;
+    --_min-block: calc(2.25rem * var(--mth-density, 1));
+  }
+
+  :host([size='sm']) {
+    --_min-block: calc(1.875rem * var(--mth-density, 1));
+  }
+
+  :host([size='lg']) {
+    --_min-block: calc(2.75rem * var(--mth-density, 1));
   }
 
   :host([disabled]) {
@@ -16,7 +25,7 @@ export const shareButtonStyles = css`
     justify-content: center;
     gap: var(--mth-space-2);
     box-sizing: border-box;
-    min-block-size: var(--mth-space-control-md);
+    min-block-size: var(--_min-block);
     padding-block: var(--mth-space-2);
     padding-inline: var(--mth-space-3);
     border: 1px solid var(--mth-color-border);
@@ -36,14 +45,12 @@ export const shareButtonStyles = css`
   }
 
   :host([size='sm']) [part='base'] {
-    min-block-size: var(--mth-space-control-sm);
     padding-block: var(--mth-space-1);
     padding-inline: var(--mth-space-2);
     font-size: var(--mth-font-size-xs);
   }
 
   :host([size='lg']) [part='base'] {
-    min-block-size: var(--mth-space-control-lg);
     padding-block: var(--mth-space-3);
     padding-inline: var(--mth-space-4);
     font-size: var(--mth-font-size-md);
