@@ -1,0 +1,18 @@
+import { defineComponents } from '@methane/core';
+import { MthScrollArea } from './scroll-area.js';
+
+export {
+  MthScrollArea,
+  type MthScrollAreaOrientation,
+  type MthScrollAreaType,
+} from './scroll-area.js';
+export { scrollAreaMessages } from './scroll-area.messages.js';
+export { scrollAreaSpec } from './scroll-area.spec.js';
+export { scrollAreaStyles } from './scroll-area.styles.js';
+
+export function registerMthScrollArea(prefix?: string): ReadonlyArray<string> {
+  return defineComponents({
+    ...(prefix !== undefined ? { prefix } : {}),
+    components: { 'mth-scroll-area': MthScrollArea },
+  });
+}
