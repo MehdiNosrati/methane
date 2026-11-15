@@ -390,17 +390,23 @@ export class MthTable extends UIElement {
     const cols = this.tableCore.getResolvedColumns();
     const rules: string[] = [];
     for (const col of cols) {
-      if (col.width !== undefined) {
-        rules.push(`[data-col-id="${col.id}"] { inline-size: ${col.width}px; }`);
+      const safeColId = String(col.id)
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/[\r\n]/g, '');
+      if (typeof col.width === 'number' && Number.isFinite(col.width) && col.width >= 0) {
+        rules.push(`[data-col-id="${safeColId}"] { inline-size: ${col.width}px; }`);
       }
-      if (col.resolvedPin === 'left' && col.stickyOffset !== null) {
-        rules.push(
-          `[data-col-id="${col.id}"] { position: sticky; inset-inline-start: ${col.stickyOffset}px; z-index: 2; background-color: inherit; }`,
-        );
-      } else if (col.resolvedPin === 'right' && col.stickyOffset !== null) {
-        rules.push(
-          `[data-col-id="${col.id}"] { position: sticky; inset-inline-end: ${col.stickyOffset}px; z-index: 2; background-color: inherit; }`,
-        );
+      if (col.stickyOffset !== null && Number.isFinite(col.stickyOffset)) {
+        if (col.resolvedPin === 'left') {
+          rules.push(
+            `[data-col-id="${safeColId}"] { position: sticky; inset-inline-start: ${col.stickyOffset}px; z-index: 2; background-color: inherit; }`,
+          );
+        } else if (col.resolvedPin === 'right') {
+          rules.push(
+            `[data-col-id="${safeColId}"] { position: sticky; inset-inline-end: ${col.stickyOffset}px; z-index: 2; background-color: inherit; }`,
+          );
+        }
       }
     }
     if (!this.colSheet) {

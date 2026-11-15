@@ -147,6 +147,26 @@ describe('<mth-tree>', () => {
     expect(renderedCount).toBeGreaterThan(0);
     expect(renderedCount).toBeLessThan(100);
     expect(scanSameRootAria(vTree).valid).toBe(true);
+
+    // Custom itemHeight updates virtualizer height + CSS variable
+    vTree.itemHeight = 48;
+    await vTree.updateComplete;
+    const vSheets = vTree.shadowRoot!.adoptedStyleSheets;
+    const vSheet = vSheets[vSheets.length - 1]!;
+    expect(vSheet.cssRules[0]!.cssText).toContain('--_tree-item-height: 48px');
+    expect(vSheet.cssRules[0]!.cssText).toContain('--_tree-total-height: 4800px');
+
+    // CSS selector injection guard: malicious node.id cannot inject extra CSS rules
+    const injTree = document.createElement('mth-tree') as MthTree;
+    injTree.items = [{ id: 'bad"] { color: red; } [', value: 'bad"] { color: red; } [', label: 'Bad' }];
+    document.body.appendChild(injTree);
+    await injTree.updateComplete;
+    const injSheets = injTree.shadowRoot!.adoptedStyleSheets;
+    const injSheet = injSheets[injSheets.length - 1]!;
+    expect(injSheet.cssRules.length).toBe(2);
+    expect(
+      Array.from(injSheet.cssRules).every((r) => (r as CSSStyleRule).style.color === ''),
+    ).toBe(true);
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM', async () => {

@@ -26,7 +26,7 @@ export const listStyles = css`
     gap: 0;
   }
 
-  :host([dividers]) ::slotted(mth-list-item:not(:last-child)) {
+  :host([dividers]) ::slotted(:not(:last-child)) {
     border-block-end: 1px solid var(--_list-border);
   }
 

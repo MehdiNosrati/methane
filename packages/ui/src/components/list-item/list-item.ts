@@ -46,12 +46,12 @@ export class MthListItem extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    const initialRole = this.getAttribute('role') === 'option' ? 'option' : 'listitem';
     if (this.internals) {
-      this.internals.role = 'listitem';
+      this.internals.role = initialRole;
     }
-    const reflectedRole = (this as HTMLElement & { role?: string | null }).role;
-    if (reflectedRole !== 'listitem' && !this.hasAttribute('role')) {
-      this.setAttribute('role', 'listitem');
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', initialRole);
     }
     this.syncStates();
   }
@@ -71,8 +71,10 @@ export class MthListItem extends UIElement {
     this.setCustomState('selected', this.selected);
     this.setCustomState('disabled', this.disabled);
     this.setCustomState('interactive', this.interactive);
+    const isOption = this.getAttribute('role') === 'option';
     if (this.internals) {
-      this.internals.ariaSelected = this.selected ? 'true' : null;
+      this.internals.role = isOption ? 'option' : 'listitem';
+      this.internals.ariaSelected = isOption ? (this.selected ? 'true' : 'false') : null;
       this.internals.ariaDisabled = this.disabled ? 'true' : null;
     }
   }

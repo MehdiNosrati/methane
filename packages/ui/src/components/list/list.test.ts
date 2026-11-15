@@ -82,8 +82,19 @@ describe('<mth-list>', () => {
     expect(items[0]!.selected).toBe(true);
     expect(items[1]!.selected).toBe(false);
     expect(items[2]!.selected).toBe(true);
+    expect(items[0]!.getAttribute('role')).toBe('option');
+    expect(items[0]!.getAttribute('aria-selected')).toBe('true');
+    expect(items[1]!.getAttribute('role')).toBe('option');
+    expect(items[1]!.getAttribute('aria-selected')).toBe('false');
     expect(changes.length).toBe(2);
     expect(scanSameRootAria(list).valid).toBe(true);
+
+    // Switching back to selectionMode = 'none' restores role="listitem" and clears aria-selected
+    list.selectionMode = 'none';
+    await list.updateComplete;
+    expect(list.shadowRoot!.querySelector('[part="base"]')?.getAttribute('role')).toBe('list');
+    expect(items[0]!.getAttribute('role')).toBe('listitem');
+    expect(items[0]!.hasAttribute('aria-selected')).toBe(false);
 
     const dataList = document.createElement('mth-list') as MthList;
     dataList.selectionMode = 'single';

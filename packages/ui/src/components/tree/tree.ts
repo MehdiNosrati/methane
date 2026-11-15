@@ -177,10 +177,16 @@ export class MthTree extends UIElement {
 
     this.virtualizer = new VirtualizerController(this, {
       count: 0,
-      estimateSize: 32,
+      estimateSize: () => this.resolveItemHeight(),
       overscan: 4,
       getScrollElement: () => this.viewportEl,
     });
+  }
+
+  private resolveItemHeight(): number {
+    return typeof this.itemHeight === 'number' && Number.isFinite(this.itemHeight) && this.itemHeight > 0
+      ? this.itemHeight
+      : 32;
   }
 
   override connectedCallback(): void {
@@ -221,7 +227,11 @@ export class MthTree extends UIElement {
       this.suppressingSync = false;
     }
     if (this.isDataDriven()) {
-      this.virtualizer.setCount(this.getFlatNodes().length);
+      const flatCount = this.getFlatNodes().length;
+      if (changedProperties.has('itemHeight')) {
+        this.virtualizer.setCount(0);
+      }
+      this.virtualizer.setCount(flatCount);
     }
   }
 
@@ -395,15 +405,25 @@ export class MthTree extends UIElement {
     const rules: string[] = [];
     if (this.isDataDriven()) {
       const flat = this.getFlatNodes();
+      const resolvedHeight = this.resolveItemHeight();
+      const totalSize = Number.isFinite(this.virtualizer.totalSize) ? this.virtualizer.totalSize : 0;
+      const vItems = this.virtualizer.getVirtualItems();
+      const rawOffsetY = vItems[0]?.start ?? 0;
+      const offsetY = Number.isFinite(rawOffsetY) ? rawOffsetY : 0;
       if (this.virtualized) {
-        const vItems = this.virtualizer.getVirtualItems();
-        const offsetY = vItems[0]?.start ?? 0;
         rules.push(
-          `:host { --_tree-total-height: ${this.virtualizer.totalSize}px; --_tree-offset-y: ${offsetY}px; }`,
+          `:host { --_tree-item-height: ${resolvedHeight}px; --_tree-total-height: ${totalSize}px; --_tree-offset-y: ${offsetY}px; }`,
         );
+      } else {
+        rules.push(`:host { --_tree-item-height: ${resolvedHeight}px; }`);
       }
       for (const node of flat) {
-        rules.push(`[data-node-id="${node.id}"] { --_item-depth: ${node.depth}; }`);
+        const safeNodeId = String(node.id)
+          .replace(/\\/g, '\\\\')
+          .replace(/"/g, '\\"')
+          .replace(/[\r\n]/g, '');
+        const safeDepth = Number.isFinite(node.depth) && node.depth >= 0 ? Math.floor(node.depth) : 0;
+        rules.push(`[data-node-id="${safeNodeId}"] { --_item-depth: ${safeDepth}; }`);
       }
     }
     if (!this.virtualSheet) {

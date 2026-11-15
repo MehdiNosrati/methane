@@ -9,6 +9,7 @@ export const timelineStyles = css`
     --_timeline-muted: var(--mth-color-fg-muted, GrayText);
     --_timeline-border: var(--mth-color-border, ButtonBorder);
     --_timeline-accent: var(--mth-color-accent, Highlight);
+    --_timeline-dot-color: var(--_timeline-accent);
   }
 
   .base {
@@ -42,7 +43,71 @@ export const timelineStyles = css`
     inline-size: 0.5rem;
     block-size: 0.5rem;
     border-radius: var(--mth-radius-full, 9999px);
-    background-color: var(--_timeline-accent);
+    background-color: var(--_timeline-dot-color);
+  }
+
+  .item[data-variant='neutral'] {
+    --_timeline-dot-color: var(--mth-color-border-strong, ButtonBorder);
+  }
+
+  .item[data-variant='accent'] {
+    --_timeline-dot-color: var(--mth-color-accent, Highlight);
+  }
+
+  .item[data-variant='success'] {
+    --_timeline-dot-color: var(--mth-color-success, oklch(0.55 0.17 150));
+  }
+
+  .item[data-variant='warning'] {
+    --_timeline-dot-color: var(--mth-color-warning, oklch(0.65 0.17 75));
+  }
+
+  .item[data-variant='danger'] {
+    --_timeline-dot-color: var(--mth-color-danger, oklch(0.55 0.22 25));
+  }
+
+  .base[data-align='end'] .item {
+    padding-inline-start: 0;
+    padding-inline-end: var(--mth-space-4, 1rem);
+    border-inline-start: none;
+    border-inline-end: 2px solid var(--_timeline-border);
+    text-align: end;
+  }
+
+  .base[data-align='end'] .item::before {
+    inset-inline-start: auto;
+    inset-inline-end: -0.3125rem;
+  }
+
+  .base[data-align='alternate'] .item:nth-child(even) {
+    padding-inline-start: 0;
+    padding-inline-end: var(--mth-space-4, 1rem);
+    border-inline-start: none;
+    border-inline-end: 2px solid var(--_timeline-border);
+    text-align: end;
+  }
+
+  .base[data-align='alternate'] .item:nth-child(even)::before {
+    inset-inline-start: auto;
+    inset-inline-end: -0.3125rem;
+  }
+
+  :host([orientation='horizontal']) .item {
+    min-inline-size: 10rem;
+    padding-inline-start: 0;
+    padding-inline-end: var(--mth-space-3, 0.75rem);
+    padding-block-start: var(--mth-space-4, 1rem);
+    padding-block-end: 0;
+    border-inline-start: none;
+    border-inline-end: none;
+    border-block-start: 2px solid var(--_timeline-border);
+    text-align: start;
+  }
+
+  :host([orientation='horizontal']) .item::before {
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+    inset-block-start: -0.3125rem;
   }
 
   .item-header {

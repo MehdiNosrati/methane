@@ -26,9 +26,10 @@ type ListItemLikeElement = HTMLElement & {
 };
 
 function isListItemElement(el: Element): el is ListItemLikeElement {
+  const role = el.getAttribute('role');
   return (
     el instanceof HTMLElement &&
-    (el.localName.endsWith('list-item') || el.getAttribute('role') === 'listitem')
+    (el.localName.endsWith('list-item') || role === 'listitem' || role === 'option')
   );
 }
 
@@ -199,18 +200,31 @@ export class MthList extends UIElement {
 
   private syncSlottedSelectedState(): void {
     if (this.items !== null) return;
-    const isHydrating = Boolean(this.shadowRoot) && !this.hasUpdated;
+    const isHydrating = !this.hasUpdated && Boolean(this.shadowRoot?.childNodes.length);
     if (isHydrating) return;
 
+    const isSelectable = this.selectionMode !== 'none';
+    const targetRole = isSelectable ? 'option' : 'listitem';
     const slotted = this.slotCtrl.slottedElements;
     for (let i = 0; i < slotted.length; i += 1) {
       const el = slotted[i]!;
       const key = getItemValue(el, i);
-      const isSelected = this.selectionMode !== 'none' && this.selectionCtrl.isSelected(key);
+      const isSelected = isSelectable && this.selectionCtrl.isSelected(key);
+      if (el.getAttribute('role') !== targetRole) {
+        el.setAttribute('role', targetRole);
+      }
+      if (isSelectable) {
+        const expectedAriaSelected = isSelected ? 'true' : 'false';
+        if (el.getAttribute('aria-selected') !== expectedAriaSelected) {
+          el.setAttribute('aria-selected', expectedAriaSelected);
+        }
+      } else if (el.hasAttribute('aria-selected')) {
+        el.removeAttribute('aria-selected');
+      }
       if (el.selected !== isSelected) {
         el.selected = isSelected;
       }
-      if (this.selectionMode !== 'none' && el.interactive === false) {
+      if (isSelectable && el.interactive === false) {
         el.interactive = true;
       }
     }

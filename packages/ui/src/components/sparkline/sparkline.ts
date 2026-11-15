@@ -135,15 +135,17 @@ export class MthSparkline extends UIElement {
 
     return html`
       <figure part="base" class="base" data-variant=${this.variant}>
+        <span id="mth-spark-title" class="sr-only">${titleText}</span>
         <svg
           part="svg"
           class="svg"
           viewBox="0 0 200 48"
           role="img"
           aria-label=${titleText}
+          aria-labelledby="mth-spark-title"
           aria-describedby="mth-spark-desc"
         >
-          <title id="mth-spark-title">Sparkline</title>
+          <!-- Note: @lit-labs/ssr parses <title> as RCDATA and rejects child expressions; #mth-spark-title + <desc> supply full localized SVG-AAM name & description. -->
           <desc id="mth-spark-desc">${summaryText}</desc>
           ${this.type === 'bar'
             ? points.map((pt, idx) => {

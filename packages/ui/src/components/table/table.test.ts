@@ -140,6 +140,19 @@ describe('<mth-table>', () => {
     await table.updateComplete;
     expect(table.shadowRoot!.querySelectorAll('tbody tr[part="row"]').length).toBe(1);
     expect(scanSameRootAria(table.shadowRoot!).valid).toBe(true);
+
+    // CSS selector injection guard: malicious col.id cannot inject extra CSS rules
+    const injTable = document.createElement('mth-table') as MthTable;
+    injTable.columns = [{ id: 'x"] { color: red; } [', field: 'x', header: 'X', width: 120 }];
+    injTable.rows = [{ id: 'r1', x: 'val' }];
+    document.body.appendChild(injTable);
+    await injTable.updateComplete;
+    const sheets = injTable.shadowRoot!.adoptedStyleSheets;
+    const colSheet = sheets[sheets.length - 1]!;
+    expect(colSheet.cssRules.length).toBe(1);
+    const colRule = colSheet.cssRules[0] as CSSStyleRule;
+    expect(colRule.style.color).toBe('');
+    expect(colRule.style.inlineSize).toBe('120px');
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM', async () => {

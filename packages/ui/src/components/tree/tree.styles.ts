@@ -41,7 +41,7 @@ export const treeStyles = css`
     display: flex;
     align-items: center;
     gap: var(--mth-space-1, 0.25rem);
-    min-block-size: 2rem;
+    min-block-size: var(--_tree-item-height, 2rem);
     padding-block: 0.25rem;
     padding-inline-end: var(--mth-space-2, 0.5rem);
     padding-inline-start: calc(var(--_item-depth, 0) * var(--mth-space-4, 1rem) + var(--mth-space-2, 0.5rem));

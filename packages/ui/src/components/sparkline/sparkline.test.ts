@@ -29,7 +29,7 @@ describe('<mth-sparkline>', () => {
     const svgEl = spark.shadowRoot!.querySelector('svg');
     expect(svgEl?.getAttribute('role')).toBe('img');
     expect(svgEl?.getAttribute('aria-label')).toBe('Weekly Latency');
-    expect(svgEl?.querySelector('title')).not.toBeNull();
+    expect(spark.shadowRoot!.querySelector('#mth-spark-title')?.textContent).toBe('Weekly Latency');
     const descText = (svgEl?.querySelector('desc')?.textContent ?? '').replace(/[\u2068\u2069]/g, '');
     expect(descText).toContain('4 points, minimum 10, maximum 24, latest 24');
     expect(svgEl?.querySelector('polygon')).not.toBeNull();
