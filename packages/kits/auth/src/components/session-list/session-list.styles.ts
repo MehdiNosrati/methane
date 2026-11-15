@@ -5,7 +5,7 @@ export const sessionListStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    color: var(--mth-color-fg, oklch(18% 0.01 260));
+    color: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
   }
 
   :host([hidden]),
@@ -37,10 +37,10 @@ export const sessionListStyles = css`
   .revoke-others-btn {
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-3, 0.75rem);
-    border: 1px solid var(--mth-color-danger, oklch(55% 0.22 25));
+    border: 1px solid var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
     border-radius: var(--mth-radius-md, 0.5rem);
     background: transparent;
-    color: var(--mth-color-danger, oklch(55% 0.22 25));
+    color: var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
     font-family: inherit;
     font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: var(--mth-font-weight-medium, 500);
@@ -48,11 +48,11 @@ export const sessionListStyles = css`
   }
 
   .revoke-others-btn:hover:not(:disabled) {
-    background-color: var(--mth-color-danger-subtle, oklch(94% 0.05 25));
+    background-color: var(--mth-color-danger-subtle, light-dark(oklch(94% 0.05 25), oklch(25% 0.06 25)));
   }
 
   .revoke-others-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(55% 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     outline-offset: 2px;
   }
 
@@ -78,13 +78,13 @@ export const sessionListStyles = css`
     gap: var(--mth-space-3, 0.75rem);
     padding-block: var(--mth-space-3, 0.75rem);
     padding-inline: var(--mth-space-4, 1rem);
-    border: 1px solid var(--mth-color-border, oklch(86% 0.01 260));
+    border: 1px solid var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
     border-radius: var(--mth-radius-md, 0.5rem);
-    background-color: var(--mth-color-surface-raised, oklch(100% 0 0));
+    background-color: var(--mth-color-surface-raised, light-dark(oklch(100% 0 0), oklch(19% 0.01 260)));
   }
 
   .session-card[data-current='true'] {
-    border-color: var(--mth-color-accent, oklch(55% 0.18 255));
+    border-color: var(--mth-color-accent, light-dark(oklch(55% 0.18 255), oklch(70% 0.16 255)));
   }
 
   .session-info {
@@ -103,7 +103,7 @@ export const sessionListStyles = css`
   .device-name {
     font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: var(--mth-font-weight-semibold, 600);
-    color: var(--mth-color-fg, oklch(18% 0.01 260));
+    color: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
   }
 
   .meta {
@@ -111,16 +111,16 @@ export const sessionListStyles = css`
     flex-wrap: wrap;
     gap: var(--mth-space-3, 0.75rem);
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-fg-muted, oklch(48% 0.01 260));
+    color: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
   }
 
   .revoke-btn {
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-3, 0.75rem);
-    border: 1px solid var(--mth-color-border, oklch(86% 0.01 260));
+    border: 1px solid var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
     border-radius: var(--mth-radius-md, 0.5rem);
-    background-color: var(--mth-color-surface, oklch(99% 0 0));
-    color: var(--mth-color-fg, oklch(18% 0.01 260));
+    background-color: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    color: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
     font-family: inherit;
     font-size: var(--mth-font-size-sm, 0.875rem);
     font-weight: var(--mth-font-weight-medium, 500);
@@ -128,13 +128,13 @@ export const sessionListStyles = css`
   }
 
   .revoke-btn:hover:not(:disabled) {
-    background-color: var(--mth-color-danger-subtle, oklch(94% 0.05 25));
-    border-color: var(--mth-color-danger, oklch(55% 0.22 25));
-    color: var(--mth-color-danger, oklch(55% 0.22 25));
+    background-color: var(--mth-color-danger-subtle, light-dark(oklch(94% 0.05 25), oklch(25% 0.06 25)));
+    border-color: var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
+    color: var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
   }
 
   .revoke-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(55% 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     outline-offset: 2px;
   }
 
@@ -147,10 +147,36 @@ export const sessionListStyles = css`
     margin: 0;
     padding-block: var(--mth-space-4, 1rem);
     padding-inline: var(--mth-space-4, 1rem);
-    border: 1px dashed var(--mth-color-border, oklch(86% 0.01 260));
+    border: 1px dashed var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
     border-radius: var(--mth-radius-md, 0.5rem);
     font-size: var(--mth-font-size-sm, 0.875rem);
-    color: var(--mth-color-fg-muted, oklch(48% 0.01 260));
+    color: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
     text-align: center;
+  }
+
+  @media (forced-colors: active) {
+    .session-card,
+    .revoke-btn,
+    .revoke-others-btn,
+    .empty {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .session-card[data-current='true'] {
+      border-color: Highlight;
+    }
+
+    .revoke-btn:focus-visible,
+    .revoke-others-btn:focus-visible {
+      outline: 2px solid Highlight;
+    }
+
+    .revoke-btn:disabled,
+    .revoke-others-btn:disabled {
+      border-color: GrayText;
+      color: GrayText;
+    }
   }
 `;

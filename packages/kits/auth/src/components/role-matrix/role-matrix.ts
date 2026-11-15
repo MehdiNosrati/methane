@@ -66,10 +66,20 @@ export class MthRoleMatrix extends UIElement {
     return Array.isArray(roleGrants) ? roleGrants.includes(permissionId) : false;
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     this.setCustomState('readonly', this.readonly);
     this.setCustomState('disabled', this.disabled);
+    this.rovingCtrl.updateOptions({
+      columns: Math.max(1, this.roles.length),
+      dir: this.resolveEffectiveDir(),
+    });
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -82,7 +92,7 @@ export class MthRoleMatrix extends UIElement {
     }
     this.rovingCtrl.updateOptions({
       columns: Math.max(1, this.roles.length),
-      dir: this.resolvedDir,
+      dir: this.resolveEffectiveDir(),
     });
   }
 
@@ -135,7 +145,7 @@ export class MthRoleMatrix extends UIElement {
     const hasData = this.roles.length > 0 && this.permissions.length > 0;
 
     return html`
-      <div part="base" class="container" dir=${this.resolvedDir}>
+      <div part="base" class="container" dir=${this.resolveEffectiveDir()}>
         ${hasData
           ? html`
               <table part="table" class="grid-table" role="grid" aria-label=${gridLabel}>

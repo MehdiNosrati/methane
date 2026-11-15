@@ -61,8 +61,15 @@ export class MthAiFeedback extends UIElement {
     return Array.from(this.shadowRoot.querySelectorAll<HTMLElement>('[part="feedback-control"]'));
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
+    this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
     this.syncStates();
   }
 
@@ -72,7 +79,7 @@ export class MthAiFeedback extends UIElement {
     if (changedProperties.has('selectedReasons')) {
       this.selectionCtrl.setSelection(this.selectedReasons);
     }
-    this.rovingCtrl.updateOptions({ dir: this.resolvedDir });
+    this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
     this.syncStates();
   }
 
@@ -128,6 +135,17 @@ export class MthAiFeedback extends UIElement {
 
   private readonly handleCommentInput = (event: Event): void => {
     this.comment = (event.target as HTMLInputElement).value;
+  };
+
+  private readonly handleSiblingNavKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
   };
 
   private readonly handleSubmit = (): void => {
@@ -189,7 +207,7 @@ export class MthAiFeedback extends UIElement {
                 })}
               </div>
 
-              <div class="comment-row">
+              <div class="comment-row" @keydown=${this.handleSiblingNavKeyDown}>
                 <input
                   type="text"
                   class="comment-input"

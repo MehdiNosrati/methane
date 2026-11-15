@@ -63,15 +63,29 @@ export class MthCitationList extends UIElement {
     return Array.from(this.shadowRoot.querySelectorAll<HTMLElement>('[part="citation-item"]'));
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.rovingCtrl.updateOptions({
+      orientation: this.orientation,
+      dir: this.resolveEffectiveDir(),
+    });
+  }
+
   protected override willUpdate(changedProperties: PropertyValues): void {
     super.willUpdate(changedProperties);
     if (changedProperties.has('orientation') || changedProperties.has('citations')) {
       this.rovingCtrl.updateOptions({
         orientation: this.orientation,
-        dir: this.resolvedDir,
+        dir: this.resolveEffectiveDir(),
       });
     } else {
-      this.rovingCtrl.updateOptions({ dir: this.resolvedDir });
+      this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
     }
   }
 

@@ -5,11 +5,11 @@ export const thinkingIndicatorStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_ti-bg: var(--mth-color-bg-subtle, oklch(96% 0.005 260));
-    --_ti-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_ti-muted: var(--mth-color-fg-muted, oklch(48% 0.01 260));
-    --_ti-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_ti-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
+    --_ti-bg: var(--mth-color-bg-subtle, light-dark(oklch(96% 0.005 260), oklch(22% 0.01 260)));
+    --_ti-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_ti-muted: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
+    --_ti-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_ti-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     --_ti-radius: var(--mth-radius-md, 0.5rem);
   }
 
@@ -75,6 +75,22 @@ export const thinkingIndicatorStyles = css`
   @media (prefers-reduced-motion: reduce) {
     .chevron {
       transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .base {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .panel {
+      border-block-start-color: CanvasText;
+    }
+
+    .trigger:focus-visible {
+      outline: 2px solid Highlight;
     }
   }
 `;

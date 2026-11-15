@@ -65,15 +65,16 @@ export class MthMfaChallenge extends UIElement {
       messages: mfaChallengeMessages,
       validator: ({ value, required }) => {
         const str = typeof value === 'string' ? value.trim() : '';
+        const safeLen = this.getSafeLength();
         if (!str) {
           return required
             ? { flags: { valueMissing: true }, message: this.t('requiredError') }
             : null;
         }
-        if (this.mode === 'totp' && str.length < this.length) {
+        if (this.mode === 'totp' && str.length < safeLen) {
           return {
             flags: { customError: true },
-            message: this.t('incompleteError', { length: this.length }),
+            message: this.t('incompleteError', { length: safeLen }),
           };
         }
         return null;
@@ -98,12 +99,22 @@ export class MthMfaChallenge extends UIElement {
     this.syncStates();
   }
 
+  private getSafeLength(): number {
+    return Number.isFinite(this.length) ? Math.max(1, Math.trunc(this.length)) : 6;
+  }
+
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   get effectivelyDisabled(): boolean {
     return this.formCtrl.disabled || this.loading;
   }
 
   get invalid(): boolean {
-    return this.formCtrl.invalid || Boolean(this.error);
+    return this.formCtrl.invalid || Boolean(this.error.trim());
   }
 
   get validationMessage(): string {
@@ -115,17 +126,26 @@ export class MthMfaChallenge extends UIElement {
     return Array.from(this.shadowRoot.querySelectorAll<HTMLInputElement>('[part="digit"]'));
   }
 
-  override formDisabledCallback(disabled: boolean): void {
+  protected override onFirstConnect(): void {
+    const initial = this.getAttribute('value') ?? this.value ?? '';
+    this.formCtrl.setDefaultValue(initial);
+    this.formCtrl.setValue(this.value, { markDirty: false });
+    this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
+    this.syncStates();
+  }
+
+  protected override onFormDisabled(disabled: boolean): void {
     this.formCtrl.handleFormDisabled(disabled);
+    this.syncStates();
     this.requestUpdate();
   }
 
-  override formResetCallback(): void {
+  protected override onFormReset(): void {
     this.formCtrl.handleFormReset();
     this.syncStates();
   }
 
-  override formStateRestoreCallback(
+  protected override onFormStateRestore(
     state: string | File | FormData | null,
     restoreMode: 'restore' | 'autocomplete',
   ): void {
@@ -161,7 +181,7 @@ export class MthMfaChallenge extends UIElement {
     }
     this.syncStates();
     this.rovingCtrl.updateOptions({
-      dir: this.resolvedDir,
+      dir: this.resolveEffectiveDir(),
     });
   }
 
@@ -176,18 +196,19 @@ export class MthMfaChallenge extends UIElement {
   }
 
   private getDigitsArray(): string[] {
-    const len = Math.max(1, this.length);
-    const cleaned = this.value.replace(/\D/g, '').slice(0, len);
-    return Array.from({ length: len }, (_, i) => cleaned[i] ?? '');
+    const safeLen = this.getSafeLength();
+    const cleaned = this.value.replace(/\D/g, '').slice(0, safeLen);
+    return Array.from({ length: safeLen }, (_, i) => cleaned[i] ?? '');
   }
 
   private setTotpDigits(digits: string[]): void {
-    const next = digits.join('').slice(0, Math.max(1, this.length));
+    const safeLen = this.getSafeLength();
+    const next = digits.join('').slice(0, safeLen);
     this.value = next;
     this.formCtrl.setValue(next, { markDirty: true });
     this.emitEvent('mth-input', { detail: { value: next, mode: this.mode } });
     this.emitEvent('mth-change', { detail: { value: next, mode: this.mode } });
-    if (next.length === Math.max(1, this.length)) {
+    if (next.length === safeLen) {
       this.emitEvent('mth-complete', { detail: { value: next, mode: this.mode } });
     }
   }
@@ -291,13 +312,29 @@ export class MthMfaChallenge extends UIElement {
     this.emitEvent('mth-submit', { detail: { value: this.value.trim(), mode: this.mode } });
   }
 
+  private readonly handleSiblingNavKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
+
   override render() {
     const isDisabled = this.effectivelyDisabled;
     const digits = this.getDigitsArray();
-    const hasError = Boolean(this.error.trim());
+    const resolvedError =
+      this.error.trim() ||
+      (this.formCtrl.invalid && this.formCtrl.touched ? this.formCtrl.validationMessage : '');
+    const isInvalid = this.invalid || Boolean(resolvedError);
+    const describedBy = resolvedError ? 'mth-mfa-desc mth-mfa-err' : 'mth-mfa-desc';
+    const effectiveDir = this.resolveEffectiveDir();
 
     return html`
-      <div part="base" class="card" dir=${this.resolvedDir}>
+      <div part="base" class="card" dir=${effectiveDir}>
         <div class="header">
           <h2 class="title" id="mth-mfa-title">${this.t('heading')}</h2>
           <p class="description" id="mth-mfa-desc">
@@ -312,7 +349,7 @@ export class MthMfaChallenge extends UIElement {
                 class="digits"
                 role="group"
                 aria-labelledby="mth-mfa-title"
-                aria-describedby="mth-mfa-desc mth-mfa-err"
+                aria-describedby=${describedBy}
               >
                 ${digits.map(
                   (digit, index) => html`
@@ -328,7 +365,7 @@ export class MthMfaChallenge extends UIElement {
                         index: index + 1,
                         total: digits.length,
                       })}
-                      aria-invalid=${hasError ? 'true' : 'false'}
+                      aria-invalid=${isInvalid ? 'true' : 'false'}
                       .value=${digit}
                       ?disabled=${isDisabled}
                       @input=${(ev: Event) => this.handleDigitInput(index, ev)}
@@ -349,8 +386,8 @@ export class MthMfaChallenge extends UIElement {
                   type="text"
                   autocomplete="one-time-code"
                   placeholder=${this.t('backupPlaceholder')}
-                  aria-describedby="mth-mfa-desc mth-mfa-err"
-                  aria-invalid=${hasError ? 'true' : 'false'}
+                  aria-describedby=${describedBy}
+                  aria-invalid=${isInvalid ? 'true' : 'false'}
                   .value=${this.value}
                   ?disabled=${isDisabled}
                   @input=${this.handleBackupInput}
@@ -363,12 +400,12 @@ export class MthMfaChallenge extends UIElement {
           id="mth-mfa-err"
           class="error-text"
           role="alert"
-          ?hidden=${!hasError}
+          ?hidden=${!resolvedError}
         >
-          ${this.error}
+          ${resolvedError}
         </p>
 
-        <div class="actions">
+        <div class="actions" @keydown=${this.handleSiblingNavKeyDown}>
           <div class="secondary-actions">
             <button
               type="button"

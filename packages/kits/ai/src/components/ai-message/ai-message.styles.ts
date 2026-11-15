@@ -5,13 +5,13 @@ export const aiMessageStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_msg-bg: var(--mth-color-surface, oklch(99% 0 0));
-    --_msg-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_msg-muted: var(--mth-color-fg-muted, oklch(48% 0.01 260));
-    --_msg-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_msg-accent-bg: var(--mth-color-accent-subtle, oklch(95% 0.03 255));
-    --_msg-subtle-bg: var(--mth-color-bg-subtle, oklch(96% 0.005 260));
-    --_msg-accent: var(--mth-color-accent, oklch(52% 0.2 255));
+    --_msg-bg: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    --_msg-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_msg-muted: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
+    --_msg-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_msg-accent-bg: var(--mth-color-accent-subtle, light-dark(oklch(95% 0.03 255), oklch(26% 0.05 255)));
+    --_msg-subtle-bg: var(--mth-color-bg-subtle, light-dark(oklch(96% 0.005 260), oklch(22% 0.01 260)));
+    --_msg-accent: var(--mth-color-accent, light-dark(oklch(52% 0.2 255), oklch(70% 0.16 255)));
     --_msg-radius: var(--mth-radius-lg, 0.75rem);
   }
 
@@ -130,6 +130,23 @@ export const aiMessageStyles = css`
   @media (prefers-reduced-motion: reduce) {
     .cursor {
       animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .base {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .content code {
+      border: 1px solid CanvasText;
+    }
+
+    .cursor {
+      forced-color-adjust: none;
+      background-color: Highlight;
     }
   }
 `;

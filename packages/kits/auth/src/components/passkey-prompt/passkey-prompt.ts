@@ -1,7 +1,4 @@
 import { UIElement, html, nothing, property, state } from '@methane/core';
-import '@methane/ui/badge/element.js';
-import '@methane/ui/icon/element.js';
-import '@methane/ui/spinner/element.js';
 import { passkeyPromptMessages } from './passkey-prompt.messages.js';
 import { passkeyPromptStyles } from './passkey-prompt.styles.js';
 
@@ -113,6 +110,12 @@ export class MthPasskeyPrompt extends UIElement {
     return null;
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override render() {
     const supported = this.isWebAuthnSupported;
     const effectiveStatus: MthPasskeyStatus = !supported && this.status === 'idle' ? 'unsupported' : this.status;
@@ -120,7 +123,7 @@ export class MthPasskeyPrompt extends UIElement {
     const ctaDisabled = this.disabled || effectiveStatus === 'pending' || !supported;
 
     return html`
-      <section part="base" class="card" dir=${this.resolvedDir} aria-labelledby="mth-pk-title">
+      <section part="base" class="card" dir=${this.resolveEffectiveDir()} aria-labelledby="mth-pk-title">
         <div class="header-row">
           <div class="title-group">
             <span class="icon-box" aria-hidden="true">

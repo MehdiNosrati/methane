@@ -73,4 +73,31 @@ describe('<mth-artifact-pane>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('switches activeTab via roving ArrowRight and ignores ArrowRight on version select', async () => {
+    const pane = document.createElement('mth-artifact-pane') as MthArtifactPane;
+    pane.title = 'Demo';
+    pane.kind = 'markdown';
+    pane.content = '**Hello**';
+    pane.versions = [
+      { id: 'v1', label: 'v1', content: 'v1' },
+      { id: 'v2', label: 'v2', content: 'v2' },
+    ];
+    document.body.appendChild(pane);
+    await pane.updateComplete;
+
+    const tabs = Array.from(pane.shadowRoot!.querySelectorAll<HTMLElement>('[role="tab"]'));
+    expect(tabs[0]!.tabIndex).toBe(0);
+    expect(tabs[1]!.tabIndex).toBe(-1);
+
+    const select = pane.shadowRoot!.querySelector<HTMLSelectElement>('.version-select')!;
+    select.focus();
+    select.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+    expect(pane.activeTab).toBe('code');
+
+    tabs[0]!.focus();
+    tabs[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+    await pane.updateComplete;
+    expect(pane.activeTab).toBe('preview');
+  });
 });

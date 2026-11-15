@@ -5,14 +5,14 @@ export const aiFeedbackStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_fb-bg: var(--mth-color-surface, oklch(99% 0 0));
-    --_fb-subtle: var(--mth-color-bg-subtle, oklch(96% 0.005 260));
-    --_fb-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_fb-muted: var(--mth-color-fg-muted, oklch(48% 0.01 260));
-    --_fb-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_fb-accent: var(--mth-color-accent, oklch(52% 0.2 255));
-    --_fb-accent-bg: var(--mth-color-accent-subtle, oklch(95% 0.03 255));
-    --_fb-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
+    --_fb-bg: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    --_fb-subtle: var(--mth-color-bg-subtle, light-dark(oklch(96% 0.005 260), oklch(22% 0.01 260)));
+    --_fb-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_fb-muted: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
+    --_fb-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_fb-accent: var(--mth-color-accent, light-dark(oklch(52% 0.2 255), oklch(70% 0.16 255)));
+    --_fb-accent-bg: var(--mth-color-accent-subtle, light-dark(oklch(95% 0.03 255), oklch(26% 0.05 255)));
+    --_fb-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     --_fb-radius: var(--mth-radius-md, 0.5rem);
   }
 
@@ -94,5 +94,36 @@ export const aiFeedbackStyles = css`
     margin: 0;
     font-size: var(--mth-font-size-xs, 0.75rem);
     color: var(--_fb-muted);
+  }
+
+  @media (forced-colors: active) {
+    .chip {
+      border-color: ButtonText;
+      color: ButtonText;
+      background-color: Canvas;
+    }
+
+    .chip[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      border-color: Highlight;
+      color: HighlightText;
+    }
+
+    .chip:focus-visible,
+    .comment-input:focus-visible {
+      outline: 2px solid Highlight;
+    }
+
+    .comment-input {
+      border-color: CanvasText;
+      color: CanvasText;
+      background-color: Canvas;
+    }
+
+    .chip:disabled {
+      border-color: GrayText;
+      color: GrayText;
+    }
   }
 `;

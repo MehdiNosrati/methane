@@ -100,4 +100,14 @@ describe('<mth-profile-menu>', () => {
     expect(purity.failures).toEqual([]);
     expect(purity.passed).toBe(true);
   });
+
+  it('returns empty getMenuItems() when closed so trigger arrows do not focus hidden items', async () => {
+    const menu = document.createElement('mth-profile-menu') as MthProfileMenu;
+    menu.items = [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }];
+    document.body.appendChild(menu);
+    await menu.updateComplete;
+
+    expect(menu.open).toBe(false);
+    expect(menu.getMenuItems()).toEqual([]);
+  });
 });

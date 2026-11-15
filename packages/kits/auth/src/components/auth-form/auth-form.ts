@@ -356,7 +356,6 @@ export class MthAuthForm extends UIElement {
               part="submit-button"
               ?loading=${this.loading}
               ?disabled=${isDisabled}
-              @click=${this.handleFormSubmit}
             >
               ${this.resolveSubmitLabel()}
             </mth-button>

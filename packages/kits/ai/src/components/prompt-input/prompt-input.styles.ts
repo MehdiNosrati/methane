@@ -5,12 +5,12 @@ export const promptInputStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_pi-bg: var(--mth-color-surface, oklch(99% 0 0));
-    --_pi-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_pi-muted: var(--mth-color-fg-muted, oklch(48% 0.01 260));
-    --_pi-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_pi-border-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
-    --_pi-danger: var(--mth-color-danger, oklch(55% 0.22 25));
+    --_pi-bg: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    --_pi-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_pi-muted: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
+    --_pi-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_pi-border-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
+    --_pi-danger: var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
     --_pi-radius: var(--mth-radius-lg, 0.75rem);
     --_pi-block-size: auto;
   }
@@ -98,5 +98,27 @@ export const promptInputStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
     color: var(--_pi-danger);
     margin: 0;
+  }
+
+  @media (forced-colors: active) {
+    .composer {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .composer:focus-within {
+      outline: 2px solid Highlight;
+      border-color: Highlight;
+    }
+
+    :host(:state(invalid)) .composer {
+      border-color: Mark;
+    }
+
+    :host(:state(disabled)) .composer {
+      border-color: GrayText;
+      color: GrayText;
+    }
   }
 `;

@@ -7,12 +7,11 @@ import {
   type Placement,
   type PositioningResult,
 } from '@methane/primitives';
-import type { MthIconName } from '@methane/ui/icon';
-import '@methane/ui/avatar/element.js';
-import '@methane/ui/badge/element.js';
-import '@methane/ui/icon/element.js';
+import type { MthIconName } from '@methane/ui/icon/element.js';
 import { profileMenuMessages } from './profile-menu.messages.js';
 import { profileMenuStyles } from './profile-menu.styles.js';
+
+const ANCHOR_NAME_RE = /^--[A-Za-z0-9_-]+$/;
 
 export interface ProfileMenuItem {
   readonly id: string;
@@ -107,7 +106,7 @@ export class MthProfileMenu extends UIElement {
       anchor: () => this.externalTrigger ?? this.triggerBtnEl ?? this,
       floating: () => this.surfaceEl ?? null,
       placement: this.placement,
-      offset: this.offset,
+      offset: Number.isFinite(this.offset) ? this.offset : 8,
       flip: true,
       shift: true,
       onPosition: (result) => {
@@ -123,9 +122,22 @@ export class MthProfileMenu extends UIElement {
     });
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   getMenuItems(): HTMLButtonElement[] {
-    if (!this.shadowRoot) return [];
+    if (!this.open || !this.shadowRoot) return [];
     return Array.from(this.shadowRoot.querySelectorAll<HTMLButtonElement>('[part="item"]'));
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.open && this.hasUpdated) {
+      this.positioningCtrl.reposition();
+    }
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -133,11 +145,11 @@ export class MthProfileMenu extends UIElement {
     if (changedProperties.has('placement') || changedProperties.has('offset')) {
       this.positioningCtrl.updateOptions({
         placement: this.placement,
-        offset: this.offset,
+        offset: Number.isFinite(this.offset) ? this.offset : 8,
       });
     }
     this.rovingCtrl.updateOptions({
-      dir: this.resolvedDir,
+      dir: this.resolveEffectiveDir(),
     });
   }
 
@@ -186,15 +198,16 @@ export class MthProfileMenu extends UIElement {
 
     let cssRules = '';
     if (result.strategy === 'css-anchor' && surface) {
-      const anchorName = surface.style.getPropertyValue('position-anchor');
-      const positionArea = surface.style.getPropertyValue('position-area');
-      const tryFallbacks = surface.style.getPropertyValue('position-try-fallbacks');
+      const rawAnchorName = surface.style.getPropertyValue('position-anchor').trim();
+      const anchorName = ANCHOR_NAME_RE.test(rawAnchorName) ? rawAnchorName : '';
+      const positionArea = surface.style.getPropertyValue('position-area').trim();
+      const tryFallbacks = surface.style.getPropertyValue('position-try-fallbacks').trim();
       cssRules += `#mth-pm-surface {\n  position: fixed;\n`;
       if (anchorName) cssRules += `  position-anchor: ${anchorName};\n`;
       if (positionArea) cssRules += `  position-area: ${positionArea};\n`;
       if (tryFallbacks) cssRules += `  position-try-fallbacks: ${tryFallbacks};\n`;
       cssRules += `}\n`;
-    } else {
+    } else if (Number.isFinite(result.x) && Number.isFinite(result.y)) {
       cssRules += `#mth-pm-surface {\n  position: fixed;\n  inset-inline-start: ${result.x}px;\n  inset-block-start: ${result.y}px;\n}\n`;
     }
 
@@ -244,7 +257,7 @@ export class MthProfileMenu extends UIElement {
       : this.t('menuLabel');
 
     return html`
-      <div class="wrapper" dir=${this.resolvedDir}>
+      <div class="wrapper" dir=${this.resolveEffectiveDir()}>
         <button
           id="mth-pm-trigger"
           type="button"

@@ -51,8 +51,18 @@ export class MthSsoButtons extends UIElement {
     return Array.from(this.shadowRoot.querySelectorAll<HTMLElement>('[part="provider-button"]'));
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
+    this.rovingCtrl.updateOptions({
+      orientation: this.orientation,
+      dir: this.resolveEffectiveDir(),
+    });
     this.syncStates();
   }
 
@@ -60,7 +70,7 @@ export class MthSsoButtons extends UIElement {
     super.willUpdate(changedProperties);
     this.rovingCtrl.updateOptions({
       orientation: this.orientation,
-      dir: this.resolvedDir,
+      dir: this.resolveEffectiveDir(),
     });
     this.syncStates();
   }

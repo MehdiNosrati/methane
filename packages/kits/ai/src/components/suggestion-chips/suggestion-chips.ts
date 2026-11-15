@@ -49,8 +49,18 @@ export class MthSuggestionChips extends UIElement {
     return Array.from(this.shadowRoot.querySelectorAll<HTMLElement>('[part="chip"]'));
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
+    this.rovingCtrl.updateOptions({
+      orientation: this.orientation,
+      dir: this.resolveEffectiveDir(),
+    });
     this.setCustomState('disabled', this.disabled);
   }
 
@@ -61,7 +71,7 @@ export class MthSuggestionChips extends UIElement {
     }
     this.rovingCtrl.updateOptions({
       orientation: this.orientation,
-      dir: this.resolvedDir,
+      dir: this.resolveEffectiveDir(),
     });
   }
 

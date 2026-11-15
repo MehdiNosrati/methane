@@ -1,5 +1,4 @@
 import { UIElement, html, nothing, property } from '@methane/core';
-import '@methane/ui/badge/element.js';
 import { sessionListMessages } from './session-list.messages.js';
 import { sessionListStyles } from './session-list.styles.js';
 
@@ -59,13 +58,19 @@ export class MthSessionList extends UIElement {
     });
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override render() {
     const titleText = this.heading || this.t('heading');
     const otherSessions = this.sessions.filter((s) => !s.current);
     const controlsDisabled = this.disabled || this.loading;
 
     return html`
-      <section part="base" class="container" dir=${this.resolvedDir} aria-labelledby="mth-sl-title">
+      <section part="base" class="container" dir=${this.resolveEffectiveDir()} aria-labelledby="mth-sl-title">
         <div class="header">
           <h2 class="title" id="mth-sl-title">${titleText}</h2>
           ${otherSessions.length > 0

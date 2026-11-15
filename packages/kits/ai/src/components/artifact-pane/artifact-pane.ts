@@ -82,6 +82,9 @@ export class MthArtifactPane extends UIElement {
       orientation: 'horizontal',
       loop: true,
       dir: this.resolvedDir,
+      onActiveChange: (_el, index) => {
+        this.setTab(index === 1 ? 'preview' : 'code');
+      },
     });
 
     this.motionCtrl = new MotionController(this, {
@@ -93,8 +96,15 @@ export class MthArtifactPane extends UIElement {
     });
   }
 
+  private resolveEffectiveDir(): 'ltr' | 'rtl' {
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
+    this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
     this.setCustomState('open', this.open);
     this.setCustomState('copied', this.copied);
   }
@@ -130,7 +140,10 @@ export class MthArtifactPane extends UIElement {
     if (changedProperties.has('copied')) {
       this.setCustomState('copied', this.copied);
     }
-    this.rovingCtrl.updateOptions({ dir: this.resolvedDir });
+    if (changedProperties.has('activeTab')) {
+      this.rovingCtrl.setActiveIndex(this.activeTab === 'preview' ? 1 : 0);
+    }
+    this.rovingCtrl.updateOptions({ dir: this.resolveEffectiveDir() });
   }
 
   protected override updated(changedProperties: PropertyValues): void {
@@ -213,8 +226,20 @@ export class MthArtifactPane extends UIElement {
   setTab(tab: MthArtifactTab): void {
     if (this.activeTab === tab) return;
     this.activeTab = tab;
+    this.rovingCtrl.setActiveIndex(tab === 'preview' ? 1 : 0);
     this.emitEvent('mth-tab-change', { detail: { tab } });
   }
+
+  private readonly handleSiblingNavKeyDown = (event: KeyboardEvent): void => {
+    if (
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight' ||
+      event.key === 'Home' ||
+      event.key === 'End'
+    ) {
+      event.stopPropagation();
+    }
+  };
 
   private readonly handleVersionChange = (event: Event): void => {
     const value = (event.target as HTMLSelectElement).value;
@@ -256,6 +281,7 @@ export class MthArtifactPane extends UIElement {
                     aria-label=${this.t('versionLabel')}
                     .value=${this.activeVersion || (this.versions[0]?.id ?? '')}
                     @change=${this.handleVersionChange}
+                    @keydown=${this.handleSiblingNavKeyDown}
                   >
                     ${this.versions.map(
                       (v) =>
@@ -271,6 +297,7 @@ export class MthArtifactPane extends UIElement {
                 type="button"
                 class="tab"
                 role="tab"
+                tabindex=${this.activeTab === 'code' ? 0 : -1}
                 aria-selected=${this.activeTab === 'code' ? 'true' : 'false'}
                 aria-controls=${codePanelId}
                 @click=${() => this.setTab('code')}
@@ -282,6 +309,7 @@ export class MthArtifactPane extends UIElement {
                 type="button"
                 class="tab"
                 role="tab"
+                tabindex=${this.activeTab === 'preview' ? 0 : -1}
                 aria-selected=${this.activeTab === 'preview' ? 'true' : 'false'}
                 aria-controls=${previewPanelId}
                 @click=${() => this.setTab('preview')}
@@ -292,7 +320,13 @@ export class MthArtifactPane extends UIElement {
 
             <slot name="actions"></slot>
 
-            <mth-button variant="ghost" size="sm" part="copy-button" @click=${this.handleCopyClick}>
+            <mth-button
+              variant="ghost"
+              size="sm"
+              part="copy-button"
+              @click=${this.handleCopyClick}
+              @keydown=${this.handleSiblingNavKeyDown}
+            >
               <mth-icon name=${this.copied ? 'check' : 'copy'} size="xs"></mth-icon>
               <span>${this.copied ? this.t('copiedLabel') : this.t('copyLabel')}</span>
             </mth-button>
@@ -303,6 +337,7 @@ export class MthArtifactPane extends UIElement {
               part="close-button"
               aria-label=${this.t('closeLabel')}
               @click=${this.handleCloseClick}
+              @keydown=${this.handleSiblingNavKeyDown}
             >
               <mth-icon name="close" size="xs"></mth-icon>
             </mth-button>

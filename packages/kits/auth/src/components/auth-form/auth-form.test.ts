@@ -1,7 +1,7 @@
 import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
 import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
 import { html as litHtml } from 'lit';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
 import { MthAuthForm, authFormSpec, registerMthAuthForm } from './index.js';
 
@@ -106,5 +106,23 @@ describe('<mth-auth-form>', () => {
     });
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
+  });
+
+  it('emits mth-submit exactly once when clicking submit button inside form', async () => {
+    const form = document.createElement('mth-auth-form') as MthAuthForm;
+    form.mode = 'magic-link';
+    form.email = 'single@methane.dev';
+    document.body.appendChild(form);
+    await form.updateComplete;
+
+    const onSubmit = vi.fn();
+    form.addEventListener('mth-submit', onSubmit);
+
+    const submitBtn = form.shadowRoot!.querySelector<HTMLElement>('[part="submit-button"]')!;
+    const innerBtn = submitBtn.shadowRoot!.querySelector<HTMLButtonElement>('button')!;
+    innerBtn.click();
+    await form.updateComplete;
+
+    expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 });

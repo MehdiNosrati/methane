@@ -5,11 +5,11 @@ export const authFormStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_af-bg: var(--mth-color-surface, oklch(99% 0 0));
-    --_af-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_af-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_af-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
-    --_af-danger: var(--mth-color-danger, oklch(55% 0.22 25));
+    --_af-bg: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    --_af-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_af-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_af-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
+    --_af-danger: var(--mth-color-danger, light-dark(oklch(55% 0.22 25), oklch(68% 0.19 25)));
     --_af-radius: var(--mth-radius-lg, 0.75rem);
   }
 
@@ -79,5 +79,22 @@ export const authFormStyles = css`
     display: flex;
     flex-direction: column;
     gap: var(--mth-space-2, 0.5rem);
+  }
+
+  @media (forced-colors: active) {
+    .card,
+    .input {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .input:focus-visible {
+      outline: 2px solid Highlight;
+    }
+
+    .input[aria-invalid='true'] {
+      border-color: Mark;
+    }
   }
 `;

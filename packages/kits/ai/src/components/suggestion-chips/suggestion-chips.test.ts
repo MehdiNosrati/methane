@@ -78,4 +78,19 @@ describe('<mth-suggestion-chips>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('respects ancestor dir="rtl" for roving horizontal arrows', async () => {
+    const rtlContainer = document.createElement('div');
+    rtlContainer.setAttribute('dir', 'rtl');
+    const el = document.createElement('mth-suggestion-chips') as MthSuggestionChips;
+    el.items = [{ label: 'First' }, { label: 'Second' }];
+    rtlContainer.appendChild(el);
+    document.body.appendChild(rtlContainer);
+    await el.updateComplete;
+
+    const items = el.getItemElements();
+    items[0]!.focus();
+    items[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+    expect(items[1]!.tabIndex).toBe(0);
+  });
 });

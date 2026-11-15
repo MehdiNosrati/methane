@@ -5,13 +5,13 @@ export const artifactPaneStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_ap-bg: var(--mth-color-surface-raised, oklch(100% 0 0));
-    --_ap-subtle: var(--mth-color-bg-subtle, oklch(96% 0.005 260));
-    --_ap-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_ap-muted: var(--mth-color-fg-muted, oklch(48% 0.01 260));
-    --_ap-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_ap-accent: var(--mth-color-accent, oklch(52% 0.2 255));
-    --_ap-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
+    --_ap-bg: var(--mth-color-surface-raised, light-dark(oklch(100% 0 0), oklch(19% 0.01 260)));
+    --_ap-subtle: var(--mth-color-bg-subtle, light-dark(oklch(96% 0.005 260), oklch(22% 0.01 260)));
+    --_ap-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_ap-muted: var(--mth-color-fg-muted, light-dark(oklch(48% 0.01 260), oklch(72% 0.01 260)));
+    --_ap-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_ap-accent: var(--mth-color-accent, light-dark(oklch(52% 0.2 255), oklch(70% 0.16 255)));
+    --_ap-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     --_ap-radius: var(--mth-radius-lg, 0.75rem);
   }
 
@@ -122,5 +122,34 @@ export const artifactPaneStyles = css`
 
   .preview-body {
     line-height: var(--mth-line-height-normal, 1.5);
+  }
+
+  @media (forced-colors: active) {
+    .pane,
+    .tabs,
+    .version-select {
+      border-color: CanvasText;
+      background-color: Canvas;
+      color: CanvasText;
+    }
+
+    .header {
+      border-block-end-color: CanvasText;
+    }
+
+    .tab {
+      color: ButtonText;
+    }
+
+    .tab[aria-selected='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+    }
+
+    .tab:focus-visible,
+    .version-select:focus-visible {
+      outline: 2px solid Highlight;
+    }
   }
 `;

@@ -115,4 +115,19 @@ describe('<mth-prompt-input>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('re-attaches auto-size stylesheet on reconnect and guards non-finite maxRows', async () => {
+    const el = document.createElement('mth-prompt-input') as MthPromptInput;
+    el.maxRows = Number.NaN;
+    el.value = 'Line 1\nLine 2';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    el.remove();
+    document.body.appendChild(el);
+    el.value = 'Line 1\nLine 2\nLine 3';
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('textarea')!.value).toBe('Line 1\nLine 2\nLine 3');
+  });
 });

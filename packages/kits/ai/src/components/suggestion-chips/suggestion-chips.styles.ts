@@ -5,12 +5,12 @@ export const suggestionChipsStyles = css`
     display: block;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_sc-bg: var(--mth-color-surface, oklch(99% 0 0));
-    --_sc-bg-hover: var(--mth-color-accent-subtle, oklch(95% 0.03 255));
-    --_sc-fg: var(--mth-color-fg, oklch(18% 0.01 260));
-    --_sc-border: var(--mth-color-border, oklch(86% 0.01 260));
-    --_sc-accent: var(--mth-color-accent, oklch(52% 0.2 255));
-    --_sc-focus: var(--mth-color-border-focus, oklch(55% 0.18 255));
+    --_sc-bg: var(--mth-color-surface, light-dark(oklch(99% 0 0), oklch(16% 0.01 260)));
+    --_sc-bg-hover: var(--mth-color-accent-subtle, light-dark(oklch(95% 0.03 255), oklch(26% 0.05 255)));
+    --_sc-fg: var(--mth-color-fg, light-dark(oklch(18% 0.01 260), oklch(94% 0.01 260)));
+    --_sc-border: var(--mth-color-border, light-dark(oklch(86% 0.01 260), oklch(34% 0.01 260)));
+    --_sc-accent: var(--mth-color-accent, light-dark(oklch(52% 0.2 255), oklch(70% 0.16 255)));
+    --_sc-focus: var(--mth-color-border-focus, light-dark(oklch(55% 0.18 255), oklch(72% 0.16 255)));
     --_sc-radius: var(--mth-radius-full, 9999px);
   }
 
@@ -59,5 +59,26 @@ export const suggestionChipsStyles = css`
   .chip:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    .chip {
+      border-color: ButtonText;
+      background-color: Canvas;
+      color: ButtonText;
+    }
+
+    .chip:hover:not(:disabled) {
+      border-color: Highlight;
+    }
+
+    .chip:focus-visible {
+      outline: 2px solid Highlight;
+    }
+
+    .chip:disabled {
+      border-color: GrayText;
+      color: GrayText;
+    }
   }
 `;

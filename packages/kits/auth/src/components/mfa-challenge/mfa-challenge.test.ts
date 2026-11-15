@@ -123,4 +123,34 @@ describe('<mth-mfa-challenge>', () => {
     expect(purity.failures).toEqual([]);
     expect(purity.passed).toBe(true);
   });
+
+  it('displays FACE validation error on failed submit, guards NaN length, and respects ancestor dir="rtl"', async () => {
+    const rtlWrap = document.createElement('div');
+    rtlWrap.setAttribute('dir', 'rtl');
+    const el = document.createElement('mth-mfa-challenge') as MthMfaChallenge;
+    el.length = Number.NaN;
+    rtlWrap.appendChild(el);
+    document.body.appendChild(rtlWrap);
+    await el.updateComplete;
+
+    const digits = el.getDigitElements();
+    expect(digits).toHaveLength(6);
+
+    digits[0]!.focus();
+    digits[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }),
+    );
+    expect(el.getDigitElements()[1]!.tabIndex).toBe(0);
+
+    const submitBtn = el.shadowRoot!.querySelector<HTMLButtonElement>('[part="submit"]')!;
+    submitBtn.click();
+    await el.updateComplete;
+
+    const errEl = el.shadowRoot!.querySelector<HTMLElement>('#mth-mfa-err')!;
+    expect(errEl.hidden).toBe(false);
+    expect(errEl.textContent?.trim()).toBeTruthy();
+    expect(el.getDigitElements()[0]!.getAttribute('aria-invalid')).toBe('true');
+    const digitsGroup = el.shadowRoot!.querySelector<HTMLElement>('[part="digits"]')!;
+    expect(digitsGroup.getAttribute('aria-describedby')).toContain('mth-mfa-err');
+  });
 });

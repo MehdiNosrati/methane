@@ -216,17 +216,20 @@ export class MthPromptInput extends UIElement {
   private syncAutoSizeSheet(): void {
     const el = this.textareaEl;
     const root = this.shadowRoot;
-    if (!el || !root || typeof CSSStyleSheet === 'undefined' || !Array.isArray(root.adoptedStyleSheets)) {
+    if (!el || !root || typeof CSSStyleSheet === 'undefined' || !('adoptedStyleSheets' in root)) {
       return;
     }
     if (!this.sizeSheet) {
       this.sizeSheet = new CSSStyleSheet();
+    }
+    if (!root.adoptedStyleSheets.includes(this.sizeSheet)) {
       root.adoptedStyleSheets = [...root.adoptedStyleSheets, this.sizeSheet];
     }
     const lineHeightPx = 24;
-    const rows = Math.max(1, Math.min(this.maxRows, this.value.split('\n').length));
+    const safeMaxRows = Number.isFinite(this.maxRows) ? Math.max(1, Math.trunc(this.maxRows)) : 8;
+    const rows = Math.max(1, Math.min(safeMaxRows, this.value.split('\n').length));
     const scrollH = el.scrollHeight > 0 ? el.scrollHeight : rows * lineHeightPx;
-    const maxH = Math.max(1, this.maxRows) * lineHeightPx;
+    const maxH = safeMaxRows * lineHeightPx;
     const clamped = Math.min(Math.max(40, scrollH), maxH);
     this.sizeSheet.replaceSync(`:host { --_pi-block-size: ${clamped}px; }`);
   }
