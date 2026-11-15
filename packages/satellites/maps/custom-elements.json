@@ -4,6 +4,802 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "src/components/floor-plan/floor-plan.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFloorPlan",
+          "tagName": "mth-floor-plan",
+          "customElement": true,
+          "description": "Methane MthFloorPlan custom element (<mth-floor-plan>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rooms",
+              "type": {
+                "text": "ReadonlyArray<FloorPlanRoom>"
+              },
+              "description": "rooms property."
+            },
+            {
+              "kind": "field",
+              "name": "selectedIds",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "selectedIds property."
+            },
+            {
+              "kind": "field",
+              "name": "level",
+              "attribute": "level",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"1\"",
+              "description": "level property."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "zoom property."
+            },
+            {
+              "kind": "field",
+              "name": "panX",
+              "attribute": "pan-x",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "panX property."
+            },
+            {
+              "kind": "field",
+              "name": "panY",
+              "attribute": "pan-y",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "panY property."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "multiple property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "level",
+              "fieldName": "level",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"1\"",
+              "description": "level property."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "zoom property."
+            },
+            {
+              "name": "pan-x",
+              "fieldName": "panX",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "panX property."
+            },
+            {
+              "name": "pan-y",
+              "fieldName": "panY",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "panY property."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "multiple property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-room-select",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string>; room: FloorPlanRoom }>"
+              },
+              "description": "Emitted event mth-room-select."
+            },
+            {
+              "name": "mth-floor-zoom",
+              "type": {
+                "text": "CustomEvent<{ zoom: number; panX: number; panY: number }>"
+              },
+              "description": "Emitted event mth-floor-zoom."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "viewport",
+              "description": "Pannable and zoomable SVG container."
+            },
+            {
+              "name": "svg",
+              "description": "Vector indoor floor plan."
+            },
+            {
+              "name": "rooms",
+              "description": "Accessible roving room directory."
+            },
+            {
+              "name": "room-button",
+              "description": "Interactive room selector button."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "multiple",
+              "description": "Custom element state :state(multiple)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-floor-plan",
+            "package": "@methane/maps",
+            "conformance": [
+              "roving-focus",
+              "satellite"
+            ],
+            "controllers": [
+              "RovingFocusController",
+              "SelectionController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "multiple"
+            ],
+            "props": [
+              {
+                "name": "rooms",
+                "attr": false,
+                "type": "ReadonlyArray<FloorPlanRoom>"
+              },
+              {
+                "name": "selectedIds",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "level",
+                "attr": "level",
+                "type": "string",
+                "default": "1"
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "panX",
+                "attr": "pan-x",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "panY",
+                "attr": "pan-y",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-room-select",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string>; room: FloorPlanRoom }"
+              },
+              {
+                "name": "mth-floor-zoom",
+                "cancelable": false,
+                "detailType": "{ zoom: number; panX: number; panY: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "viewport",
+                "description": "Pannable and zoomable SVG container."
+              },
+              {
+                "name": "svg",
+                "description": "Vector indoor floor plan."
+              },
+              {
+                "name": "rooms",
+                "description": "Accessible roving room directory."
+              },
+              {
+                "name": "room-button",
+                "description": "Interactive room selector button."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "room directory focused",
+                "expect": "Moves focus to previous room"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "room directory focused",
+                "expect": "Moves focus to next room"
+              },
+              {
+                "key": "Enter",
+                "when": "room focused",
+                "expect": "Selects or toggles room"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Interactive floor plan",
+              "levelLabel": "Level {level}",
+              "roomsLabel": "Rooms",
+              "zoomIn": "Zoom in floor plan",
+              "zoomOut": "Zoom out floor plan",
+              "resetPanZoom": "Reset floor plan view",
+              "roomSelected": "{name} (selected)",
+              "roomUnavailable": "{name} (unavailable)"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFloorPlan",
+          "declaration": {
+            "name": "MthFloorPlan",
+            "module": "src/components/floor-plan/floor-plan.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-floor-plan",
+          "declaration": {
+            "name": "MthFloorPlan",
+            "module": "src/components/floor-plan/floor-plan.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/location-picker/location-picker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthLocationPicker",
+          "tagName": "mth-location-picker",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Methane MthLocationPicker custom element (<mth-location-picker>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "defaultValue property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "attribute": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.01",
+              "description": "step property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readOnly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readOnly property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "defaultValue property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "0.01",
+              "description": "step property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readOnly property."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Emitted event input."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Emitted event change."
+            },
+            {
+              "name": "mth-location-select",
+              "type": {
+                "text": "CustomEvent<{ lat: number; lng: number; value: string }>"
+              },
+              "description": "Emitted event mth-location-select."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer form field container."
+            },
+            {
+              "name": "label",
+              "description": "Field label text."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "pin-target",
+              "description": "Interactive keyboard coordinate selector."
+            },
+            {
+              "name": "readout",
+              "description": "Coordinate readout display."
+            },
+            {
+              "name": "clear-button",
+              "description": "Clears the selected location."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-location-picker",
+            "package": "@methane/maps",
+            "conformance": [
+              "form-control",
+              "satellite"
+            ],
+            "controllers": [
+              "FormControlController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched"
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "step",
+                "attr": "step",
+                "type": "number",
+                "default": 0.01
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readOnly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "input",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "change",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-location-select",
+                "cancelable": false,
+                "detailType": "{ lat: number; lng: number; value: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer form field container."
+              },
+              {
+                "name": "label",
+                "description": "Field label text."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "pin-target",
+                "description": "Interactive keyboard coordinate selector."
+              },
+              {
+                "name": "readout",
+                "description": "Coordinate readout display."
+              },
+              {
+                "name": "clear-button",
+                "description": "Clears the selected location."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "pin target focused",
+                "expect": "Nudges longitude west"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "rtl",
+                "when": "pin target focused",
+                "expect": "Nudges longitude west in RTL"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "pin target focused",
+                "expect": "Nudges latitude north"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "pin target focused",
+                "expect": "Nudges latitude south"
+              },
+              {
+                "key": "Delete",
+                "when": "pin target focused",
+                "expect": "Clears the selected coordinate"
+              }
+            ],
+            "messages": {
+              "defaultLabel": "Location",
+              "pinInstructions": "Move location pin",
+              "nudgeWest": "Move west",
+              "nudgeEast": "Move east",
+              "nudgeNorth": "Move north",
+              "nudgeSouth": "Move south",
+              "clearLabel": "Clear location",
+              "noLocationSelected": "No coordinates selected",
+              "coordinateSummary": "{lat}, {lng}",
+              "requiredError": "Please select a location.",
+              "invalidFormatError": "Location must be formatted as latitude,longitude."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthLocationPicker",
+          "declaration": {
+            "name": "MthLocationPicker",
+            "module": "src/components/location-picker/location-picker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-location-picker",
+          "declaration": {
+            "name": "MthLocationPicker",
+            "module": "src/components/location-picker/location-picker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/map/map.ts",
       "declarations": [
         {
@@ -1234,6 +2030,496 @@
           "declaration": {
             "name": "MthMapRoute",
             "module": "src/components/map-route/map-route.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/seat-map/seat-map.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSeatMap",
+          "tagName": "mth-seat-map",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Methane MthSeatMap custom element (<mth-seat-map>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "defaultValue property."
+            },
+            {
+              "kind": "field",
+              "name": "seats",
+              "type": {
+                "text": "ReadonlyArray<SeatDefinition>"
+              },
+              "description": "seats property."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "attribute": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "columns property."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "multiple property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readOnly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readOnly property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "defaultValue property."
+            },
+            {
+              "name": "columns",
+              "fieldName": "columns",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "columns property."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "multiple property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readOnly property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Emitted event input."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Emitted event change."
+            },
+            {
+              "name": "mth-seat-select",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string>; seat: SeatDefinition }>"
+              },
+              "description": "Emitted event mth-seat-select."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer form control container."
+            },
+            {
+              "name": "label",
+              "description": "Field label."
+            },
+            {
+              "name": "stage",
+              "description": "Venue stage / front orientation indicator."
+            },
+            {
+              "name": "grid",
+              "description": "2D roving ARIA seat grid."
+            },
+            {
+              "name": "seat",
+              "description": "Individual seat gridcell button."
+            },
+            {
+              "name": "legend",
+              "description": "Seat status and tier legend."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "multiple",
+              "description": "Custom element state :state(multiple)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-seat-map",
+            "package": "@methane/maps",
+            "conformance": [
+              "form-control",
+              "roving-focus",
+              "satellite"
+            ],
+            "controllers": [
+              "FormControlController",
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched",
+              "multiple"
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "seats",
+                "attr": false,
+                "type": "ReadonlyArray<SeatDefinition>"
+              },
+              {
+                "name": "columns",
+                "attr": "columns",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readOnly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "input",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "change",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-seat-select",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string>; seat: SeatDefinition }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer form control container."
+              },
+              {
+                "name": "label",
+                "description": "Field label."
+              },
+              {
+                "name": "stage",
+                "description": "Venue stage / front orientation indicator."
+              },
+              {
+                "name": "grid",
+                "description": "2D roving ARIA seat grid."
+              },
+              {
+                "name": "seat",
+                "description": "Individual seat gridcell button."
+              },
+              {
+                "name": "legend",
+                "description": "Seat status and tier legend."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus left by 1 seat"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus right by 1 seat"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus up by 1 row"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "seat gridcell focused",
+                "expect": "Moves focus down by 1 row"
+              },
+              {
+                "key": "Enter",
+                "when": "seat gridcell focused",
+                "expect": "Toggles or selects focused available seat"
+              }
+            ],
+            "messages": {
+              "defaultLabel": "Seat selection",
+              "stageLabel": "Stage / Front",
+              "legendAvailable": "Available",
+              "legendSelected": "Selected",
+              "legendOccupied": "Occupied",
+              "seatAvailableLabel": "Seat {label}, {tier}, available",
+              "seatSelectedLabel": "Seat {label}, {tier}, selected",
+              "seatOccupiedLabel": "Seat {label}, {tier}, occupied",
+              "seatDisabledLabel": "Seat {label}, unavailable",
+              "defaultTier": "Standard",
+              "selectedCount": "{count} selected",
+              "requiredError": "Please select at least one seat."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSeatMap",
+          "declaration": {
+            "name": "MthSeatMap",
+            "module": "src/components/seat-map/seat-map.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-seat-map",
+          "declaration": {
+            "name": "MthSeatMap",
+            "module": "src/components/seat-map/seat-map.ts"
           }
         }
       ]
