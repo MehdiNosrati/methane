@@ -293,4 +293,40 @@ test.describe('@methane/docs visual, custom-element & interactive QA', () => {
     expect(lightBgL - lightFgL).toBeGreaterThan(0.6);
     expect(darkFgL - darkBgL).toBeGreaterThan(0.6);
   });
+
+  test('renders .mth-feature-icon without horizontal overflow and formats inline code without raw backticks', async ({
+    page,
+  }) => {
+    await page.goto(docsUrl('/methane/'), { waitUntil: 'networkidle' });
+
+    const iconOverflow = await page.evaluate(() => {
+      const icons = Array.from(document.querySelectorAll<HTMLElement>('.mth-feature-icon'));
+      return icons.map((el) => ({
+        scrollWidth: el.scrollWidth,
+        clientWidth: el.clientWidth,
+        hasSvg: Boolean(el.querySelector('svg')),
+      }));
+    });
+    expect(iconOverflow.length).toBeGreaterThanOrEqual(3);
+    for (const metric of iconOverflow) {
+      expect(metric.hasSvg).toBe(true);
+      expect(metric.scrollWidth).toBeLessThanOrEqual(metric.clientWidth);
+    }
+
+    await page.goto(docsUrl('/methane/components/'), { waitUntil: 'networkidle' });
+    const cardRawBackticks = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('[data-comp-card] p'))
+        .map((p) => p.textContent ?? '')
+        .filter((text) => text.includes('`'));
+    });
+    expect(cardRawBackticks).toEqual([]);
+
+    await page.goto(docsUrl('/methane/components/mth-button/'), { waitUntil: 'networkidle' });
+    const detailRawBackticks = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('main .mth-stack > p, main td'))
+        .map((el) => el.textContent ?? '')
+        .filter((text) => text.includes('`'));
+    });
+    expect(detailRawBackticks).toEqual([]);
+  });
 });

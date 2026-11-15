@@ -130,8 +130,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--mth-space-10, 2.5rem);
+    min-inline-size: var(--mth-space-10, 2.5rem);
+    inline-size: fit-content;
     block-size: var(--mth-space-10, 2.5rem);
+    padding-inline: var(--mth-space-2, 0.5rem);
     border: 1px solid oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) l c h / 0.2);
     border-radius: var(--mth-radius-md, 0.5rem);
     background-color: var(
@@ -139,6 +141,8 @@
       light-dark(oklch(0.94 0.04 264), oklch(0.22 0.07 264))
     );
     color: var(--mth-color-accent, Highlight);
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    font-weight: var(--mth-font-weight-semibold, 600);
   }
 
   /* 16. .mth-testimonial: accessible quote and attribution card */

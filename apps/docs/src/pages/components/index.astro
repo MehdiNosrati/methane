@@ -1,6 +1,7 @@
 ---
 import DocsLayout from '../../components/DocsLayout.astro';
 import { loadComponentDocs } from '../../lib/component-loader.js';
+import { splitInlineCode } from '../../lib/inline-code.js';
 import { withBase } from '../../lib/links.js';
 
 const components = await loadComponentDocs();
@@ -76,7 +77,9 @@ const groupCounts = {
                 <span class="docs-badge">{entry.packageName}</span>
               </mth-flex>
               <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
-                {entry.description}
+                {splitInlineCode(entry.description).map((seg) =>
+                  seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+                )}
               </p>
               <mth-flex data-gap="2">
                 <span class="docs-badge">{entry.bundleBadge.marginalLabel}</span>

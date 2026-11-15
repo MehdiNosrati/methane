@@ -4,6 +4,7 @@ import ComponentPreview from '../../components/ComponentPreview.astro';
 import ComponentShowcase from '../../components/ComponentShowcase.astro';
 import DocsLayout from '../../components/DocsLayout.astro';
 import { loadComponentDocs, type ComponentDocEntry } from '../../lib/component-loader.js';
+import { splitInlineCode } from '../../lib/inline-code.js';
 import { withBase } from '../../lib/links.js';
 
 export async function getStaticPaths() {
@@ -39,10 +40,17 @@ const { entry } = Astro.props;
       </mth-flex>
     </mth-flex>
 
-    <p style="margin-block:0;color:var(--mth-color-fg-muted)">{entry.description}</p>
+    <p style="margin-block:0;color:var(--mth-color-fg-muted)">
+      {splitInlineCode(entry.description).map((seg) =>
+        seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+      )}
+    </p>
 
     <div class="docs-callout">
-      <strong>When NOT to use:</strong> {entry.whenNotToUse}
+      <strong>When NOT to use:</strong>{' '}
+      {splitInlineCode(entry.whenNotToUse).map((seg) =>
+        seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+      )}
     </div>
 
     <section class="mth-stack" data-gap="3">
@@ -78,7 +86,11 @@ const { entry } = Astro.props;
                   <td><code>{prop.attr ?? '—'}</code></td>
                   <td><code>{prop.type}</code></td>
                   <td><code>{prop.defaultValue ?? '—'}</code></td>
-                  <td>{prop.description}</td>
+                  <td>
+                    {splitInlineCode(prop.description).map((seg) =>
+                      seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+                    )}
+                  </td>
                 </tr>
               ))
             }
@@ -105,7 +117,11 @@ const { entry } = Astro.props;
                   <tr>
                     <td><code>{ev.name}</code></td>
                     <td><code>{ev.detailType}</code></td>
-                    <td>{ev.description}</td>
+                    <td>
+                      {splitInlineCode(ev.description).map((seg) =>
+                        seg.kind === 'code' ? <code>{seg.value}</code> : seg.value,
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

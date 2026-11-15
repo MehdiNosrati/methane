@@ -9,14 +9,28 @@ const result = await transformHtmlDsd('<mth-button variant="solid">Save</mth-but
   styles: 'linked',
   assetBase: '/assets/methane',
 });`,
-  react: `import { renderNextDsd, withMethaneNextHeaders } from '@methane/ssr-next';
-// Next.js App Router RSC + React 19 native custom-element streaming`,
-  vue: `import { createMethaneNuxtNitroPlugin } from '@methane/ssr-nuxt';
-// Nuxt Nitro server plugin expanding DSD + hoisting stylesheet links`,
-  angular: `import { provideMethaneSsr } from '@methane/ssr-angular';
-// Non-destructive Angular SSR serialization + hydration`,
-  svelte: `import { createMethaneSvelteKitHandle } from '@methane/ssr-sveltekit';
-// SvelteKit handle hook for streaming DSD + asset hoisting`,
+  react: `import { renderNextHtml, withMethaneNextConfig } from '@methane/ssr-next';
+import { initNextHydration } from '@methane/ssr-next/client';
+
+export default withMethaneNextConfig({ reactStrictMode: true });
+// Client ("use client"): initNextHydration();
+// Server: await renderNextHtml(html, { styles: 'linked', assetBase: '/assets/methane' });`,
+  vue: `import { createMethaneNitroPlugin, createMethaneNuxtConfig } from '@methane/ssr-nuxt';
+import { initNuxtHydration } from '@methane/ssr-nuxt/client';
+
+export default createMethaneNuxtConfig();
+// Nitro plugin: export default createMethaneNitroPlugin({ styles: 'linked' });
+// Client plugin: initNuxtHydration();`,
+  angular: `import { serializeAngularSsrHtml, transformAngularSsrResponse } from '@methane/ssr-angular';
+import { provideMethaneHydration } from '@methane/ssr-angular/client';
+
+// Server: const { html } = await serializeAngularSsrHtml(ssrHtml, { styles: 'inline' });
+// Client app.config.ts: provideMethaneHydration().initialize();`,
+  svelte: `import { createMethaneHandle, transformSvelteKitHtml } from '@methane/ssr-sveltekit';
+import { initSvelteKitHydration } from '@methane/ssr-sveltekit/client';
+
+// src/hooks.server.ts: export const handle = createMethaneHandle({ styles: 'inline' });
+// src/hooks.client.ts: initSvelteKitHydration();`,
 };
 ---
 

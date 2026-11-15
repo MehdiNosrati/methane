@@ -207,9 +207,17 @@ export const selectStyles = css`
 
     /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
     [part='native-select']::picker-icon {
+      content: "";
+      display: inline-block;
+      inline-size: 1rem;
+      block-size: 1rem;
+      flex-shrink: 0;
       color: var(--_sel-fg-muted);
       margin-inline-start: auto;
-      padding-inline-start: var(--_sel-space-2);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='oklch(0.54 0.014 262)' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 1rem 1rem;
       transition: transform var(--_sel-duration) var(--_sel-ease);
     }
 
@@ -321,6 +329,8 @@ export const selectStyles = css`
   @media (prefers-reduced-motion: reduce) {
     [part='control'],
     [part='caret'] svg,
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    [part='native-select']::picker-icon,
     [part='option'] {
       transition: none;
     }
@@ -339,6 +349,12 @@ export const selectStyles = css`
       appearance: auto;
       background-image: none;
       padding-inline: 0;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    [part='native-select']::picker-icon {
+      content: normal;
+      background-image: none;
     }
 
     :host(:focus-within) [part='control'] {

@@ -233,7 +233,7 @@ export class ProfileComponent {
 
 ### SSR & Client Hydration (Next.js / Astro / Universal)
 
-Client Declarative Shadow DOM hydration is opt-in via `@methane/core/hydrate` (for standalone `@methane/core` / Lit apps) or `@methane/ssr/client` (plus framework adapters `@methane/ssr-next/client`, `@methane/ssr-nuxt/client`, `@methane/ssr-sveltekit/client`, `@methane/ssr-astro/client`, `@methane/ssr-angular/client`) provide explicit hydration sequencing helpers:
+Client Declarative Shadow DOM hydration is opt-in via `@methane/core/hydrate` (for standalone `@methane/core` / Lit apps) or `@methane/ssr/client` (plus framework adapters `@methane/ssr-next/client`, `@methane/ssr-nuxt/client`, `@methane/ssr-sveltekit/client`, `@methane/ssr-astro/client`, and `@methane/ssr-angular/client`), which provide explicit hydration sequencing helpers:
 
 ```ts
 // Next.js App Router ("use client")

@@ -51,7 +51,7 @@ function makeFrameworkSnippets(htmlSnippet: string, subpath: string) {
       .split('\n')
       .map((l) => `  ${l}`)
       .join('\n')}\n</template>`,
-    angular: `// styles.css: @import '${subpath}';\n@Component({\n  standalone: true,\n  template: \`\n${htmlSnippet
+    angular: `import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\n// styles.css: @import '${subpath}';\n@Component({\n  standalone: true,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n  template: \`\n${htmlSnippet
       .split('\n')
       .map((l) => `    ${l}`)
       .join('\n')}\n  \`,\n})\nexport class ExampleComponent {}`,

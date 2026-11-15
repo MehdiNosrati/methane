@@ -440,8 +440,8 @@ function buildComponentSnippets(
     html: `<script type="module" src="${importPath}"></script>\n<${model.tagName}${attrStr}>${body}</${model.tagName}>`,
     react: `import '${importPath}';\nimport '@methane/react';\n\nexport function Example() {\n  return <${model.tagName}${attrStr}>${body}</${model.tagName}>;\n}`,
     vue: `<script setup lang="ts">\nimport '${importPath}';\n</script>\n\n<template>\n  <${model.tagName}${attrStr}>${body}</${model.tagName}>\n</template>`,
-    angular: `import { ${model.className}Directive } from '@methane/angular';\n\n@Component({\n  standalone: true,\n  imports: [${model.className}Directive],\n  template: \`<${model.tagName}${attrStr}>${body}</${model.tagName}>\`,\n})\nexport class ExampleComponent {}`,
-    svelte: `<script lang="ts">\n  import ${model.className} from '@methane/svelte/${model.className}.svelte';\n</script>\n\n<${model.className}${attrStr}>${body}</${model.className}>`,
+    angular: `import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\nimport '${importPath}';\nimport { ${model.className}Directive } from '@methane/angular';\n\n@Component({\n  standalone: true,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n  imports: [${model.className}Directive],\n  template: \`<${model.tagName}${attrStr}>${body}</${model.tagName}>\`,\n})\nexport class ExampleComponent {}`,
+    svelte: `<script lang="ts">\n  import '${importPath}';\n  import ${model.className} from '@methane/svelte/${model.className}.svelte';\n</script>\n\n<${model.className}${attrStr}>${body}</${model.className}>`,
   };
 }
 
