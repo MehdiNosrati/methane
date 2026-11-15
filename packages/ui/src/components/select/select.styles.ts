@@ -248,6 +248,10 @@ export const selectStyles = css`
     position: fixed;
   }
 
+  [part='popup'][data-mth-top-layer-fallback]:not([hidden]) {
+    display: block;
+  }
+
   [part='listbox'] {
     max-block-size: var(--_sel-max-height);
     overflow-block: auto;

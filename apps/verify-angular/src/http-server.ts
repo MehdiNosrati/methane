@@ -6,6 +6,10 @@ import { renderVerifyAngularSsr } from './server.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const browserDistDir = resolve(__dirname, '../verify-angular/browser');
+const indexTemplatePath = resolve(browserDistDir, 'index.csr.html');
+const cachedIndexTemplate = existsSync(indexTemplatePath)
+  ? readFileSync(indexTemplatePath, 'utf8')
+  : undefined;
 
 const MIME_TYPES: Readonly<Record<string, string>> = {
   '.js': 'text/javascript; charset=utf-8',
@@ -34,6 +38,9 @@ export function createAngularHttpServer(): Server {
 
       const rendered = await renderVerifyAngularSsr({
         url: `http://localhost${pathname}`,
+        ...(cachedIndexTemplate ? { document: cachedIndexTemplate } : {}),
+        styles: 'inline',
+        hydrationModuleUrl: '',
       });
       res.statusCode = 200;
       res.setHeader('content-type', 'text/html; charset=utf-8');

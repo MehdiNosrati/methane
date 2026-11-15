@@ -21,6 +21,7 @@ const BASE_DOCUMENT = `<!doctype html>
 
 export interface RenderVerifyAngularOptions extends AngularSsrOptions {
   readonly url?: string;
+  readonly document?: string;
 }
 
 export async function renderVerifyAngularSsr(
@@ -29,9 +30,9 @@ export async function renderVerifyAngularSsr(
   registerUtilityElements();
   registerAllComponents();
 
-  const { url = 'http://localhost/', ...ssrOptions } = options;
+  const { url = 'http://localhost/', document = BASE_DOCUMENT, ...ssrOptions } = options;
   const rawAngularHtml = await renderApplication(bootstrap, {
-    document: BASE_DOCUMENT,
+    document,
     url,
     allowedHosts: ['localhost', '127.0.0.1'],
   });

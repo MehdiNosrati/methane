@@ -7,6 +7,5 @@ registerUtilityElements();
 registerAllComponents();
 
 export const handle: Handle = createMethaneHandle({
-  assetBase: '/methane/styles',
-  hydrationModuleUrl: '/assets/methane-sveltekit-hydrate.js',
+  styles: 'inline',
 }) as Handle;

@@ -1,10 +1,14 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 
 export interface PackageAuditViolation {
   readonly packageName: string;
   readonly location: string;
-  readonly rule: 'duplicate-dep-and-peer' | 'invalid-methane-peer-range' | 'version-skew';
+  readonly rule:
+    | 'duplicate-dep-and-peer'
+    | 'invalid-methane-peer-range'
+    | 'version-skew'
+    | 'missing-readme';
   readonly message: string;
 }
 
@@ -12,13 +16,14 @@ export interface PackageAuditOptions {
   readonly workspaceRoot?: string;
   readonly expectedVersion?: string;
   readonly expectedMethanePeerRange?: string;
-  readonly allowPreMergeCoreVersion?: boolean;
+  readonly minReadmeBytes?: number;
 }
 
 export interface PackageAuditResult {
   readonly passed: boolean;
   readonly workspaceRoot: string;
   readonly totalManifests: number;
+  readonly publishableCount: number;
   readonly violations: ReadonlyArray<PackageAuditViolation>;
 }
 
@@ -84,15 +89,17 @@ function walkPackageManifests(dir: string, out: string[]): void {
  * 1. No package lists the same dependency in both `dependencies` and `peerDependencies`.
  * 2. All `@methane/*` `peerDependencies` ranges equal `"^0.1.0"` (never `||` or `*`).
  * 3. Every publishable (`private !== true`) package has uniform `"0.1.0"` version.
+ * 4. Every publishable (`private !== true`) package includes a non-empty `README.md` (>= 300 bytes).
  */
 export function auditWorkspacePackages(options: PackageAuditOptions = {}): PackageAuditResult {
   const workspaceRoot = options.workspaceRoot ? resolve(options.workspaceRoot) : findWorkspaceRoot();
   const expectedVersion = options.expectedVersion ?? '0.1.0';
   const expectedPeerRange = options.expectedMethanePeerRange ?? '^0.1.0';
-  const allowPreMergeCoreVersion = options.allowPreMergeCoreVersion ?? true;
+  const minReadmeBytes = options.minReadmeBytes ?? 300;
 
   const manifestPaths = collectWorkspacePackageJsonPaths(workspaceRoot);
   const violations: PackageAuditViolation[] = [];
+  let publishableCount = 0;
 
   for (const manifestPath of manifestPaths) {
     const raw = JSON.parse(readFileSync(manifestPath, 'utf8')) as PackageManifestShape;
@@ -124,14 +131,24 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
     }
 
     if (raw.private !== true) {
-      const isPreMergeCore =
-        allowPreMergeCoreVersion && pkgName === '@methane/core' && raw.version === '1.0.0';
-      if (!isPreMergeCore && raw.version !== expectedVersion) {
+      publishableCount += 1;
+      if (raw.version !== expectedVersion) {
         violations.push({
           packageName: pkgName,
           location,
           rule: 'version-skew',
           message: `publishable package version is "${raw.version ?? 'missing'}" instead of "${expectedVersion}"`,
+        });
+      }
+
+      const readmePath = join(dirname(manifestPath), 'README.md');
+      const readmeSize = existsSync(readmePath) ? statSync(readmePath).size : 0;
+      if (readmeSize < minReadmeBytes) {
+        violations.push({
+          packageName: pkgName,
+          location: relative(workspaceRoot, readmePath),
+          rule: 'missing-readme',
+          message: `publishable package README.md is ${readmeSize} bytes (minimum ${minReadmeBytes} bytes required)`,
         });
       }
     }
@@ -141,6 +158,7 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
     passed: violations.length === 0,
     workspaceRoot,
     totalManifests: manifestPaths.length,
+    publishableCount,
     violations,
   };
 }
