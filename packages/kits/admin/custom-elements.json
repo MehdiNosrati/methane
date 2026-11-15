@@ -260,6 +260,797 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/availability-picker/availability-picker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthAvailabilityPicker",
+          "tagName": "mth-availability-picker",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated weekly recurring availability matrix (`<mth-availability-picker>`) supporting pointer click/drag painting, RTL-aware 2D keyboard navigation, and FormControlController validation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted in FormData."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"{}\"",
+              "description": "Serialized JSON schedule mapping weekday keys to arrays of enabled time slots."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all matrix cells and actions."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents toggling or drag-painting slots."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one selected slot across the week."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            },
+            {
+              "kind": "field",
+              "name": "days",
+              "type": {
+                "text": "ReadonlyArray<AvailabilityDay>"
+              },
+              "description": "Weekday rows rendered in the matrix."
+            },
+            {
+              "kind": "field",
+              "name": "slots",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Time-slot columns rendered per day."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted in FormData."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"{}\"",
+              "description": "Serialized JSON schedule mapping weekday keys to arrays of enabled time slots."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all matrix cells and actions."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents toggling or drag-painting slots."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires at least one selected slot across the week."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; schedule: AvailabilitySchedule }>"
+              },
+              "description": "Emitted when one or more availability slots are toggled."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional schedule legend or notes slot."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer availability matrix container."
+            },
+            {
+              "name": "matrix",
+              "description": "Weekly day × time-slot grid."
+            },
+            {
+              "name": "slot-cell",
+              "description": "Toggleable availability cell button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for matrix panel."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Inactive slot background."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Secondary time header color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Matrix and cell borders."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Keyboard focus ring color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected available slot background."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Selected slot foreground."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Validation error message color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "required",
+              "description": "Custom element state :state(required)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "user-invalid",
+              "description": "Custom element state :state(user-invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-availability-picker",
+            "package": "@methane/admin",
+            "conformance": [
+              "form-control",
+              "roving-focus"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "required",
+              "invalid",
+              "user-invalid"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "availability matrix has focus",
+                "expect": "moves to next slot (or previous in RTL)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "availability matrix has focus",
+                "expect": "moves to previous slot (or next in RTL)"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "availability matrix has focus",
+                "expect": "moves to same time slot on next day"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "availability matrix has focus",
+                "expect": "moves to same time slot on previous day"
+              },
+              {
+                "key": "Space",
+                "when": "a slot cell has focus",
+                "expect": "toggles availability for that day and time slot"
+              },
+              {
+                "key": "Enter",
+                "when": "a slot cell has focus",
+                "expect": "toggles availability for that day and time slot"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": "{}"
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "days",
+                "attr": false,
+                "type": "ReadonlyArray<AvailabilityDay>"
+              },
+              {
+                "name": "slots",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; schedule: AvailabilitySchedule }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional schedule legend or notes slot."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer availability matrix container."
+              },
+              {
+                "name": "matrix",
+                "description": "Weekly day × time-slot grid."
+              },
+              {
+                "name": "slot-cell",
+                "description": "Toggleable availability cell button."
+              }
+            ],
+            "messages": {
+              "pickerLabel": "Weekly availability schedule",
+              "dayMon": "Mon",
+              "dayTue": "Tue",
+              "dayWed": "Wed",
+              "dayThu": "Thu",
+              "dayFri": "Fri",
+              "daySat": "Sat",
+              "daySun": "Sun",
+              "clearAll": "Clear schedule",
+              "requiredError": "Select at least one available time slot."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthAvailabilityPicker",
+          "declaration": {
+            "name": "MthAvailabilityPicker",
+            "module": "src/components/availability-picker/availability-picker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-availability-picker",
+          "declaration": {
+            "name": "MthAvailabilityPicker",
+            "module": "src/components/availability-picker/availability-picker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/booking-widget/booking-widget.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthBookingWidget",
+          "tagName": "mth-booking-widget",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated date & time slot booking widget (`<mth-booking-widget>`) combining CalendarCore date selection, time-slot picking, summary confirmation, and FormControlController validation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted in FormData."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Selected booking slot (`YYYY-MM-DDTHH:mm`)."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables date, time-slot, and confirmation controls."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents slot selection changes."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks booking slot selection as required."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            },
+            {
+              "kind": "field",
+              "name": "availableSlots",
+              "type": {
+                "text": "ReadonlyArray<BookingDaySlots>"
+              },
+              "description": "Optional per-date override slot arrays."
+            },
+            {
+              "kind": "field",
+              "name": "defaultSlots",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Default time slots offered for dates without overrides."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted in FormData."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Selected booking slot (`YYYY-MM-DDTHH:mm`)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables date, time-slot, and confirmation controls."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents slot selection changes."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks booking slot selection as required."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; date: string; time: string }>"
+              },
+              "description": "Emitted when the selected date/time slot changes."
+            },
+            {
+              "name": "mth-confirm",
+              "type": {
+                "text": "CustomEvent<{ value: string; date: string; time: string }>"
+              },
+              "description": "Emitted when the booking confirmation button is clicked."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional service summary or policy note."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer booking widget container."
+            },
+            {
+              "name": "calendar",
+              "description": "Month grid date selector."
+            },
+            {
+              "name": "slots",
+              "description": "Time-slot selection list."
+            },
+            {
+              "name": "summary",
+              "description": "Booking summary and confirmation footer."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for calendar and buttons."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Subtle summary panel background."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Secondary label and muted date text."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Borders across panes and buttons."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected date/slot and confirm button accent."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Foreground on accented controls."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Validation error message color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "required",
+              "description": "Custom element state :state(required)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "user-invalid",
+              "description": "Custom element state :state(user-invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-booking-widget",
+            "package": "@methane/admin",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "CalendarCore"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "required",
+              "invalid",
+              "user-invalid"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "availableSlots",
+                "attr": false,
+                "type": "ReadonlyArray<BookingDaySlots>"
+              },
+              {
+                "name": "defaultSlots",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; date: string; time: string }"
+              },
+              {
+                "name": "mth-confirm",
+                "cancelable": false,
+                "detailType": "{ value: string; date: string; time: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional service summary or policy note."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer booking widget container."
+              },
+              {
+                "name": "calendar",
+                "description": "Month grid date selector."
+              },
+              {
+                "name": "slots",
+                "description": "Time-slot selection list."
+              },
+              {
+                "name": "summary",
+                "description": "Booking summary and confirmation footer."
+              }
+            ],
+            "messages": {
+              "widgetLabel": "Appointment booking",
+              "selectDateHeading": "Select a date",
+              "selectTimeHeading": "Available times",
+              "summaryLabel": "Selected slot",
+              "noSelection": "No time slot selected",
+              "confirmBooking": "Confirm booking",
+              "prevMonth": "Previous month",
+              "nextMonth": "Next month",
+              "requiredError": "Please choose a date and time slot."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthBookingWidget",
+          "declaration": {
+            "name": "MthBookingWidget",
+            "module": "src/components/booking-widget/booking-widget.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-booking-widget",
+          "declaration": {
+            "name": "MthBookingWidget",
+            "module": "src/components/booking-widget/booking-widget.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/bulk-action-bar/bulk-action-bar.ts",
       "declarations": [
         {
@@ -717,6 +1508,562 @@
           "declaration": {
             "name": "MthColumnChooser",
             "module": "src/components/column-chooser/column-chooser.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/csv-importer/csv-importer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCsvImporter",
+          "tagName": "mth-csv-importer",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "CSV file upload and paste importer (`<mth-csv-importer>`) with RFC-4180 parsing, interactive column-to-field mapping, row validation preview, and `mth-import` commit event.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "fields",
+              "type": {
+                "text": "ReadonlyArray<CsvTargetField>"
+              },
+              "description": "Target schema fields with required flags and optional row validators."
+            },
+            {
+              "kind": "field",
+              "name": "rawCsv",
+              "attribute": "raw-csv",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Raw CSV text payload to parse and map."
+            },
+            {
+              "kind": "field",
+              "name": "hasHeader",
+              "attribute": "has-header",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether the first CSV row contains column header names."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "raw-csv",
+              "fieldName": "rawCsv",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Raw CSV text payload to parse and map."
+            },
+            {
+              "name": "has-header",
+              "fieldName": "hasHeader",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether the first CSV row contains column header names."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-parse",
+              "type": {
+                "text": "CustomEvent<{ headers: ReadonlyArray<string>; rowCount: number }>"
+              },
+              "description": "Emitted after parsing CSV headers and rows."
+            },
+            {
+              "name": "mth-import",
+              "type": {
+                "text": "CustomEvent<{ rows: ReadonlyArray<Record<string, string>>; invalidCount: number; mappings: Record<number, string> }>"
+              },
+              "description": "Emitted when validated mapped rows are committed for import."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional helper instructions or actions slot."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer CSV importer shell."
+            },
+            {
+              "name": "dropzone",
+              "description": "File input and CSV paste input area."
+            },
+            {
+              "name": "mapping",
+              "description": "Column-to-field mapping controls."
+            },
+            {
+              "name": "preview",
+              "description": "Validated row preview table."
+            },
+            {
+              "name": "actions",
+              "description": "Import commit and clear buttons."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for importer panels and table."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Subtle background for headers and dropzone."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted hint text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Panel, table, and input borders."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary import button background."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Primary import button foreground."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Row validation error highlight color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-csv-importer",
+            "package": "@methane/admin",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty",
+              "invalid"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "fields",
+                "attr": false,
+                "type": "ReadonlyArray<CsvTargetField>"
+              },
+              {
+                "name": "rawCsv",
+                "attr": "raw-csv",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hasHeader",
+                "attr": "has-header",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-parse",
+                "cancelable": false,
+                "detailType": "{ headers: ReadonlyArray<string>; rowCount: number }"
+              },
+              {
+                "name": "mth-import",
+                "cancelable": false,
+                "detailType": "{ rows: ReadonlyArray<Record<string, string>>; invalidCount: number; mappings: Record<number, string> }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional helper instructions or actions slot."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer CSV importer shell."
+              },
+              {
+                "name": "dropzone",
+                "description": "File input and CSV paste input area."
+              },
+              {
+                "name": "mapping",
+                "description": "Column-to-field mapping controls."
+              },
+              {
+                "name": "preview",
+                "description": "Validated row preview table."
+              },
+              {
+                "name": "actions",
+                "description": "Import commit and clear buttons."
+              }
+            ],
+            "messages": {
+              "importerLabel": "CSV importer",
+              "uploadLabel": "Upload CSV file",
+              "pasteLabel": "Or paste CSV data",
+              "pastePlaceholder": "name,email\nAda,ada@example.com",
+              "mappingHeading": "Map columns",
+              "skipColumn": "Skip column",
+              "previewHeading": "Preview rows",
+              "importAction": "Import valid rows",
+              "clearAction": "Clear",
+              "validSummary": "{valid} valid, {invalid} invalid rows",
+              "requiredMissing": "Required field missing: {field}",
+              "emptyHint": "Upload or paste a CSV file to preview and map columns."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCsvImporter",
+          "declaration": {
+            "name": "MthCsvImporter",
+            "module": "src/components/csv-importer/csv-importer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-csv-importer",
+          "declaration": {
+            "name": "MthCsvImporter",
+            "module": "src/components/csv-importer/csv-importer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/event-calendar/event-calendar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthEventCalendar",
+          "tagName": "mth-event-calendar",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Month/week/day schedule calendar (`<mth-event-calendar>`) powered by CalendarCore, localized FormattingUtils headers, RTL-aware 2D RovingFocusController, and event selection/creation callbacks.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "events",
+              "type": {
+                "text": "ReadonlyArray<CalendarEvent>"
+              },
+              "description": "Schedule events keyed by ISO date (`YYYY-MM-DD`)."
+            },
+            {
+              "kind": "field",
+              "name": "view",
+              "attribute": "view",
+              "reflect": true,
+              "type": {
+                "text": "'month' | 'week' | 'day'"
+              },
+              "default": "\"month\"",
+              "description": "Active schedule granularity (`month`, `week`, or `day`)."
+            },
+            {
+              "kind": "field",
+              "name": "activeDate",
+              "attribute": "active-date",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Focused ISO date string (`YYYY-MM-DD`)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "view",
+              "fieldName": "view",
+              "type": {
+                "text": "'month' | 'week' | 'day'"
+              },
+              "default": "\"month\"",
+              "description": "Active schedule granularity (`month`, `week`, or `day`)."
+            },
+            {
+              "name": "active-date",
+              "fieldName": "activeDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Focused ISO date string (`YYYY-MM-DD`)."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-event-select",
+              "type": {
+                "text": "CustomEvent<{ event: CalendarEvent }>"
+              },
+              "description": "Emitted when an existing event pill is clicked."
+            },
+            {
+              "name": "mth-event-create",
+              "type": {
+                "text": "CustomEvent<{ date: string; time?: string }>"
+              },
+              "description": "Emitted when a day or time slot create button is clicked."
+            },
+            {
+              "name": "mth-date-change",
+              "type": {
+                "text": "CustomEvent<{ activeDate: string; view: CalendarViewMode }>"
+              },
+              "description": "Emitted when the active date or view changes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional calendar toolbar actions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer calendar shell."
+            },
+            {
+              "name": "header",
+              "description": "Period navigation and view-mode toolbar."
+            },
+            {
+              "name": "grid",
+              "description": "Month, week, or day schedule grid."
+            },
+            {
+              "name": "day-cell",
+              "description": "Individual day schedule container."
+            },
+            {
+              "name": "event-chip",
+              "description": "Interactive event button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Surface background for calendar cells."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Subtle background for outside-month cells and headers."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted weekday and out-of-month date text."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Grid and button borders."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active view button and event badge accent."
+            },
+            {
+              "name": "--mth-color-accent-fg",
+              "description": "Foreground on active accented controls."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-event-calendar",
+            "package": "@methane/admin",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "CalendarCore",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "calendar grid has focus",
+                "expect": "moves to next day (or previous in RTL)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "calendar grid has focus",
+                "expect": "moves to previous day (or next in RTL)"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "calendar grid has focus",
+                "expect": "moves down one week row"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "calendar grid has focus",
+                "expect": "moves up one week row"
+              },
+              {
+                "key": "Home",
+                "when": "calendar grid has focus",
+                "expect": "focuses the first visible day cell"
+              },
+              {
+                "key": "End",
+                "when": "calendar grid has focus",
+                "expect": "focuses the last visible day cell"
+              }
+            ],
+            "props": [
+              {
+                "name": "events",
+                "attr": false,
+                "type": "ReadonlyArray<CalendarEvent>"
+              },
+              {
+                "name": "view",
+                "attr": "view",
+                "type": "'month' | 'week' | 'day'",
+                "default": "month"
+              },
+              {
+                "name": "activeDate",
+                "attr": "active-date",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-event-select",
+                "cancelable": false,
+                "detailType": "{ event: CalendarEvent }"
+              },
+              {
+                "name": "mth-event-create",
+                "cancelable": false,
+                "detailType": "{ date: string; time?: string }"
+              },
+              {
+                "name": "mth-date-change",
+                "cancelable": false,
+                "detailType": "{ activeDate: string; view: CalendarViewMode }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional calendar toolbar actions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer calendar shell."
+              },
+              {
+                "name": "header",
+                "description": "Period navigation and view-mode toolbar."
+              },
+              {
+                "name": "grid",
+                "description": "Month, week, or day schedule grid."
+              },
+              {
+                "name": "day-cell",
+                "description": "Individual day schedule container."
+              },
+              {
+                "name": "event-chip",
+                "description": "Interactive event button."
+              }
+            ],
+            "messages": {
+              "calendarLabel": "Event calendar",
+              "prevPeriod": "Previous",
+              "nextPeriod": "Next",
+              "todayLabel": "Today",
+              "viewMonth": "Month",
+              "viewWeek": "Week",
+              "viewDay": "Day",
+              "createEvent": "New event",
+              "noEventsDay": "No events scheduled"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthEventCalendar",
+          "declaration": {
+            "name": "MthEventCalendar",
+            "module": "src/components/event-calendar/event-calendar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-event-calendar",
+          "declaration": {
+            "name": "MthEventCalendar",
+            "module": "src/components/event-calendar/event-calendar.ts"
           }
         }
       ]
