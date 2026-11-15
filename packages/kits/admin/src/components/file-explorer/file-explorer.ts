@@ -2,7 +2,12 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { RovingFocusController, SelectionController } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
-import { attachDynamicSheet, sanitizeCssNumber } from '../shared/style-sheet.js';
+import {
+  attachDynamicSheet,
+  resolveEffectiveDir,
+  sanitizeCssNumber,
+  stopRovingKeys,
+} from '../shared/style-sheet.js';
 import { fileExplorerMessages } from './file-explorer.messages.js';
 import { fileExplorerStyles } from './file-explorer.styles.js';
 
@@ -69,14 +74,14 @@ export class MthFileExplorer extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
   }
 
   protected override firstUpdated(): void {
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
   }
 
@@ -87,7 +92,7 @@ export class MthFileExplorer extends UIElement {
     const colCount = this.viewMode === 'grid' ? Math.max(1, Math.round(this.columns)) : 1;
     this.rovingFocus.updateOptions({
       columns: colCount,
-      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+      dir: resolveEffectiveDir(this, this.resolvedDir),
     });
   }
 
@@ -159,9 +164,9 @@ export class MthFileExplorer extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('explorerLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
-        <div part="toolbar" class="toolbar">
+        <div part="toolbar" class="toolbar" @keydown=${stopRovingKeys}>
           <nav aria-label=${this.t('breadcrumbLabel')}>
             <ol class="breadcrumbs">
               <li>
@@ -216,7 +221,12 @@ export class MthFileExplorer extends UIElement {
         </div>
 
         <div class="panes">
-          <aside part="tree" class="tree" aria-label=${this.t('folderTreeLabel')}>
+          <aside
+            part="tree"
+            class="tree"
+            aria-label=${this.t('folderTreeLabel')}
+            @keydown=${stopRovingKeys}
+          >
             <button
               type="button"
               class="tree-btn"

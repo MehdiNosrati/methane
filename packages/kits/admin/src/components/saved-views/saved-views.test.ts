@@ -77,6 +77,26 @@ describe('<mth-saved-views>', () => {
     expect(aria.issues).toEqual([]);
   });
 
+  it('inherits ancestor [dir="rtl"] and blocks sibling action key-hijacking', async () => {
+    registerMthSavedViews();
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('dir', 'rtl');
+    const el = document.createElement('mth-saved-views') as MthSavedViews;
+    el.views = [
+      { id: 'v1', label: 'First' },
+      { id: 'v2', label: 'Second' },
+    ];
+    wrapper.appendChild(el);
+    document.body.appendChild(wrapper);
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('[part="base"]')?.getAttribute('dir')).toBe('rtl');
+    const actionBtn = el.shadowRoot!.querySelector<HTMLButtonElement>('[part="actions"] button')!;
+    actionBtn.focus();
+    actionBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(el.shadowRoot!.activeElement).toBe(actionBtn);
+  });
+
   it('passes HydrationPuritySuite', async () => {
     const rawSsr = await renderLitDsdHtml(
       litHtml`<mth-saved-views active-view-id="all"></mth-saved-views>`,

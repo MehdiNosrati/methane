@@ -82,6 +82,15 @@ describe('<mth-booking-widget>', () => {
     el.confirm();
     expect(confirmed).toBe('2026-11-20T14:30');
 
+    el.value = '';
+    el.required = true;
+    await el.updateComplete;
+    expect(el.reportValidity()).toBe(false);
+    await el.updateComplete;
+    const base = el.shadowRoot!.querySelector('[part="base"]')!;
+    expect(base.getAttribute('aria-invalid')).toBe('true');
+    expect(base.getAttribute('aria-errormessage')).toBe('mth-bw-error');
+
     const aria = scanSameRootAria(el.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);

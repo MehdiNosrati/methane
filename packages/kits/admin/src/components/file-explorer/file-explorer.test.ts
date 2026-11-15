@@ -78,6 +78,12 @@ describe('<mth-file-explorer>', () => {
 
     expect(el.selectedIds).toEqual(['guide', 'spec']);
 
+    const sheetsBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetsBefore);
+
     const aria = scanSameRootAria(el.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);

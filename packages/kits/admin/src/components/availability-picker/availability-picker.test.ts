@@ -115,6 +115,21 @@ describe('<mth-availability-picker>', () => {
     await el.updateComplete;
     expect(el.getSchedule().tue).toEqual(['09:00']);
 
+    const sheetsBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetsBefore);
+
+    el.clearAll();
+    el.required = true;
+    await el.updateComplete;
+    expect(el.reportValidity()).toBe(false);
+    await el.updateComplete;
+    const base = el.shadowRoot!.querySelector('[part="base"]')!;
+    expect(base.getAttribute('aria-invalid')).toBe('true');
+    expect(base.getAttribute('aria-errormessage')).toBe('mth-ap-error');
+
     const aria = scanSameRootAria(el.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);

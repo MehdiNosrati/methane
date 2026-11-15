@@ -38,6 +38,7 @@ export const availabilityPickerSpec: ComponentBehaviorSpec = {
     { name: 'base', description: 'Outer availability matrix container.' },
     { name: 'matrix', description: 'Weekly day × time-slot grid.' },
     { name: 'slot-cell', description: 'Toggleable availability cell button.' },
+    { name: 'error', description: 'Validation error message.' },
   ],
   messages: availabilityPickerMessages,
 };

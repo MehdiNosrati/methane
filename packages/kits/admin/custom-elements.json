@@ -438,6 +438,10 @@
             {
               "name": "slot-cell",
               "description": "Toggleable availability cell button."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
             }
           ],
           "cssProperties": [
@@ -624,6 +628,10 @@
               {
                 "name": "slot-cell",
                 "description": "Toggleable availability cell button."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
               }
             ],
             "messages": {
@@ -851,6 +859,10 @@
             {
               "name": "summary",
               "description": "Booking summary and confirmation footer."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
             }
           ],
           "cssProperties": [
@@ -1014,6 +1026,10 @@
               {
                 "name": "summary",
                 "description": "Booking summary and confirmation footer."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
               }
             ],
             "messages": {
@@ -1745,6 +1761,7 @@
               "pasteLabel": "Or paste CSV data",
               "pastePlaceholder": "name,email\nAda,ada@example.com",
               "mappingHeading": "Map columns",
+              "defaultColumn": "Column {index}",
               "skipColumn": "Skip column",
               "previewHeading": "Preview rows",
               "importAction": "Import valid rows",
@@ -2598,7 +2615,14 @@
               "combinatorAnd": "All rules (AND)",
               "combinatorOr": "Any rule (OR)",
               "fieldLabel": "Field",
+              "defaultFieldLabel": "Field",
               "operatorLabel": "Operator",
+              "opEquals": "Equals",
+              "opNotEquals": "Does not equal",
+              "opContains": "Contains",
+              "opStartsWith": "Starts with",
+              "opGt": "Greater than",
+              "opLt": "Less than",
               "valueLabel": "Value",
               "valuePlaceholder": "Enter value...",
               "addRule": "Add rule",
@@ -3247,7 +3271,12 @@
               "removeGroup": "Remove group",
               "removeRule": "Remove rule",
               "fieldLabel": "Field",
+              "defaultFieldLabel": "Field",
               "operatorLabel": "Operator",
+              "opEquals": "Equals",
+              "opContains": "Contains",
+              "opGt": "Greater than",
+              "opLt": "Less than",
               "valueLabel": "Value",
               "previewLabel": "Serialized query preview",
               "requiredError": "At least one query rule is required."
@@ -3535,6 +3564,7 @@
               "tablistLabel": "Saved views",
               "createView": "New view",
               "duplicateView": "Duplicate view",
+              "duplicateName": "{name} (Copy)",
               "pinView": "Pin view",
               "unpinView": "Unpin view",
               "deleteView": "Delete view",

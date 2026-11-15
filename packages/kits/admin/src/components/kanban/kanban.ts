@@ -8,6 +8,7 @@ import {
 } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';
 import { kanbanMessages } from './kanban.messages.js';
 import { kanbanStyles } from './kanban.styles.js';
 
@@ -111,7 +112,7 @@ export class MthKanban extends UIElement {
     super.willUpdate(changed);
     this._syncDataSource();
     this.rovingFocus.updateOptions({
-      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+      dir: resolveEffectiveDir(this, this.resolvedDir),
     });
     this.setCustomState('loading', this.dataCtrl.status === 'loading');
     this.setCustomState('empty', this.dataCtrl.status === 'empty');
@@ -178,9 +179,9 @@ export class MthKanban extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('boardLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
-        <slot></slot>
+        <slot @keydown=${stopRovingKeys}></slot>
         <div class="status" role="status" ?hidden=${!showStatus}>
           ${status === 'error' ? this.t('errorLabel') : this.t('loadingLabel')}
         </div>

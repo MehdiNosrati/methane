@@ -97,6 +97,12 @@ describe('<mth-audit-log>', () => {
     expect(el.renderedItems).toHaveLength(1);
     expect(el.renderedItems[0]?.actor).toBe('bob');
 
+    const sheetsBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetsBefore);
+
     const aria = scanSameRootAria(el.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);

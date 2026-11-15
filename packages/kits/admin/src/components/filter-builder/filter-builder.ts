@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../shared/style-sheet.js';
 import { filterBuilderMessages } from './filter-builder.messages.js';
 import { filterBuilderStyles } from './filter-builder.styles.js';
 
@@ -101,9 +102,28 @@ export class MthFilterBuilder extends UIElement {
     });
   }
 
+  private _formatOperator(op: string): string {
+    switch (op) {
+      case 'equals':
+        return this.t('opEquals');
+      case 'not_equals':
+        return this.t('opNotEquals');
+      case 'contains':
+        return this.t('opContains');
+      case 'starts_with':
+        return this.t('opStartsWith');
+      case 'gt':
+        return this.t('opGt');
+      case 'lt':
+        return this.t('opLt');
+      default:
+        return op;
+    }
+  }
+
   override render() {
     const fieldOptions =
-      this.fields.length > 0 ? this.fields : [{ id: 'name', label: 'name' }];
+      this.fields.length > 0 ? this.fields : [{ id: 'name', label: this.t('defaultFieldLabel') }];
 
     return html`
       <div
@@ -111,7 +131,7 @@ export class MthFilterBuilder extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('regionLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         <div part="header" class="header">
           <select
@@ -182,7 +202,9 @@ export class MthFilterBuilder extends UIElement {
                         });
                       }}
                     >
-                      ${operators.map((op) => html`<option value=${op}>${op}</option>`)}
+                      ${operators.map(
+                        (op) => html`<option value=${op}>${this._formatOperator(op)}</option>`,
+                      )}
                     </select>
 
                     <input

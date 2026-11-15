@@ -2,6 +2,7 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { RovingFocusController, SelectionController } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';
 import { savedViewsMessages } from './saved-views.messages.js';
 import { savedViewsStyles } from './saved-views.styles.js';
 
@@ -57,13 +58,15 @@ export class MthSavedViews extends UIElement {
       orientation: 'horizontal',
       loop: true,
       getItems: () =>
-        Array.from(this.shadowRoot?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []),
+        Array.from(
+          this.shadowRoot?.querySelectorAll<HTMLElement>('[role="tab"]:not([disabled])') ?? [],
+        ),
     });
   }
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    this.rovingFocus.updateOptions({ dir: this.resolvedDir });
+    this.rovingFocus.updateOptions({ dir: resolveEffectiveDir(this, this.resolvedDir) });
     if (changed.has('views')) {
       this.selectionCtrl.setItems(
         this.views.map((v) => ({ value: v.id, ...(v.disabled ? { disabled: true } : {}) })),
@@ -102,7 +105,7 @@ export class MthSavedViews extends UIElement {
     viewSeq += 1;
     const copy: SavedViewItem = {
       id: `view-${viewSeq}`,
-      label: `${active.label} (Copy)`,
+      label: this.t('duplicateName', { name: active.label }),
       pinned: false,
     };
     this.views = [...this.views, copy];
@@ -136,9 +139,13 @@ export class MthSavedViews extends UIElement {
       ...this.views.filter((v) => v.pinned),
       ...this.views.filter((v) => !v.pinned),
     ];
+    const focusTabId =
+      ordered.find((v) => !v.disabled && v.id === this.activeViewId)?.id ??
+      ordered.find((v) => !v.disabled)?.id ??
+      '';
 
     return html`
-      <div part="base" class="base" dir=${this.resolvedDir}>
+      <div part="base" class="base" dir=${resolveEffectiveDir(this, this.resolvedDir)}>
         <div part="tablist" class="tablist" role="tablist" aria-label=${this.t('tablistLabel')}>
           ${ordered.map((view) => {
             const selected = view.id === this.activeViewId;
@@ -149,6 +156,7 @@ export class MthSavedViews extends UIElement {
                 class="tab"
                 role="tab"
                 aria-selected=${selected ? 'true' : 'false'}
+                tabindex=${focusTabId === view.id ? '0' : '-1'}
                 ?disabled=${Boolean(view.disabled)}
                 @click=${() => this.selectView(view.id)}
               >
@@ -158,7 +166,7 @@ export class MthSavedViews extends UIElement {
           })}
         </div>
 
-        <div part="actions" class="actions">
+        <div part="actions" class="actions" @keydown=${stopRovingKeys}>
           <button
             type="button"
             class="action-btn"

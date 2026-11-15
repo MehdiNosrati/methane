@@ -9,6 +9,7 @@ import {
 } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';
 import { eventCalendarMessages } from './event-calendar.messages.js';
 import { eventCalendarStyles } from './event-calendar.styles.js';
 
@@ -87,7 +88,7 @@ export class MthEventCalendar extends UIElement {
     }
     this.rovingFocus.updateOptions({
       columns: this.view === 'day' ? 1 : 7,
-      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+      dir: resolveEffectiveDir(this, this.resolvedDir),
     });
   }
 
@@ -144,9 +145,9 @@ export class MthEventCalendar extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('calendarLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
-        <div part="header" class="header">
+        <div part="header" class="header" @keydown=${stopRovingKeys}>
           <div class="nav-group">
             <button
               type="button"
@@ -197,7 +198,7 @@ export class MthEventCalendar extends UIElement {
           ${this.view === 'day'
             ? html`
                 <div class="day-agenda">
-                  ${DAY_HOURS.map((hour) => {
+                  ${DAY_HOURS.map((hour, idx) => {
                     const slotEvents = this.events.filter(
                       (ev) => ev.date === focusedIso && ev.startTime === hour,
                     );
@@ -222,6 +223,8 @@ export class MthEventCalendar extends UIElement {
                         <button
                           type="button"
                           class="add-btn day-trigger"
+                          tabindex=${activeIndex === idx ? '0' : '-1'}
+                          aria-label="${this.t('createEvent')} ${focusedIso} ${hour}"
                           @click=${() =>
                             this.emitEvent('mth-event-create', {
                               detail: { date: focusedIso, time: hour },

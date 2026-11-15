@@ -1,7 +1,8 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController } from '@methane/primitives';
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../shared/style-sheet.js';
 import { queryBuilderMessages } from './query-builder.messages.js';
 import { queryBuilderStyles } from './query-builder.styles.js';
 
@@ -147,8 +148,13 @@ export class MthQueryBuilder extends UIElement {
     return this.formCtrl.checkValidity();
   }
 
+  reportValidity(): boolean {
+    return this.formCtrl.reportValidity();
+  }
+
   protected override onFormDisabled(disabled: boolean): void {
     this.formCtrl.handleFormDisabled(disabled);
+    this.setCustomState('disabled', this.formCtrl.disabled);
   }
 
   protected override onFormReset(): void {
@@ -179,6 +185,8 @@ export class MthQueryBuilder extends UIElement {
     this.formCtrl.validate();
     this.setCustomState('disabled', this.formCtrl.disabled);
     this.setCustomState('readonly', this.readonly);
+    this.setCustomState('required', this.required);
+    this.setCustomState('invalid', this.formCtrl.invalid || this.error.length > 0);
   }
 
   getQueryAst(): QueryGroup {
@@ -218,7 +226,9 @@ export class MthQueryBuilder extends UIElement {
   private _renderGroup(group: QueryGroup, isRoot: boolean): TemplateResult {
     const groupId = group.id ?? 'root';
     const fieldOptions =
-      this.fields.length > 0 ? this.fields : [{ id: 'field', label: 'field' }];
+      this.fields.length > 0
+        ? this.fields
+        : [{ id: 'field', label: this.t('defaultFieldLabel') }];
     const isBlocked = this.formCtrl.disabled || this.readonly;
 
     return html`
@@ -338,10 +348,10 @@ export class MthQueryBuilder extends UIElement {
                       }));
                     }}
                   >
-                    <option value="equals">equals</option>
-                    <option value="contains">contains</option>
-                    <option value="gt">gt</option>
-                    <option value="lt">lt</option>
+                    <option value="equals">${this.t('opEquals')}</option>
+                    <option value="contains">${this.t('opContains')}</option>
+                    <option value="gt">${this.t('opGt')}</option>
+                    <option value="lt">${this.t('opLt')}</option>
                   </select>
 
                   <input
@@ -385,16 +395,20 @@ export class MthQueryBuilder extends UIElement {
 
   override render() {
     const ast = this.getQueryAst();
-    const errorMsg = this.error || (this.formCtrl.userInvalid ? this.formCtrl.validationMessage : '');
+    const isInvalid =
+      this.formCtrl.invalid || this.formCtrl.userInvalid || this.error.length > 0;
+    const errorMsg =
+      this.error || (isInvalid ? this.formCtrl.validationMessage : '');
 
     return html`
       <div
         part="base"
         class="base"
-        role="region"
+        role="group"
         aria-label=${this.t('regionLabel')}
-        aria-invalid=${this.formCtrl.userInvalid || this.error.length > 0 ? 'true' : 'false'}
-        dir=${this.resolvedDir}
+        aria-invalid=${isInvalid ? 'true' : nothing}
+        aria-errormessage=${isInvalid && errorMsg.length > 0 ? 'mth-qb-error' : nothing}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         ${this._renderGroup(ast, true)}
 
@@ -405,7 +419,7 @@ export class MthQueryBuilder extends UIElement {
           ?hidden=${!this.showPreview}
         >${this.value}</pre>
 
-        <p part="error" class="error" role="alert" ?hidden=${errorMsg.length === 0}>
+        <p id="mth-qb-error" part="error" class="error" role="alert" ?hidden=${errorMsg.length === 0}>
           ${errorMsg}
         </p>
       </div>

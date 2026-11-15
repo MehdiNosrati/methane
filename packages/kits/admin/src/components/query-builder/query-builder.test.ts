@@ -85,6 +85,16 @@ describe('<mth-query-builder>', () => {
     await el.updateComplete;
     expect(el.getQueryAst().items).toHaveLength(1);
 
+    el.value = '{"combinator":"and","items":[]}';
+    el.required = true;
+    await el.updateComplete;
+    expect(el.reportValidity()).toBe(false);
+    await el.updateComplete;
+    const base = el.shadowRoot!.querySelector('[part="base"]')!;
+    expect(base.getAttribute('role')).toBe('group');
+    expect(base.getAttribute('aria-invalid')).toBe('true');
+    expect(base.getAttribute('aria-errormessage')).toBe('mth-qb-error');
+
     const aria = scanSameRootAria(el.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);

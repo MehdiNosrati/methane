@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { html } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../shared/style-sheet.js';
 import { csvImporterMessages } from './csv-importer.messages.js';
 import { csvImporterStyles } from './csv-importer.styles.js';
 
@@ -171,8 +172,11 @@ export class MthCsvImporter extends UIElement {
 
     const colCount = Math.max(...matrix.map((r) => r.length));
     const nextHeaders = this.hasHeader
-      ? Array.from({ length: colCount }, (_, idx) => (matrix[0]?.[idx] ?? `Column ${idx + 1}`).trim())
-      : Array.from({ length: colCount }, (_, idx) => `Column ${idx + 1}`);
+      ? Array.from(
+          { length: colCount },
+          (_, idx) => (matrix[0]?.[idx] ?? this.t('defaultColumn', { index: idx + 1 })).trim(),
+        )
+      : Array.from({ length: colCount }, (_, idx) => this.t('defaultColumn', { index: idx + 1 }));
     const nextRows = this.hasHeader ? matrix.slice(1) : matrix;
 
     this.headers = nextHeaders;
@@ -219,7 +223,7 @@ export class MthCsvImporter extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('importerLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         <div part="dropzone" class="dropzone">
           <label class="field-label">

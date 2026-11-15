@@ -51,9 +51,9 @@ export const eventCalendarStyles = css`
   }
 
   .btn[aria-pressed='true'] {
-    background: var(--mth-color-accent, oklch(0.55 0.2 255));
-    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
-    border-color: var(--mth-color-accent, oklch(0.55 0.2 255));
+    background: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 255)));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
   }
 
   .weekdays {
@@ -132,7 +132,7 @@ export const eventCalendarStyles = css`
     gap: 0.25rem;
     inline-size: 100%;
     text-align: start;
-    border: 1px solid var(--mth-color-accent, oklch(0.55 0.2 255));
+    border: 1px solid var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
     background: var(--mth-color-bg-subtle, light-dark(oklch(0.95 0.03 255), oklch(0.24 0.04 255)));
     color: inherit;
     border-radius: var(--mth-radius-sm, 0.375rem);
@@ -145,7 +145,7 @@ export const eventCalendarStyles = css`
   .add-btn:focus-visible,
   .event-chip:focus-visible,
   .btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.58 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.58 0.18 255), oklch(0.74 0.16 255)));
     outline-offset: 2px;
   }
 

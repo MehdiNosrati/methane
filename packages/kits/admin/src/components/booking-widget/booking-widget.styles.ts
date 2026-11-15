@@ -69,9 +69,9 @@ export const bookingWidgetStyles = css`
   .day-btn[aria-pressed='true'],
   .slot-btn[aria-pressed='true'],
   .confirm-btn {
-    background: var(--mth-color-accent, oklch(0.55 0.2 255));
-    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
-    border-color: var(--mth-color-accent, oklch(0.55 0.2 255));
+    background: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 255)));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
   }
 
   .slots-panel {
@@ -116,7 +116,7 @@ export const bookingWidgetStyles = css`
   .btn:focus-visible,
   .day-btn:focus-visible,
   .slot-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.58 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.58 0.18 255), oklch(0.74 0.16 255)));
     outline-offset: 2px;
   }
 

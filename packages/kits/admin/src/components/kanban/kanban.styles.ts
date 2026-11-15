@@ -97,12 +97,12 @@ export const kanbanStyles = css`
   }
 
   .card:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.58 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.58 0.18 255), oklch(0.74 0.16 255)));
     outline-offset: 2px;
   }
 
   .card[data-grabbed='true'] {
-    border-color: var(--mth-color-accent, oklch(0.55 0.2 255));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
   }
 
   .card-title {

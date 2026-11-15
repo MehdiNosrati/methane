@@ -66,8 +66,8 @@ export const fileExplorerStyles = css`
 
   .view-btn[aria-pressed='true'],
   .tree-btn[aria-current='location'] {
-    background: var(--mth-color-accent, oklch(0.55 0.2 255));
-    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    background: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 255)));
   }
 
   .panes {
@@ -126,7 +126,7 @@ export const fileExplorerStyles = css`
   }
 
   .entry[aria-selected='true'] {
-    border-color: var(--mth-color-accent, oklch(0.55 0.2 255));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.2 255), oklch(0.68 0.18 255)));
     background: var(--mth-color-bg-subtle, light-dark(oklch(0.95 0.03 255), oklch(0.24 0.04 255)));
   }
 
@@ -134,7 +134,7 @@ export const fileExplorerStyles = css`
   .crumb-btn:focus-visible,
   .view-btn:focus-visible,
   .tree-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.58 0.18 255));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.58 0.18 255), oklch(0.74 0.16 255)));
     outline-offset: 2px;
   }
 

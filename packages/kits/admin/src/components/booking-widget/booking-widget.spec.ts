@@ -37,6 +37,7 @@ export const bookingWidgetSpec: ComponentBehaviorSpec = {
     { name: 'calendar', description: 'Month grid date selector.' },
     { name: 'slots', description: 'Time-slot selection list.' },
     { name: 'summary', description: 'Booking summary and confirmation footer.' },
+    { name: 'error', description: 'Validation error message.' },
   ],
   messages: bookingWidgetMessages,
 };

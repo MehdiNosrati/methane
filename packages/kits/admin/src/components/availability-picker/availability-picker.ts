@@ -1,8 +1,13 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController, RovingFocusController } from '@methane/primitives';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
-import { attachDynamicSheet, sanitizeCssNumber } from '../shared/style-sheet.js';
+import {
+  attachDynamicSheet,
+  resolveEffectiveDir,
+  sanitizeCssNumber,
+  stopRovingKeys,
+} from '../shared/style-sheet.js';
 import { availabilityPickerMessages } from './availability-picker.messages.js';
 import { availabilityPickerStyles } from './availability-picker.styles.js';
 
@@ -134,12 +139,17 @@ export class MthAvailabilityPicker extends UIElement {
     return this.formCtrl.checkValidity();
   }
 
+  reportValidity(): boolean {
+    return this.formCtrl.reportValidity();
+  }
+
   getSchedule(): AvailabilitySchedule {
     return parseSchedule(this.value);
   }
 
   protected override onFormDisabled(disabled: boolean): void {
     this.formCtrl.handleFormDisabled(disabled);
+    this.setCustomState('disabled', this.formCtrl.disabled);
   }
 
   protected override onFormReset(): void {
@@ -152,8 +162,8 @@ export class MthAvailabilityPicker extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
   }
 
@@ -163,8 +173,8 @@ export class MthAvailabilityPicker extends UIElement {
   }
 
   protected override firstUpdated(): void {
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
   }
 
@@ -172,7 +182,7 @@ export class MthAvailabilityPicker extends UIElement {
     super.willUpdate(changed);
     this.rovingFocus.updateOptions({
       columns: Math.max(1, this.slots.length),
-      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+      dir: resolveEffectiveDir(this, this.resolvedDir),
     });
     this.formCtrl.hostDisabled = this.disabled;
     this.formCtrl.required = this.required;
@@ -181,6 +191,10 @@ export class MthAvailabilityPicker extends UIElement {
     const hasAny = totalSelectedSlots(schedule) > 0;
     this.formCtrl.setValue(hasAny ? this.value : this.required ? null : this.value);
     this.formCtrl.validate();
+    this.setCustomState('disabled', this.formCtrl.disabled);
+    this.setCustomState('readonly', this.readonly);
+    this.setCustomState('required', this.required);
+    this.setCustomState('invalid', this.formCtrl.invalid || this.error.length > 0);
   }
 
   protected override updated(): void {
@@ -264,6 +278,9 @@ export class MthAvailabilityPicker extends UIElement {
     const schedule = parseSchedule(this.value);
     const lockControls = this.effectivelyDisabled || this.readonly;
     const activeIndex = this.rovingFocus.currentIndex >= 0 ? this.rovingFocus.currentIndex : 0;
+    const isInvalid =
+      this.formCtrl.invalid || this.formCtrl.userInvalid || this.error.length > 0;
+    const errorMsg = this.error || (isInvalid ? this.validationMessage : '');
     let flatIndex = 0;
 
     return html`
@@ -272,9 +289,11 @@ export class MthAvailabilityPicker extends UIElement {
         class="base"
         role="group"
         aria-label=${this.t('pickerLabel')}
-        dir=${this.resolvedDir}
+        aria-invalid=${isInvalid ? 'true' : nothing}
+        aria-errormessage=${isInvalid && errorMsg.length > 0 ? 'mth-ap-error' : nothing}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
-        <div class="toolbar">
+        <div class="toolbar" @keydown=${stopRovingKeys}>
           <h3 class="heading">${this.t('pickerLabel')}</h3>
           <div>
             <slot></slot>
@@ -345,8 +364,14 @@ export class MthAvailabilityPicker extends UIElement {
           )}
         </div>
 
-        <p class="error-text" role="alert" ?hidden=${!(this.formCtrl.userInvalid || this.error)}>
-          ${this.validationMessage}
+        <p
+          id="mth-ap-error"
+          part="error"
+          class="error-text"
+          role="alert"
+          ?hidden=${errorMsg.length === 0}
+        >
+          ${errorMsg}
         </p>
       </div>
     `;

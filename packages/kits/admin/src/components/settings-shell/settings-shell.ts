@@ -1,7 +1,8 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { RovingFocusController } from '@methane/primitives';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';
 import { settingsShellMessages } from './settings-shell.messages.js';
 import { settingsShellStyles } from './settings-shell.styles.js';
 
@@ -43,13 +44,15 @@ export class MthSettingsShell extends UIElement {
       orientation: 'vertical',
       loop: true,
       getItems: () =>
-        Array.from(this.shadowRoot?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []),
+        Array.from(
+          this.shadowRoot?.querySelectorAll<HTMLElement>('[role="tab"]:not([disabled])') ?? [],
+        ),
     });
   }
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    this.rovingFocus.updateOptions({ dir: this.resolvedDir });
+    this.rovingFocus.updateOptions({ dir: resolveEffectiveDir(this, this.resolvedDir) });
     if (changed.has('sections') && !this.activeSectionId && this.sections[0]) {
       this.activeSectionId = this.sections[0].id;
     }
@@ -66,6 +69,10 @@ export class MthSettingsShell extends UIElement {
 
   override render() {
     const activeSection = this.sections.find((s) => s.id === this.activeSectionId);
+    const focusTabId =
+      this.sections.find((s) => !s.disabled && s.id === this.activeSectionId)?.id ??
+      this.sections.find((s) => !s.disabled)?.id ??
+      '';
 
     return html`
       <div
@@ -73,7 +80,7 @@ export class MthSettingsShell extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('regionLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         <div
           part="nav"
@@ -87,10 +94,12 @@ export class MthSettingsShell extends UIElement {
             return html`
               <button
                 type="button"
+                id=${`mth-ss-tab-${section.id}`}
                 part="nav-item"
                 class="nav-item"
                 role="tab"
                 aria-selected=${selected ? 'true' : 'false'}
+                tabindex=${focusTabId === section.id ? '0' : '-1'}
                 ?disabled=${Boolean(section.disabled)}
                 @click=${() => this.selectSection(section.id)}
               >
@@ -100,8 +109,13 @@ export class MthSettingsShell extends UIElement {
           })}
         </div>
 
-        <div class="main">
-          <div part="content" class="content" role="tabpanel">
+        <div class="main" @keydown=${stopRovingKeys}>
+          <div
+            part="content"
+            class="content"
+            role="tabpanel"
+            aria-labelledby=${activeSection ? `mth-ss-tab-${activeSection.id}` : nothing}
+          >
             <slot name="header"></slot>
             <h2 class="section-title" ?hidden=${!activeSection}>
               ${activeSection?.label ?? ''}

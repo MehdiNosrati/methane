@@ -5,8 +5,9 @@ import {
   FormattingUtils,
   type CalendarDate,
 } from '@methane/primitives';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../shared/style-sheet.js';
 import { bookingWidgetMessages } from './booking-widget.messages.js';
 import { bookingWidgetStyles } from './booking-widget.styles.js';
 
@@ -126,8 +127,13 @@ export class MthBookingWidget extends UIElement {
     return this.formCtrl.checkValidity();
   }
 
+  reportValidity(): boolean {
+    return this.formCtrl.reportValidity();
+  }
+
   protected override onFormDisabled(disabled: boolean): void {
     this.formCtrl.handleFormDisabled(disabled);
+    this.setCustomState('disabled', this.formCtrl.disabled);
   }
 
   protected override onFormReset(): void {
@@ -155,6 +161,10 @@ export class MthBookingWidget extends UIElement {
     this.formCtrl.hostReadOnly = this.readonly;
     this.formCtrl.setValue(this.value.trim() ? this.value : null);
     this.formCtrl.validate();
+    this.setCustomState('disabled', this.formCtrl.disabled);
+    this.setCustomState('readonly', this.readonly);
+    this.setCustomState('required', this.required);
+    this.setCustomState('invalid', this.formCtrl.invalid || this.error.length > 0);
   }
 
   selectSlot(date: string, time: string): void {
@@ -194,6 +204,9 @@ export class MthBookingWidget extends UIElement {
     const cells = this.calendar.getMonthGrid(f.year, f.month).flat();
     const daySlots = this._slotsForDate(this.selectedDate);
     const lockControls = this.effectivelyDisabled || this.readonly;
+    const isInvalid =
+      this.formCtrl.invalid || this.formCtrl.userInvalid || this.error.length > 0;
+    const errorMsg = this.error || (isInvalid ? this.validationMessage : '');
 
     return html`
       <div
@@ -201,7 +214,9 @@ export class MthBookingWidget extends UIElement {
         class="base"
         role="group"
         aria-label=${this.t('widgetLabel')}
-        dir=${this.resolvedDir}
+        aria-invalid=${isInvalid ? 'true' : nothing}
+        aria-errormessage=${isInvalid && errorMsg.length > 0 ? 'mth-bw-error' : nothing}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         <div part="calendar" class="calendar">
           <div class="cal-header">
@@ -278,8 +293,14 @@ export class MthBookingWidget extends UIElement {
               ${this.value ? this.value : this.t('noSelection')}
             </span>
             <slot></slot>
-            <p class="error-text" role="alert" ?hidden=${!(this.formCtrl.userInvalid || this.error)}>
-              ${this.validationMessage}
+            <p
+              id="mth-bw-error"
+              part="error"
+              class="error-text"
+              role="alert"
+              ?hidden=${errorMsg.length === 0}
+            >
+              ${errorMsg}
             </p>
             <button
               type="button"

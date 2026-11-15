@@ -6,6 +6,7 @@ import {
 } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';
 import { columnChooserMessages } from './column-chooser.messages.js';
 import { columnChooserStyles } from './column-chooser.styles.js';
 
@@ -74,7 +75,7 @@ export class MthColumnChooser extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    this.rovingFocus.updateOptions({ dir: this.resolvedDir });
+    this.rovingFocus.updateOptions({ dir: resolveEffectiveDir(this, this.resolvedDir) });
     if (changed.has('columns')) {
       if (this.defaultSnapshot.length === 0 && this.columns.length > 0) {
         this.defaultSnapshot = this.columns.map((col) => ({ ...col }));
@@ -139,9 +140,9 @@ export class MthColumnChooser extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('regionLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
-        <div part="header" class="header">
+        <div part="header" class="header" @keydown=${stopRovingKeys}>
           <h3 class="title">${this.t('heading')}</h3>
           <button
             type="button"
@@ -160,6 +161,7 @@ export class MthColumnChooser extends UIElement {
                 class="item"
                 data-col-row
                 data-column-id=${col.id}
+                tabindex=${index === 0 ? '0' : '-1'}
               >
                 <label class="label-wrap">
                   <input

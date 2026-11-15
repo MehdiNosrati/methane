@@ -8,7 +8,11 @@ import {
 } from '@methane/primitives';
 import { html } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { attachDynamicSheet, sanitizeCssNumber } from '../shared/style-sheet.js';
+import {
+  attachDynamicSheet,
+  resolveEffectiveDir,
+  sanitizeCssNumber,
+} from '../shared/style-sheet.js';
 import { auditLogMessages } from './audit-log.messages.js';
 import { auditLogStyles } from './audit-log.styles.js';
 
@@ -92,8 +96,8 @@ export class MthAuditLog extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
     if (this.hasUpdated && (this.dataSource || this.entries.length > 0)) {
       this._scheduleRefresh();
@@ -109,8 +113,8 @@ export class MthAuditLog extends UIElement {
   }
 
   protected override firstUpdated(): void {
-    if (!this.dynamicSheet && this.shadowRoot) {
-      this.dynamicSheet = attachDynamicSheet(this.shadowRoot);
+    if (this.shadowRoot) {
+      this.dynamicSheet = attachDynamicSheet(this.shadowRoot, this.dynamicSheet);
     }
     if (this.dataSource || this.entries.length > 0) {
       this._scheduleRefresh();
@@ -234,6 +238,17 @@ export class MthAuditLog extends UIElement {
     });
   }
 
+  private _formatSeverity(severity: AuditSeverity): string {
+    switch (severity) {
+      case 'critical':
+        return this.t('severityCritical');
+      case 'warning':
+        return this.t('severityWarning');
+      case 'info':
+        return this.t('severityInfo');
+    }
+  }
+
   override render() {
     const items = this.dataCtrl.items;
     const virtualItems = this.virtualizer.getVirtualItems();
@@ -246,7 +261,7 @@ export class MthAuditLog extends UIElement {
         class="base"
         role="region"
         aria-label=${this.t('regionLabel')}
-        dir=${this.resolvedDir}
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
       >
         <div part="filters" class="filters">
           <input
@@ -303,7 +318,9 @@ export class MthAuditLog extends UIElement {
                   data-row-index=${v.index}
                   @click=${() => this.emitEvent('mth-entry-select', { detail: { entry } })}
                 >
-                  <span class="severity" data-severity=${entry.severity}>${entry.severity}</span>
+                  <span class="severity" data-severity=${entry.severity}>
+                    ${this._formatSeverity(entry.severity)}
+                  </span>
                   <div class="meta">
                     <span class="summary">${entry.actor} — ${entry.action}</span>
                     <span class="resource">${entry.resource}</span>

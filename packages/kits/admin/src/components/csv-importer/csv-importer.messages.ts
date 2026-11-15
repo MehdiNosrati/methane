@@ -4,6 +4,7 @@ export const csvImporterMessages = {
   pasteLabel: 'Or paste CSV data',
   pastePlaceholder: 'name,email\nAda,ada@example.com',
   mappingHeading: 'Map columns',
+  defaultColumn: 'Column {index}',
   skipColumn: 'Skip column',
   previewHeading: 'Preview rows',
   importAction: 'Import valid rows',
