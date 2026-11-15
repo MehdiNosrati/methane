@@ -1,0 +1,2709 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/chat-thread/chat-thread.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthChatThread",
+          "tagName": "mth-chat-thread",
+          "customElement": true,
+          "description": "Virtualized chat message stream with VirtualizerController, DataController support, date/unread dividers, sanitized markdown bodies, and scroll-to-bottom anchor.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "messages",
+              "type": {
+                "text": "ReadonlyArray<ChatMessage>"
+              },
+              "description": "Inline list of chat messages rendered when no DataSource is active."
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource<ChatMessage> | null"
+              },
+              "default": "null",
+              "description": "Optional async DataSource<ChatMessage> backing DataController."
+            },
+            {
+              "kind": "field",
+              "name": "estimateHeight",
+              "attribute": "estimate-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "72",
+              "description": "Estimated pixel height per message row for windowing."
+            },
+            {
+              "kind": "field",
+              "name": "overscan",
+              "attribute": "overscan",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Extra offscreen message count rendered above and below viewport."
+            },
+            {
+              "kind": "field",
+              "name": "unreadMessageId",
+              "attribute": "unread-message-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Message ID before which the unread divider is placed."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the conversation log."
+            },
+            {
+              "kind": "field",
+              "name": "showScrollToBottom",
+              "attribute": "show-scroll-to-bottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the scroll-to-bottom button."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in flag forwarded to @methane/sanitize markdown renderer (defaults to false)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "estimate-height",
+              "fieldName": "estimateHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "72",
+              "description": "Estimated pixel height per message row for windowing."
+            },
+            {
+              "name": "overscan",
+              "fieldName": "overscan",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "Extra offscreen message count rendered above and below viewport."
+            },
+            {
+              "name": "unread-message-id",
+              "fieldName": "unreadMessageId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Message ID before which the unread divider is placed."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the conversation log."
+            },
+            {
+              "name": "show-scroll-to-bottom",
+              "fieldName": "showScrollToBottom",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the scroll-to-bottom button."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in flag forwarded to @methane/sanitize markdown renderer (defaults to false)."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-scroll-bottom",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when user activates the scroll-to-bottom anchor."
+            },
+            {
+              "name": "mth-retry",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when user clicks retry on a DataSource error state."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer thread region."
+            },
+            {
+              "name": "scroller",
+              "description": "Virtualized scroll viewport."
+            },
+            {
+              "name": "stream",
+              "description": "Windowed message stream container."
+            },
+            {
+              "name": "date-separator",
+              "description": "Localized UTC date group divider."
+            },
+            {
+              "name": "unread-divider",
+              "description": "Unread boundary divider."
+            },
+            {
+              "name": "message",
+              "description": "Message article container."
+            },
+            {
+              "name": "message-author",
+              "description": "Sender name."
+            },
+            {
+              "name": "message-body",
+              "description": "Sanitized message content."
+            },
+            {
+              "name": "scroll-bottom",
+              "description": "Jump-to-latest anchor button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Message surface background."
+            },
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "Self-authored message bubble highlight."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-chat-thread",
+            "package": "@methane/chat",
+            "conformance": [],
+            "controllers": [
+              "VirtualizerController",
+              "DataController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "loading",
+              "empty",
+              "error"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "messages",
+                "attr": false,
+                "type": "ReadonlyArray<ChatMessage>"
+              },
+              {
+                "name": "dataSource",
+                "attr": false,
+                "type": "DataSource<ChatMessage> | null",
+                "default": null
+              },
+              {
+                "name": "estimateHeight",
+                "attr": "estimate-height",
+                "type": "number",
+                "default": 72
+              },
+              {
+                "name": "overscan",
+                "attr": "overscan",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "unreadMessageId",
+                "attr": "unread-message-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showScrollToBottom",
+                "attr": "show-scroll-to-bottom",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-scroll-bottom",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-retry",
+                "cancelable": false,
+                "detailType": "undefined"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer thread region."
+              },
+              {
+                "name": "scroller",
+                "description": "Virtualized scroll viewport."
+              },
+              {
+                "name": "stream",
+                "description": "Windowed message stream container."
+              },
+              {
+                "name": "date-separator",
+                "description": "Localized UTC date group divider."
+              },
+              {
+                "name": "unread-divider",
+                "description": "Unread boundary divider."
+              },
+              {
+                "name": "message",
+                "description": "Message article container."
+              },
+              {
+                "name": "message-author",
+                "description": "Sender name."
+              },
+              {
+                "name": "message-body",
+                "description": "Sanitized message content."
+              },
+              {
+                "name": "scroll-bottom",
+                "description": "Jump-to-latest anchor button."
+              }
+            ],
+            "messages": {
+              "threadLabel": "Conversation messages",
+              "emptyLabel": "No messages yet.",
+              "loadingLabel": "Loading messages…",
+              "errorLabel": "Failed to load messages.",
+              "retryLabel": "Retry",
+              "unreadDividerLabel": "New messages",
+              "scrollToBottomLabel": "Scroll to latest messages"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthChatThread",
+          "declaration": {
+            "name": "MthChatThread",
+            "module": "src/components/chat-thread/chat-thread.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-chat-thread",
+          "declaration": {
+            "name": "MthChatThread",
+            "module": "src/components/chat-thread/chat-thread.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/collab-cursors/collab-cursors.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCollabCursors",
+          "tagName": "mth-collab-cursors",
+          "customElement": true,
+          "description": "Multiplayer live cursor and selection overlay using CSP-safe adopted CSSStyleSheet rules with strict numeric and label sanitization.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "cursors",
+              "type": {
+                "text": "ReadonlyArray<CollabCursor>"
+              },
+              "description": "Array of collaborator cursor positions, sanitized names, and optional selection boxes."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the cursor overlay."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label for the cursor overlay."
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Overlay surface containing collaborator cursors and selections."
+            },
+            {
+              "name": "selection",
+              "description": "Remote collaborator selection highlight rectangle."
+            },
+            {
+              "name": "cursor",
+              "description": "Positioned remote collaborator cursor container."
+            },
+            {
+              "name": "pointer",
+              "description": "Cursor pointer glyph."
+            },
+            {
+              "name": "name",
+              "description": "Sanitized collaborator label pill."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-accent",
+              "description": "Default fallback cursor accent color."
+            },
+            {
+              "name": "--mth-z-index-overlay",
+              "description": "Overlay stacking context z-index."
+            }
+          ],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-collab-cursors",
+            "package": "@methane/chat",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "cursors",
+                "attr": false,
+                "type": "ReadonlyArray<CollabCursor>"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Overlay surface containing collaborator cursors and selections."
+              },
+              {
+                "name": "selection",
+                "description": "Remote collaborator selection highlight rectangle."
+              },
+              {
+                "name": "cursor",
+                "description": "Positioned remote collaborator cursor container."
+              },
+              {
+                "name": "pointer",
+                "description": "Cursor pointer glyph."
+              },
+              {
+                "name": "name",
+                "description": "Sanitized collaborator label pill."
+              }
+            ],
+            "messages": {
+              "overlayLabel": "Collaborator cursors",
+              "anonymousUser": "Collaborator"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCollabCursors",
+          "declaration": {
+            "name": "MthCollabCursors",
+            "module": "src/components/collab-cursors/collab-cursors.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-collab-cursors",
+          "declaration": {
+            "name": "MthCollabCursors",
+            "module": "src/components/collab-cursors/collab-cursors.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/comment-thread/comment-thread.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCommentThread",
+          "tagName": "mth-comment-thread",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Nested discussion comment thread with collapse/expand replies, resolve/reopen actions, inline replies, and @methane/sanitize markdown bodies.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "comments",
+              "type": {
+                "text": "ReadonlyArray<CommentItem>"
+              },
+              "description": "Top-level comments with optional recursive `replies` arrays."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "kind": "field",
+              "name": "allowReply",
+              "attribute": "allow-reply",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables inline reply triggers and forms."
+            },
+            {
+              "kind": "field",
+              "name": "allowResolve",
+              "attribute": "allow-resolve",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables resolve/reopen controls on top-level threads."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in flag forwarded to @methane/sanitize (defaults to false)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "name": "allow-reply",
+              "fieldName": "allowReply",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables inline reply triggers and forms."
+            },
+            {
+              "name": "allow-resolve",
+              "fieldName": "allowResolve",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Enables resolve/reopen controls on top-level threads."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Opt-in flag forwarded to @methane/sanitize (defaults to false)."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-reply",
+              "type": {
+                "text": "CustomEvent<{ parentId: string; body: string }>"
+              },
+              "description": "Fired when an inline reply is submitted."
+            },
+            {
+              "name": "mth-resolve-toggle",
+              "type": {
+                "text": "CustomEvent<{ id: string; resolved: boolean }>"
+              },
+              "description": "Fired when resolve/reopen state is toggled."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root comment thread list."
+            },
+            {
+              "name": "comment",
+              "description": "Individual comment card."
+            },
+            {
+              "name": "author",
+              "description": "Comment author name."
+            },
+            {
+              "name": "body",
+              "description": "Sanitized comment content."
+            },
+            {
+              "name": "reply-toggle",
+              "description": "Button toggling nested reply visibility."
+            },
+            {
+              "name": "reply-button",
+              "description": "Button opening inline reply box."
+            },
+            {
+              "name": "resolve-button",
+              "description": "Button toggling resolved status."
+            },
+            {
+              "name": "replies",
+              "description": "Nested replies container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Comment card surface."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Thread connector and card border."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-comment-thread",
+            "package": "@methane/chat",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "comments",
+                "attr": false,
+                "type": "ReadonlyArray<CommentItem>"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "allowReply",
+                "attr": "allow-reply",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowResolve",
+                "attr": "allow-resolve",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-reply",
+                "cancelable": false,
+                "detailType": "{ parentId: string; body: string }"
+              },
+              {
+                "name": "mth-resolve-toggle",
+                "cancelable": false,
+                "detailType": "{ id: string; resolved: boolean }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root comment thread list."
+              },
+              {
+                "name": "comment",
+                "description": "Individual comment card."
+              },
+              {
+                "name": "author",
+                "description": "Comment author name."
+              },
+              {
+                "name": "body",
+                "description": "Sanitized comment content."
+              },
+              {
+                "name": "reply-toggle",
+                "description": "Button toggling nested reply visibility."
+              },
+              {
+                "name": "reply-button",
+                "description": "Button opening inline reply box."
+              },
+              {
+                "name": "resolve-button",
+                "description": "Button toggling resolved status."
+              },
+              {
+                "name": "replies",
+                "description": "Nested replies container."
+              }
+            ],
+            "messages": {
+              "threadLabel": "Comment thread",
+              "emptyLabel": "No comments yet.",
+              "replyLabel": "Reply",
+              "submitReplyLabel": "Post reply",
+              "cancelLabel": "Cancel",
+              "replyPlaceholder": "Write a reply…",
+              "resolveLabel": "Resolve",
+              "reopenLabel": "Reopen",
+              "resolvedBadge": "Resolved",
+              "showReplies": "Show replies ({count})",
+              "hideReplies": "Hide replies ({count})"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCommentThread",
+          "declaration": {
+            "name": "MthCommentThread",
+            "module": "src/components/comment-thread/comment-thread.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-comment-thread",
+          "declaration": {
+            "name": "MthCommentThread",
+            "module": "src/components/comment-thread/comment-thread.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/message-composer/message-composer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMessageComposer",
+          "tagName": "mth-message-composer",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated IME-safe chat message composer with Enter / Mod+Enter submit, attachment and emoji triggers, and streaming stop state.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current message draft text."
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "attribute": "default-value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Initial form reset value."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field submission name."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label for the composer."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Placeholder text shown inside empty textarea."
+            },
+            {
+              "kind": "field",
+              "name": "hint",
+              "attribute": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper guidance shown below the composer."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables editing and action buttons."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks a non-empty message as required."
+            },
+            {
+              "kind": "field",
+              "name": "streaming",
+              "attribute": "streaming",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays stop-generation button instead of send while streaming."
+            },
+            {
+              "kind": "field",
+              "name": "submitOnEnter",
+              "attribute": "submit-on-enter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Submits on bare Enter (Shift+Enter inserts newline)."
+            },
+            {
+              "kind": "field",
+              "name": "maxLength",
+              "attribute": "max-length",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Optional maximum character limit (`0` for unlimited)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current message draft text."
+            },
+            {
+              "name": "default-value",
+              "fieldName": "defaultValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Initial form reset value."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field submission name."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible label for the composer."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Placeholder text shown inside empty textarea."
+            },
+            {
+              "name": "hint",
+              "fieldName": "hint",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Helper guidance shown below the composer."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom validation error text."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables editing and action buttons."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks a non-empty message as required."
+            },
+            {
+              "name": "streaming",
+              "fieldName": "streaming",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays stop-generation button instead of send while streaming."
+            },
+            {
+              "name": "submit-on-enter",
+              "fieldName": "submitOnEnter",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Submits on bare Enter (Shift+Enter inserts newline)."
+            },
+            {
+              "name": "max-length",
+              "fieldName": "maxLength",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Optional maximum character limit (`0` for unlimited)."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired as draft text changes."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Fired when draft commits on blur."
+            },
+            {
+              "name": "mth-submit",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Cancelable event fired when user submits a non-empty message."
+            },
+            {
+              "name": "mth-stop",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when the user cancels streaming generation."
+            },
+            {
+              "name": "mth-attach",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when attachment trigger is pressed."
+            },
+            {
+              "name": "mth-emoji",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when emoji trigger is pressed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "label",
+              "description": "Optional custom label."
+            },
+            {
+              "name": "actions-start",
+              "description": "Leading toolbar controls."
+            },
+            {
+              "name": "actions-end",
+              "description": "Trailing toolbar controls."
+            },
+            {
+              "name": "hint",
+              "description": "Helper text."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer composer shell."
+            },
+            {
+              "name": "label",
+              "description": "Internal same-root label."
+            },
+            {
+              "name": "textarea",
+              "description": "Native message textarea."
+            },
+            {
+              "name": "toolbar",
+              "description": "Composer action toolbar."
+            },
+            {
+              "name": "attach-button",
+              "description": "Attachment trigger button."
+            },
+            {
+              "name": "emoji-button",
+              "description": "Emoji picker trigger button."
+            },
+            {
+              "name": "send-button",
+              "description": "Send message submit button."
+            },
+            {
+              "name": "stop-button",
+              "description": "Stop streaming button."
+            },
+            {
+              "name": "hint",
+              "description": "Helper message."
+            },
+            {
+              "name": "error",
+              "description": "Error message."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Composer surface background."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Composer corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "streaming",
+              "description": "Custom element state :state(streaming)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-message-composer",
+            "package": "@methane/chat",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "streaming",
+              "invalid"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "submitOnEnter is true and IME is not composing",
+                "expect": "submits message and emits mth-submit"
+              },
+              {
+                "key": "Mod+Enter",
+                "when": "textarea focused and IME is not composing",
+                "expect": "submits message and emits mth-submit"
+              }
+            ],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "defaultValue",
+                "attr": "default-value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "hint",
+                "attr": "hint",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "streaming",
+                "attr": "streaming",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "submitOnEnter",
+                "attr": "submit-on-enter",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "maxLength",
+                "attr": "max-length",
+                "type": "number",
+                "default": 0
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-submit",
+                "cancelable": true,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-stop",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-attach",
+                "cancelable": false,
+                "detailType": "undefined"
+              },
+              {
+                "name": "mth-emoji",
+                "cancelable": false,
+                "detailType": "undefined"
+              }
+            ],
+            "slots": [
+              {
+                "name": "label",
+                "description": "Optional custom label."
+              },
+              {
+                "name": "actions-start",
+                "description": "Leading toolbar controls."
+              },
+              {
+                "name": "actions-end",
+                "description": "Trailing toolbar controls."
+              },
+              {
+                "name": "hint",
+                "description": "Helper text."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer composer shell."
+              },
+              {
+                "name": "label",
+                "description": "Internal same-root label."
+              },
+              {
+                "name": "textarea",
+                "description": "Native message textarea."
+              },
+              {
+                "name": "toolbar",
+                "description": "Composer action toolbar."
+              },
+              {
+                "name": "attach-button",
+                "description": "Attachment trigger button."
+              },
+              {
+                "name": "emoji-button",
+                "description": "Emoji picker trigger button."
+              },
+              {
+                "name": "send-button",
+                "description": "Send message submit button."
+              },
+              {
+                "name": "stop-button",
+                "description": "Stop streaming button."
+              },
+              {
+                "name": "hint",
+                "description": "Helper message."
+              },
+              {
+                "name": "error",
+                "description": "Error message."
+              }
+            ],
+            "messages": {
+              "label": "Message composer",
+              "placeholder": "Write a message…",
+              "sendLabel": "Send message",
+              "stopLabel": "Stop generating",
+              "attachLabel": "Attach file",
+              "emojiLabel": "Insert emoji",
+              "requiredError": "Please enter a message."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMessageComposer",
+          "declaration": {
+            "name": "MthMessageComposer",
+            "module": "src/components/message-composer/message-composer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-message-composer",
+          "declaration": {
+            "name": "MthMessageComposer",
+            "module": "src/components/message-composer/message-composer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/notification-bell/notification-bell.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthNotificationBell",
+          "tagName": "mth-notification-bell",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Notification bell trigger with unread badge and accessible anchored notification feed popover.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "open",
+              "attribute": "open",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls open visibility of the notification popover."
+            },
+            {
+              "kind": "field",
+              "name": "placement",
+              "attribute": "placement",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"bottom-end\"",
+              "description": "Preferred popover placement relative to the bell button."
+            },
+            {
+              "kind": "field",
+              "name": "offset",
+              "attribute": "offset",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Pixel offset between bell trigger and notification panel."
+            },
+            {
+              "kind": "field",
+              "name": "closeOnEscape",
+              "attribute": "close-on-escape",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows dismissing the panel with the Escape key."
+            },
+            {
+              "kind": "field",
+              "name": "forceFallback",
+              "attribute": "force-fallback",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Forces non-top-layer positioning fallback mode."
+            },
+            {
+              "kind": "field",
+              "name": "unreadCount",
+              "attribute": "unread-count",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional explicit unread count overriding computed item count."
+            },
+            {
+              "kind": "field",
+              "name": "maxCount",
+              "attribute": "max-count",
+              "type": {
+                "text": "number"
+              },
+              "default": "99",
+              "description": "Maximum unread count before appending `+`."
+            },
+            {
+              "kind": "field",
+              "name": "useStore",
+              "attribute": "use-store",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Subscribes to the shared `@methane/core` runtime notification store."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional accessible label for the notification bell button."
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "ReadonlyArray<NotificationBellItem>"
+              },
+              "description": "Structured list of notification items rendered in the panel."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "fieldName": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls open visibility of the notification popover."
+            },
+            {
+              "name": "placement",
+              "fieldName": "placement",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"bottom-end\"",
+              "description": "Preferred popover placement relative to the bell button."
+            },
+            {
+              "name": "offset",
+              "fieldName": "offset",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Pixel offset between bell trigger and notification panel."
+            },
+            {
+              "name": "close-on-escape",
+              "fieldName": "closeOnEscape",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows dismissing the panel with the Escape key."
+            },
+            {
+              "name": "force-fallback",
+              "fieldName": "forceFallback",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Forces non-top-layer positioning fallback mode."
+            },
+            {
+              "name": "unread-count",
+              "fieldName": "unreadCount",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional explicit unread count overriding computed item count."
+            },
+            {
+              "name": "max-count",
+              "fieldName": "maxCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "99",
+              "description": "Maximum unread count before appending `+`."
+            },
+            {
+              "name": "use-store",
+              "fieldName": "useStore",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Subscribes to the shared `@methane/core` runtime notification store."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional accessible label for the notification bell button."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Cancelable event emitted before opening the notification panel."
+            },
+            {
+              "name": "mth-after-open",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Emitted after opening completes."
+            },
+            {
+              "name": "mth-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Cancelable event emitted before closing the notification panel."
+            },
+            {
+              "name": "mth-after-close",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Emitted after closing completes."
+            },
+            {
+              "name": "mth-item-select",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted when the user activates a notification item."
+            },
+            {
+              "name": "mth-item-dismiss",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted when a notification item is dismissed."
+            },
+            {
+              "name": "mth-mark-all-read",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Emitted when the user activates Mark all read."
+            }
+          ],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "Optional custom bell icon inside the trigger button."
+            },
+            {
+              "name": "header-actions",
+              "description": "Optional extra actions in the popover header."
+            },
+            {
+              "name": "footer",
+              "description": "Optional footer content below the notification list."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root wrapper element."
+            },
+            {
+              "name": "trigger",
+              "description": "Icon button toggling the notification panel."
+            },
+            {
+              "name": "badge",
+              "description": "Unread notification count badge."
+            },
+            {
+              "name": "panel",
+              "description": "Floating notification popover surface."
+            },
+            {
+              "name": "header",
+              "description": "Notification panel header with heading and actions."
+            },
+            {
+              "name": "list",
+              "description": "Scrollable notification items list."
+            },
+            {
+              "name": "item",
+              "description": "Individual notification row."
+            },
+            {
+              "name": "empty",
+              "description": "Empty-state panel content when there are no notifications."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Notification panel surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Notification panel and row divider border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Unread dot indicator and focus accent color."
+            },
+            {
+              "name": "--mth-shadow-lg",
+              "description": "Floating notification panel elevation shadow."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "open",
+              "description": "Custom element state :state(open)."
+            },
+            {
+              "name": "unread",
+              "description": "Custom element state :state(unread)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-notification-bell",
+            "package": "@methane/chat",
+            "conformance": [
+              "overlay"
+            ],
+            "controllers": [
+              "OverlayController",
+              "PositioningController",
+              "NotificationStoreController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "open",
+              "unread"
+            ],
+            "keyboard": [
+              {
+                "key": "Escape",
+                "when": "notification panel is open and closeOnEscape is true",
+                "expect": "closes the notification panel and restores focus to the trigger button"
+              }
+            ],
+            "props": [
+              {
+                "name": "open",
+                "attr": "open",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "placement",
+                "attr": "placement",
+                "type": "string",
+                "default": "bottom-end"
+              },
+              {
+                "name": "offset",
+                "attr": "offset",
+                "type": "number",
+                "default": 8
+              },
+              {
+                "name": "closeOnEscape",
+                "attr": "close-on-escape",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "forceFallback",
+                "attr": "force-fallback",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "unreadCount",
+                "attr": "unread-count",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "maxCount",
+                "attr": "max-count",
+                "type": "number",
+                "default": 99
+              },
+              {
+                "name": "useStore",
+                "attr": "use-store",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "items",
+                "attr": false,
+                "type": "ReadonlyArray<NotificationBellItem>"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-open",
+                "cancelable": true,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-after-open",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-close",
+                "cancelable": true,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-after-close",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              },
+              {
+                "name": "mth-item-select",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              },
+              {
+                "name": "mth-item-dismiss",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              },
+              {
+                "name": "mth-mark-all-read",
+                "cancelable": false,
+                "detailType": "void"
+              }
+            ],
+            "slots": [
+              {
+                "name": "icon",
+                "description": "Optional custom bell icon inside the trigger button."
+              },
+              {
+                "name": "header-actions",
+                "description": "Optional extra actions in the popover header."
+              },
+              {
+                "name": "footer",
+                "description": "Optional footer content below the notification list."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root wrapper element."
+              },
+              {
+                "name": "trigger",
+                "description": "Icon button toggling the notification panel."
+              },
+              {
+                "name": "badge",
+                "description": "Unread notification count badge."
+              },
+              {
+                "name": "panel",
+                "description": "Floating notification popover surface."
+              },
+              {
+                "name": "header",
+                "description": "Notification panel header with heading and actions."
+              },
+              {
+                "name": "list",
+                "description": "Scrollable notification items list."
+              },
+              {
+                "name": "item",
+                "description": "Individual notification row."
+              },
+              {
+                "name": "empty",
+                "description": "Empty-state panel content when there are no notifications."
+              }
+            ],
+            "messages": {
+              "bellLabel": "Notifications",
+              "bellLabelWithCount": "Notifications ({count} unread)",
+              "heading": "Notifications",
+              "markAllRead": "Mark all read",
+              "clearAll": "Clear all",
+              "dismiss": "Dismiss notification",
+              "markRead": "Mark as read",
+              "empty": "You are all caught up.",
+              "unreadIndicator": "Unread"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthNotificationBell",
+          "declaration": {
+            "name": "MthNotificationBell",
+            "module": "src/components/notification-bell/notification-bell.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-notification-bell",
+          "declaration": {
+            "name": "MthNotificationBell",
+            "module": "src/components/notification-bell/notification-bell.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/presence-badge/presence-badge.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPresenceBadge",
+          "tagName": "mth-presence-badge",
+          "customElement": true,
+          "description": "Accessible user presence indicator with shape-differentiated SVG markers for forced-colors safety.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "status",
+              "attribute": "status",
+              "reflect": true,
+              "type": {
+                "text": "'online' | 'away' | 'busy' | 'offline'"
+              },
+              "default": "\"offline\"",
+              "description": "Presence availability state (`online`, `away`, `busy`, or `offline`)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional accessible/visible status override text."
+            },
+            {
+              "kind": "field",
+              "name": "showLabel",
+              "attribute": "show-label",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the localized status label beside the indicator."
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "attribute": "size",
+              "reflect": true,
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "\"md\"",
+              "description": "Badge sizing token (`sm` or `md`)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "status",
+              "fieldName": "status",
+              "type": {
+                "text": "'online' | 'away' | 'busy' | 'offline'"
+              },
+              "default": "\"offline\"",
+              "description": "Presence availability state (`online`, `away`, `busy`, or `offline`)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional accessible/visible status override text."
+            },
+            {
+              "name": "show-label",
+              "fieldName": "showLabel",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays the localized status label beside the indicator."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "\"md\"",
+              "description": "Badge sizing token (`sm` or `md`)."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional custom status text overriding localized status."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root presence badge wrapper."
+            },
+            {
+              "name": "indicator",
+              "description": "Geometric SVG status marker."
+            },
+            {
+              "name": "label",
+              "description": "Visible localized status label."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-success",
+              "description": "Online presence indicator color."
+            },
+            {
+              "name": "--mth-color-warning",
+              "description": "Away presence indicator color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Busy presence indicator color."
+            },
+            {
+              "name": "--mth-color-fg-subtle",
+              "description": "Offline presence indicator color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "online",
+              "description": "Custom element state :state(online)."
+            },
+            {
+              "name": "away",
+              "description": "Custom element state :state(away)."
+            },
+            {
+              "name": "busy",
+              "description": "Custom element state :state(busy)."
+            },
+            {
+              "name": "offline",
+              "description": "Custom element state :state(offline)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-presence-badge",
+            "package": "@methane/chat",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "online",
+              "away",
+              "busy",
+              "offline"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "status",
+                "attr": "status",
+                "type": "'online' | 'away' | 'busy' | 'offline'",
+                "default": "offline"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showLabel",
+                "attr": "show-label",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "size",
+                "attr": "size",
+                "type": "'sm' | 'md'",
+                "default": "md"
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional custom status text overriding localized status."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root presence badge wrapper."
+              },
+              {
+                "name": "indicator",
+                "description": "Geometric SVG status marker."
+              },
+              {
+                "name": "label",
+                "description": "Visible localized status label."
+              }
+            ],
+            "messages": {
+              "online": "Online",
+              "away": "Away",
+              "busy": "Busy",
+              "offline": "Offline",
+              "statusPrefix": "Status"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPresenceBadge",
+          "declaration": {
+            "name": "MthPresenceBadge",
+            "module": "src/components/presence-badge/presence-badge.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-presence-badge",
+          "declaration": {
+            "name": "MthPresenceBadge",
+            "module": "src/components/presence-badge/presence-badge.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/reaction-bar/reaction-bar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthReactionBar",
+          "tagName": "mth-reaction-bar",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible emoji reaction pill bar with SelectionController toggling and RTL-aware RovingFocusController navigation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "reactions",
+              "type": {
+                "text": "ReadonlyArray<ReactionItem>"
+              },
+              "description": "List of reaction entries (`{ emoji, count, active?, label?, disabled? }`)."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Comma-separated list of currently selected reaction emojis."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "attribute": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows toggling multiple reaction pills simultaneously."
+            },
+            {
+              "kind": "field",
+              "name": "allowAdd",
+              "attribute": "allow-add",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows the trailing add-reaction action button."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all reaction interactions."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label for the reaction bar."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Comma-separated list of currently selected reaction emojis."
+            },
+            {
+              "name": "multiple",
+              "fieldName": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows toggling multiple reaction pills simultaneously."
+            },
+            {
+              "name": "allow-add",
+              "fieldName": "allowAdd",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows the trailing add-reaction action button."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all reaction interactions."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label for the reaction bar."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; values: ReadonlyArray<string>; emoji: string; selected: boolean }>"
+              },
+              "description": "Fired when a reaction pill selection changes."
+            },
+            {
+              "name": "mth-add-reaction",
+              "type": {
+                "text": "CustomEvent<undefined>"
+              },
+              "description": "Fired when the add-reaction button is activated."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Reaction bar toolbar container."
+            },
+            {
+              "name": "pill",
+              "description": "Individual reaction toggle button."
+            },
+            {
+              "name": "emoji",
+              "description": "Reaction emoji glyph."
+            },
+            {
+              "name": "count",
+              "description": "Localized reaction count."
+            },
+            {
+              "name": "add-button",
+              "description": "Button to add a new reaction."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Inactive reaction pill background."
+            },
+            {
+              "name": "--mth-color-accent-subtle",
+              "description": "Active reaction pill background."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-reaction-bar",
+            "package": "@methane/chat",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft / ArrowRight",
+                "when": "reaction pill focused",
+                "expect": "moves focus across reaction pills (RTL-aware)"
+              },
+              {
+                "key": "Home / End",
+                "when": "reaction pill focused",
+                "expect": "jumps to first or last reaction item"
+              },
+              {
+                "key": "Enter / Space",
+                "when": "reaction pill focused",
+                "expect": "toggles selection and emits mth-change"
+              }
+            ],
+            "props": [
+              {
+                "name": "reactions",
+                "attr": false,
+                "type": "ReadonlyArray<ReactionItem>"
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "multiple",
+                "attr": "multiple",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "allowAdd",
+                "attr": "allow-add",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; values: ReadonlyArray<string>; emoji: string; selected: boolean }"
+              },
+              {
+                "name": "mth-add-reaction",
+                "cancelable": false,
+                "detailType": "undefined"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Reaction bar toolbar container."
+              },
+              {
+                "name": "pill",
+                "description": "Individual reaction toggle button."
+              },
+              {
+                "name": "emoji",
+                "description": "Reaction emoji glyph."
+              },
+              {
+                "name": "count",
+                "description": "Localized reaction count."
+              },
+              {
+                "name": "add-button",
+                "description": "Button to add a new reaction."
+              }
+            ],
+            "messages": {
+              "barLabel": "Message reactions",
+              "addReaction": "Add reaction",
+              "reactionLabel": "{emoji} ({count})"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthReactionBar",
+          "declaration": {
+            "name": "MthReactionBar",
+            "module": "src/components/reaction-bar/reaction-bar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-reaction-bar",
+          "declaration": {
+            "name": "MthReactionBar",
+            "module": "src/components/reaction-bar/reaction-bar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/typing-indicator/typing-indicator.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthTypingIndicator",
+          "tagName": "mth-typing-indicator",
+          "customElement": true,
+          "description": "Accessible live typing indicator using localized pluralized messages and MotionController reduced-motion support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "users",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Array of display names currently typing."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom status text overriding generated message."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override for Intl.PluralRules formatting."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom status text overriding generated message."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override for Intl.PluralRules formatting."
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Live status container."
+            },
+            {
+              "name": "dots",
+              "description": "Animated typing dots container."
+            },
+            {
+              "name": "dot",
+              "description": "Individual typing dot."
+            },
+            {
+              "name": "text",
+              "description": "Localized typing summary text."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Typing text and dot color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active dot highlight color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "active",
+              "description": "Custom element state :state(active)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-typing-indicator",
+            "package": "@methane/chat",
+            "conformance": [],
+            "controllers": [
+              "MotionController"
+            ],
+            "focusModel": "none",
+            "states": [
+              "active",
+              "reduced-motion"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "users",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Live status container."
+              },
+              {
+                "name": "dots",
+                "description": "Animated typing dots container."
+              },
+              {
+                "name": "dot",
+                "description": "Individual typing dot."
+              },
+              {
+                "name": "text",
+                "description": "Localized typing summary text."
+              }
+            ],
+            "messages": {
+              "singleTyping": "{first} is typing…",
+              "pairTyping": "{first} and {second} are typing…",
+              "groupTypingOne": "{first} and {count} other are typing…",
+              "groupTypingOther": "{first} and {count} others are typing…",
+              "idleLabel": "No one is typing"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthTypingIndicator",
+          "declaration": {
+            "name": "MthTypingIndicator",
+            "module": "src/components/typing-indicator/typing-indicator.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-typing-indicator",
+          "declaration": {
+            "name": "MthTypingIndicator",
+            "module": "src/components/typing-indicator/typing-indicator.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
