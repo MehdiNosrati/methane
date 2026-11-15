@@ -1,0 +1,86 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+
+export const datePickerSpec: ComponentBehaviorSpec = {
+  tag: 'mth-date-picker',
+  package: '@methane/ui',
+  conformance: ['form-control', 'overlay'],
+  controllers: [
+    'CalendarCore',
+    'FormControlController',
+    'OverlayController',
+    'PositioningController',
+  ],
+  focusModel: 'delegates-focus',
+  states: ['open', 'disabled', 'readonly', 'dirty', 'touched', 'invalid'],
+  keyboard: [
+    { key: 'ArrowDown', when: 'Input or trigger is focused and popover closed', expect: 'Opens calendar popover and focuses active day' },
+    { key: 'ArrowLeft', when: 'Calendar grid cell is focused', expect: 'Moves focus one day backward (RTL-aware)' },
+    { key: 'ArrowRight', when: 'Calendar grid cell is focused', expect: 'Moves focus one day forward (RTL-aware)' },
+    { key: 'ArrowUp', when: 'Calendar grid cell is focused', expect: 'Moves focus seven days backward' },
+    { key: 'Enter', when: 'Calendar grid cell is focused', expect: 'Selects focused date, updates value, and closes popover' },
+    { key: 'Escape', when: 'Calendar popover is open', expect: 'Closes popover and restores focus' },
+  ],
+  props: [
+    { name: 'value', attr: 'value', type: 'string', default: '' },
+    { name: 'name', attr: 'name', type: 'string', default: '' },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'YYYY-MM-DD' },
+    { name: 'min', attr: 'min', type: 'string', default: '' },
+    { name: 'max', attr: 'max', type: 'string', default: '' },
+    { name: 'open', attr: 'open', type: 'boolean', default: false },
+    { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
+    { name: 'readonly', attr: 'readonly', type: 'boolean', default: false },
+    { name: 'required', attr: 'required', type: 'boolean', default: false },
+  ],
+  events: [
+    { name: 'mth-change', cancelable: false, detailType: '{ value: string }' },
+    { name: 'mth-open', cancelable: true, detailType: '{ open: true }' },
+    { name: 'mth-after-open', cancelable: false, detailType: '{ open: true }' },
+    { name: 'mth-close', cancelable: false, detailType: '{ reason: string }' },
+    { name: 'mth-after-close', cancelable: false, detailType: '{ reason: string }' },
+  ],
+  slots: [],
+  parts: [
+    { name: 'base', description: 'Root date picker container.' },
+    { name: 'label', description: 'Optional visible field label.' },
+    { name: 'control', description: 'Input + calendar trigger wrapper.' },
+    { name: 'input', description: 'ISO date text input element.' },
+    { name: 'trigger', description: 'Calendar popup toggle button.' },
+    { name: 'popover', description: 'Floating calendar dialog container.' },
+    { name: 'grid', description: 'Calendar month grid.' },
+    { name: 'day', description: 'Individual day button.' },
+  ],
+  messages: {
+    chooseDate: 'Choose date',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    calendarLabel: 'Calendar',
+  },
+};
+
+export const CEM_METADATA = {
+  description: 'Form-associated accessible date picker powered by `CalendarCore`, `OverlayController`, `PositioningController`, and `FormattingUtils`.',
+  propDescriptions: {
+    value: 'Selected date in `YYYY-MM-DD` ISO format.',
+    name: 'Form field name submitted with parent `<form>`.',
+    label: 'Accessible field label.',
+    placeholder: 'Placeholder text for the date input.',
+    min: 'Minimum selectable ISO date (`YYYY-MM-DD`).',
+    max: 'Maximum selectable ISO date (`YYYY-MM-DD`).',
+    open: 'Whether the calendar popover is open.',
+    disabled: 'Disables interaction and form submission.',
+    readonly: 'Prevents changing the selected date.',
+    required: 'Marks a date selection as required.',
+  },
+  eventDescriptions: {
+    'mth-change': 'Fired when the selected date changes.',
+    'mth-open': 'Cancelable event fired before opening the calendar.',
+    'mth-after-open': 'Fired after opening completes.',
+    'mth-close': 'Fired when the calendar closes.',
+    'mth-after-close': 'Fired after closing and focus restore complete.',
+  },
+  cssProperties: [
+    { name: '--mth-color-accent', description: 'Selected day highlight color.' },
+    { name: '--mth-color-surface-raised', description: 'Floating calendar surface background.' },
+  ],
+};

@@ -1,0 +1,14 @@
+import { defineComponents } from '@methane/core';
+import { MthDatetimePicker } from './datetime-picker.js';
+
+export { MthDatetimePicker } from './datetime-picker.js';
+export { datetimePickerMessages } from './datetime-picker.messages.js';
+export { datetimePickerSpec } from './datetime-picker.spec.js';
+export { datetimePickerStyles } from './datetime-picker.styles.js';
+
+export function registerMthDatetimePicker(prefix?: string): ReadonlyArray<string> {
+  return defineComponents({
+    ...(prefix !== undefined ? { prefix } : {}),
+    components: { 'mth-datetime-picker': MthDatetimePicker },
+  });
+}
