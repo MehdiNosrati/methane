@@ -1,0 +1,17 @@
+export const cameraCaptureMessages = {
+  regionLabel: 'Camera capture',
+  deviceSelectLabel: 'Camera device',
+  defaultDeviceLabel: 'Camera {index}',
+  startLabel: 'Start camera',
+  stopLabel: 'Stop camera',
+  captureLabel: 'Capture photo',
+  statusIdle: 'Camera idle',
+  statusActive: 'Camera preview active',
+  statusRequesting: 'Requesting camera permission…',
+  statusDenied: 'Camera permission denied',
+  statusUnsupported: 'Camera API unavailable in this environment',
+  statusError: 'Camera error: {message}',
+  initFailedError: 'Camera initialization failed',
+  unknownError: 'unknown',
+  capturedAlt: 'Captured camera snapshot',
+} as const;

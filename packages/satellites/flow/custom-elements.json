@@ -1,0 +1,732 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/flow-editor/flow-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFlowEditor",
+          "tagName": "mth-flow-editor",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible node/DAG flow editor wrapping @dagrejs/dagre with pan/zoom plane and keyboard node traversal.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "nodes",
+              "type": {
+                "text": "ReadonlyArray<FlowNode>"
+              },
+              "description": "Flow node definitions."
+            },
+            {
+              "kind": "field",
+              "name": "edges",
+              "type": {
+                "text": "ReadonlyArray<FlowEdge>"
+              },
+              "description": "Directed edges connecting source and target node IDs."
+            },
+            {
+              "kind": "field",
+              "name": "direction",
+              "attribute": "direction",
+              "type": {
+                "text": "'TB' | 'LR' | 'RL' | 'BT' | 'auto'"
+              },
+              "default": "\"auto\"",
+              "description": "DAG layout rank direction (auto resolves LR/RL from document direction)."
+            },
+            {
+              "kind": "field",
+              "name": "edgeStyle",
+              "attribute": "edge-style",
+              "type": {
+                "text": "'bezier' | 'orthogonal'"
+              },
+              "default": "\"bezier\"",
+              "description": "Connector routing geometry (bezier or orthogonal)."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Viewport scale factor."
+            },
+            {
+              "kind": "field",
+              "name": "panX",
+              "attribute": "pan-x",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal pan offset in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "panY",
+              "attribute": "pan-y",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Vertical pan offset in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "selectedId",
+              "attribute": "selected-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected node ID."
+            },
+            {
+              "kind": "field",
+              "name": "autoLayout",
+              "attribute": "auto-layout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Runs Dagre DAG auto-layout automatically when nodes/edges update."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "direction",
+              "fieldName": "direction",
+              "type": {
+                "text": "'TB' | 'LR' | 'RL' | 'BT' | 'auto'"
+              },
+              "default": "\"auto\"",
+              "description": "DAG layout rank direction (auto resolves LR/RL from document direction)."
+            },
+            {
+              "name": "edge-style",
+              "fieldName": "edgeStyle",
+              "type": {
+                "text": "'bezier' | 'orthogonal'"
+              },
+              "default": "\"bezier\"",
+              "description": "Connector routing geometry (bezier or orthogonal)."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Viewport scale factor."
+            },
+            {
+              "name": "pan-x",
+              "fieldName": "panX",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Horizontal pan offset in pixels."
+            },
+            {
+              "name": "pan-y",
+              "fieldName": "panY",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Vertical pan offset in pixels."
+            },
+            {
+              "name": "selected-id",
+              "fieldName": "selectedId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected node ID."
+            },
+            {
+              "name": "auto-layout",
+              "fieldName": "autoLayout",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Runs Dagre DAG auto-layout automatically when nodes/edges update."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-node-select",
+              "type": {
+                "text": "CustomEvent<{ nodeId: string }>"
+              },
+              "description": "Fired when a flow node is selected."
+            },
+            {
+              "name": "mth-viewport-change",
+              "type": {
+                "text": "CustomEvent<{ zoom: number; panX: number; panY: number }>"
+              },
+              "description": "Fired when pan or zoom changes."
+            },
+            {
+              "name": "mth-layout-complete",
+              "type": {
+                "text": "CustomEvent<{ nodeCount: number; edgeCount: number }>"
+              },
+              "description": "Fired after Dagre layout computes coordinates."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or accessible graph outline fallback content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer flow editor container."
+            },
+            {
+              "name": "toolbar",
+              "description": "Zoom, reset, and auto-layout toolbar."
+            },
+            {
+              "name": "canvas",
+              "description": "Pan/zoom viewport surface."
+            },
+            {
+              "name": "edges",
+              "description": "SVG edge layer."
+            },
+            {
+              "name": "node",
+              "description": "Interactive flow node button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Flow canvas background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected node and edge highlight color"
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Node and edge border color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-flow-editor",
+            "package": "@methane/flow",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Focus is on a node inside the flow editor",
+                "expect": "Moves focus to the next node"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "Focus is on a node after the first node",
+                "expect": "Moves focus to the previous node"
+              },
+              {
+                "key": "Enter",
+                "when": "Focus is on a node",
+                "expect": "Selects the node and emits mth-node-select"
+              }
+            ],
+            "props": [
+              {
+                "name": "nodes",
+                "attr": false,
+                "type": "ReadonlyArray<FlowNode>"
+              },
+              {
+                "name": "edges",
+                "attr": false,
+                "type": "ReadonlyArray<FlowEdge>"
+              },
+              {
+                "name": "direction",
+                "type": "'TB' | 'LR' | 'RL' | 'BT' | 'auto'",
+                "default": "auto"
+              },
+              {
+                "name": "edgeStyle",
+                "attr": "edge-style",
+                "type": "'bezier' | 'orthogonal'",
+                "default": "bezier"
+              },
+              {
+                "name": "zoom",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "panX",
+                "attr": "pan-x",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "panY",
+                "attr": "pan-y",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "selectedId",
+                "attr": "selected-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "autoLayout",
+                "attr": "auto-layout",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-node-select",
+                "cancelable": false,
+                "detailType": "{ nodeId: string }"
+              },
+              {
+                "name": "mth-viewport-change",
+                "cancelable": false,
+                "detailType": "{ zoom: number; panX: number; panY: number }"
+              },
+              {
+                "name": "mth-layout-complete",
+                "cancelable": false,
+                "detailType": "{ nodeCount: number; edgeCount: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or accessible graph outline fallback content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer flow editor container."
+              },
+              {
+                "name": "toolbar",
+                "description": "Zoom, reset, and auto-layout toolbar."
+              },
+              {
+                "name": "canvas",
+                "description": "Pan/zoom viewport surface."
+              },
+              {
+                "name": "edges",
+                "description": "SVG edge layer."
+              },
+              {
+                "name": "node",
+                "description": "Interactive flow node button."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Flow diagram editor",
+              "zoomInLabel": "Zoom in",
+              "zoomOutLabel": "Zoom out",
+              "resetViewLabel": "Reset view",
+              "autoLayoutLabel": "Auto layout",
+              "emptyText": "No flow nodes",
+              "nodeRoleDescription": "Flow node {label}",
+              "portInputLabel": "Input port",
+              "portOutputLabel": "Output port"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFlowEditor",
+          "declaration": {
+            "name": "MthFlowEditor",
+            "module": "src/components/flow-editor/flow-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-flow-editor",
+          "declaration": {
+            "name": "MthFlowEditor",
+            "module": "src/components/flow-editor/flow-editor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/org-chart/org-chart.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthOrgChart",
+          "tagName": "mth-org-chart",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible hierarchical org-chart wrapping @dagrejs/dagre with subtree collapse/expand and member search.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "nodes",
+              "type": {
+                "text": "ReadonlyArray<OrgChartNode>"
+              },
+              "description": "Organization hierarchy nodes with parentId links or nested children."
+            },
+            {
+              "kind": "field",
+              "name": "direction",
+              "attribute": "direction",
+              "type": {
+                "text": "'TB' | 'LR' | 'RL' | 'auto'"
+              },
+              "default": "\"TB\"",
+              "description": "Chart layout direction (TB, LR, RL, or auto)."
+            },
+            {
+              "kind": "field",
+              "name": "query",
+              "attribute": "query",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Case-insensitive search filter across member names, titles, and departments."
+            },
+            {
+              "kind": "field",
+              "name": "selectedId",
+              "attribute": "selected-id",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently focused or selected member ID."
+            },
+            {
+              "kind": "field",
+              "name": "collapsedIds",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "IDs of collapsed manager nodes."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "direction",
+              "fieldName": "direction",
+              "type": {
+                "text": "'TB' | 'LR' | 'RL' | 'auto'"
+              },
+              "default": "\"TB\"",
+              "description": "Chart layout direction (TB, LR, RL, or auto)."
+            },
+            {
+              "name": "query",
+              "fieldName": "query",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Case-insensitive search filter across member names, titles, and departments."
+            },
+            {
+              "name": "selected-id",
+              "fieldName": "selectedId",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently focused or selected member ID."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-node-select",
+              "type": {
+                "text": "CustomEvent<{ nodeId: string }>"
+              },
+              "description": "Fired when a member card is selected."
+            },
+            {
+              "name": "mth-node-toggle",
+              "type": {
+                "text": "CustomEvent<{ nodeId: string; collapsed: boolean }>"
+              },
+              "description": "Fired when a branch node is expanded or collapsed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Static SSR or accessible org hierarchy fallback content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer org chart region."
+            },
+            {
+              "name": "search",
+              "description": "Member filter search input."
+            },
+            {
+              "name": "canvas",
+              "description": "Dagre-positioned org hierarchy surface."
+            },
+            {
+              "name": "card",
+              "description": "Individual organization member card."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Org chart surface background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Search match and selected card highlight color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-org-chart",
+            "package": "@methane/flow",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Focus is on a member card",
+                "expect": "Moves focus to the next visible member card"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "Focus is on a member card after the first card",
+                "expect": "Moves focus to the previous visible member card"
+              },
+              {
+                "key": "Enter",
+                "when": "Focus is on a member card",
+                "expect": "Selects the member card and emits mth-node-select"
+              }
+            ],
+            "props": [
+              {
+                "name": "nodes",
+                "attr": false,
+                "type": "ReadonlyArray<OrgChartNode>"
+              },
+              {
+                "name": "direction",
+                "type": "'TB' | 'LR' | 'RL' | 'auto'",
+                "default": "TB"
+              },
+              {
+                "name": "query",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "selectedId",
+                "attr": "selected-id",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "collapsedIds",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-node-select",
+                "cancelable": false,
+                "detailType": "{ nodeId: string }"
+              },
+              {
+                "name": "mth-node-toggle",
+                "cancelable": false,
+                "detailType": "{ nodeId: string; collapsed: boolean }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Static SSR or accessible org hierarchy fallback content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer org chart region."
+              },
+              {
+                "name": "search",
+                "description": "Member filter search input."
+              },
+              {
+                "name": "canvas",
+                "description": "Dagre-positioned org hierarchy surface."
+              },
+              {
+                "name": "card",
+                "description": "Individual organization member card."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Organization chart",
+              "searchLabel": "Search members",
+              "searchPlaceholder": "Filter by name or title",
+              "expandLabel": "Expand {name} reports",
+              "collapseLabel": "Collapse {name} reports",
+              "emptyText": "No organization members",
+              "selectNodeLabel": "Select {name}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthOrgChart",
+          "declaration": {
+            "name": "MthOrgChart",
+            "module": "src/components/org-chart/org-chart.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-org-chart",
+          "declaration": {
+            "name": "MthOrgChart",
+            "module": "src/components/org-chart/org-chart.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

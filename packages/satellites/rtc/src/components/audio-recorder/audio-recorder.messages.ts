@@ -1,0 +1,18 @@
+export const audioRecorderMessages = {
+  regionLabel: 'Audio recorder',
+  recordLabel: 'Record',
+  pauseLabel: 'Pause',
+  resumeLabel: 'Resume',
+  stopLabel: 'Stop',
+  resetLabel: 'Reset',
+  meterLabel: 'Microphone input level',
+  statusIdle: 'Ready to record',
+  statusRecording: 'Recording…',
+  statusPaused: 'Recording paused',
+  statusStopped: 'Recording complete',
+  statusUnsupported: 'Audio recording unavailable in this environment',
+  statusError: 'Recording error: {message}',
+  micFailedError: 'Microphone access failed',
+  unknownError: 'unknown',
+  playbackLabel: 'Recorded audio playback',
+} as const;
