@@ -1,0 +1,33 @@
+{
+  "name": "@methane/verify-next",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js 15 App Router (RSC + React 19) SSR & DSD hydration verification app for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "start": "NEXT_TELEMETRY_DISABLED=1 next start",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@methane/core": "workspace:*",
+    "@methane/css": "workspace:*",
+    "@methane/primitives": "workspace:*",
+    "@methane/react": "workspace:*",
+    "@methane/ssr": "workspace:*",
+    "@methane/ssr-next": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@methane/test-conformance": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@methane/verify-sveltekit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SvelteKit 2 + Svelte 5 bind:* SSR verification app for Methane UI",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "svelte-kit sync && vite build",
+    "typecheck": "svelte-kit sync && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@methane/css": "workspace:*",
+    "@methane/primitives": "workspace:*",
+    "@methane/ssr-sveltekit": "workspace:*",
+    "@methane/svelte": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "svelte": "^5.57.3"
+  },
+  "devDependencies": {
+    "@methane/test-conformance": "workspace:*",
+    "@sveltejs/adapter-node": "^5.0.0",
+    "@sveltejs/kit": "^2.50.0",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.15.0",
+    "jsdom": "^31.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^5.1.0"
+  }
+}
