@@ -7,10 +7,12 @@ export const inputStyles = css`
     --_input-bg: var(--mth-color-surface, Canvas);
     --_input-fg: var(--mth-color-fg, CanvasText);
     --_input-muted: var(--mth-color-fg-muted, GrayText);
-    --_input-border: var(--mth-color-border, ButtonBorder);
+    --_input-border: var(--mth-color-border-strong, ButtonBorder);
+    --_input-accent: var(--mth-color-accent, Highlight);
     --_input-focus: var(--mth-color-border-focus, Highlight);
     --_input-danger: var(--mth-color-danger, crimson);
-    --_input-radius: var(--mth-radius-md, 0.375rem);
+    --_input-radius: var(--mth-radius-md, 0.5rem);
+    --_input-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     --_input-pad-inline: calc(var(--mth-space-control-inline, 0.75rem) * var(--mth-density, 1));
     --_input-pad-block: calc(var(--mth-space-control-block, 0.5rem) * var(--mth-density, 1));
   }
@@ -54,17 +56,35 @@ export const inputStyles = css`
     color: var(--_input-fg);
     border: 1px solid var(--_input-border);
     border-radius: var(--_input-radius);
+    box-shadow: var(--_input-shadow);
+    transition:
+      border-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .wrapper:focus-within {
     border-color: var(--_input-focus);
-    outline: 2px solid var(--_input-focus);
-    outline-offset: 1px;
+    box-shadow:
+      0 0 0 3px oklch(from var(--_input-focus) l c h / 0.22),
+      var(--_input-shadow);
+  }
+
+  :host(:not(:state(disabled))) .wrapper:hover {
+    border-color: var(--_input-accent);
   }
 
   :host(:state(user-invalid)) .wrapper,
   .wrapper[data-invalid='true'] {
     border-color: var(--_input-danger);
+  }
+
+  :host(:state(user-invalid)) .wrapper:focus-within,
+  .wrapper[data-invalid='true']:focus-within {
+    box-shadow:
+      0 0 0 3px oklch(from var(--_input-danger) l c h / 0.22),
+      var(--_input-shadow);
   }
 
   :host(:state(disabled)) .wrapper {
@@ -98,16 +118,24 @@ export const inputStyles = css`
     font-size: var(--mth-font-size-xs, 0.75rem);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .wrapper {
+      transition: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .wrapper {
       background: Field;
       color: FieldText;
       border-color: ButtonBorder;
+      box-shadow: none;
     }
 
     .wrapper:focus-within {
       outline: 2px solid Highlight;
       border-color: Highlight;
+      box-shadow: none;
     }
 
     :host(:state(disabled)) .wrapper {

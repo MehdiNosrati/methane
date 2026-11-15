@@ -65,14 +65,14 @@
     padding-block: var(--mth-space-3, 0.75rem);
     padding-inline: var(--mth-space-4, 1rem);
     border-inline-start: 3px solid
-      var(--mth-color-accent, light-dark(oklch(0.56 0.21 255), oklch(0.67 0.19 255)));
+      var(--mth-color-accent, light-dark(oklch(0.55 0.23 264), oklch(0.7 0.19 264)));
     background-color: var(
       --mth-color-bg-subtle,
-      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+      light-dark(oklch(0.95 0.008 262), oklch(0.185 0.014 262))
     );
-    border-start-end-radius: var(--mth-radius-md, 0.375rem);
-    border-end-end-radius: var(--mth-radius-md, 0.375rem);
-    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 255), oklch(0.7 0.015 255)));
+    border-start-end-radius: var(--mth-radius-md, 0.5rem);
+    border-end-end-radius: var(--mth-radius-md, 0.5rem);
+    color: var(--mth-color-fg-muted, light-dark(oklch(0.45 0.015 262), oklch(0.7 0.014 262)));
   }
 
   .mth-prose :where(code) {
@@ -82,11 +82,11 @@
     padding-inline: 0.375em;
     background-color: var(
       --mth-color-bg-subtle,
-      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+      light-dark(oklch(0.95 0.008 262), oklch(0.185 0.014 262))
     );
     border: 1px solid
-      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
-    border-radius: var(--mth-radius-sm, 0.25rem);
+      var(--mth-color-border, light-dark(oklch(0.89 0.01 262), oklch(0.28 0.016 262)));
+    border-radius: var(--mth-radius-sm, 0.375rem);
   }
 
   .mth-prose :where(pre) {
@@ -94,11 +94,12 @@
     padding: var(--mth-space-4, 1rem);
     background-color: var(
       --mth-color-bg-subtle,
-      light-dark(oklch(0.96 0.006 255), oklch(0.2 0.012 255))
+      light-dark(oklch(0.95 0.008 262), oklch(0.185 0.014 262))
     );
     border: 1px solid
-      var(--mth-color-border, light-dark(oklch(0.915 0.01 255), oklch(0.27 0.015 255)));
-    border-radius: var(--mth-radius-md, 0.375rem);
+      var(--mth-color-border, light-dark(oklch(0.89 0.01 262), oklch(0.28 0.016 262)));
+    border-radius: var(--mth-radius-md, 0.5rem);
+    box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     font-family: var(--mth-font-mono, ui-monospace, monospace);
     font-size: var(--mth-font-size-sm, 0.875rem);
     line-height: var(--mth-line-height-normal, 1.5);

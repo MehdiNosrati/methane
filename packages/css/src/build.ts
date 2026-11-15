@@ -8,7 +8,7 @@ const srcDir = resolve(pkgRoot, 'src');
 const distDir = resolve(pkgRoot, 'dist');
 
 const CORE_FILES = ['layers.css', 'reset.css', 'defined-guard.css'] as const;
-const PRIMITIVE_MODULES = ['layout.css', 'prose.css', 'marketing.css'] as const;
+const PRIMITIVE_MODULES = ['layout.css', 'prose.css', 'marketing.css', 'forms.css'] as const;
 
 export function buildCssArtifacts(): void {
   mkdirSync(distDir, { recursive: true });

@@ -97,4 +97,41 @@ describe('<mth-split-button>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('renders SVG caret on trigger, supports soft/outlined variants, and skips disabled menu items', async () => {
+    const el = document.createElement('mth-split-button') as MthSplitButton;
+    el.label = 'Run';
+    el.variant = 'soft';
+    el.items = [
+      { label: 'Fast', value: 'fast' },
+      { label: 'Locked', value: 'locked', disabled: true },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const trigger = el.shadowRoot!.querySelector<HTMLButtonElement>('[part="trigger"]')!;
+    expect(trigger.querySelector('svg[part="caret-icon"]')).not.toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+
+    trigger.click();
+    await Promise.resolve();
+    await el.updateComplete;
+    await Promise.resolve();
+    await el.updateComplete;
+    expect(el.open).toBe(true);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+    const selected: string[] = [];
+    el.addEventListener('mth-select', (ev) => {
+      selected.push((ev as CustomEvent<{ value: string }>).detail.value);
+    });
+    const items = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('[part="item"]');
+    expect(items[1]!.disabled).toBe(true);
+    items[1]!.click();
+    expect(selected).toEqual([]);
+
+    el.variant = 'outlined';
+    await el.updateComplete;
+    expect(el.getAttribute('variant')).toBe('outlined');
+  });
 });

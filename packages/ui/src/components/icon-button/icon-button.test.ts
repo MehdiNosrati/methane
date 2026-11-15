@@ -68,4 +68,39 @@ describe('<mth-icon-button>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('supports soft, outlined, solid, ghost, danger variants and loading/disabled guards', async () => {
+    const el = document.createElement('mth-icon-button') as MthIconButton;
+    el.label = 'Favorite';
+    document.body.appendChild(el);
+
+    for (const variant of ['solid', 'soft', 'outline', 'outlined', 'ghost', 'danger'] as const) {
+      el.variant = variant;
+      await el.updateComplete;
+      expect(el.getAttribute('variant')).toBe(variant);
+    }
+
+    let presses = 0;
+    el.addEventListener('mth-press', () => {
+      presses += 1;
+    });
+
+    el.loading = true;
+    await el.updateComplete;
+    const ctrl = el.shadowRoot!.querySelector<HTMLButtonElement>('[part="control"]')!;
+    expect(el.shadowRoot!.querySelector('[part="spinner"]')).not.toBeNull();
+    ctrl.click();
+    expect(presses).toBe(0);
+
+    el.loading = false;
+    el.disabled = true;
+    await el.updateComplete;
+    ctrl.click();
+    expect(presses).toBe(0);
+
+    el.disabled = false;
+    await el.updateComplete;
+    ctrl.click();
+    expect(presses).toBe(1);
+  });
 });

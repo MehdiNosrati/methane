@@ -4,11 +4,11 @@ export const tooltipStyles = css`
   :host {
     display: inline-block;
     position: relative;
-    --_tooltip-bg: var(--mth-color-neutral-900, oklch(0.22 0.01 255));
-    --_tooltip-fg: var(--mth-color-neutral-50, oklch(0.98 0.005 255));
-    --_tooltip-border: var(--mth-color-border, oklch(0.35 0.01 255));
+    --_tooltip-bg: var(--mth-color-neutral-900, oklch(0.2 0.015 262));
+    --_tooltip-fg: var(--mth-color-neutral-50, oklch(0.985 0.004 262));
+    --_tooltip-border: var(--mth-color-neutral-700, oklch(0.36 0.016 262));
     --_tooltip-radius: var(--mth-radius-sm, 0.375rem);
-    --_tooltip-shadow: var(--mth-shadow-md, 0 8px 18px oklch(0 0 0 / 0.2));
+    --_tooltip-shadow: var(--mth-shadow-md, 0 4px 10px -2px oklch(0.14 0.014 262 / 0.16));
   }
 
   .trigger {

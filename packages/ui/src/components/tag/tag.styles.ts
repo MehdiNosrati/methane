@@ -6,10 +6,10 @@ export const tagStyles = css`
     vertical-align: middle;
     box-sizing: border-box;
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    --_tag-bg: var(--mth-color-bg-subtle, oklch(0.96 0.006 255));
+    --_tag-bg: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
     --_tag-fg: var(--mth-color-fg, CanvasText);
     --_tag-border: var(--mth-color-border, ButtonBorder);
-    --_tag-radius: var(--mth-radius-md, 0.375rem);
+    --_tag-radius: var(--mth-radius-md, 0.5rem);
     --_tag-pad-block: calc(var(--mth-space-1, 0.25rem) * 0.75);
     --_tag-pad-inline: var(--mth-space-2, 0.5rem);
     --_tag-font-size: var(--mth-font-size-xs, 0.75rem);
@@ -18,27 +18,27 @@ export const tagStyles = css`
   }
 
   .base[data-variant='accent'] {
-    --_tag-bg: var(--mth-color-accent-subtle, oklch(0.95 0.03 255));
+    --_tag-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
     --_tag-fg: var(--mth-color-accent, Highlight);
-    --_tag-border: var(--mth-color-accent, Highlight);
+    --_tag-border: oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) l c h / 0.28);
   }
 
   .base[data-variant='success'] {
-    --_tag-bg: var(--mth-color-success-subtle, oklch(0.96 0.03 150));
-    --_tag-fg: var(--mth-color-success, oklch(0.45 0.17 150));
-    --_tag-border: var(--mth-color-success, oklch(0.6 0.17 150));
+    --_tag-bg: var(--mth-color-success-subtle, oklch(0.95 0.04 152));
+    --_tag-fg: var(--mth-color-success, oklch(0.45 0.17 152));
+    --_tag-border: oklch(from var(--mth-color-success, oklch(0.54 0.16 152)) l c h / 0.28);
   }
 
   .base[data-variant='warning'] {
-    --_tag-bg: var(--mth-color-warning-subtle, oklch(0.96 0.04 75));
-    --_tag-fg: var(--mth-color-warning, oklch(0.5 0.17 75));
-    --_tag-border: var(--mth-color-warning, oklch(0.7 0.17 75));
+    --_tag-bg: var(--mth-color-warning-subtle, oklch(0.96 0.05 80));
+    --_tag-fg: var(--mth-color-warning, oklch(0.5 0.17 80));
+    --_tag-border: oklch(from var(--mth-color-warning, oklch(0.68 0.16 80)) l c h / 0.32);
   }
 
   .base[data-variant='danger'] {
-    --_tag-bg: var(--mth-color-danger-subtle, oklch(0.96 0.04 25));
+    --_tag-bg: var(--mth-color-danger-subtle, oklch(0.95 0.04 25));
     --_tag-fg: var(--mth-color-danger, oklch(0.5 0.22 25));
-    --_tag-border: var(--mth-color-danger, oklch(0.57 0.22 25));
+    --_tag-border: oklch(from var(--mth-color-danger, oklch(0.57 0.22 25)) l c h / 0.28);
   }
 
   .base[data-size='sm'] {

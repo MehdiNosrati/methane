@@ -12,7 +12,7 @@ export const buttonSpec: ComponentBehaviorSpec = {
     { key: ' ', when: 'Button is focused and neither disabled nor loading', expect: 'Activates the button and emits mth-press' },
   ],
   props: [
-    { name: 'variant', attr: 'variant', type: "'solid' | 'outline' | 'ghost' | 'danger'", default: 'solid' },
+    { name: 'variant', attr: 'variant', type: "'solid' | 'soft' | 'outline' | 'outlined' | 'ghost' | 'danger'", default: 'solid' },
     { name: 'size', attr: 'size', type: "'sm' | 'md' | 'lg'", default: 'md' },
     { name: 'type', attr: 'type', type: "'button' | 'submit' | 'reset'", default: 'button' },
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },

@@ -143,4 +143,44 @@ describe('<mth-dialog>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('renders crisp SVG close button, emits mth-cancel, and supports cancelable hide', async () => {
+    const dlg = document.createElement('mth-dialog') as MthDialog;
+    dlg.variant = 'prompt';
+    dlg.label = 'Confirm Tag';
+    dlg.description = 'Enter release tag.';
+    document.body.appendChild(dlg);
+    await dlg.updateComplete;
+
+    const closeBtn = dlg.shadowRoot!.querySelector<HTMLButtonElement>('[part="close-button"]')!;
+    expect(closeBtn).not.toBeNull();
+    expect(closeBtn.querySelector('svg')).not.toBeNull();
+    expect(closeBtn.getAttribute('aria-label')).toBeTruthy();
+
+    await dlg.show();
+    expect(dlg.open).toBe(true);
+
+    let closed = 0;
+    let canceled = 0;
+    dlg.addEventListener('mth-close', () => {
+      closed += 1;
+    });
+    dlg.addEventListener('mth-cancel', () => {
+      canceled += 1;
+    });
+    closeBtn.click();
+    await Promise.resolve();
+    await dlg.updateComplete;
+    expect(closed).toBe(1);
+    expect(dlg.open).toBe(false);
+
+    await dlg.show();
+    const btns = dlg.shadowRoot!.querySelectorAll<HTMLButtonElement>('.action-btn');
+    expect(btns.length).toBe(2);
+    btns[0]!.click();
+    await Promise.resolve();
+    await dlg.updateComplete;
+    expect(canceled).toBe(1);
+    expect(dlg.open).toBe(false);
+  });
 });

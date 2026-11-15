@@ -322,7 +322,18 @@ export class MthDrawer extends UIElement {
                     aria-label=${this.t('close')}
                     @click=${this.handleCloseClick}
                   >
-                    ×
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 4 12 12M12 4 4 12" />
+                    </svg>
                   </button>
                 `
               : nothing}

@@ -145,4 +145,37 @@ describe('<mth-checkbox>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('renders crisp SVG check/indeterminate icons and handles FACE reset & disable callbacks', async () => {
+    const cb = document.createElement('mth-checkbox') as MthCheckbox;
+    cb.label = 'Notify';
+    cb.required = true;
+    document.body.appendChild(cb);
+    await cb.updateComplete;
+
+    const indicator = cb.shadowRoot!.querySelector('[part="indicator"]')!;
+    expect(indicator.querySelector('svg')).toBeNull();
+    expect(cb.checkValidity()).toBe(false);
+
+    cb.checked = true;
+    await cb.updateComplete;
+    expect(indicator.querySelector('svg')).not.toBeNull();
+    expect(cb.checkValidity()).toBe(true);
+
+    cb.checked = false;
+    cb.indeterminate = true;
+    await cb.updateComplete;
+    expect(indicator.querySelector('svg')).not.toBeNull();
+
+    cb.formDisabledCallback(true);
+    await cb.updateComplete;
+    expect(cb.effectivelyDisabled).toBe(true);
+    cb.formDisabledCallback(false);
+
+    cb.formResetCallback();
+    await cb.updateComplete;
+    expect(cb.checked).toBe(false);
+    expect(cb.indeterminate).toBe(false);
+    expect(indicator.querySelector('svg')).toBeNull();
+  });
 });

@@ -32,12 +32,18 @@ describe('@methane/tokens W3C DTCG compiler', () => {
   it('compiles source DTCG tokens into @layer mth.tokens CSS with light-dark and oklch relative ramps', () => {
     expect(tokensCss).toContain('@layer mth.tokens');
     expect(tokensCss).toContain('color-scheme: light dark;');
-    expect(tokensCss).toContain('--mth-color-seed-brand: oklch(0.56 0.21 255);');
+    expect(tokensCss).toContain('--mth-color-seed-brand: oklch(0.55 0.23 264);');
     expect(tokensCss).toContain(
-      '--mth-color-brand-600: oklch(from var(--mth-color-seed-brand) calc(l - 0.08) c h);',
+      '--mth-color-brand-600: oklch(from var(--mth-color-seed-brand) calc(l - 0.07) c h);',
     );
     expect(tokensCss).toContain(
-      '--mth-color-bg: light-dark(oklch(0.995 0.002 255), var(--mth-color-neutral-950));',
+      '--mth-color-bg: light-dark(oklch(0.985 0.004 262), oklch(0.145 0.012 262));',
+    );
+    expect(tokensCss).toContain(
+      '--mth-color-border: light-dark(oklch(0.89 0.01 262), oklch(0.28 0.016 262));',
+    );
+    expect(tokensCss).toContain(
+      '--mth-color-border-strong: light-dark(oklch(0.76 0.016 262), oklch(0.40 0.02 262));',
     );
   });
 
@@ -66,8 +72,11 @@ describe('@methane/tokens W3C DTCG compiler', () => {
   it('includes typography, radii, shadows, motion, reduced-motion, and forced-colors high-contrast support', () => {
     expect(tokensCss).toContain('--mth-font-sans:');
     expect(tokensCss).toContain('--mth-font-size-2xl: 1.5rem;');
-    expect(tokensCss).toContain('--mth-radius-md: 0.375rem;');
-    expect(tokensCss).toContain('--mth-shadow-md: 0px 4px 8px -2px oklch(0.15 0.01 255 / 0.12);');
+    expect(tokensCss).toContain('--mth-radius-md: 0.5rem;');
+    expect(tokensCss).toContain('--mth-radius-lg: 0.75rem;');
+    expect(tokensCss).toContain(
+      '--mth-shadow-md: 0px 4px 8px -2px oklch(0.14 0.016 262 / 0.11), 0px 2px 4px -2px oklch(0.14 0.016 262 / 0.06);',
+    );
     expect(tokensCss).toContain('--mth-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);');
     expect(tokensCss).toContain('@media (prefers-reduced-motion: reduce)');
     expect(tokensCss).toContain('--mth-motion-duration-normal: 0ms;');

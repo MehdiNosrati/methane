@@ -314,4 +314,62 @@ describe('<mth-select>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('renders crisp SVG caret, selected checkmark, clear icon, and supports keyboard navigation', async () => {
+    const sel = document.createElement('mth-select') as MthSelect;
+    sel.label = 'Framework';
+    sel.clearable = true;
+    sel.options = [
+      { value: 'lit', label: 'Lit' },
+      { value: 'solid', label: 'SolidJS' },
+      { value: 'svelte', label: 'Svelte' },
+    ];
+    document.body.appendChild(sel);
+    await sel.updateComplete;
+
+    const caretSvg = sel.shadowRoot!.querySelector('[part="caret"] svg');
+    expect(caretSvg).not.toBeNull();
+    expect(caretSvg?.getAttribute('width')).toBe('16');
+    expect(caretSvg?.getAttribute('height')).toBe('16');
+
+    const trigger = sel.shadowRoot!.querySelector<HTMLButtonElement>('#mth-select-trigger')!;
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await Promise.resolve();
+    await sel.updateComplete;
+    await Promise.resolve();
+    await sel.updateComplete;
+    expect(sel.open).toBe(true);
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await sel.updateComplete;
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await Promise.resolve();
+    await sel.updateComplete;
+    expect(sel.value).toBe('solid');
+    expect(sel.open).toBe(false);
+
+    const clearBtn = sel.shadowRoot!.querySelector<HTMLButtonElement>('[part="clear-button"]');
+    expect(clearBtn).not.toBeNull();
+    expect(clearBtn?.querySelector('svg')).not.toBeNull();
+
+    await sel.show();
+    await sel.updateComplete;
+    const selectedOpt = sel.shadowRoot!.querySelector('[part="option"][aria-selected="true"]');
+    expect(selectedOpt).not.toBeNull();
+    expect(selectedOpt?.querySelector('svg')).not.toBeNull();
+
+    clearBtn!.click();
+    await sel.updateComplete;
+    expect(sel.value).toBe('');
+    expect(sel.shadowRoot!.querySelector('[part="clear-button"]')).toBeNull();
+
+    await sel.show();
+    await sel.updateComplete;
+    expect(sel.open).toBe(true);
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await Promise.resolve();
+    await sel.updateComplete;
+    await Promise.resolve();
+    expect(sel.open).toBe(false);
+  });
 });

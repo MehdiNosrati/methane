@@ -156,4 +156,42 @@ describe('<mth-popover>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('renders arrow, supports placement & cancelable mth-show, and toggles via trigger', async () => {
+    const pop = document.createElement('mth-popover') as MthPopover;
+    pop.placement = 'bottom-end';
+    const trigger = document.createElement('button');
+    trigger.slot = 'trigger';
+    trigger.textContent = 'Info';
+    const body = document.createElement('p');
+    body.textContent = 'Helpful details';
+    pop.append(trigger, body);
+    document.body.appendChild(pop);
+    await pop.updateComplete;
+
+    expect(pop.placement).toBe('bottom-end');
+    expect(pop.getAttribute('placement')).toBe('bottom-end');
+
+    pop.addEventListener(
+      'mth-open',
+      (ev) => {
+        ev.preventDefault();
+      },
+      { once: true },
+    );
+    await pop.show();
+    expect(pop.open).toBe(false);
+
+    await pop.show();
+    await pop.updateComplete;
+    expect(pop.open).toBe(true);
+    const surface = pop.shadowRoot!.querySelector<HTMLElement>('#mth-popover-surface')!;
+    expect(surface.hidden).toBe(false);
+    expect(pop.shadowRoot!.querySelector('#mth-popover-arrow')).not.toBeNull();
+
+    await pop.hide('programmatic');
+    await pop.updateComplete;
+    expect(pop.open).toBe(false);
+    expect(surface.hidden).toBe(true);
+  });
 });

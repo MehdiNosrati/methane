@@ -127,14 +127,29 @@ export const drawerStyles = css`
   }
 
   .close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
     border: 1px solid transparent;
-    border-radius: var(--mth-radius-sm, 0.25rem);
+    border-radius: var(--mth-radius-sm, 0.375rem);
     background: transparent;
     color: var(--_drawer-muted);
     cursor: pointer;
-    padding-block: var(--mth-space-1, 0.25rem);
-    padding-inline: var(--mth-space-2, 0.5rem);
+    padding-block: 0;
+    padding-inline: 0;
     font: inherit;
+    transition:
+      background-color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      color var(--mth-motion-duration-fast, 120ms)
+        var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .close-btn:hover {
+    background: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    color: var(--_drawer-fg);
   }
 
   .close-btn:focus-visible {
@@ -160,6 +175,12 @@ export const drawerStyles = css`
 
   .footer[hidden] {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .close-btn {
+      transition: none;
+    }
   }
 
   @media (forced-colors: active) {
