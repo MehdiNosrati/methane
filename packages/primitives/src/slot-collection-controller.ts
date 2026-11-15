@@ -22,6 +22,7 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
   private observer: MutationObserver | null = null;
   private _slottedItems: Array<T> = [];
   private _propertyItems: ReadonlyArray<D> | null = null;
+  private isDsdInitialHydration = false;
 
   constructor(
     host: ReactiveControllerHost & HTMLElement,
@@ -76,7 +77,9 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
   hostConnected(): void {
     this.startObserver();
     const isDsdHydration =
-      Boolean(this.host.shadowRoot) && !(this.host as { hasUpdated?: boolean }).hasUpdated;
+      Boolean(this.host.shadowRoot && this.host.shadowRoot.childNodes.length > 0) &&
+      !(this.host as { hasUpdated?: boolean }).hasUpdated;
+    this.isDsdInitialHydration = isDsdHydration;
     if (!isDsdHydration) {
       this.refresh();
     }
@@ -91,7 +94,9 @@ export class SlotCollectionController<T extends Element = HTMLElement, D = T>
           : 'slot:not([name])';
         const candidate = root.querySelector<HTMLSlotElement>(selector);
         if (candidate) {
-          this.attachSlot(candidate, true);
+          const defer = this.isDsdInitialHydration;
+          this.isDsdInitialHydration = false;
+          this.attachSlot(candidate, defer);
         }
       }
     }
