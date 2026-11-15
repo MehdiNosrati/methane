@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      app-dialog::part(panel) {
+        background: var(--app-color-surface);
+      }
+    </style>
+  </head>
+  <body>
+    <app-dialog @mth-close="onDismiss">
+      <app-input hint="Enter your name"></app-input>
+      <div slot="footer">
+        <app-button variant="solid">Save</app-button>
+      </div>
+    </app-dialog>
+  </body>
+</html>

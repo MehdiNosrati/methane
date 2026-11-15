@@ -1,0 +1,11 @@
+:root {
+  --app-color-accent: oklch(0.62 0.19 255);
+}
+
+.mth-container {
+  max-inline-size: 64rem;
+}
+
+app-button[variant="soft"] {
+  color: var(--app-color-accent);
+}

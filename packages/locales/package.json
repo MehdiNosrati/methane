@@ -1,0 +1,87 @@
+{
+  "name": "@methane/locales",
+  "version": "0.1.0",
+  "description": "Lazy-loaded locale packs with Intl.PluralRules and RTL bidi support for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./en": {
+      "types": "./dist/packs/en.d.ts",
+      "default": "./dist/packs/en.js"
+    },
+    "./en.js": {
+      "types": "./dist/packs/en.d.ts",
+      "default": "./dist/packs/en.js"
+    },
+    "./es": {
+      "types": "./dist/packs/es.d.ts",
+      "default": "./dist/packs/es.js"
+    },
+    "./es.js": {
+      "types": "./dist/packs/es.d.ts",
+      "default": "./dist/packs/es.js"
+    },
+    "./fr": {
+      "types": "./dist/packs/fr.d.ts",
+      "default": "./dist/packs/fr.js"
+    },
+    "./fr.js": {
+      "types": "./dist/packs/fr.d.ts",
+      "default": "./dist/packs/fr.js"
+    },
+    "./de": {
+      "types": "./dist/packs/de.d.ts",
+      "default": "./dist/packs/de.js"
+    },
+    "./de.js": {
+      "types": "./dist/packs/de.d.ts",
+      "default": "./dist/packs/de.js"
+    },
+    "./ja": {
+      "types": "./dist/packs/ja.d.ts",
+      "default": "./dist/packs/ja.js"
+    },
+    "./ja.js": {
+      "types": "./dist/packs/ja.d.ts",
+      "default": "./dist/packs/ja.js"
+    },
+    "./zh-CN": {
+      "types": "./dist/packs/zh-CN.d.ts",
+      "default": "./dist/packs/zh-CN.js"
+    },
+    "./zh-CN.js": {
+      "types": "./dist/packs/zh-CN.d.ts",
+      "default": "./dist/packs/zh-CN.js"
+    },
+    "./ar": {
+      "types": "./dist/packs/ar.d.ts",
+      "default": "./dist/packs/ar.js"
+    },
+    "./ar.js": {
+      "types": "./dist/packs/ar.d.ts",
+      "default": "./dist/packs/ar.js"
+    },
+    "./he": {
+      "types": "./dist/packs/he.d.ts",
+      "default": "./dist/packs/he.js"
+    },
+    "./he.js": {
+      "types": "./dist/packs/he.d.ts",
+      "default": "./dist/packs/he.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

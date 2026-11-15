@@ -1,0 +1,36 @@
+{
+  "name": "@methane/codemod",
+  "version": "0.1.0",
+  "description": "Idempotent AST codemod CLI and migration transforms for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "methane-codemod": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./cli": {
+      "types": "./dist/cli.d.ts",
+      "default": "./dist/cli.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "default": "./dist/manifest.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

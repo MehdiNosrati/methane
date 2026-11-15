@@ -1,0 +1,11 @@
+:root {
+  --mth-color-primary: oklch(0.62 0.19 255);
+}
+
+.mth-container {
+  max-inline-size: 64rem;
+}
+
+mth-button[kind="secondary"] {
+  color: var(--mth-color-primary);
+}

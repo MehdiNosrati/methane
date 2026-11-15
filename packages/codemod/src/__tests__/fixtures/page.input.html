@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      mth-dialog::part(panel) {
+        background: var(--mth-color-surface);
+      }
+    </style>
+  </head>
+  <body>
+    <mth-dialog @mth-dismiss="onDismiss">
+      <mth-input hint-text="Enter your name"></mth-input>
+      <div slot="actions">
+        <mth-button kind="primary">Save</mth-button>
+      </div>
+    </mth-dialog>
+  </body>
+</html>
