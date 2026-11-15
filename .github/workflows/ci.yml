@@ -33,8 +33,11 @@ jobs:
       - name: Build packages & apps
         run: pnpm build
 
-      - name: Verify codegen is up to date
-        run: pnpm run codegen:check
+      - name: Verify custom-elements.json & codegen are up to date
+        run: |
+          git diff --exit-code -- '**/custom-elements.json'
+          test -z "$(git status --porcelain -- '**/custom-elements.json')"
+          pnpm run codegen:check
 
       - name: Typecheck
         run: pnpm typecheck
@@ -45,8 +48,8 @@ jobs:
       - name: Unit & Integration Tests
         run: pnpm test
 
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install Playwright Chromium & WebKit
+        run: pnpm exec playwright install --with-deps chromium webkit
 
       - name: Browser E2E (Components, ADR-010 Modern/Fallback, SSR Hydration, Docs QA)
         run: pnpm test:e2e

@@ -106,6 +106,17 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
       });
     }
 
+    if (fileName === 'ci.yml') {
+      if (!content.includes("git diff --exit-code -- '**/custom-elements.json'")) {
+        findings.push({
+          file: fileName,
+          rule: 'ci-cem-drift-check',
+          message:
+            "ci.yml must run `git diff --exit-code -- '**/custom-elements.json'` after building to catch CEM manifest drift.",
+        });
+      }
+    }
+
     if (fileName === 'release.yml') {
       if (!/permissions\s*:/.test(content)) {
         findings.push({
@@ -114,11 +125,12 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
           message: 'release.yml must declare explicit `permissions:`.',
         });
       }
-      if (!/contents\s*:\s*read/.test(content) || !/id-token\s*:\s*write/.test(content)) {
+      if (!/contents\s*:\s*(?:read|write)/.test(content) || !/id-token\s*:\s*write/.test(content)) {
         findings.push({
           file: fileName,
           rule: 'release-oidc-permissions',
-          message: 'release.yml must pin `contents: read` and `id-token: write` for Sigstore OIDC.',
+          message:
+            'release.yml must pin `contents: read` or `contents: write` and `id-token: write` for Sigstore OIDC.',
         });
       }
       if (!/NPM_CONFIG_PROVENANCE\s*:\s*['"]?true['"]?/.test(content)) {

@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       dry_run:
@@ -15,7 +13,7 @@ on:
         default: true
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 env:
@@ -45,8 +43,11 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      - name: Verify codegen is up to date
-        run: pnpm run codegen:check
+      - name: Verify custom-elements.json & codegen are up to date
+        run: |
+          git diff --exit-code -- '**/custom-elements.json'
+          test -z "$(git status --porcelain -- '**/custom-elements.json')"
+          pnpm run codegen:check
 
       - name: Typecheck
         run: pnpm typecheck
@@ -86,3 +87,9 @@ jobs:
             fi
             pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public
           fi
+
+      - name: Create GitHub Release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && inputs.dry_run != true }}
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true

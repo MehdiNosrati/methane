@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { MTH_CSS_PRIMITIVES } from '@methane-ui/css';
 import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { compileDtcgTokens } from '@methane-ui/tokens';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ADRS } from './lib/adrs.js';
 import { loadComponentDocs } from './lib/component-loader.js';
 import { CSS_PRIMITIVE_CATALOG } from './lib/css-catalog.js';
@@ -546,66 +546,128 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
       };
     };
 
-    const collectDeclText = (entryPath: string, seen = new Set<string>()): string => {
+    const collectExportedSource = (
+      entryPath: string,
+      ext: '.js' | '.d.ts',
+      seen = new Set<string>(),
+    ): string => {
       if (seen.has(entryPath) || !existsSync(entryPath)) return '';
       seen.add(entryPath);
       const text = readFileSync(entryPath, 'utf8');
       const chunks = [text];
       for (const reexport of text.matchAll(/export\s+(?:\*|\{[^}]*\})\s+from\s+['"](\.[^'"]+)['"]/g)) {
-        const rel = reexport[1]!.replace(/\.(?:m?js)$/, '.d.ts');
-        const nextPath = resolve(entryPath, '..', rel.endsWith('.d.ts') ? rel : `${rel}.d.ts`);
-        chunks.push(collectDeclText(nextPath, seen));
+        const rel = reexport[1]!.replace(/\.(?:m?js)$/, ext);
+        const nextPath = resolve(entryPath, '..', rel.endsWith(ext) ? rel : `${rel}${ext}`);
+        chunks.push(collectExportedSource(nextPath, ext, seen));
       }
       return chunks.join('\n');
     };
 
-    const docFiles = [
-      resolve(docsRoot, 'src/pages/guides/ssr.astro'),
-      resolve(docsRoot, 'src/pages/quickstart.astro'),
-    ];
+    const isAngularRuntimeSpecifier = (specifier: string): boolean =>
+      specifier === '@methane-ui/angular' ||
+      specifier.startsWith('@methane-ui/angular/') ||
+      specifier === '@methane-ui/ssr-angular' ||
+      specifier.startsWith('@methane-ui/ssr-angular/');
 
-    for (const file of docFiles) {
-      const source = readFileSync(file, 'utf8');
+    const jitMessages: string[] = [];
+    const recordIfJit = (args: unknown[]): void => {
+      const text = args.map((a) => (typeof a === 'string' ? a : String(a))).join(' ');
+      if (text.includes('JIT compilation failed')) {
+        jitMessages.push(text);
+      }
+    };
 
-      for (const namedMatch of source.matchAll(
-        /import\s*\{([^}]+)\}\s*from\s*['"](@methane-ui\/[^'"]+)['"]/g,
-      )) {
-        const names = namedMatch[1]!
-          .split(',')
-          .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]!.trim())
-          .filter(Boolean);
-        const specifier = namedMatch[2]!;
-        const resolved = resolveExportTarget(specifier);
+    const originalConsoleError = console.error.bind(console);
+    const originalConsoleWarn = console.warn.bind(console);
+    const originalStderrWrite = process.stderr.write.bind(process.stderr);
+    const errSpy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+      recordIfJit(args);
+      originalConsoleError(...args);
+    });
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
+      recordIfJit(args);
+      originalConsoleWarn(...args);
+    });
+    const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(((
+      chunk: string | Uint8Array,
+      encodingOrCb?: BufferEncoding | ((err?: Error | null) => void),
+      cb?: (err?: Error | null) => void,
+    ) => {
+      const text = typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf8');
+      if (text.includes('JIT compilation failed')) {
+        jitMessages.push(text);
+      }
+      if (typeof encodingOrCb === 'function') {
+        return originalStderrWrite(chunk, encodingOrCb);
+      }
+      return originalStderrWrite(chunk, encodingOrCb, cb);
+    }) as typeof process.stderr.write);
 
-        if (resolved.defaultPath.endsWith('.js')) {
-          try {
-            const mod = (await import(pathToFileURL(resolved.defaultPath).href)) as Record<
-              string,
-              unknown
-            >;
-            for (const symbol of names) {
-              expect(
-                Object.prototype.hasOwnProperty.call(mod, symbol),
-                `Missing runtime export "${symbol}" in "${specifier}" (referenced in ${file})`,
-              ).toBe(true);
-            }
-          } catch {
-            const declSource = collectDeclText(resolved.typesPath ?? resolved.defaultPath);
-            for (const symbol of names) {
-              expect(
-                declSource.includes(symbol),
-                `Missing declaration for "${symbol}" in "${specifier}" (referenced in ${file})`,
-              ).toBe(true);
+    try {
+      const docFiles = [
+        resolve(docsRoot, 'src/pages/guides/ssr.astro'),
+        resolve(docsRoot, 'src/pages/quickstart.astro'),
+      ];
+
+      for (const file of docFiles) {
+        const source = readFileSync(file, 'utf8');
+
+        for (const namedMatch of source.matchAll(
+          /import\s*\{([^}]+)\}\s*from\s*['"](@methane-ui\/[^'"]+)['"]/g,
+        )) {
+          const names = namedMatch[1]!
+            .split(',')
+            .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]!.trim())
+            .filter(Boolean);
+          const specifier = namedMatch[2]!;
+          const resolved = resolveExportTarget(specifier);
+
+          if (resolved.defaultPath.endsWith('.js')) {
+            if (isAngularRuntimeSpecifier(specifier)) {
+              const jsSource = collectExportedSource(resolved.defaultPath, '.js');
+              const declSource = collectExportedSource(
+                resolved.typesPath ?? resolved.defaultPath.replace(/\.js$/, '.d.ts'),
+                '.d.ts',
+              );
+              for (const symbol of names) {
+                const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const symbolRegex = new RegExp(`\\b${escaped}\\b`);
+                expect(
+                  symbolRegex.test(jsSource),
+                  `Missing built JS export "${symbol}" in "${specifier}" (referenced in ${file})`,
+                ).toBe(true);
+                expect(
+                  symbolRegex.test(declSource),
+                  `Missing declaration for "${symbol}" in "${specifier}" (referenced in ${file})`,
+                ).toBe(true);
+              }
+            } else {
+              const mod = (await import(pathToFileURL(resolved.defaultPath).href)) as Record<
+                string,
+                unknown
+              >;
+              for (const symbol of names) {
+                expect(
+                  Object.prototype.hasOwnProperty.call(mod, symbol),
+                  `Missing runtime export "${symbol}" in "${specifier}" (referenced in ${file})`,
+                ).toBe(true);
+              }
             }
           }
         }
+
+        for (const sideEffectMatch of source.matchAll(
+          /(?:import\s+['"]|src=['"])(@methane-ui\/[^'"]+)['"]/g,
+        )) {
+          resolveExportTarget(sideEffectMatch[1]!);
+        }
       }
 
-      for (const sideEffectMatch of source.matchAll(
-        /(?:import\s+['"]|src=['"])(@methane-ui\/[^'"]+)['"]/g,
-      )) {
-        resolveExportTarget(sideEffectMatch[1]!);
-      }
+      expect(jitMessages).toEqual([]);
+    } finally {
+      errSpy.mockRestore();
+      warnSpy.mockRestore();
+      stderrSpy.mockRestore();
     }
 
     const quickstartSrc = readFileSync(resolve(docsRoot, 'src/pages/quickstart.astro'), 'utf8');
