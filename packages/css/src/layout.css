@@ -616,8 +616,8 @@
     border-radius: var(--mth-radius-lg, 0.75rem);
     box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     transition:
-      border-color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      box-shadow var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+      border-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .mth-bento-item:hover {

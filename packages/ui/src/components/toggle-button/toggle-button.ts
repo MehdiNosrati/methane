@@ -2,7 +2,7 @@ import { UIElement, html, nothing, property } from '@methane/core';
 import { toggleButtonMessages } from './toggle-button.messages.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 
-export type MthToggleButtonVariant = 'solid' | 'outline' | 'ghost';
+export type MthToggleButtonVariant = 'solid' | 'soft' | 'outline' | 'outlined' | 'ghost';
 export type MthToggleButtonSize = 'sm' | 'md' | 'lg';
 
 /**
@@ -17,11 +17,22 @@ export class MthToggleButton extends UIElement {
   static override styles = toggleButtonStyles;
   static override messages = toggleButtonMessages;
 
+  private _variant: MthToggleButtonVariant = 'outline';
+
   @property({ type: Boolean, reflect: true })
   pressed = false;
 
   @property({ type: String, reflect: true })
-  variant: MthToggleButtonVariant = 'outline';
+  get variant(): MthToggleButtonVariant {
+    return this._variant === 'outlined' ? 'outline' : this._variant;
+  }
+
+  set variant(value: MthToggleButtonVariant) {
+    const normalized = value === 'outlined' ? 'outline' : value;
+    const old = this._variant;
+    this._variant = normalized;
+    this.requestUpdate('variant', old);
+  }
 
   @property({ type: String, reflect: true })
   size: MthToggleButtonSize = 'md';

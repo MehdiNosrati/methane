@@ -148,7 +148,7 @@ export const drawerStyles = css`
   }
 
   .close-btn:hover {
-    background: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    background: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     color: var(--_drawer-fg);
   }
 

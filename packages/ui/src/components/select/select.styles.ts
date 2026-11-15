@@ -179,7 +179,7 @@ export const selectStyles = css`
     padding-inline: 0 2rem;
     border: none;
     background-color: transparent;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23646d82' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='oklch(0.54 0.014 262)' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 1rem 1rem;
     background-position: right 0 center;
@@ -199,6 +199,8 @@ export const selectStyles = css`
   @supports (appearance: base-select) {
     [part='native-select'] {
       appearance: base-select;
+      align-items: center;
+      justify-content: space-between;
       background-image: none;
       padding-inline: 0;
     }
@@ -206,7 +208,8 @@ export const selectStyles = css`
     /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
     [part='native-select']::picker-icon {
       color: var(--_sel-fg-muted);
-      margin-inline-start: var(--_sel-space-2);
+      margin-inline-start: auto;
+      padding-inline-start: var(--_sel-space-2);
       transition: transform var(--_sel-duration) var(--_sel-ease);
     }
 

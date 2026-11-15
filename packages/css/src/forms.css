@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--mth-space-2, 0.5rem);
-    min-block-size: var(--mth-size-control-md, 2.375rem);
+    min-block-size: 2.375rem;
     padding-block: var(--mth-space-2, 0.5rem);
     padding-inline: var(--mth-space-4, 1rem);
     border: 1px solid oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) calc(l - 0.06) c h / 0.5);
@@ -12,8 +12,8 @@
     background-color: var(--mth-color-accent, oklch(0.55 0.23 264));
     color: var(--mth-color-accent-fg, oklch(0.99 0 0));
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    font-size: var(--mth-text-sm, 0.875rem);
-    font-weight: var(--mth-weight-semibold, 600);
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    font-weight: var(--mth-font-weight-semibold, 600);
     line-height: 1;
     letter-spacing: -0.01em;
     text-decoration: none;
@@ -23,11 +23,11 @@
       inset 0 1px 0 oklch(1 0 0 / 0.22),
       var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     transition:
-      background-color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      border-color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      box-shadow var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      transform var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+      background-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      border-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      transform var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .mth-btn:focus-visible {
@@ -61,7 +61,7 @@
 
   .mth-btn-soft:hover:not(:disabled) {
     border-color: oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) l c h / 0.28);
-    background-color: oklch(from var(--mth-color-accent-subtle, oklch(0.94 0.04 264)) calc(l - 0.03) c h);
+    background-color: color-mix(in oklch, var(--mth-color-accent-subtle, light-dark(oklch(0.94 0.04 264), oklch(0.22 0.07 264))) 86%, var(--mth-color-accent, oklch(0.55 0.23 264)));
     box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
   }
 
@@ -88,14 +88,14 @@
   }
 
   .mth-btn-ghost:hover:not(:disabled) {
-    background-color: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    background-color: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     box-shadow: none;
   }
 
   .mth-btn-danger {
     border-color: oklch(from var(--mth-color-danger, oklch(0.57 0.22 25)) calc(l - 0.06) c h / 0.5);
     background-color: var(--mth-color-danger, oklch(0.57 0.22 25));
-    color: var(--mth-color-danger-fg, oklch(0.99 0 0));
+    color: var(--mth-color-danger-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 25)));
   }
 
   .mth-btn-danger:hover:not(:disabled) {
@@ -106,7 +106,7 @@
   .mth-select {
     display: block;
     inline-size: 100%;
-    min-block-size: var(--mth-size-control-md, 2.375rem);
+    min-block-size: 2.375rem;
     padding-block: var(--mth-space-2, 0.5rem);
     padding-inline: var(--mth-space-control-inline, 0.75rem);
     border: 1px solid var(--mth-color-border-strong, oklch(0.76 0.016 262));
@@ -114,20 +114,20 @@
     background-color: var(--mth-color-surface, oklch(1 0 0));
     color: var(--mth-color-fg, oklch(0.18 0.014 262));
     font-family: var(--mth-font-sans, system-ui, sans-serif);
-    font-size: var(--mth-text-sm, 0.875rem);
-    line-height: var(--mth-leading-normal, 1.5);
+    font-size: var(--mth-font-size-sm, 0.875rem);
+    line-height: var(--mth-line-height-normal, 1.5);
     box-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
     transition:
-      border-color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      box-shadow var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
-      background-color var(--mth-duration-fast, 120ms) var(--mth-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+      border-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1)),
+      background-color var(--mth-motion-duration-fast, 120ms) var(--mth-motion-easing-standard, cubic-bezier(0.2, 0, 0, 1));
   }
 
   select.mth-input,
   .mth-select {
     appearance: none;
     padding-inline: var(--mth-space-control-inline, 0.75rem) 2.375rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23646d82' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='oklch(0.54 0.014 262)' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 1rem 1rem;
     background-position: right 0.75rem center;

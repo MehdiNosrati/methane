@@ -55,4 +55,15 @@ describe('@methane/css form & button primitives', () => {
     const errors = result.results.flatMap((r) => r.warnings.filter((w) => w.severity === 'error'));
     expect(errors).toEqual([]);
   });
+
+  it('uses canonical @methane/tokens custom properties and non-hex SVG strokes across CSS primitives', () => {
+    for (const file of ['forms.css', 'layout.css', 'prose.css', 'marketing.css']) {
+      const css = readFileSync(resolve(here, file), 'utf8');
+      expect(css).not.toMatch(/--mth-(text|weight|leading|duration|ease|size-control)-/);
+      expect(css).not.toContain('%23');
+    }
+    const formsCss = readFileSync(resolve(here, 'forms.css'), 'utf8');
+    expect(formsCss).toContain("stroke='oklch(0.54 0.014 262)'");
+    expect(formsCss).toContain('color-mix(in oklch, var(--mth-color-accent-subtle');
+  });
 });

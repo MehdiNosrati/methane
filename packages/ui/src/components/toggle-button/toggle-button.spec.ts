@@ -13,7 +13,12 @@ export const toggleButtonSpec: ComponentBehaviorSpec = {
   ],
   props: [
     { name: 'pressed', attr: 'pressed', type: 'boolean', default: false },
-    { name: 'variant', attr: 'variant', type: "'solid' | 'outline' | 'ghost'", default: 'outline' },
+    {
+      name: 'variant',
+      attr: 'variant',
+      type: "'solid' | 'soft' | 'outline' | 'outlined' | 'ghost'",
+      default: 'outline',
+    },
     { name: 'size', attr: 'size', type: "'sm' | 'md' | 'lg'", default: 'md' },
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
     { name: 'value', attr: 'value', type: 'string', default: '' },
@@ -40,7 +45,7 @@ export const CEM_METADATA = {
   description: 'Two-state pressable toggle button exposing `aria-pressed` and `:state(pressed)`.',
   propDescriptions: {
     pressed: 'Whether the toggle button is currently pressed.',
-    variant: 'Visual style (`solid`, `outline`, or `ghost`).',
+    variant: 'Visual style (`solid`, `soft`, `outline` / `outlined`, or `ghost`).',
     size: 'Control size (`sm`, `md`, or `lg`).',
     disabled: 'Disables interaction and focus.',
     value: 'Optional associated value included in `mth-change`.',

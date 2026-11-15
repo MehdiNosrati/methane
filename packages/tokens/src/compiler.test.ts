@@ -45,6 +45,14 @@ describe('@methane/tokens W3C DTCG compiler', () => {
     expect(tokensCss).toContain(
       '--mth-color-border-strong: light-dark(oklch(0.76 0.016 262), oklch(0.40 0.02 262));',
     );
+    expect(tokensCss).toContain(
+      '--mth-color-bg-muted: light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262));',
+    );
+    expect(tokensCss).toContain(
+      '--mth-color-danger-fg: light-dark(oklch(0.99 0 0), oklch(0.14 0.02 25));',
+    );
+    expect(tokensCss).toContain('--mth-focus-ring-width: 2px;');
+    expect(tokensCss).toContain('--mth-focus-ring-offset: 2px;');
   });
 
   it('includes density presets (compact, default, comfortable), re-emits derived density vars, and emits scoped light/dark themes', () => {
@@ -82,8 +90,10 @@ describe('@methane/tokens W3C DTCG compiler', () => {
     expect(tokensCss).toContain('--mth-motion-duration-normal: 0ms;');
     expect(tokensCss).toContain('@media (forced-colors: active)');
     expect(tokensCss).toContain('--mth-color-bg: Canvas;');
+    expect(tokensCss).toContain('--mth-color-bg-muted: Canvas;');
     expect(tokensCss).toContain('--mth-color-fg: CanvasText;');
     expect(tokensCss).toContain('--mth-color-accent: Highlight;');
+    expect(tokensCss).toContain('--mth-color-danger-fg: HighlightText;');
   });
 
   it('keeps typed tokenVars 1:1 in sync with compiled tokenMap', () => {

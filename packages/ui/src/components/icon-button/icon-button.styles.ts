@@ -7,7 +7,7 @@ export const iconButtonStyles = css`
     vertical-align: middle;
     --_ib-size: 2.375rem;
     --_ib-bg: transparent;
-    --_ib-bg-hover: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    --_ib-bg-hover: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_ib-bg-active: var(--mth-color-border, oklch(0.89 0.01 262));
     --_ib-fg: var(--mth-color-fg, CanvasText);
     --_ib-border: transparent;
@@ -41,8 +41,8 @@ export const iconButtonStyles = css`
 
   :host([variant='soft']) {
     --_ib-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
-    --_ib-bg-hover: oklch(from var(--_ib-bg) calc(l - 0.03) c h);
-    --_ib-bg-active: oklch(from var(--_ib-bg) calc(l - 0.06) c h);
+    --_ib-bg-hover: color-mix(in oklch, var(--_ib-bg) 86%, var(--_ib-fg));
+    --_ib-bg-active: color-mix(in oklch, var(--_ib-bg) 76%, var(--_ib-fg));
     --_ib-fg: var(--mth-color-accent, oklch(0.55 0.23 264));
     --_ib-border: transparent;
     --_ib-border-hover: oklch(from var(--_ib-fg) l c h / 0.28);
@@ -53,7 +53,7 @@ export const iconButtonStyles = css`
   :host([variant='outlined']) {
     --_ib-bg: var(--mth-color-surface, Canvas);
     --_ib-bg-hover: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
-    --_ib-bg-active: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    --_ib-bg-active: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_ib-border: var(--mth-color-border-strong, oklch(0.76 0.016 262));
     --_ib-border-hover: var(--mth-color-accent, oklch(0.55 0.23 264));
     --_ib-shadow: var(--mth-shadow-xs, 0 1px 2px oklch(0.14 0.014 262 / 0.06));
@@ -62,9 +62,9 @@ export const iconButtonStyles = css`
 
   :host([variant='danger']) {
     --_ib-bg: var(--mth-color-danger, oklch(0.57 0.22 25));
-    --_ib-bg-hover: oklch(0.51 0.22 25);
-    --_ib-bg-active: oklch(0.45 0.2 25);
-    --_ib-fg: var(--mth-color-danger-fg, oklch(0.99 0 0));
+    --_ib-bg-hover: oklch(from var(--_ib-bg) calc(l - 0.05) c h);
+    --_ib-bg-active: oklch(from var(--_ib-bg) calc(l - 0.1) c h);
+    --_ib-fg: var(--mth-color-danger-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 25)));
     --_ib-border: oklch(from var(--_ib-bg) calc(l - 0.06) c h / 0.5);
     --_ib-border-hover: oklch(from var(--_ib-bg-hover) calc(l - 0.06) c h / 0.6);
     --_ib-shadow:

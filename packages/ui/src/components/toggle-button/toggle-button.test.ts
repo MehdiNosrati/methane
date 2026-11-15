@@ -60,4 +60,29 @@ describe('<mth-toggle-button>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('supports soft variant and normalizes outlined variant to outline', async () => {
+    const soft = document.createElement('mth-toggle-button') as MthToggleButton;
+    soft.variant = 'soft';
+    soft.textContent = 'Soft';
+    document.body.appendChild(soft);
+    await soft.updateComplete;
+    expect(soft.variant).toBe('soft');
+    expect(soft.getAttribute('variant')).toBe('soft');
+
+    const outlined = document.createElement('mth-toggle-button') as MthToggleButton;
+    outlined.setAttribute('variant', 'outlined');
+    outlined.textContent = 'Outlined';
+    document.body.appendChild(outlined);
+    await outlined.updateComplete;
+    expect(outlined.variant).toBe('outline');
+    expect(outlined.getAttribute('variant')).toBe('outline');
+
+    outlined.variant = 'solid';
+    await outlined.updateComplete;
+    expect(outlined.variant).toBe('solid');
+    outlined.variant = 'outlined';
+    await outlined.updateComplete;
+    expect(outlined.variant).toBe('outline');
+  });
 });

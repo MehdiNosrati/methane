@@ -29,7 +29,7 @@ export const splitButtonStyles = css`
 
   :host([variant='soft']) {
     --_sb-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
-    --_sb-bg-hover: oklch(from var(--_sb-bg) calc(l - 0.03) c h);
+    --_sb-bg-hover: color-mix(in oklch, var(--_sb-bg) 86%, var(--_sb-fg));
     --_sb-fg: var(--mth-color-accent, oklch(0.55 0.23 264));
     --_sb-border: transparent;
     --_sb-divider: oklch(from var(--_sb-fg) l c h / 0.22);
@@ -48,7 +48,7 @@ export const splitButtonStyles = css`
 
   :host([variant='ghost']) {
     --_sb-bg: transparent;
-    --_sb-bg-hover: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    --_sb-bg-hover: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_sb-fg: var(--mth-color-fg, CanvasText);
     --_sb-border: transparent;
     --_sb-divider: var(--mth-color-border, oklch(0.89 0.01 262));

@@ -41,8 +41,8 @@ export const buttonStyles = css`
 
   :host([variant='soft']) {
     --_btn-bg: var(--mth-color-accent-subtle, oklch(0.94 0.04 264));
-    --_btn-bg-hover: oklch(from var(--_btn-bg) calc(l - 0.03) c h);
-    --_btn-bg-active: oklch(from var(--_btn-bg) calc(l - 0.06) c h);
+    --_btn-bg-hover: color-mix(in oklch, var(--_btn-bg) 86%, var(--_btn-fg));
+    --_btn-bg-active: color-mix(in oklch, var(--_btn-bg) 76%, var(--_btn-fg));
     --_btn-fg: var(--mth-color-accent, oklch(0.55 0.23 264));
     --_btn-border: transparent;
     --_btn-border-hover: oklch(from var(--mth-color-accent, oklch(0.55 0.23 264)) l c h / 0.28);
@@ -55,7 +55,7 @@ export const buttonStyles = css`
   :host([variant='outlined']) {
     --_btn-bg: var(--mth-color-surface, Canvas);
     --_btn-bg-hover: var(--mth-color-bg-subtle, oklch(0.95 0.008 262));
-    --_btn-bg-active: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    --_btn-bg-active: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_btn-fg: var(--mth-color-fg, CanvasText);
     --_btn-border: var(--mth-color-border-strong, oklch(0.76 0.016 262));
     --_btn-border-hover: var(--mth-color-accent, oklch(0.55 0.23 264));
@@ -66,7 +66,7 @@ export const buttonStyles = css`
 
   :host([variant='ghost']) {
     --_btn-bg: transparent;
-    --_btn-bg-hover: var(--mth-color-bg-muted, oklch(0.92 0.01 262));
+    --_btn-bg-hover: var(--mth-color-bg-muted, light-dark(oklch(0.925 0.01 262), oklch(0.24 0.016 262)));
     --_btn-bg-active: var(--mth-color-border, oklch(0.89 0.01 262));
     --_btn-fg: var(--mth-color-fg, CanvasText);
     --_btn-border: transparent;
@@ -78,9 +78,9 @@ export const buttonStyles = css`
 
   :host([variant='danger']) {
     --_btn-bg: var(--mth-color-danger, oklch(0.57 0.22 25));
-    --_btn-bg-hover: oklch(0.51 0.22 25);
-    --_btn-bg-active: oklch(0.45 0.2 25);
-    --_btn-fg: var(--mth-color-danger-fg, oklch(0.99 0 0));
+    --_btn-bg-hover: oklch(from var(--_btn-bg) calc(l - 0.05) c h);
+    --_btn-bg-active: oklch(from var(--_btn-bg) calc(l - 0.1) c h);
+    --_btn-fg: var(--mth-color-danger-fg, light-dark(oklch(0.99 0 0), oklch(0.14 0.02 25)));
     --_btn-border: oklch(from var(--_btn-bg) calc(l - 0.06) c h / 0.5);
     --_btn-border-hover: oklch(from var(--_btn-bg-hover) calc(l - 0.06) c h / 0.6);
   }

@@ -66,6 +66,24 @@ export const toggleButtonStyles = css`
     box-shadow: none;
   }
 
+  :host([variant='soft']) [part='base'] {
+    border-color: transparent;
+    background-color: var(--mth-color-accent-subtle);
+    color: var(--mth-color-accent);
+    box-shadow: none;
+  }
+
+  :host([variant='soft']:not([pressed])) [part='base']:hover:not(:disabled) {
+    background-color: color-mix(in oklch, var(--mth-color-accent-subtle) 86%, var(--mth-color-accent));
+    border-color: oklch(from var(--mth-color-accent) l c h / 0.28);
+  }
+
+  :host([variant='outline']) [part='base'],
+  :host([variant='outlined']) [part='base'] {
+    border-color: var(--mth-color-border-strong);
+    background-color: var(--mth-color-surface);
+  }
+
   :host([variant='solid']) [part='base'] {
     border-color: var(--mth-color-border-strong);
     background-color: var(--mth-color-bg-subtle);
