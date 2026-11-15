@@ -1,0 +1,98 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { creatableSelectMessages } from './creatable-select.messages.js';
+
+export const creatableSelectSpec: ComponentBehaviorSpec = {
+  tag: 'mth-creatable-select',
+  package: '@methane/ui',
+  conformance: ['form-control', 'overlay', 'listbox'],
+  controllers: [
+    'FormControlController',
+    'OverlayController',
+    'PositioningController',
+    'ListboxController',
+    'SelectionController',
+  ],
+  focusModel: 'delegates-focus',
+  states: ['dirty', 'touched', 'user-invalid', 'disabled', 'required'],
+  keyboard: [
+    { key: 'ArrowDown / ArrowUp', when: 'listbox open', expect: 'navigates options including create row' },
+    { key: 'Enter', when: 'typed non-matching query', expect: 'creates new option and selects it' },
+    { key: 'Escape', when: 'listbox open', expect: 'closes listbox and restores focus' },
+  ],
+  props: [
+    { name: 'name', attr: 'name', type: 'string', default: '' },
+    { name: 'value', attr: 'value', type: 'string', default: '' },
+    { name: 'defaultValue', attr: 'default-value', type: 'string', default: '' },
+    { name: 'options', attr: false, type: 'ReadonlyArray<CreatableSelectOption> | null', default: null },
+    { name: 'multiple', attr: 'multiple', type: 'boolean', default: false },
+    { name: 'allowCreate', attr: 'allow-create', type: 'boolean', default: true },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
+    { name: 'hint', attr: 'hint', type: 'string', default: '' },
+    { name: 'error', attr: 'error', type: 'string', default: '' },
+    { name: 'open', attr: 'open', type: 'boolean', default: false },
+    { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
+    { name: 'required', attr: 'required', type: 'boolean', default: false },
+  ],
+  events: [
+    { name: 'mth-change', cancelable: false, detailType: '{ value: string; values: ReadonlyArray<string> }' },
+    { name: 'mth-create', cancelable: false, detailType: '{ value: string; label: string }' },
+    { name: 'mth-open', cancelable: true, detailType: 'undefined' },
+    { name: 'mth-after-open', cancelable: false, detailType: 'undefined' },
+    { name: 'mth-close', cancelable: true, detailType: 'undefined' },
+    { name: 'mth-after-close', cancelable: false, detailType: 'undefined' },
+  ],
+  slots: [
+    { name: 'label', description: 'Field label.' },
+    { name: 'hint', description: 'Helper message.' },
+    { name: 'error', description: 'Error message.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Outer wrapper.' },
+    { name: 'label', description: 'Field label.' },
+    { name: 'control', description: 'Combobox wrapper.' },
+    { name: 'tag', description: 'Selected item chip when multiple.' },
+    { name: 'tag-remove', description: 'Chip remove button.' },
+    { name: 'input', description: 'Filter/create input.' },
+    { name: 'clear', description: 'Clear button.' },
+    { name: 'listbox', description: 'Dropdown listbox.' },
+    { name: 'option', description: 'Selectable option item.' },
+    { name: 'create-option', description: 'Dynamic create-new-option item.' },
+    { name: 'hint', description: 'Helper text container.' },
+    { name: 'error', description: 'Error text container.' },
+  ],
+  messages: { ...creatableSelectMessages },
+};
+
+export const CEM_METADATA = {
+  description:
+    'Form-associated searchable select/combobox supporting on-the-fly option creation (`mth-create`) in single or multiple mode.',
+  propDescriptions: {
+    name: 'Form field name.',
+    value: 'Selected value (or comma-separated values in multiple mode).',
+    defaultValue: 'Initial value restored on form reset.',
+    values: 'Selected values array.',
+    options: 'List of options.',
+    multiple: 'Allows selecting and creating multiple values.',
+    allowCreate: 'Enables creating non-matching query strings as new options.',
+    label: 'Accessible field label.',
+    placeholder: 'Input placeholder.',
+    hint: 'Helper message.',
+    error: 'Validation error message.',
+    open: 'Controls dropdown visibility.',
+    disabled: 'Disables interaction.',
+    required: 'Requires a selection.',
+  },
+  eventDescriptions: {
+    'mth-change': 'Fired when selection changes.',
+    'mth-create': 'Fired when the user creates a new option from typed text.',
+    'mth-open': 'Fired before opening overlay.',
+    'mth-after-open': 'Fired after opening overlay.',
+    'mth-close': 'Fired before closing overlay.',
+    'mth-after-close': 'Fired after closing overlay.',
+  },
+  cssProperties: [
+    { name: '--mth-creatable-select-bg', description: 'Control surface background.', default: 'var(--mth-color-surface)' },
+    { name: '--mth-creatable-select-border', description: 'Control border color.', default: 'var(--mth-color-border)' },
+  ],
+};

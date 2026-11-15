@@ -1,0 +1,90 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { sliderMessages } from './slider.messages.js';
+
+export const sliderSpec: ComponentBehaviorSpec = {
+  tag: 'mth-slider',
+  package: '@methane/ui',
+  conformance: ['form-control'],
+  controllers: ['FormControlController'],
+  focusModel: 'delegates-focus',
+  states: ['dirty', 'touched', 'user-invalid', 'disabled'],
+  keyboard: [
+    { key: 'ArrowRight', dir: 'ltr', when: 'thumb focused', expect: 'increases value by one step' },
+    { key: 'ArrowLeft', dir: 'rtl', when: 'thumb focused', expect: 'increases value by one step in RTL' },
+    { key: 'ArrowUp', when: 'thumb focused', expect: 'increases value by one step' },
+    { key: 'ArrowDown', when: 'thumb focused', expect: 'decreases value by one step' },
+    { key: 'PageUp / PageDown', when: 'thumb focused', expect: 'steps value by ten increments' },
+    { key: 'Home / End', when: 'thumb focused', expect: 'moves value to min or max' },
+  ],
+  props: [
+    { name: 'name', attr: 'name', type: 'string', default: '' },
+    { name: 'value', attr: 'value', type: 'number', default: 0 },
+    { name: 'defaultValue', attr: 'default-value', type: 'number', default: 0 },
+    { name: 'min', attr: 'min', type: 'number', default: 0 },
+    { name: 'max', attr: 'max', type: 'number', default: 100 },
+    { name: 'step', attr: 'step', type: 'number', default: 1 },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'hint', attr: 'hint', type: 'string', default: '' },
+    { name: 'error', attr: 'error', type: 'string', default: '' },
+    { name: 'orientation', attr: 'orientation', type: "'horizontal' | 'vertical'", default: 'horizontal' },
+    { name: 'size', attr: 'size', type: "'sm' | 'md' | 'lg'", default: 'md' },
+    { name: 'showValue', attr: 'show-value', type: 'boolean', default: false },
+    { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
+    { name: 'readonly', attr: 'readonly', type: 'boolean', default: false },
+    { name: 'formatValue', attr: false, type: '((value: number) => string) | null', default: null },
+  ],
+  events: [
+    { name: 'mth-input', cancelable: false, detailType: '{ value: number }' },
+    { name: 'mth-change', cancelable: false, detailType: '{ value: number }' },
+  ],
+  slots: [
+    { name: 'label', description: 'Custom label content.' },
+    { name: 'hint', description: 'Helper text below the track.' },
+    { name: 'error', description: 'Error text displayed when invalid.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Root wrapper.' },
+    { name: 'header', description: 'Label and value readout container.' },
+    { name: 'label', description: 'Label element.' },
+    { name: 'value', description: 'Current formatted value readout.' },
+    { name: 'track-wrap', description: 'Interactive hit target wrapping the track.' },
+    { name: 'track', description: 'Background track rail.' },
+    { name: 'fill', description: 'Active filled track range.' },
+    { name: 'thumb', description: 'Draggable and focusable slider thumb.' },
+    { name: 'hint', description: 'Helper message container.' },
+    { name: 'error', description: 'Validation message container.' },
+  ],
+  messages: { ...sliderMessages },
+};
+
+export const CEM_METADATA = {
+  description:
+    'Form-associated single-thumb range slider with ARIA slider semantics, pointer dragging, RTL keyboard stepping, and dynamic CSS custom properties.',
+  propDescriptions: {
+    name: 'Form field name submitted with FormData.',
+    value: 'Current numeric slider value.',
+    defaultValue: 'Initial numeric value restored on form reset.',
+    min: 'Minimum selectable value.',
+    max: 'Maximum selectable value.',
+    step: 'Step increment between valid values.',
+    label: 'Visible label associated with the slider.',
+    hint: 'Helper text rendered below the slider.',
+    error: 'Validation error message.',
+    orientation: 'Axis orientation (horizontal or vertical).',
+    size: 'Visual size scale (sm, md, or lg).',
+    showValue: 'Shows the current value beside the label.',
+    disabled: 'Disables slider interaction.',
+    readonly: 'Marks the slider read-only.',
+    formatValue: 'Custom formatter for readout and aria-valuetext.',
+  },
+  eventDescriptions: {
+    'mth-input': 'Dispatched continuously as the thumb moves.',
+    'mth-change': 'Dispatched when a value change is committed.',
+  },
+  cssProperties: [
+    { name: '--mth-slider-track-bg', description: 'Track background color.', default: 'var(--mth-color-border)' },
+    { name: '--mth-slider-fill-bg', description: 'Active fill color.', default: 'var(--mth-color-accent)' },
+    { name: '--mth-slider-thumb-bg', description: 'Thumb background color.', default: 'var(--mth-color-surface)' },
+    { name: '--mth-slider-thumb-border', description: 'Thumb border color.', default: 'var(--mth-color-accent)' },
+  ],
+};
