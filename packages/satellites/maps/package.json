@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/maps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Methane Maps satellite components wrapping MapLibre GL JS and accessible SVG spatial layers (ADR-013)",
   "license": "MIT",
   "type": "module",
@@ -56,7 +56,7 @@
     "@methane-ui/test-conformance": "workspace:^"
   },
   "peerDependencies": {
-    "@methane-ui/core": "^0.1.0"
+    "@methane-ui/core": "^0.1.1"
   },
   "publishConfig": {
     "access": "public"

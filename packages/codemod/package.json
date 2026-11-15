@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/codemod",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Idempotent AST codemod CLI and migration transforms for Methane UI",
   "license": "MIT",
   "type": "module",

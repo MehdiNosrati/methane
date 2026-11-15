@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/angular",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Angular standalone typed Directives and ControlValueAccessor wrappers for Methane UI (ADR-009)",
   "license": "MIT",
   "type": "module",

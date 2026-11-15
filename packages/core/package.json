@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lit 3 UIElement base class, single versioned global runtime, i18n catalog, and Community Context Protocol for Methane UI",
   "license": "MIT",
   "type": "module",

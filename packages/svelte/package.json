@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Svelte 5 typed wrappers supporting bind:value, bind:checked, and bind:open for Methane UI (ADR-009)",
   "license": "MIT",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/ssr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Streaming Declarative Shadow DOM (DSD) SSR engine for Methane UI wrapping @lit-labs/ssr with hybrid linked + critical inline style delivery (ADR-001, ADR-008)",
   "license": "MIT",
   "type": "module",

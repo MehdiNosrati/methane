@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/sanitize",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HTML sanitization with native Element.prototype.setHTML and DOMPurify parity fallback for Methane UI",
   "license": "MIT",
   "type": "module",
