@@ -128,9 +128,10 @@ describe('@methane/security-gate', () => {
     expect(fakeAudit.violations[0]?.name).toBe('hyperformula');
   });
 
-  it('enforces ADR-007 workspace package hygiene (no dual dep+peerDep, strict ^0.1.0 peers, uniform 0.1.0 versions)', () => {
+  it('enforces ADR-007 workspace package hygiene (no dual dep+peerDep, strict ^0.1.0 peers, uniform 0.1.0 versions, README.md >= 300B)', () => {
     const realAudit = auditWorkspacePackages();
     expect(realAudit.totalManifests).toBeGreaterThanOrEqual(45);
+    expect(realAudit.publishableCount).toBe(41);
     expect(realAudit.violations).toEqual([]);
     expect(realAudit.passed).toBe(true);
 
@@ -153,6 +154,7 @@ describe('@methane/security-gate', () => {
     expect(badAudit.violations.map((v) => v.rule).sort()).toEqual([
       'duplicate-dep-and-peer',
       'invalid-methane-peer-range',
+      'missing-readme',
       'version-skew',
     ]);
   });

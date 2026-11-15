@@ -204,7 +204,7 @@ export class MthTooltip extends UIElement {
 
   private resolveAnchor(): PositioningAnchor | null {
     if (this.anchor) return this.anchor;
-    return this.getSlottedTrigger() ?? this.triggerWrapperEl ?? this;
+    return this.triggerWrapperEl ?? this.getSlottedTrigger() ?? this;
   }
 
   private scheduleShow(delayMs = this.delay): void {

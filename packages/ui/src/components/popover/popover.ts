@@ -203,7 +203,7 @@ export class MthPopover extends UIElement {
 
   private resolveAnchor(): PositioningAnchor | null {
     if (this.anchor) return this.anchor;
-    return this.getSlottedTrigger() ?? this.anchorWrapperEl ?? this;
+    return this.anchorWrapperEl ?? this.getSlottedTrigger() ?? this;
   }
 
   private applyPositionSheet(result: PositioningResult): void {

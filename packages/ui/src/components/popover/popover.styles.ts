@@ -39,7 +39,8 @@ export const popoverStyles = css`
     display: none;
   }
 
-  .surface[data-mth-top-layer-fallback][data-mth-open='true'] {
+  .surface[data-mth-top-layer-fallback][data-mth-open='true']:not([hidden]) {
+    display: block;
     z-index: var(--mth-z-index-popover, 500);
   }
 

@@ -30,8 +30,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build packages
+      - name: Build packages & apps
         run: pnpm build
+
+      - name: Verify codegen is up to date
+        run: pnpm run codegen:check
 
       - name: Typecheck
         run: pnpm typecheck
@@ -39,5 +42,11 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Test
+      - name: Unit & Integration Tests
         run: pnpm test
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser E2E (Components, ADR-010 Modern/Fallback, SSR Hydration, Docs QA)
+        run: pnpm test:e2e

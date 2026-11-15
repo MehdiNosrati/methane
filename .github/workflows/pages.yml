@@ -60,6 +60,14 @@ jobs:
         if: steps.check_docs.outputs.has_docs == 'true'
         run: test -d apps/docs/dist
 
+      - name: Install Playwright Chromium
+        if: steps.check_docs.outputs.has_docs == 'true'
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Docs Browser QA
+        if: steps.check_docs.outputs.has_docs == 'true'
+        run: pnpm exec playwright test -c apps/docs/playwright.config.ts
+
       - name: Upload Pages artifact
         if: steps.check_docs.outputs.has_docs == 'true'
         uses: actions/upload-pages-artifact@v3

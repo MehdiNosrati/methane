@@ -3,8 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const RUN_WEBSERVERS = process.env['METHANE_E2E_SERVERS'] === '1';
 
 export default defineConfig({
-  testDir: './apps',
-  testMatch: '**/e2e/*.spec.ts',
+  testDir: '.',
   fullyParallel: true,
   forbidOnly: Boolean(process.env['CI']),
   retries: process.env['CI'] ? 2 : 0,
@@ -14,8 +13,18 @@ export default defineConfig({
   },
   projects: [
     {
+      name: 'component-browser',
+      testDir: './e2e',
+      testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['E2E_BASE_URL'] ?? 'http://127.0.0.1:3100',
+      },
+    },
+    {
       name: 'verify-next',
-      testMatch: /verify-next\/e2e\/.*\.spec\.ts/,
+      testDir: './apps/verify-next/e2e',
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         baseURL: process.env['VERIFY_NEXT_URL'] ?? 'http://127.0.0.1:3101',
@@ -23,7 +32,8 @@ export default defineConfig({
     },
     {
       name: 'verify-nuxt',
-      testMatch: /verify-nuxt\/e2e\/.*\.spec\.ts/,
+      testDir: './apps/verify-nuxt/e2e',
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         baseURL: process.env['VERIFY_NUXT_URL'] ?? 'http://127.0.0.1:3102',
@@ -31,7 +41,8 @@ export default defineConfig({
     },
     {
       name: 'verify-angular',
-      testMatch: /verify-angular\/e2e\/.*\.spec\.ts/,
+      testDir: './apps/verify-angular/e2e',
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         baseURL: process.env['VERIFY_ANGULAR_URL'] ?? 'http://127.0.0.1:3103',
@@ -39,16 +50,31 @@ export default defineConfig({
     },
     {
       name: 'verify-sveltekit',
-      testMatch: /verify-sveltekit\/e2e\/.*\.spec\.ts/,
+      testDir: './apps/verify-sveltekit/e2e',
+      testMatch: /.*\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         baseURL: process.env['VERIFY_SVELTEKIT_URL'] ?? 'http://127.0.0.1:3104',
+      },
+    },
+    {
+      name: 'docs-qa',
+      testDir: './apps/docs/e2e',
+      testMatch: /.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['DOCS_URL'] ?? 'http://127.0.0.1:3105/methane/',
       },
     },
   ],
   ...(RUN_WEBSERVERS
     ? {
         webServer: [
+          {
+            command: 'PORT=3100 HOST=127.0.0.1 node e2e/server.mjs',
+            port: 3100,
+            reuseExistingServer: !process.env['CI'],
+          },
           {
             command: 'pnpm --filter @methane/verify-next exec next start -p 3101 -H 127.0.0.1',
             env: { NEXT_TELEMETRY_DISABLED: '1' },
@@ -69,6 +95,12 @@ export default defineConfig({
           {
             command: 'PORT=3104 HOST=127.0.0.1 ORIGIN=http://127.0.0.1:3104 node apps/verify-sveltekit/build/index.js',
             port: 3104,
+            reuseExistingServer: !process.env['CI'],
+          },
+          {
+            command:
+              'pnpm --filter @methane/docs exec astro preview --port 3105 --host 127.0.0.1 --ignore-lock',
+            port: 3105,
             reuseExistingServer: !process.env['CI'],
           },
         ],

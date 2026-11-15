@@ -40,6 +40,10 @@ export const tooltipStyles = css`
     display: none;
   }
 
+  .surface[data-mth-top-layer-fallback][data-mth-open='true']:not([hidden]) {
+    display: block;
+  }
+
   .arrow {
     position: absolute;
     inline-size: 0.4375rem;
