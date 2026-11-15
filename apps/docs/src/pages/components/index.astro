@@ -69,7 +69,7 @@ const groupCounts = {
             class="docs-card"
             data-comp-card
             data-package-group={entry.packageGroup}
-            data-search-text={`${entry.tagName} ${entry.packageName} ${entry.description}`.toLowerCase()}
+            data-search-text={`${entry.tagName} ${entry.packageName} ${entry.description}`.replaceAll('`', '').toLowerCase()}
           >
             <mth-stack data-gap="3">
               <mth-flex data-justify="between" data-gap="2">

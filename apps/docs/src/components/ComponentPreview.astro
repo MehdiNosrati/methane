@@ -1,5 +1,8 @@
 ---
 import type { ComponentDocEntry } from '../lib/component-loader.js';
+import { ALL_DEMO_SPECS } from '../lib/demos/index.js';
+import { renderDemoHtml } from '../lib/demos/render-html.js';
+import type { DemoNode, DemoSpec } from '../lib/demos/types.js';
 
 interface Props {
   entry: ComponentDocEntry;
@@ -7,10 +10,9 @@ interface Props {
 
 const { entry } = Astro.props;
 const stageId = `preview-${entry.tagName}`;
-const isLivePackage =
-  entry.packageName === '@methane-ui/ui' || entry.packageName === '@methane-ui/primitives';
-const PreviewTag = entry.tagName as unknown as string;
-const hasDefaultSlot = entry.model.slots.some((s) => s.name === '');
+const demoSpec: DemoSpec = ALL_DEMO_SPECS[entry.tagName] ?? {};
+const demoHtml = renderDemoHtml(entry.tagName, demoSpec);
+const modelEvents = entry.model.events.map((ev) => ev.name);
 
 interface PropControl {
   name: string;
@@ -45,7 +47,60 @@ const PROP_PRIORITY: Readonly<Record<string, number>> = {
   value: 22,
 };
 
-function buildControls(): PropControl[] {
+function findTreeTargetAttrs(
+  nodes: DemoNode | ReadonlyArray<DemoNode>,
+  preferredTag: string,
+  matchByTag: boolean,
+): Readonly<Record<string, string | number | boolean>> | undefined {
+  const list = Array.isArray(nodes) ? nodes : [nodes];
+  for (const node of list) {
+    if (
+      !matchByTag &&
+      node.attrs &&
+      Object.prototype.hasOwnProperty.call(node.attrs, 'data-preview-target') &&
+      node.attrs['data-preview-target'] !== false
+    ) {
+      return node.attrs;
+    }
+    if (matchByTag && node.tag === preferredTag) {
+      return node.attrs;
+    }
+    if (node.children) {
+      const childNodes = node.children.filter((c): c is DemoNode => typeof c !== 'string');
+      if (childNodes.length > 0) {
+        const found = findTreeTargetAttrs(childNodes, preferredTag, matchByTag);
+        if (found) return found;
+      }
+    }
+  }
+  return undefined;
+}
+
+function resolveTargetAttrs(
+  spec: DemoSpec,
+  tagName: string,
+): Readonly<Record<string, string | number | boolean>> {
+  const treeAttrs = spec.tree
+    ? (findTreeTargetAttrs(spec.tree, tagName, false) ??
+      findTreeTargetAttrs(spec.tree, tagName, true))
+    : undefined;
+  return {
+    ...(treeAttrs ?? {}),
+    ...(spec.attrs ?? {}),
+  };
+}
+
+function looksLikeJsonLiteral(value: string): boolean {
+  const trimmed = value.trim();
+  return (
+    (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+    (trimmed.startsWith('[') && trimmed.endsWith(']'))
+  );
+}
+
+function buildControls(
+  targetAttrs: Readonly<Record<string, string | number | boolean>>,
+): PropControl[] {
   const sortedProps = [...entry.model.props].sort((a, b) => {
     const pa = PROP_PRIORITY[a.name] ?? 100;
     const pb = PROP_PRIORITY[b.name] ?? 100;
@@ -55,84 +110,73 @@ function buildControls(): PropControl[] {
   const controls: PropControl[] = [];
   for (const prop of sortedProps) {
     if (controls.length >= 6) break;
+    if (prop.attr === null) continue;
     const attr = prop.attr ?? prop.name;
     const rawType = prop.type.trim();
     const cleanDefault = (prop.defaultValue ?? '').replace(/^['"]|['"]$/g, '');
+    const demoAttrVal = targetAttrs[attr] ?? targetAttrs[prop.name];
+
     if (rawType === 'boolean' || rawType === 'boolean | undefined') {
+      const initialBool =
+        demoAttrVal !== undefined
+          ? demoAttrVal === true || demoAttrVal === '' || demoAttrVal === 'true'
+          : cleanDefault === 'true';
       controls.push({
         name: prop.name,
         attr,
         kind: 'boolean',
-        defaultValue: cleanDefault === 'true' ? 'true' : 'false',
+        defaultValue: initialBool ? 'true' : 'false',
       });
     } else if (rawType.includes('|') && rawType.includes("'")) {
       const options = rawType
         .split('|')
-        .map((part) => part.trim().replace(/^['"]|['"]$/g, ''))
-        .filter((part) => part.length > 0 && part !== 'undefined' && part !== 'null');
+        .map((part) => part.trim())
+        .filter((part) => /^['"][^'"]*['"]$/.test(part))
+        .map((part) => part.slice(1, -1));
       if (options.length > 0) {
+        const demoStr =
+          typeof demoAttrVal === 'string' || typeof demoAttrVal === 'number'
+            ? String(demoAttrVal)
+            : '';
+        const initialValue = options.includes(demoStr)
+          ? demoStr
+          : options.includes(cleanDefault)
+            ? cleanDefault
+            : (options[0] ?? '');
         controls.push({
           name: prop.name,
           attr,
           kind: 'enum',
           options,
-          defaultValue: options.includes(cleanDefault) ? cleanDefault : (options[0] ?? ''),
+          defaultValue: initialValue,
         });
       }
-    } else if (rawType === 'string') {
+    } else if (rawType === 'string' || rawType === 'string | undefined') {
+      const initialStr =
+        typeof demoAttrVal === 'string' || typeof demoAttrVal === 'number'
+          ? String(demoAttrVal)
+          : cleanDefault;
+      if (
+        looksLikeJsonLiteral(cleanDefault) ||
+        looksLikeJsonLiteral(initialStr) ||
+        cleanDefault.length > 40 ||
+        initialStr.length > 40
+      ) {
+        continue;
+      }
       controls.push({
         name: prop.name,
         attr,
         kind: 'text',
-        defaultValue: cleanDefault,
+        defaultValue: initialStr,
       });
     }
   }
   return controls;
 }
 
-const propControls = buildControls();
-
-const CUSTOM_PREVIEW_TAGS = new Set([
-  'mth-button',
-  'mth-icon-button',
-  'mth-split-button',
-  'mth-toggle-button',
-  'mth-button-group',
-  'mth-input',
-  'mth-textarea',
-  'mth-number-input',
-  'mth-search-input',
-  'mth-field',
-  'mth-select',
-  'mth-combobox',
-  'mth-dropdown-menu',
-  'mth-option',
-  'mth-option-group',
-  'mth-checkbox',
-  'mth-switch',
-  'mth-radio-group',
-  'mth-slider',
-  'mth-tabs',
-  'mth-accordion',
-  'mth-card',
-  'mth-badge',
-  'mth-tag',
-  'mth-alert',
-  'mth-tooltip',
-  'mth-popover',
-  'mth-progress-bar',
-  'mth-progress-ring',
-  'mth-avatar',
-  'mth-breadcrumbs',
-  'mth-pagination',
-  'mth-table',
-  'mth-dialog',
-  'mth-drawer',
-  'mth-visually-hidden',
-  'mth-skip-link',
-  'mth-error-boundary',
-]);
+const targetAttrs = resolveTargetAttrs(demoSpec, entry.tagName);
+const propControls = buildControls(targetAttrs);
 ---
 
 <section
@@ -140,6 +184,9 @@ const CUSTOM_PREVIEW_TAGS = new Set([
   id={stageId}
   data-preview-stage
   data-preview-tag={entry.tagName}
+  data-preview-package={entry.packageName}
+  data-preview-group={entry.packageGroup}
+  data-preview-events={JSON.stringify(modelEvents)}
   data-preview-upcoming="false"
   aria-label={`Live interactive preview for ${entry.tagName}`}
 >
@@ -147,11 +194,7 @@ const CUSTOM_PREVIEW_TAGS = new Set([
     <mth-flex data-gap="2" data-align="center">
       <strong>Interactive Stage</strong>
       <span class="docs-badge" data-preview-status>
-        {
-          isLivePackage
-            ? `Live Custom Element · <${entry.tagName}> (${entry.packageName})`
-            : `Token-Styled Preview · <${entry.tagName}> (${entry.packageName})`
-        }
+        {`Live Custom Element · <${entry.tagName}> (${entry.packageName})`}
       </span>
     </mth-flex>
 
@@ -220,497 +263,70 @@ const CUSTOM_PREVIEW_TAGS = new Set([
   </div>
 
   <div class="docs-preview-canvas" data-preview-canvas dir="ltr">
-    {
-      entry.tagName === 'mth-button' && (
-        <mth-button variant="solid" size="md" data-preview-target>
-          Continue Action
-        </mth-button>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-icon-button' && (
-        <mth-icon-button variant="outline" label="Bookmark" data-preview-target>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-            <path d="M8 2.5 9.7 6l3.8.5-2.75 2.7.65 3.8L8 11.2 4.6 13l.65-3.8L2.5 6.5 6.3 6 8 2.5Z" />
-          </svg>
-        </mth-icon-button>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-split-button' && (
-        <mth-split-button variant="solid" label="Deploy Release" data-preview-target>
-          <div slot="menu">
-            <button type="button">Deploy Staging</button>
-            <button type="button">Deploy Production</button>
-          </div>
-        </mth-split-button>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-toggle-button' && (
-        <mth-toggle-button variant="outline" value="pin" data-preview-target>
-          Pin Workspace
-        </mth-toggle-button>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-button-group' && (
-        <mth-button-group attached label="Text alignment" data-preview-target>
-          <mth-button variant="outline" size="sm">Start</mth-button>
-          <mth-button variant="outline" size="sm">Center</mth-button>
-          <mth-button variant="outline" size="sm">End</mth-button>
-        </mth-button-group>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-input' && (
-        <mth-input
-          label="Email address"
-          placeholder="you@methane.dev"
-          hint="Work or personal email"
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-textarea' && (
-        <mth-textarea
-          label="Release notes"
-          placeholder="Describe architectural changes..."
-          hint="Supports auto-resize"
-          rows={3}
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-number-input' && (
-        <mth-number-input
-          label="Concurrency limit"
-          value="4"
-          min={1}
-          max={32}
-          step={1}
-          hint="1 to 32 workers"
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-search-input' && (
-        <mth-search-input
-          label="Search workspace"
-          placeholder="Search tokens or components..."
-          shortcut="⌘K"
-          clearable
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-field' && (
-        <mth-field label="Workspace slug" hint="Used in project URLs" data-preview-target>
-          <mth-input value="methane-ui" />
-        </mth-field>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-select' && (
-        <mth-select
-          label="SSR Adapter"
-          placeholder="Choose a framework..."
-          clearable
-          data-preview-target
-        >
-          <mth-option value="astro" label="Astro SSR (DSD)">Astro SSR (DSD)</mth-option>
-          <mth-option value="next" label="Next.js 15 RSC">Next.js 15 RSC</mth-option>
-          <mth-option value="nuxt" label="Nuxt 3 Nitro">Nuxt 3 Nitro</mth-option>
-          <mth-option value="sveltekit" label="SvelteKit 2">SvelteKit 2</mth-option>
-          <mth-option value="angular" label="Angular 19">Angular 19</mth-option>
-        </mth-select>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-combobox' && (
-        <mth-combobox
-          label="Framework wrapper"
-          placeholder="Filter frameworks..."
-          clearable
-          data-preview-target
-        >
-          <mth-option-group label="SSR & Meta-Frameworks">
-            <mth-option value="astro" label="Astro SSR (DSD)">Astro SSR (DSD)</mth-option>
-            <mth-option value="next" label="Next.js 15 RSC">Next.js 15 RSC</mth-option>
-            <mth-option value="nuxt" label="Nuxt 3 Nitro">Nuxt 3 Nitro</mth-option>
-          </mth-option-group>
-          <mth-option-group label="Client Wrappers">
-            <mth-option value="react" label="React 19 Wrapper">React 19 Wrapper</mth-option>
-            <mth-option value="svelte" label="Svelte 5 Runes">Svelte 5 Runes</mth-option>
-          </mth-option-group>
-        </mth-combobox>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-dropdown-menu' && (
-        <mth-dropdown-menu label="Document actions" data-preview-target>
-          <mth-button slot="trigger" variant="outline">Actions</mth-button>
-          <mth-menu-item value="edit">Edit Spec</mth-menu-item>
-          <mth-menu-item value="duplicate">Duplicate</mth-menu-item>
-          <mth-menu-item value="archive">Archive</mth-menu-item>
-        </mth-dropdown-menu>
-      )
-    }
-
-    {
-      (entry.tagName === 'mth-option' || entry.tagName === 'mth-option-group') && (
-        <div class="mth-preview-listbox" role="listbox" aria-label="Architecture options">
-          <mth-option-group
-            label="Architecture Pillars"
-            data-preview-target={entry.tagName === 'mth-option-group' ? '' : undefined}
-          >
-            <mth-option
-              value="oklch"
-              label="OKLCH Perceptual Ramp"
-              selected
-              data-preview-target={entry.tagName === 'mth-option' ? '' : undefined}
-            >
-              OKLCH Perceptual Ramp
-            </mth-option>
-            <mth-option value="logical" label="CSS Logical Properties">
-              CSS Logical Properties
-            </mth-option>
-            <mth-option value="dsd" label="Declarative Shadow DOM">
-              Declarative Shadow DOM
-            </mth-option>
-          </mth-option-group>
-        </div>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-checkbox' && (
-        <mth-checkbox data-preview-target>
-          Accept Methane Design System terms
-        </mth-checkbox>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-switch' && (
-        <mth-switch data-preview-target>
-          Automatic OKLCH dark mode
-        </mth-switch>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-radio-group' && (
-        <mth-radio-group label="Release channel" value="stable" data-preview-target>
-          <mth-radio value="stable">Stable</mth-radio>
-          <mth-radio value="rc">Release Candidate</mth-radio>
-          <mth-radio value="canary">Canary</mth-radio>
-        </mth-radio-group>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-slider' && (
-        <mth-slider
-          label="Token chroma"
-          min={0}
-          max={100}
-          value={55}
-          show-value
-          style="inline-size:min(100%,20rem)"
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-tabs' && (
-        <mth-tabs value="overview" label="Preview tabs" style="inline-size:min(100%,28rem)" data-preview-target>
-          <mth-tab slot="tab" value="overview">Overview</mth-tab>
-          <mth-tab slot="tab" value="tokens">Tokens</mth-tab>
-          <mth-tab slot="tab" value="a11y">Accessibility</mth-tab>
-          <mth-tab-panel value="overview">Spec-first components with progressive enhancement.</mth-tab-panel>
-          <mth-tab-panel value="tokens">Precision Atmospheric OKLCH design tokens.</mth-tab-panel>
-          <mth-tab-panel value="a11y">Same-root ARIA &amp; keyboard roving focus.</mth-tab-panel>
-        </mth-tabs>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-accordion' && (
-        <mth-accordion multiple collapsible style="inline-size:min(100%,28rem)" data-preview-target>
-          <mth-accordion-item value="tokens" heading="Adaptive OKLCH Tokens" expanded>
-            Compiled from W3C DTCG JSON into light-dark() and forced-colors rules.
-          </mth-accordion-item>
-          <mth-accordion-item value="ssr" heading="Declarative Shadow DOM SSR">
-            Streams SSR templates across Astro, Next, Nuxt, SvelteKit, and Angular.
-          </mth-accordion-item>
-        </mth-accordion>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-card' && (
-        <mth-card variant="elevated" style="inline-size:min(100%,22rem)" data-preview-target>
-          <strong slot="header">Precision Studio Surface</strong>
-          <p style="margin-block:0">
-            Layered key-light and ambient elevation with crisp OKLCH border contrast.
-          </p>
-          <mth-flex slot="footer" data-gap="2" data-justify="end">
-            <mth-button variant="ghost" size="sm">Cancel</mth-button>
-            <mth-button variant="solid" size="sm">Save</mth-button>
-          </mth-flex>
-        </mth-card>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-badge' && (
-        <mth-badge variant="accent" pill data-preview-target>
-          v2.0 Ready
-        </mth-badge>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-tag' && (
-        <mth-tag variant="accent" pill removable interactive label="Remove OKLCH tag" data-preview-target>
-          OKLCH Tokens
-        </mth-tag>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-alert' && (
-        <mth-alert
-          variant="info"
-          title="Precision Atmospheric Tokens"
-          closable
-          style="inline-size:min(100%,28rem)"
-          data-preview-target
-        >
-          Automatically adapts to light, dark, density, and forced-colors preferences.
-        </mth-alert>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-tooltip' && (
-        <mth-tooltip content="Keyboard shortcut: Cmd+K" data-preview-target>
-          <mth-button variant="outline">Hover or focus trigger</mth-button>
-        </mth-tooltip>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-popover' && (
-        <mth-popover label="Workspace telemetry" data-preview-target>
-          <mth-button slot="trigger" variant="outline">Toggle Popover</mth-button>
-          <div style="padding:var(--mth-space-2);max-inline-size:16rem">
-            <strong>Anchored Popover</strong>
-            <p style="margin-block:var(--mth-space-1) 0;font-size:var(--mth-font-size-sm);color:var(--mth-color-fg-muted)">
-              Uses native Popover + CSS Anchor Positioning with automatic viewport fallback.
-            </p>
-          </div>
-        </mth-popover>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-progress-bar' && (
-        <mth-progress-bar
-          value={68}
-          max={100}
-          label="Bundle optimization progress"
-          style="inline-size:min(100%,22rem)"
-          data-preview-target
-        />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-progress-ring' && (
-        <mth-progress-ring value={74} max={100} show-value label="Coverage" data-preview-target />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-avatar' && (
-        <mth-avatar name="Methane Studio" size="lg" status="online" data-preview-target />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-breadcrumbs' && (
-        <mth-breadcrumbs label="Documentation path" data-preview-target>
-          <mth-breadcrumb-item href="#home">Home</mth-breadcrumb-item>
-          <mth-breadcrumb-item href="#components">Components</mth-breadcrumb-item>
-          <mth-breadcrumb-item current>Breadcrumbs</mth-breadcrumb-item>
-        </mth-breadcrumbs>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-pagination' && (
-        <mth-pagination page={3} total-pages={12} label="Results pagination" data-preview-target />
-      )
-    }
-
-    {
-      entry.tagName === 'mth-table' && (
-        <mth-table
-          caption="Workspace Packages"
-          label="Workspace Packages"
-          striped
-          style="inline-size:min(100%,32rem)"
-          data-preview-target
-        >
-          <mth-column field="pkg" header="Package" sortable></mth-column>
-          <mth-column field="layer" header="Layer" sortable></mth-column>
-          <mth-column field="size" header="Budget" align="end"></mth-column>
-        </mth-table>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-dialog' && (
-        <mth-stack data-gap="3" style="align-items:center">
-          <mth-button variant="solid" data-dialog-open>
-            Open Live &lt;mth-dialog&gt;
-          </mth-button>
-          <mth-dialog
-            label="Confirm Release Action"
-            description="Top-layer modal focus trap and Escape dismissal."
-            variant="confirm"
-            data-preview-target
-          >
-            <p style="margin-block:0">
-              Publish <code>@methane-ui/ui</code> release artifacts with Sigstore provenance?
-            </p>
-          </mth-dialog>
-        </mth-stack>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-drawer' && (
-        <mth-stack data-gap="3" style="align-items:center">
-          <mth-button variant="outline" data-drawer-open>
-            Open Live &lt;mth-drawer&gt;
-          </mth-button>
-          <mth-drawer label="Token Inspector" placement="end" size="sm" data-preview-target>
-            <p style="margin-block:0">
-              Slide-over drawer supporting <code>start</code>, <code>end</code>, <code>top</code>,
-              and <code>bottom</code> logical placements.
-            </p>
-          </mth-drawer>
-        </mth-stack>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-visually-hidden' && (
-        <button type="button" class="mth-preview-btn" data-vh-trigger>
-          <span aria-hidden="true">★</span>
-          <span>Bookmark</span>
-          <mth-visually-hidden data-preview-target>
-            Save Methane component documentation bookmark
-          </mth-visually-hidden>
-        </button>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-skip-link' && (
-        <mth-stack data-gap="3" style="align-items:center">
-          <button type="button" class="mth-preview-btn" data-variant="secondary" data-skip-focus>
-            Focus Skip Link
-          </button>
-          <mth-skip-link href="#preview-skip-destination" data-preview-target>
-            Skip to preview destination
-          </mth-skip-link>
-          <div id="preview-skip-destination" class="docs-card" tabindex="-1">
-            Skip link destination region
-          </div>
-        </mth-stack>
-      )
-    }
-
-    {
-      entry.tagName === 'mth-error-boundary' && (
-        <mth-stack data-gap="3" style="inline-size:min(100%,24rem)">
-          <mth-flex data-gap="2">
-            <button type="button" class="mth-preview-btn" data-variant="danger" data-eb-trigger>
-              Simulate Error
-            </button>
-            <button type="button" class="mth-preview-btn" data-variant="secondary" data-eb-reset>
-              Reset
-            </button>
-          </mth-flex>
-          <mth-error-boundary
-            fallback-message="Recovered cleanly from subtree failure."
-            data-preview-target
-          >
-            <div class="docs-card" data-eb-child>
-              Protected subtree healthy · click Simulate Error to test declarative fallback.
-            </div>
-          </mth-error-boundary>
-        </mth-stack>
-      )
-    }
-
-    {
-      !CUSTOM_PREVIEW_TAGS.has(entry.tagName) &&
-        (isLivePackage ? (
-          <div class="docs-card" style="display:grid;gap:var(--mth-space-3);justify-items:center">
-            <mth-flex data-gap="2" data-align="center">
-              <span class="docs-badge">{entry.packageName}</span>
-              <code>&lt;{entry.tagName}&gt;</code>
-            </mth-flex>
-            <PreviewTag data-preview-target>
-              {hasDefaultSlot ? `${entry.className} live preview` : undefined}
-            </PreviewTag>
-          </div>
-        ) : (
-          <div class="docs-card" data-preview-target style="display:grid;gap:var(--mth-space-2);max-inline-size:32rem">
-            <mth-flex data-gap="2" data-align="center" data-justify="between">
-              <code>&lt;{entry.tagName}&gt;</code>
-              <span class="docs-badge">{entry.packageName}</span>
-            </mth-flex>
-            <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
-              {entry.description}
-            </p>
-          </div>
-        ))
-    }
+    <Fragment set:html={demoHtml} />
   </div>
 
   <div class="docs-preview-output" data-preview-readout>
-    Ready · toggle Theme, Direction (LTR/RTL), or props above to inspect live behavior.
+    Ready · interact with &lt;{entry.tagName}&gt;, or toggle Theme, Direction (LTR/RTL), or props above.
   </div>
 </section>
 
 <script>
+  import {
+    loadDemoSpec,
+    loadPreviewPackage,
+    type PreviewPackageGroup,
+  } from '../lib/demos/package-loader.js';
+
+  const COMMON_MTH_EVENTS = [
+    'mth-press',
+    'mth-input',
+    'mth-change',
+    'mth-select',
+    'mth-remove',
+    'mth-open',
+    'mth-after-open',
+    'mth-close',
+    'mth-clear',
+    'mth-confirm',
+    'mth-cancel',
+    'mth-page-change',
+    'mth-sort',
+    'mth-filter',
+    'mth-error-captured',
+    'mth-reset',
+  ];
+
+  function formatEventDetail(detail: unknown): string {
+    if (detail === undefined) return '';
+    try {
+      const json = JSON.stringify(detail);
+      if (!json) return '';
+      return json.length > 160 ? `: ${json.slice(0, 157)}...` : `: ${json}`;
+    } catch {
+      return ': [detail]';
+    }
+  }
+
+  function parseEventsList(raw: string | undefined): string[] {
+    if (!raw) return [];
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      return Array.isArray(parsed)
+        ? parsed.filter((item): item is string => typeof item === 'string')
+        : [];
+    } catch {
+      return [];
+    }
+  }
+
   const stages = document.querySelectorAll<HTMLElement>('[data-preview-stage]');
 
   for (const stage of stages) {
     const tag = stage.dataset.previewTag ?? '';
+    const pkg = stage.dataset.previewPackage ?? '';
+    const group = (stage.dataset.previewGroup ?? 'ui') as PreviewPackageGroup;
+    const modelEvents = parseEventsList(stage.dataset.previewEvents);
     const canvas = stage.querySelector<HTMLElement>('[data-preview-canvas]');
     const readoutEl = stage.querySelector<HTMLElement>('[data-preview-readout]');
     const themeSelect = stage.querySelector<HTMLSelectElement>('[data-preview-theme]');
@@ -720,6 +336,19 @@ const CUSTOM_PREVIEW_TAGS = new Set([
 
     function setReadout(msg: string) {
       if (readoutEl) readoutEl.textContent = msg;
+    }
+
+    function syncControlValue(attr: string, value: string | boolean) {
+      const escaped = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+        ? CSS.escape(attr)
+        : attr;
+      const ctrl = stage.querySelector<HTMLElement>(`[data-preview-prop="${escaped}"]`);
+      if (!ctrl) return;
+      if (ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox') {
+        ctrl.checked = Boolean(value);
+      } else if (ctrl instanceof HTMLInputElement || ctrl instanceof HTMLSelectElement) {
+        ctrl.value = String(value);
+      }
     }
 
     function applyCanvasTheme(val: string) {
@@ -741,172 +370,84 @@ const CUSTOM_PREVIEW_TAGS = new Set([
       setReadout(`Stage dir="${dirSelect.value}" · CSS logical properties flipped automatically.`);
     });
 
-    function syncPropsToElement(el: HTMLElement | null) {
+    function applySinglePropControl(ctrl: HTMLElement, el: HTMLElement | null) {
       if (!el) return;
+      const attr = ctrl.dataset.previewProp;
+      const propName = ctrl.dataset.previewPropName;
+      if (!attr) return;
       const record = el as unknown as Record<string, unknown>;
-      for (const ctrl of propControls) {
-        const attr = ctrl.dataset.previewProp;
-        const propName = ctrl.dataset.previewPropName;
-        if (!attr) continue;
-        if (ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox') {
-          if (ctrl.checked) {
-            el.setAttribute(attr, '');
-          } else {
-            el.removeAttribute(attr);
-          }
-          if (propName) {
-            record[propName] = ctrl.checked;
-          }
-        } else if (ctrl instanceof HTMLSelectElement || ctrl instanceof HTMLInputElement) {
-          el.setAttribute(attr, ctrl.value);
-          if (propName) {
-            record[propName] = ctrl.value;
-          }
+
+      if (ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox') {
+        if (ctrl.checked) {
+          el.setAttribute(attr, '');
+        } else {
+          el.removeAttribute(attr);
         }
+        if (propName) {
+          record[propName] = ctrl.checked;
+        }
+        setReadout(`Updated ${attr}="${String(ctrl.checked)}" on <${tag}>.`);
+      } else if (ctrl instanceof HTMLSelectElement || ctrl instanceof HTMLInputElement) {
+        const val = ctrl.value;
+        if (val === '') {
+          el.removeAttribute(attr);
+        } else {
+          el.setAttribute(attr, val);
+        }
+        if (propName) {
+          record[propName] = val;
+        }
+        setReadout(`Updated ${attr}=${JSON.stringify(val)} on <${tag}>.`);
       }
     }
 
     for (const ctrl of propControls) {
       const eventName =
         ctrl instanceof HTMLInputElement && ctrl.type === 'text' ? 'input' : 'change';
-      ctrl.addEventListener(eventName, () => {
-        syncPropsToElement(targetEl);
-        const attr = ctrl.dataset.previewProp ?? 'prop';
-        const val =
-          ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox'
-            ? String(ctrl.checked)
-            : (ctrl as HTMLInputElement | HTMLSelectElement).value;
-        setReadout(`Updated ${attr}="${val}" on <${tag}>.`);
-      });
+      ctrl.addEventListener(eventName, () => applySinglePropControl(ctrl, targetEl));
     }
 
-    if (tag === 'mth-table' && targetEl) {
-      const tableEl = targetEl as HTMLElement & { rows?: Array<Record<string, unknown>> };
-      tableEl.rows = [
-        { id: '1', pkg: '@methane-ui/tokens', layer: 'Foundation', size: '1.8 KB' },
-        { id: '2', pkg: '@methane-ui/css', layer: 'Primitives', size: '3.1 KB' },
-        { id: '3', pkg: '@methane-ui/ui', layer: 'Components', size: '8.4 KB' },
-      ];
-    }
+    void (async () => {
+      try {
+        const [, demoSpec] = await Promise.all([
+          loadPreviewPackage(pkg),
+          loadDemoSpec(group, tag),
+        ]);
 
-    if ((tag === 'mth-input' || tag === 'mth-textarea' || tag === 'mth-number-input' || tag === 'mth-search-input') && targetEl) {
-      targetEl.addEventListener('mth-input', (ev) => {
-        const detail = (ev as CustomEvent<{ value?: string }>).detail;
-        setReadout(`mth-input event: { value: ${JSON.stringify(detail?.value ?? '')} }`);
-      });
-      targetEl.addEventListener('mth-change', (ev) => {
-        const detail = (ev as CustomEvent<{ value?: string }>).detail;
-        setReadout(`mth-change event: { value: ${JSON.stringify(detail?.value ?? '')} }`);
-      });
-    } else if (tag === 'mth-field' && canvas) {
-      canvas.addEventListener('mth-input', (ev) => {
-        const detail = (ev as CustomEvent<{ value?: string }>).detail;
-        setReadout(`<mth-field> slotted input: { value: ${JSON.stringify(detail?.value ?? '')} }`);
-      });
-      canvas.addEventListener('mth-change', (ev) => {
-        const detail = (ev as CustomEvent<{ value?: string }>).detail;
-        setReadout(`<mth-field> mth-change: { value: ${JSON.stringify(detail?.value ?? '')} }`);
-      });
-    } else if ((tag === 'mth-combobox' || tag === 'mth-select') && targetEl) {
-      for (const evName of ['mth-open', 'mth-after-open', 'mth-close', 'mth-clear']) {
-        targetEl.addEventListener(evName, () => setReadout(`<${tag}> ${evName}`));
-      }
-      targetEl.addEventListener('mth-change', (ev) => {
-        const detail = (ev as CustomEvent<{ value?: string }>).detail;
-        setReadout(`<${tag}> mth-change: ${JSON.stringify(detail ?? {})}`);
-      });
-    } else if ((tag === 'mth-option' || tag === 'mth-option-group') && canvas) {
-      const options = canvas.querySelectorAll<HTMLElement>('mth-option');
-      for (const opt of options) {
-        opt.addEventListener('click', () => {
-          if (opt.hasAttribute('disabled')) return;
-          for (const sibling of options) sibling.removeAttribute('selected');
-          opt.setAttribute('selected', '');
-          setReadout(`Selected <mth-option value="${opt.getAttribute('value') ?? ''}">`);
-        });
-      }
-    } else if (tag === 'mth-dialog' && canvas && targetEl) {
-      const openBtn = canvas.querySelector<HTMLElement>('[data-dialog-open]');
-      openBtn?.addEventListener('click', () => {
-        const dlg = targetEl as HTMLElement & { show?: () => Promise<boolean> };
-        if (typeof dlg.show === 'function') {
-          void dlg.show();
-        } else {
-          dlg.setAttribute('open', '');
+        if (tag) {
+          await customElements.whenDefined(tag);
         }
-      });
-      for (const evName of ['mth-open', 'mth-confirm', 'mth-cancel', 'mth-close']) {
-        targetEl.addEventListener(evName, (ev) => {
-          const detail = (ev as CustomEvent<unknown>).detail;
-          setReadout(
-            `<mth-dialog> ${evName}${detail !== undefined ? `: ${JSON.stringify(detail)}` : ''}`,
-          );
-        });
-      }
-    } else if (tag === 'mth-drawer' && canvas && targetEl) {
-      const openBtn = canvas.querySelector<HTMLElement>('[data-drawer-open]');
-      openBtn?.addEventListener('click', () => {
-        const drawer = targetEl as HTMLElement & { open?: boolean };
-        drawer.open = true;
-      });
-      for (const evName of ['mth-open', 'mth-close']) {
-        targetEl.addEventListener(evName, () => setReadout(`<mth-drawer> ${evName}`));
-      }
-    } else if (tag === 'mth-visually-hidden' && canvas && targetEl) {
-      const trigger = canvas.querySelector<HTMLButtonElement>('[data-vh-trigger]');
-      trigger?.addEventListener('click', () => {
-        setReadout(
-          `Screen-reader text inside <mth-visually-hidden>: "${targetEl.textContent?.trim() ?? ''}"`,
-        );
-      });
-    } else if (tag === 'mth-skip-link' && canvas && targetEl) {
-      const focusBtn = canvas.querySelector<HTMLButtonElement>('[data-skip-focus]');
-      focusBtn?.addEventListener('click', () => {
-        const anchor = targetEl.shadowRoot?.querySelector('a');
-        if (anchor instanceof HTMLElement) {
-          anchor.focus();
-          setReadout('Focused <mth-skip-link> anchor in shadow root (press Enter to jump).');
+
+        if (targetEl) {
+          if (demoSpec?.props) {
+            const record = targetEl as unknown as Record<string, unknown>;
+            for (const [key, value] of Object.entries(demoSpec.props)) {
+              record[key] = value;
+            }
+          }
+
+          const eventNames = new Set<string>([...modelEvents, ...COMMON_MTH_EVENTS]);
+          for (const evName of eventNames) {
+            targetEl.addEventListener(evName, (ev) => {
+              const detail = (ev as CustomEvent<unknown>).detail;
+              setReadout(`<${tag}> ${evName}${formatEventDetail(detail)}`);
+            });
+          }
+
+          if (demoSpec?.setup && canvas) {
+            await demoSpec.setup({
+              stage,
+              canvas,
+              target: targetEl,
+              setReadout,
+              syncControlValue,
+            });
+          }
         }
-      });
-    } else if (tag === 'mth-error-boundary' && canvas && targetEl) {
-      const errBtn = canvas.querySelector<HTMLButtonElement>('[data-eb-trigger]');
-      const resetBtn = canvas.querySelector<HTMLButtonElement>('[data-eb-reset]');
-      const child = canvas.querySelector<HTMLElement>('[data-eb-child]');
-      errBtn?.addEventListener('click', () => {
-        (child ?? targetEl).dispatchEvent(
-          new CustomEvent('mth-error', {
-            bubbles: true,
-            detail: { error: new Error('Simulated preview subtree error') },
-          }),
-        );
-      });
-      resetBtn?.addEventListener('click', () => {
-        const eb = targetEl as HTMLElement & { reset?: () => void };
-        eb.reset?.();
-      });
-      targetEl.addEventListener('mth-error-captured', () => {
-        setReadout('<mth-error-boundary> mth-error-captured: displaying declarative fallback');
-      });
-      targetEl.addEventListener('mth-reset', () => {
-        setReadout('<mth-error-boundary> mth-reset: restored protected subtree');
-      });
-    } else if ((tag === 'mth-button' || tag === 'mth-icon-button' || tag === 'mth-split-button' || tag === 'mth-toggle-button') && targetEl) {
-      let clicks = 0;
-      targetEl.addEventListener('mth-press', () => {
-        clicks++;
-        setReadout(`<${tag}> mth-press activated (${clicks} time${clicks === 1 ? '' : 's'})`);
-      });
-      targetEl.addEventListener('mth-change', (ev) => {
-        const detail = (ev as CustomEvent<unknown>).detail;
-        setReadout(`<${tag}> mth-change: ${JSON.stringify(detail ?? {})}`);
-      });
-    } else if (targetEl) {
-      for (const evName of ['mth-change', 'mth-select', 'mth-remove', 'mth-close', 'mth-page-change']) {
-        targetEl.addEventListener(evName, (ev) => {
-          const detail = (ev as CustomEvent<unknown>).detail;
-          setReadout(`<${tag}> ${evName}${detail !== undefined ? `: ${JSON.stringify(detail)}` : ''}`);
-        });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        setReadout(`Preview hydration error for <${tag}>: ${message}`);
       }
-    }
+    })();
   }
 </script>

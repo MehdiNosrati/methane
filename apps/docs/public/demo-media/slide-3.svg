@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="55%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g3)"/>
+  <rect x="72" y="72" width="656" height="306" rx="20" fill="#1e1b4b" fill-opacity="0.6" stroke="#c4b5fd" stroke-opacity="0.35"/>
+  <rect x="116" y="120" width="568" height="44" rx="10" fill="#8b5cf6" fill-opacity="0.3" stroke="#a78bfa"/>
+  <rect x="116" y="178" width="272" height="44" rx="10" fill="#6366f1" fill-opacity="0.25" stroke="#818cf8"/>
+  <rect x="412" y="178" width="272" height="44" rx="10" fill="#6366f1" fill-opacity="0.25" stroke="#818cf8"/>
+  <text x="116" y="284" fill="#f5f3ff" font-family="system-ui, sans-serif" font-size="32" font-weight="700">Declarative Shadow DOM SSR</text>
+  <text x="116" y="324" fill="#ddd6fe" font-family="system-ui, sans-serif" font-size="18">Zero-FOUC streaming across Astro, Next, Nuxt, SvelteKit, and Angular</text>
+</svg>

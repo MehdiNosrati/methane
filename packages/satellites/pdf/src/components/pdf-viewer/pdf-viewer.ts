@@ -295,6 +295,9 @@ export class MthPdfViewer extends UIElement {
 
       if (this.workerSrc && isSafeUrl(this.workerSrc)) {
         pdfjs.GlobalWorkerOptions.workerSrc = this.workerSrc.trim();
+      } else if (!pdfjs.GlobalWorkerOptions.workerSrc && !('pdfjsWorker' in globalThis)) {
+        // Populate globalThis.pdfjsWorker in-thread when no external workerSrc is configured so browsers work offline.
+        await import('pdfjs-dist/build/pdf.worker.mjs');
       }
 
       this._teardownActiveDocument();
