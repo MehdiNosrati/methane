@@ -4,6 +4,13 @@ import { loadComponentDocs } from '../../lib/component-loader.js';
 import { withBase } from '../../lib/links.js';
 
 const components = await loadComponentDocs();
+const groupCounts = {
+  all: components.length,
+  ui: components.filter((c) => c.packageGroup === 'ui').length,
+  kits: components.filter((c) => c.packageGroup === 'kits').length,
+  satellites: components.filter((c) => c.packageGroup === 'satellites').length,
+  primitives: components.filter((c) => c.packageGroup === 'primitives').length,
+};
 ---
 
 <DocsLayout title="Component Reference">
@@ -12,25 +19,69 @@ const components = await loadComponentDocs();
       <h1>Component Reference</h1>
       <p>
         Auto-generated directly from <code>custom-elements.json</code> and
-        <code>ComponentBehaviorSpec</code> via <code>@methane/spec-compiler</code>. As
-        <code>@methane/ui</code>, domain kits, and satellite packages land, this reference updates
-        automatically.
+        <code>ComponentBehaviorSpec</code> via <code>@methane/spec-compiler</code> across
+        <code>@methane/ui</code>, domain kits, satellites, and <code>@methane/primitives</code>.
       </p>
     </div>
 
-    <div class="mth-grid" style="--mth-grid-min:20rem">
+    <div class="docs-card" style="display:grid;gap:var(--mth-space-3)" data-comp-filters>
+      <mth-flex data-gap="3" data-justify="between" data-align="center">
+        <label style="flex:1 1 16rem;display:grid;gap:var(--mth-space-1)">
+          <span style="font-size:var(--mth-font-size-xs);color:var(--mth-color-fg-muted)">
+            Search components
+          </span>
+          <input
+            type="search"
+            class="docs-btn"
+            style="text-align:start;cursor:text;inline-size:100%"
+            placeholder="Filter by tag (mth-button), package (@methane/auth), or keyword..."
+            data-comp-search
+            aria-label="Search components"
+          />
+        </label>
+        <span class="docs-badge" data-comp-count>
+          Showing {components.length} of {components.length} components
+        </span>
+      </mth-flex>
+
+      <mth-flex data-gap="2" role="group" aria-label="Filter components by package group">
+        <button type="button" class="docs-btn docs-btn-primary" data-group-filter="all" aria-pressed="true">
+          All ({groupCounts.all})
+        </button>
+        <button type="button" class="docs-btn" data-group-filter="ui" aria-pressed="false">
+          @methane/ui ({groupCounts.ui})
+        </button>
+        <button type="button" class="docs-btn" data-group-filter="kits" aria-pressed="false">
+          Domain Kits ({groupCounts.kits})
+        </button>
+        <button type="button" class="docs-btn" data-group-filter="satellites" aria-pressed="false">
+          Satellites ({groupCounts.satellites})
+        </button>
+        <button type="button" class="docs-btn" data-group-filter="primitives" aria-pressed="false">
+          @methane/primitives ({groupCounts.primitives})
+        </button>
+      </mth-flex>
+    </div>
+
+    <div class="mth-grid" style="--mth-grid-min:20rem" data-comp-grid>
       {
         components.map((entry) => (
-          <article class="docs-card">
+          <article
+            class="docs-card"
+            data-comp-card
+            data-package-group={entry.packageGroup}
+            data-search-text={`${entry.tagName} ${entry.packageName} ${entry.description}`.toLowerCase()}
+          >
             <mth-stack data-gap="3">
               <mth-flex data-justify="between" data-gap="2">
                 <code>&lt;{entry.tagName}&gt;</code>
-                <span class="docs-badge">{entry.bundleBadge.marginalLabel}</span>
+                <span class="docs-badge">{entry.packageName}</span>
               </mth-flex>
               <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
                 {entry.description}
               </p>
               <mth-flex data-gap="2">
+                <span class="docs-badge">{entry.bundleBadge.marginalLabel}</span>
                 <span class="docs-badge">{entry.bundleBadge.coldLabel}</span>
                 {entry.spec?.conformance.map((suite) => (
                   <span class="docs-badge">{suite}</span>
@@ -46,3 +97,45 @@ const components = await loadComponentDocs();
     </div>
   </mth-stack>
 </DocsLayout>
+
+<script>
+  const searchInput = document.querySelector<HTMLInputElement>('[data-comp-search]');
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-group-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-comp-card]');
+  const countBadge = document.querySelector<HTMLElement>('[data-comp-count]');
+
+  let activeGroup = 'all';
+
+  function applyComponentFilters() {
+    const query = (searchInput?.value ?? '').trim().toLowerCase();
+    let visible = 0;
+
+    for (const card of cards) {
+      const group = card.dataset.packageGroup ?? 'ui';
+      const text = card.dataset.searchText ?? '';
+      const matchesGroup = activeGroup === 'all' || group === activeGroup;
+      const matchesQuery = query.length === 0 || text.includes(query);
+      const show = matchesGroup && matchesQuery;
+      card.hidden = !show;
+      if (show) visible += 1;
+    }
+
+    if (countBadge) {
+      countBadge.textContent = `Showing ${visible} of ${cards.length} components`;
+    }
+  }
+
+  for (const btn of filterButtons) {
+    btn.addEventListener('click', () => {
+      activeGroup = btn.dataset.groupFilter ?? 'all';
+      for (const other of filterButtons) {
+        const isCurrent = other === btn;
+        other.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
+        other.classList.toggle('docs-btn-primary', isCurrent);
+      }
+      applyComponentFilters();
+    });
+  }
+
+  searchInput?.addEventListener('input', applyComponentFilters);
+</script>

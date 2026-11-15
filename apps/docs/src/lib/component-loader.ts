@@ -16,10 +16,13 @@ import {
   type NormalizedComponentModel,
 } from '@methane/wrapper-codegen';
 
+export type PackageGroup = 'ui' | 'kits' | 'satellites' | 'primitives';
+
 export interface ComponentDocEntry {
   readonly tagName: string;
   readonly className: string;
   readonly packageName: string;
+  readonly packageGroup: PackageGroup;
   readonly description: string;
   readonly model: NormalizedComponentModel;
   readonly spec: ComponentBehaviorSpec | null;
@@ -295,22 +298,143 @@ async function discoverWorkspaceSpecs(
   return specByTag;
 }
 
-function buildComponentSnippets(model: NormalizedComponentModel, packageName: string) {
+interface PackageRegistryInfo {
+  readonly name: string;
+  readonly dir: string;
+  readonly group: PackageGroup;
+  readonly exports: Record<string, unknown>;
+}
+
+function classifyPackageGroup(packageName: string, pkgDir: string): PackageGroup {
+  if (packageName === '@methane/primitives') return 'primitives';
+  if (pkgDir.includes('/packages/kits/') || pkgDir.endsWith('\\packages\\kits\\' + pkgDir.split(/[/\\]/).pop())) {
+    return 'kits';
+  }
+  if (
+    pkgDir.includes('/packages/satellites/') ||
+    pkgDir.endsWith('\\packages\\satellites\\' + pkgDir.split(/[/\\]/).pop())
+  ) {
+    return 'satellites';
+  }
+  return 'ui';
+}
+
+function buildPackageRegistry(packageDirs: ReadonlyArray<string>): Map<string, PackageRegistryInfo> {
+  const registry = new Map<string, PackageRegistryInfo>();
+  for (const pkgDir of packageDirs) {
+    const pkgJsonPath = resolve(pkgDir, 'package.json');
+    if (!existsSync(pkgJsonPath)) continue;
+    try {
+      const parsed = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as {
+        name?: string;
+        exports?: Record<string, unknown>;
+      };
+      if (!parsed.name) continue;
+      registry.set(parsed.name, {
+        name: parsed.name,
+        dir: pkgDir,
+        group: classifyPackageGroup(parsed.name, pkgDir),
+        exports: parsed.exports && typeof parsed.exports === 'object' ? parsed.exports : {},
+      });
+    } catch {
+      // Ignore unreadable package.json files
+    }
+  }
+  return registry;
+}
+
+function resolveSnippetImportPath(
+  packageName: string,
+  tagName: string,
+  packageRegistry: ReadonlyMap<string, PackageRegistryInfo>,
+): string {
+  if (packageName === '@methane/primitives') {
+    return '@methane/primitives';
+  }
+
+  const slug = tagName.replace(/^mth-/, '');
+  const pkgInfo = packageRegistry.get(packageName);
+  if (!pkgInfo) {
+    return packageName;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(pkgInfo.exports, `./${slug}`)) {
+    return `${packageName}/${slug}`;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(pkgInfo.exports, './*')) {
+    const hasSubpathTarget =
+      existsSync(resolve(pkgInfo.dir, 'dist/components', slug, 'index.js')) ||
+      existsSync(resolve(pkgInfo.dir, 'src/components', slug, 'index.ts'));
+    if (hasSubpathTarget) {
+      return `${packageName}/${slug}`;
+    }
+  }
+
+  return packageName;
+}
+
+function unquoteDefaultValue(raw: string | undefined): string | undefined {
+  if (raw === undefined) return undefined;
+  const trimmed = raw.trim();
+  if (trimmed.length >= 2) {
+    if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+      try {
+        const parsed = JSON.parse(trimmed) as unknown;
+        return typeof parsed === 'string' ? parsed : String(parsed);
+      } catch {
+        return trimmed.slice(1, -1);
+      }
+    }
+    if (trimmed.startsWith("'") && trimmed.endsWith("'")) {
+      return trimmed.slice(1, -1);
+    }
+  }
+  return trimmed;
+}
+
+function escapeHtmlAttr(value: string): string {
+  return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
+}
+
+function extractFirstEnumLiteral(typeText: string): string | undefined {
+  const literals: string[] = [];
+  for (const branch of typeText.split('|')) {
+    const match = /^(['"])(.*)\1$/.exec(branch.trim());
+    if (match) {
+      literals.push(match[2]!);
+    }
+  }
+  return literals.find((lit) => lit.length > 0) ?? literals[0];
+}
+
+function buildComponentSnippets(
+  model: NormalizedComponentModel,
+  packageName: string,
+  packageRegistry: ReadonlyMap<string, PackageRegistryInfo>,
+) {
   const sampleAttrs = model.props
     .filter((p) => p.attr !== null)
-    .slice(0, 2)
-    .map((p) => {
-      if (p.type === 'boolean') return p.attr!;
-      const literal = /'([^']+)'/.exec(p.type)?.[1] ?? p.defaultValue?.replaceAll("'", '') ?? 'value';
-      return `${p.attr!}="${literal}"`;
+    .flatMap((p) => {
+      if (p.type === 'boolean') {
+        return p.defaultValue === 'true' ? [p.attr!] : [];
+      }
+      const enumLit = extractFirstEnumLiteral(p.type);
+      const unquoted = unquoteDefaultValue(p.defaultValue);
+      const val =
+        enumLit !== undefined && enumLit.length > 0
+          ? enumLit
+          : unquoted !== undefined && unquoted.length > 0
+            ? unquoted
+            : undefined;
+      if (val === undefined) return [];
+      return [`${p.attr!}="${escapeHtmlAttr(val)}"`];
     })
+    .slice(0, 2)
     .join(' ');
   const attrStr = sampleAttrs ? ` ${sampleAttrs}` : '';
   const body = model.slots.some((s) => s.name === '') ? 'Example' : '';
-  const importPath =
-    packageName === '@methane/primitives'
-      ? '@methane/primitives'
-      : `@methane/ui/${model.tagName.replace(/^mth-/, '')}`;
+  const importPath = resolveSnippetImportPath(packageName, model.tagName, packageRegistry);
 
   return {
     html: `<script type="module" src="${importPath}"></script>\n<${model.tagName}${attrStr}>${body}</${model.tagName}>`,
@@ -321,11 +445,41 @@ function buildComponentSnippets(model: NormalizedComponentModel, packageName: st
   };
 }
 
+function buildBundleBadge(
+  packageGroup: PackageGroup,
+  controllerCount: number,
+  isSatelliteConformance: boolean,
+): ComponentDocEntry['bundleBadge'] {
+  if (packageGroup === 'satellites' || isSatelliteConformance) {
+    return {
+      coldLabel: `~${(6.8 + controllerCount * 1.1).toFixed(1)} KB brotli shell + lazy engine`,
+      marginalLabel: `~${(1.4 + controllerCount * 0.6).toFixed(1)} KB shell · lazy engine chunk`,
+    };
+  }
+  if (packageGroup === 'primitives') {
+    return {
+      coldLabel: '~3.2 KB brotli (primitives + UIElement)',
+      marginalLabel: '~0.9 KB marginal',
+    };
+  }
+  if (packageGroup === 'kits') {
+    return {
+      coldLabel: `~${(6.8 + controllerCount * 1.1).toFixed(1)} KB brotli (kit + Lit)`,
+      marginalLabel: `~${(1.4 + controllerCount * 0.6).toFixed(1)} KB marginal`,
+    };
+  }
+  return {
+    coldLabel: `~${(6.8 + controllerCount * 1.1).toFixed(1)} KB brotli (cold + Lit)`,
+    marginalLabel: `~${(1.4 + controllerCount * 0.6).toFixed(1)} KB marginal`,
+  };
+}
+
 export async function loadComponentDocs(
   options: LoadComponentDocsOptions = {},
 ): Promise<ReadonlyArray<ComponentDocEntry>> {
   const repoRoot = options.repoRoot ?? findRepoRoot();
   const packageDirs = getWorkspacePackageDirs(repoRoot);
+  const packageRegistry = buildPackageRegistry(packageDirs);
   const discovered = discoverWorkspaceCems(packageDirs);
   const manifests: ExtendedCustomElementsManifest[] =
     discovered.length > 0 ? [...discovered] : [DEFAULT_CEM_FIXTURE];
@@ -355,6 +509,14 @@ export async function loadComponentDocs(
     .map((model) => {
       const spec = specByTag.get(model.tagName) ?? null;
       const packageName = spec?.package ?? '@methane/ui';
+      const isSatelliteConformance = Boolean(spec?.conformance.includes('satellite'));
+      const packageGroup =
+        packageRegistry.get(packageName)?.group ??
+        (packageName === '@methane/primitives'
+          ? 'primitives'
+          : isSatelliteConformance
+            ? 'satellites'
+            : 'ui');
       const specMarkdown = spec ? compileSpecDocs(spec) : null;
       const a11yChecklist = spec ? compileA11yChecklist(spec) : null;
       const controllerCount = spec?.controllers.length ?? 0;
@@ -363,6 +525,7 @@ export async function loadComponentDocs(
         tagName: model.tagName,
         className: model.className,
         packageName,
+        packageGroup,
         description: model.description || `Methane ${model.tagName} custom element.`,
         model,
         spec,
@@ -371,11 +534,8 @@ export async function loadComponentDocs(
         whenNotToUse:
           WHEN_NOT_TO_USE_MAP[model.tagName] ??
           'Do not use a Shadow-DOM custom element when a 0 B JS Light-DOM @methane/css primitive suffices.',
-        bundleBadge: {
-          coldLabel: `~${(6.8 + controllerCount * 1.1).toFixed(1)} KB brotli (cold + Lit)`,
-          marginalLabel: `~${(1.4 + controllerCount * 0.6).toFixed(1)} KB marginal`,
-        },
-        snippets: buildComponentSnippets(model, packageName),
+        bundleBadge: buildBundleBadge(packageGroup, controllerCount, isSatelliteConformance),
+        snippets: buildComponentSnippets(model, packageName, packageRegistry),
       };
     });
 }
