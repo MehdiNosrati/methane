@@ -65,8 +65,10 @@ export class MthStepper extends UIElement {
     });
 
     this.slotCtrl = new SlotCollectionController<StepElementLike>(this, {
-      filter: (el): el is StepElementLike => el.tagName.toLowerCase() === 'mth-step',
-      attributeFilter: ['value', 'label', 'description', 'disabled'],
+      filter: (el): el is StepElementLike =>
+        el instanceof HTMLElement &&
+        (el.tagName.toLowerCase().endsWith('-step') || 'stepNumber' in el),
+      attributeFilter: ['value', 'label', 'description', 'status', 'disabled'],
     });
   }
 
@@ -78,7 +80,9 @@ export class MthStepper extends UIElement {
       this.slotCtrl.items.length > 0
         ? this.slotCtrl.items
         : Array.from(this.children ?? []).filter(
-            (el): el is StepElementLike => el.tagName.toLowerCase() === 'mth-step',
+            (el): el is StepElementLike =>
+              el instanceof HTMLElement &&
+              (el.tagName.toLowerCase().endsWith('-step') || 'stepNumber' in el),
           );
 
     return slotted.map((el, idx) => {
@@ -119,9 +123,10 @@ export class MthStepper extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    if (changed.has('orientation')) {
-      this.rovingCtrl.updateOptions({ orientation: this.orientation });
-    }
+    this.rovingCtrl.updateOptions({
+      orientation: this.orientation,
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
     if (changed.has('linear')) {
       this.setCustomState('linear', this.linear);
     }

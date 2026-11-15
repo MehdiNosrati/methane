@@ -316,22 +316,26 @@ export class MthSiteSearch extends UIElement {
       event.preventDefault();
       event.stopPropagation();
       const total = this.resultItems.length;
-      if (event.key === 'ArrowDown' && total > 0) {
-        if (!this.open) void this.show();
-        const next = Math.min(Math.max(0, this.listboxCtrl.activeIndex + 1), total - 1);
-        this.listboxCtrl.setActiveIndex(next);
-      } else if (event.key === 'ArrowUp' && total > 0) {
-        const prev = Math.max(0, this.listboxCtrl.activeIndex - 1);
-        this.listboxCtrl.setActiveIndex(prev);
-      } else if (event.key === 'Home' && total > 0) {
-        this.listboxCtrl.setActiveIndex(0);
-      } else if (event.key === 'End' && total > 0) {
-        this.listboxCtrl.setActiveIndex(total - 1);
-      } else if (event.key === 'Enter') {
+      if (event.key === 'Enter') {
         if (this.listboxCtrl.activeIndex < 0 && total > 0) {
-          this.listboxCtrl.setActiveIndex(0);
+          const optEls = Array.from(
+            this.listboxEl?.querySelectorAll<HTMLElement>('[part="option"]') ?? [],
+          );
+          const firstEnabled = optEls.findIndex(
+            (el) => el.getAttribute('aria-disabled') !== 'true',
+          );
+          if (firstEnabled >= 0) {
+            this.listboxCtrl.setActiveIndex(firstEnabled);
+          }
         }
         this.listboxCtrl.selectActive();
+      } else if (total > 0) {
+        if (event.key === 'ArrowDown' && !this.open) {
+          void this.show();
+        }
+        this.listboxEl?.dispatchEvent(
+          new KeyboardEvent('keydown', { key: event.key, cancelable: true }),
+        );
       }
     } else if (event.key === 'Escape') {
       event.preventDefault();

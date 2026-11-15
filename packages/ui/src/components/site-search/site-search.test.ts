@@ -81,6 +81,41 @@ describe('<mth-site-search>', () => {
     expect(overlayReport.failures).toEqual([]);
     expect(overlayReport.passed).toBe(true);
 
+    const origShow = HTMLElement.prototype.showPopover;
+    const origHide = HTMLElement.prototype.hidePopover;
+    HTMLElement.prototype.showPopover = function () {
+      this.setAttribute('data-popover-open', 'true');
+    };
+    HTMLElement.prototype.hidePopover = function () {
+      this.removeAttribute('data-popover-open');
+    };
+    try {
+      const nativeReport = await OverlaySuite.run({
+        supportsLightDismiss: true,
+        supportsCancelableOpen: true,
+        mount: async () => {
+          const trigger = document.createElement('button');
+          const overlay = document.createElement('mth-site-search') as MthSiteSearch;
+          overlay.items = LOCAL_ITEMS;
+          return { overlay, trigger };
+        },
+        open: async (overlay) => {
+          await (overlay as MthSiteSearch).show();
+          await (overlay as MthSiteSearch).updateComplete;
+        },
+        close: async (overlay) => {
+          await (overlay as MthSiteSearch).hide('programmatic');
+          await (overlay as MthSiteSearch).updateComplete;
+        },
+        isOpen: (overlay) => (overlay as MthSiteSearch).open,
+      });
+      expect(nativeReport.failures).toEqual([]);
+      expect(nativeReport.passed).toBe(true);
+    } finally {
+      HTMLElement.prototype.showPopover = origShow;
+      HTMLElement.prototype.hidePopover = origHide;
+    }
+
     const listboxReport = await ListboxSuite.run({
       mount: async () => {
         const ss = document.createElement('mth-site-search') as MthSiteSearch;

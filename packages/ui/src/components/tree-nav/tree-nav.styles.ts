@@ -84,6 +84,12 @@ export const treeNavStyles = css`
     transition: transform 0.15s ease;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    [part='chevron'] {
+      transition: none;
+    }
+  }
+
   [part='item'][aria-expanded='true'] [part='chevron'] {
     transform: rotate(90deg);
   }

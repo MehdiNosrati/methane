@@ -93,17 +93,21 @@ export class MthToc extends UIElement {
   private syncDiscoveredItems(): void {
     if (typeof document === 'undefined') return;
     if (this.items.length === 0 && this.targetSelector.trim()) {
-      const nodes = Array.from(document.querySelectorAll<HTMLElement>(this.targetSelector));
-      this.discoveredItems = nodes
-        .filter((el) => Boolean(el.id))
-        .map((el) => {
-          const levelMatch = /^h([1-6])$/i.exec(el.tagName);
-          return {
-            id: el.id,
-            label: el.textContent?.trim() ?? el.id,
-            level: levelMatch ? Number(levelMatch[1]) : 2,
-          };
-        });
+      try {
+        const nodes = Array.from(document.querySelectorAll<HTMLElement>(this.targetSelector));
+        this.discoveredItems = nodes
+          .filter((el) => Boolean(el.id))
+          .map((el) => {
+            const levelMatch = /^h([1-6])$/i.exec(el.tagName);
+            return {
+              id: el.id,
+              label: el.textContent?.trim() ?? el.id,
+              level: levelMatch ? Number(levelMatch[1]) : 2,
+            };
+          });
+      } catch {
+        this.discoveredItems = EMPTY_TOC_ITEMS;
+      }
     } else if (this.items.length > 0) {
       this.discoveredItems = EMPTY_TOC_ITEMS;
     }
@@ -138,7 +142,11 @@ export class MthToc extends UIElement {
     this.activeId = item.id;
     const target = typeof document !== 'undefined' ? document.getElementById(item.id) : null;
     if (target && typeof target.scrollIntoView === 'function') {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const prefersReduced =
+        typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
     }
     this.emitEvent('mth-select', {
       detail: { id: item.id, label: item.label, href },

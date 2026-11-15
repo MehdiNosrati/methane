@@ -129,6 +129,9 @@ export class MthMegaMenu extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
     if (changed.has('forceFallback')) {
       this.overlayCtrl.updateOptions({ forceFallback: this.forceFallback });
       this.positioningCtrl.updateOptions({ forceFallback: this.forceFallback });

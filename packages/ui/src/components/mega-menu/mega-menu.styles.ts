@@ -102,7 +102,8 @@ export const megaMenuStyles = css`
   }
 
   [part='column-title'] {
-    margin: 0 0 var(--_mm-space-2);
+    margin: 0;
+    margin-block-end: var(--_mm-space-2);
     font-size: var(--_mm-font-xs);
     font-weight: var(--_mm-weight-semibold);
     color: var(--_mm-fg-muted);

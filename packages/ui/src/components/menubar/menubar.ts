@@ -68,9 +68,10 @@ export class MthMenubar extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    if (changed.has('orientation')) {
-      this.rovingCtrl.updateOptions({ orientation: this.orientation });
-    }
+    this.rovingCtrl.updateOptions({
+      orientation: this.orientation,
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
     if (changed.has('openItemValue')) {
       this.setCustomState('open', this.openItemValue.length > 0);
     }
@@ -119,9 +120,7 @@ export class MthMenubar extends UIElement {
   }
 
   private isRtl(): boolean {
-    const hostDir = this.getAttribute('dir');
-    if (hostDir) return hostDir.toLowerCase() === 'rtl';
-    return document.documentElement.getAttribute('dir')?.toLowerCase() === 'rtl';
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
   }
 
   private getTopItems(): Array<HTMLElement> {
@@ -276,25 +275,41 @@ export class MthMenubar extends UIElement {
     const hasSubmenu = Boolean(item.children && item.children.length > 0);
     const isOpen = hasSubmenu && this.openItemValue === item.value;
     const menuId = `mth-mb-menu-${item.value}`;
+    const safeHref = !hasSubmenu && item.href && isSafeHref(item.href) ? item.href.trim() : null;
 
     return html`
       <div class="mb-entry" role="none">
-        <button
-          part="item"
-          type="button"
-          role="menuitem"
-          data-value=${item.value}
-          ?disabled=${Boolean(item.disabled)}
-          aria-disabled=${item.disabled ? 'true' : nothing}
-          aria-haspopup=${hasSubmenu ? 'menu' : nothing}
-          aria-expanded=${hasSubmenu ? (isOpen ? 'true' : 'false') : nothing}
-          aria-controls=${hasSubmenu ? menuId : nothing}
-          @click=${(e: Event) => this.handleTopItemClick(e, item)}
-          @keydown=${(e: KeyboardEvent) => this.handleTopItemKeyDown(e, item)}
-        >
-          <span>${item.label}</span>
-          ${hasSubmenu ? html`<span aria-hidden="true">▾</span>` : nothing}
-        </button>
+        ${safeHref && !item.disabled
+          ? html`
+              <a
+                part="item"
+                role="menuitem"
+                data-value=${item.value}
+                href=${safeHref}
+                @click=${(e: Event) => this.handleTopItemClick(e, item)}
+                @keydown=${(e: KeyboardEvent) => this.handleTopItemKeyDown(e, item)}
+              >
+                <span>${item.label}</span>
+              </a>
+            `
+          : html`
+              <button
+                part="item"
+                type="button"
+                role="menuitem"
+                data-value=${item.value}
+                ?disabled=${Boolean(item.disabled)}
+                aria-disabled=${item.disabled ? 'true' : nothing}
+                aria-haspopup=${hasSubmenu ? 'menu' : nothing}
+                aria-expanded=${hasSubmenu ? (isOpen ? 'true' : 'false') : nothing}
+                aria-controls=${hasSubmenu ? menuId : nothing}
+                @click=${(e: Event) => this.handleTopItemClick(e, item)}
+                @keydown=${(e: KeyboardEvent) => this.handleTopItemKeyDown(e, item)}
+              >
+                <span>${item.label}</span>
+                ${hasSubmenu ? html`<span aria-hidden="true">▾</span>` : nothing}
+              </button>
+            `}
 
         ${hasSubmenu
           ? html`
@@ -302,6 +317,7 @@ export class MthMenubar extends UIElement {
                 id=${menuId}
                 part="menu"
                 role="menu"
+                aria-label=${item.label}
                 data-menu-for=${item.value}
                 ?hidden=${!isOpen}
                 @keydown=${(e: KeyboardEvent) => this.handleSubmenuKeyDown(e, item)}

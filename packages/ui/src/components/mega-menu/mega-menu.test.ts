@@ -85,6 +85,42 @@ describe('<mth-mega-menu>', () => {
     });
     expect(overlayReport.failures).toEqual([]);
     expect(overlayReport.passed).toBe(true);
+
+    const origShow = HTMLElement.prototype.showPopover;
+    const origHide = HTMLElement.prototype.hidePopover;
+    HTMLElement.prototype.showPopover = function () {
+      this.setAttribute('data-popover-open', 'true');
+    };
+    HTMLElement.prototype.hidePopover = function () {
+      this.removeAttribute('data-popover-open');
+    };
+    try {
+      const nativeReport = await OverlaySuite.run({
+        supportsLightDismiss: true,
+        supportsCancelableOpen: true,
+        mount: async () => {
+          const trigger = document.createElement('button');
+          trigger.textContent = 'Toggle Native Mega Menu';
+          const overlay = document.createElement('mth-mega-menu') as MthMegaMenu;
+          overlay.sections = SAMPLE_SECTIONS;
+          return { overlay, trigger };
+        },
+        open: async (overlay) => {
+          await (overlay as MthMegaMenu).show('products');
+          await (overlay as MthMegaMenu).updateComplete;
+        },
+        close: async (overlay) => {
+          await (overlay as MthMegaMenu).hide('programmatic');
+          await (overlay as MthMegaMenu).updateComplete;
+        },
+        isOpen: (overlay) => (overlay as MthMegaMenu).open,
+      });
+      expect(nativeReport.failures).toEqual([]);
+      expect(nativeReport.passed).toBe(true);
+    } finally {
+      HTMLElement.prototype.showPopover = origShow;
+      HTMLElement.prototype.hidePopover = origHide;
+    }
   });
 
   it('renders multi-column sections, sanitizes links, and checks same-root ARIA', async () => {

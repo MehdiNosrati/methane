@@ -12,7 +12,8 @@ export const tocStyles = css`
   }
 
   [part='heading'] {
-    margin: 0 0 var(--_toc-space) 0;
+    margin: 0;
+    margin-block-end: var(--_toc-space);
     font-size: var(--_toc-font-sm);
     font-weight: 600;
     color: var(--_toc-text);

@@ -57,6 +57,13 @@ export class MthBottomNav extends UIElement {
     });
   }
 
+  protected override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
+  }
+
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
     if (changed.has('items') || changed.has('activeValue') || changed.has('activeHref')) {

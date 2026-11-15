@@ -71,6 +71,41 @@ describe('<mth-command-palette>', () => {
     expect(overlayReport.failures).toEqual([]);
     expect(overlayReport.passed).toBe(true);
 
+    const origShowModal = HTMLDialogElement.prototype.showModal;
+    const origClose = HTMLDialogElement.prototype.close;
+    HTMLDialogElement.prototype.showModal = function () {
+      this.setAttribute('open', '');
+    };
+    HTMLDialogElement.prototype.close = function () {
+      this.removeAttribute('open');
+    };
+    try {
+      const nativeReport = await OverlaySuite.run({
+        supportsLightDismiss: true,
+        supportsCancelableOpen: true,
+        mount: async () => {
+          const trigger = document.createElement('button');
+          const overlay = document.createElement('mth-command-palette') as MthCommandPalette;
+          overlay.commands = SAMPLE_COMMANDS;
+          return { overlay, trigger };
+        },
+        open: async (overlay) => {
+          await (overlay as MthCommandPalette).show();
+          await (overlay as MthCommandPalette).updateComplete;
+        },
+        close: async (overlay) => {
+          await (overlay as MthCommandPalette).hide('programmatic');
+          await (overlay as MthCommandPalette).updateComplete;
+        },
+        isOpen: (overlay) => (overlay as MthCommandPalette).open,
+      });
+      expect(nativeReport.failures).toEqual([]);
+      expect(nativeReport.passed).toBe(true);
+    } finally {
+      HTMLDialogElement.prototype.showModal = origShowModal;
+      HTMLDialogElement.prototype.close = origClose;
+    }
+
     const listboxReport = await ListboxSuite.run({
       mount: async () => {
         const cp = document.createElement('mth-command-palette') as MthCommandPalette;
@@ -127,6 +162,46 @@ describe('<mth-command-palette>', () => {
 
     const aria = scanSameRootAria(cp.shadowRoot!);
     expect(aria.issues).toEqual([]);
+  });
+
+  it('skips disabled commands and wraps on ArrowDown/ArrowUp from input', async () => {
+    const cp = document.createElement('mth-command-palette') as MthCommandPalette;
+    cp.forceFallback = true;
+    cp.commands = [
+      { id: 'first', label: 'First Action' },
+      { id: 'mid-disabled', label: 'Disabled Action', disabled: true },
+      { id: 'last', label: 'Last Action' },
+    ];
+    document.body.appendChild(cp);
+    await cp.updateComplete;
+    await cp.show();
+    await cp.updateComplete;
+
+    const input = cp.shadowRoot!.querySelector<HTMLInputElement>('#mth-cp-input')!;
+    const activeValue = (): string | undefined =>
+      cp.shadowRoot!.querySelector<HTMLElement>('[part="option"][data-active="true"]')?.dataset[
+        'value'
+      ];
+
+    // ArrowDown from -1 starts at first enabled option ('first')
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await cp.updateComplete;
+    expect(activeValue()).toBe('first');
+
+    // ArrowDown skips 'mid-disabled' and lands on 'last'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await cp.updateComplete;
+    expect(activeValue()).toBe('last');
+
+    // ArrowDown at end wraps back to 'first'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await cp.updateComplete;
+    expect(activeValue()).toBe('first');
+
+    // ArrowUp wraps back to 'last', skipping 'mid-disabled'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    await cp.updateComplete;
+    expect(activeValue()).toBe('last');
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {

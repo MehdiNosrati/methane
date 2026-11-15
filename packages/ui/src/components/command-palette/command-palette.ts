@@ -248,24 +248,18 @@ export class MthCommandPalette extends UIElement {
     ) {
       event.preventDefault();
       event.stopPropagation();
-      if (event.key === 'ArrowDown') {
-        const next = Math.min(
-          Math.max(0, this.listboxCtrl.activeIndex + 1),
-          this.filteredCommands.length - 1,
-        );
-        this.listboxCtrl.setActiveIndex(next);
-      } else if (event.key === 'ArrowUp') {
-        const prev = Math.max(0, this.listboxCtrl.activeIndex - 1);
-        this.listboxCtrl.setActiveIndex(prev);
-      } else if (event.key === 'Home') {
-        this.listboxCtrl.setActiveIndex(0);
-      } else if (event.key === 'End') {
-        this.listboxCtrl.setActiveIndex(Math.max(0, this.filteredCommands.length - 1));
-      } else if (event.key === 'Enter') {
-        if (this.listboxCtrl.activeIndex < 0 && this.filteredCommands.length > 0) {
-          this.listboxCtrl.setActiveIndex(0);
+      if (event.key === 'Enter') {
+        if (this.listboxCtrl.activeIndex < 0) {
+          const firstEnabled = this.filteredCommands.findIndex((cmd) => !cmd.disabled);
+          if (firstEnabled >= 0) {
+            this.listboxCtrl.setActiveIndex(firstEnabled);
+          }
         }
         this.listboxCtrl.selectActive();
+      } else {
+        this.listboxEl?.dispatchEvent(
+          new KeyboardEvent('keydown', { key: event.key, cancelable: true }),
+        );
       }
     } else if (event.key === 'Escape') {
       event.preventDefault();

@@ -178,9 +178,7 @@ export class MthContextMenu extends UIElement {
   }
 
   private isRtl(): boolean {
-    const hostDir = this.getAttribute('dir');
-    if (hostDir) return hostDir.toLowerCase() === 'rtl';
-    return document.documentElement.getAttribute('dir')?.toLowerCase() === 'rtl';
+    return (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
   }
 
   private handleTargetContextMenu(event: MouseEvent): void {
