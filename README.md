@@ -323,7 +323,7 @@ pnpm run release:dry-run
 
 All 35 publishable `@methane-ui/*` packages (`packages/**` and `@methane-ui/lint-plugin`) are released via [`.github/workflows/release.yml`](./.github/workflows/release.yml) with Sigstore provenance (`--provenance --access public`):
 
-- **Triggers**: pushing a `v*` git tag, publishing a GitHub Release (`release: [published]`), or running `workflow_dispatch` (defaults to `dry_run: true`).
+- **Triggers**: pushing a `v*` git tag or running `workflow_dispatch` (defaults to `dry_run: true`).
 - **Auth**: supports both `NPM_TOKEN` (`secrets.NPM_TOKEN`) and **npm OIDC Trusted Publishing** (`id-token: write`, upgrading `npm@latest` automatically when `NPM_TOKEN` is unset).
 - **Local commands**: `pnpm run release:dry-run` validates packing/publish across the 35 public workspace packages (skipping `"private": true` internal tooling); `pnpm run release:publish` publishes them.
 

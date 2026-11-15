@@ -15,16 +15,11 @@
     "dist"
   ],
   "dependencies": {
+    "@methane-ui/core": "workspace:^",
     "@methane-ui/primitives": "workspace:^",
     "@methane-ui/sanitize": "workspace:^",
     "@methane-ui/ssr": "workspace:^",
     "lit": "^3.2.1"
-  },
-  "devDependencies": {
-    "@methane-ui/core": "workspace:^"
-  },
-  "peerDependencies": {
-    "@methane-ui/core": "^0.1.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

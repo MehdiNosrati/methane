@@ -4,13 +4,9 @@
 
 Strict Content Security Policy (CSP) + Trusted Types runtime compliance suite, Declarative Shadow DOM (DSD) CSP HTML auditor, permissive supply-chain license auditor, and GitHub Actions workflow security gate for **Methane UI**.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/security-gate
-# or
-npm install -D @methane-ui/security-gate
-```
+This package is `"private": true` and is not published to npm. Within the monorepo, CI and workspace tests invoke it directly or via `"workspace:^"`.
 
 ## Exported API
 

@@ -265,13 +265,30 @@ describe('@methane-ui/security-gate', () => {
     mkdirSync(join(fakeWs, 'tooling/priv'), { recursive: true });
     writeFileSync(
       join(fakeWs, 'tooling/priv/package.json'),
-      JSON.stringify({ name: '@methane-ui/priv', version: '0.1.0', private: true }),
+      JSON.stringify({
+        name: '@methane-ui/priv',
+        version: '0.1.0',
+        private: true,
+        peerDependencies: { '@methane-ui/pub': '^0.1.0' },
+      }),
       'utf8',
     );
     mkdirSync(join(fakeWs, 'packages/pub'), { recursive: true });
     writeFileSync(join(fakeWs, 'packages/pub/README.md'), 'x'.repeat(350), 'utf8');
 
-    // Allowed in devDependencies
+    // Allowed in devDependencies; private packages are also exempt from public version/peer-range skew on future bumps
+    writeFileSync(
+      join(fakeWs, 'packages/pub/package.json'),
+      JSON.stringify({
+        name: '@methane-ui/pub',
+        version: '0.2.0',
+        devDependencies: { '@methane-ui/priv': 'workspace:^' },
+      }),
+      'utf8',
+    );
+    expect(auditWorkspacePackages({ workspaceRoot: fakeWs, expectedVersion: '0.2.0' }).passed).toBe(true);
+
+    // Reset pub to 0.1.0 for peer/dep checks
     writeFileSync(
       join(fakeWs, 'packages/pub/package.json'),
       JSON.stringify({

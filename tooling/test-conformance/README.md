@@ -4,13 +4,9 @@
 
 Reusable Class Conformance Suites, `SatelliteEngineSuite`, `HydrationPuritySuite`, and Shadow DOM same-root ARIA scanner (`scanSameRootAria`) for **Methane UI** component testing.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/test-conformance
-# or
-npm install -D @methane-ui/test-conformance
-```
+This package is `"private": true` and is not published to npm. Within the monorepo, workspace packages reference it via `"workspace:^"` in `devDependencies`.
 
 ## Exported Suites & Scanners
 

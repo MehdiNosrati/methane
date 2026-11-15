@@ -4,13 +4,9 @@
 
 Single-source `ComponentBehaviorSpec` validator, Markdown documentation compiler, test-assertion generator, Custom Elements Manifest (CEM) verifier, and WAI-ARIA checklist builder for **Methane UI**.
 
-## Installation
+## Internal Monorepo Package
 
-```bash
-pnpm add -D @methane-ui/spec-compiler
-# or
-npm install -D @methane-ui/spec-compiler
-```
+This package is `"private": true` and is not published to npm. Within the monorepo, workspace packages reference it via `"workspace:^"` in `devDependencies`.
 
 ## Exported API
 

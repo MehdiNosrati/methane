@@ -185,18 +185,20 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
       }
     }
 
-    for (const [peerName, range] of Object.entries(peers)) {
-      if (
-        peerName.startsWith('@methane-ui/') &&
-        expectedPeerRange !== undefined &&
-        range !== expectedPeerRange
-      ) {
-        violations.push({
-          packageName: pkgName,
-          location,
-          rule: 'invalid-methane-peer-range',
-          message: `peerDependency "${peerName}" has range "${range}" instead of "${expectedPeerRange}"`,
-        });
+    if (raw.private !== true) {
+      for (const [peerName, range] of Object.entries(peers)) {
+        if (
+          peerName.startsWith('@methane-ui/') &&
+          expectedPeerRange !== undefined &&
+          range !== expectedPeerRange
+        ) {
+          violations.push({
+            packageName: pkgName,
+            location,
+            rule: 'invalid-methane-peer-range',
+            message: `peerDependency "${peerName}" has range "${range}" instead of "${expectedPeerRange}"`,
+          });
+        }
       }
     }
 
