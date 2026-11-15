@@ -24,10 +24,291 @@ export function toCamelCase(input: string): string {
   return pascal.length > 0 ? pascal.charAt(0).toLowerCase() + pascal.slice(1) : '';
 }
 
-function sanitizeTypeText(raw: string | undefined): string {
+const KNOWN_TYPE_IDENTIFIERS = new Set<string>([
+  // Primitives & TS keywords
+  'string',
+  'number',
+  'boolean',
+  'bigint',
+  'symbol',
+  'void',
+  'undefined',
+  'null',
+  'never',
+  'unknown',
+  'object',
+  'true',
+  'false',
+  'readonly',
+  'keyof',
+  'typeof',
+  'infer',
+  'extends',
+  'is',
+  'asserts',
+  'new',
+  // ES utility & built-in types
+  'Array',
+  'ReadonlyArray',
+  'Record',
+  'Readonly',
+  'Partial',
+  'Required',
+  'Pick',
+  'Omit',
+  'Exclude',
+  'Extract',
+  'NonNullable',
+  'ReturnType',
+  'Parameters',
+  'Promise',
+  'Set',
+  'Map',
+  'ReadonlySet',
+  'ReadonlyMap',
+  'WeakSet',
+  'WeakMap',
+  'Date',
+  'RegExp',
+  'Error',
+  'Uint8Array',
+  'Int8Array',
+  'Uint16Array',
+  'Int16Array',
+  'Uint32Array',
+  'Int32Array',
+  'Float32Array',
+  'Float64Array',
+  'ArrayBuffer',
+  'ArrayBufferView',
+  'DataView',
+  'Function',
+  // DOM types (ES2023 + DOM + DOM.Iterable)
+  'HTMLElement',
+  'Element',
+  'Node',
+  'Document',
+  'Window',
+  'Event',
+  'CustomEvent',
+  'FocusEvent',
+  'KeyboardEvent',
+  'MouseEvent',
+  'PointerEvent',
+  'InputEvent',
+  'SubmitEvent',
+  'UIEvent',
+  'ErrorEvent',
+  'File',
+  'FileList',
+  'Blob',
+  'DOMRect',
+  'DOMRectReadOnly',
+  'ValidityState',
+  'AbortSignal',
+  'AbortController',
+  'CSSStyleSheet',
+  'FormData',
+  'URL',
+  'URLSearchParams',
+  'HTMLInputElement',
+  'HTMLTextAreaElement',
+  'HTMLSelectElement',
+  'HTMLButtonElement',
+  'HTMLFormElement',
+  'SVGElement',
+]);
+
+function skipWhitespace(src: string, idx: number): number {
+  let i = idx;
+  while (i < src.length && /\s/.test(src[i]!)) {
+    i += 1;
+  }
+  return i;
+}
+
+function consumeStringLiteral(src: string, start: number): number {
+  const quote = src[start];
+  let i = start + 1;
+  while (i < src.length) {
+    const ch = src[i]!;
+    if (ch === '\\') {
+      i += 2;
+      continue;
+    }
+    if (ch === quote) {
+      return i + 1;
+    }
+    i += 1;
+  }
+  return src.length;
+}
+
+function consumeBalanced(
+  src: string,
+  start: number,
+  openCh: string,
+  closeCh: string,
+): number {
+  let depth = 0;
+  let i = start;
+  while (i < src.length) {
+    const ch = src[i]!;
+    if (ch === "'" || ch === '"') {
+      i = consumeStringLiteral(src, i);
+      continue;
+    }
+    if (openCh === '<' && ch === '=' && src[i + 1] === '>') {
+      i += 2;
+      continue;
+    }
+    if (ch === openCh) {
+      depth += 1;
+    } else if (ch === closeCh) {
+      depth -= 1;
+      if (depth === 0) {
+        return i + 1;
+      }
+    }
+    i += 1;
+  }
+  return src.length;
+}
+
+function isEmptyArrayBrackets(src: string, openBracketIdx: number): boolean {
+  const after = skipWhitespace(src, openBracketIdx + 1);
+  return src[after] === ']';
+}
+
+function isPropertyOrParamName(src: string, afterIdentIdx: number): boolean {
+  let i = skipWhitespace(src, afterIdentIdx);
+  if (src[i] === '?') {
+    i = skipWhitespace(src, i + 1);
+  }
+  return src[i] === ':' || src[i] === '(';
+}
+
+/**
+ * Sanitizes TypeScript type expressions extracted from CEM / BehaviorSpecs so
+ * generated wrapper files compile standalone without unimported nominal type references
+ * or `any`.
+ */
+export function sanitizeTypeText(raw: string | undefined): string {
   const text = raw?.trim();
   if (!text) return 'unknown';
-  return text;
+
+  let out = '';
+  let i = 0;
+
+  while (i < text.length) {
+    const ch = text[i]!;
+
+    if (ch === "'" || ch === '"') {
+      const end = consumeStringLiteral(text, i);
+      out += text.slice(i, end);
+      i = end;
+      continue;
+    }
+
+    if (ch === '{') {
+      const afterWs = skipWhitespace(text, i + 1);
+      if (text[afterWs] === '}') {
+        out += 'Record<string, never>';
+        i = afterWs + 1;
+        continue;
+      }
+    }
+
+    if (/[A-Za-z_$]/.test(ch)) {
+      let end = i + 1;
+      while (end < text.length && /[A-Za-z0-9_$]/.test(text[end]!)) {
+        end += 1;
+      }
+      const ident = text.slice(i, end);
+
+      if (ident === 'any') {
+        out += isPropertyOrParamName(text, end) ? ident : 'unknown';
+        i = end;
+        continue;
+      }
+
+      if (KNOWN_TYPE_IDENTIFIERS.has(ident) || isPropertyOrParamName(text, end)) {
+        out += ident;
+        i = end;
+        continue;
+      }
+
+      // Preserve lowercase tokens unless they look like an unimported type; keep single-letter generics (e.g. T) sanitized.
+      if (/^[a-z]/.test(ident)) {
+        out += ident;
+        i = end;
+        continue;
+      }
+
+      // Unimported nominal type identifier: consume optional `.Member`, `<...>`, and indexed access `[...]`,
+      // while preserving trailing array suffix `[]`.
+      let cursor = end;
+      let advanced = true;
+      while (advanced) {
+        advanced = false;
+        const afterWs = skipWhitespace(text, cursor);
+        if (text[afterWs] === '.') {
+          let memberEnd = skipWhitespace(text, afterWs + 1);
+          while (memberEnd < text.length && /[A-Za-z0-9_$]/.test(text[memberEnd]!)) {
+            memberEnd += 1;
+          }
+          cursor = memberEnd;
+          advanced = true;
+        } else if (text[afterWs] === '<') {
+          cursor = consumeBalanced(text, afterWs, '<', '>');
+          advanced = true;
+        } else if (text[afterWs] === '[' && !isEmptyArrayBrackets(text, afterWs)) {
+          cursor = consumeBalanced(text, afterWs, '[', ']');
+          advanced = true;
+        }
+      }
+
+      out += 'unknown';
+      i = cursor;
+      continue;
+    }
+
+    out += ch;
+    i += 1;
+  }
+
+  return out;
+}
+
+function sanitizeDefaultExpression(raw: string | undefined): string | undefined {
+  if (raw === undefined) return undefined;
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+  if (
+    trimmed === 'undefined' ||
+    trimmed === 'null' ||
+    trimmed === 'true' ||
+    trimmed === 'false' ||
+    /^-?\d+(\.\d+)?$/.test(trimmed)
+  ) {
+    return trimmed;
+  }
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    trimmed.startsWith('[') ||
+    trimmed.startsWith('{')
+  ) {
+    try {
+      JSON.parse(trimmed);
+      return trimmed;
+    } catch {
+      return JSON.stringify(trimmed);
+    }
+  }
+  if (trimmed.startsWith("'") && trimmed.endsWith("'") && trimmed.length >= 2) {
+    return trimmed;
+  }
+  return JSON.stringify(trimmed);
 }
 
 function formatDefaultLiteral(value: unknown): string | undefined {
@@ -41,9 +322,9 @@ function extractDetailType(rawEventType: string | undefined): string {
   if (!rawEventType) return 'Record<string, unknown>';
   const customMatch = /^CustomEvent<(.+)>$/.exec(rawEventType.trim());
   if (customMatch?.[1]) {
-    return customMatch[1].trim();
+    return sanitizeTypeText(customMatch[1].trim());
   }
-  return rawEventType.trim();
+  return sanitizeTypeText(rawEventType.trim());
 }
 
 function normalizeProps(
@@ -59,7 +340,7 @@ function normalizeProps(
       name: member.name,
       attr: member.attribute ?? member.name.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`),
       type: sanitizeTypeText(member.type?.text),
-      defaultValue: member.default,
+      defaultValue: sanitizeDefaultExpression(member.default),
       description: member.description ?? '',
       reflect: Boolean(member.reflect),
     });
@@ -72,7 +353,7 @@ function normalizeProps(
         name: fieldName,
         attr: attr.name,
         type: sanitizeTypeText(attr.type?.text),
-        defaultValue: attr.default,
+        defaultValue: sanitizeDefaultExpression(attr.default),
         description: attr.description ?? '',
         reflect: false,
       });
@@ -134,7 +415,7 @@ function normalizeEvents(
       angularOutputName: camel,
       vueEmitName: specEvent.name,
       sveltePropName: `on${specEvent.name}`,
-      detailType: specEvent.detailType || existing?.detailType || 'void',
+      detailType: sanitizeTypeText(specEvent.detailType || existing?.detailType || 'void'),
       cancelable: specEvent.cancelable,
       description: existing?.description ?? '',
     });
@@ -225,7 +506,15 @@ export function normalizeManifest(
       const tagName = decl.tagName?.toLowerCase();
       if (!tagName) continue;
 
-      const spec = specByTag.get(tagName);
+      const embeddedSpec = (decl as unknown as Record<string, unknown>)['x-methane-spec'];
+      const spec =
+        specByTag.get(tagName) ??
+        (embeddedSpec &&
+        typeof embeddedSpec === 'object' &&
+        'tag' in embeddedSpec &&
+        typeof (embeddedSpec as { tag?: unknown }).tag === 'string'
+          ? (embeddedSpec as ComponentBehaviorSpec)
+          : undefined);
       const className = decl.name ?? toPascalCase(tagName);
       const props = normalizeProps(decl, spec);
       const events = normalizeEvents(decl, spec);

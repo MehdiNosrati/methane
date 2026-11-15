@@ -50,9 +50,34 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     }
   });
 
-  it('loads CEM + ComponentBehaviorSpec entries with Svelte 5 subpath imports, APG docs, checklists, and bundle badges', async () => {
+  it('loads CEM + ComponentBehaviorSpec entries across full catalog with package-scoped snippets and bundle badges', async () => {
     const components = await loadComponentDocs();
-    expect(components.length).toBeGreaterThanOrEqual(8);
+    expect(components.length).toBeGreaterThanOrEqual(230);
+
+    const packages = new Set(components.map((c) => c.packageName));
+    for (const expectedPkg of [
+      '@methane/ui',
+      '@methane/primitives',
+      '@methane/admin',
+      '@methane/ai',
+      '@methane/auth',
+      '@methane/chat',
+      '@methane/commerce',
+      '@methane/3d',
+      '@methane/charts',
+      '@methane/code',
+      '@methane/datagrid',
+      '@methane/editor',
+      '@methane/flow',
+      '@methane/maps',
+      '@methane/media',
+      '@methane/pdf',
+      '@methane/rtc',
+      '@methane/spreadsheet',
+    ]) {
+      expect(packages.has(expectedPkg), `Missing package ${expectedPkg}`).toBe(true);
+    }
+
     const combobox = components.find((c) => c.tagName === 'mth-combobox');
     expect(combobox).toBeDefined();
     expect(combobox!.specMarkdown).toContain('mth-combobox');
@@ -61,8 +86,36 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(combobox!.whenNotToUse.length).toBeGreaterThan(10);
 
     const button = components.find((c) => c.tagName === 'mth-button');
+    expect(button?.snippets.html).toContain('@methane/ui/button');
     expect(button?.snippets.svelte).toContain("import MthButton from '@methane/svelte/MthButton.svelte';");
     expect(button?.snippets.svelte).not.toContain("from '@methane/svelte';");
+
+    const skipLink = components.find((c) => c.tagName === 'mth-skip-link');
+    expect(skipLink?.snippets.html).toContain('src="@methane/primitives"');
+    expect(skipLink?.snippets.react).toContain("import '@methane/primitives';");
+
+    const authForm = components.find((c) => c.tagName === 'mth-auth-form');
+    expect(authForm?.packageGroup).toBe('kits');
+    expect(authForm?.snippets.html).toContain('@methane/auth/auth-form');
+    expect(authForm?.snippets.react).not.toContain('@methane/ui/');
+
+    const datagrid = components.find((c) => c.tagName === 'mth-datagrid');
+    expect(datagrid?.packageGroup).toBe('satellites');
+    expect(datagrid?.bundleBadge.coldLabel).toContain('lazy engine');
+    expect(datagrid?.snippets.html).toContain('@methane/datagrid/datagrid');
+    expect(datagrid?.snippets.react).not.toContain('@methane/ui/');
+
+    for (const entry of components) {
+      if (entry.packageName !== '@methane/ui') {
+        expect(entry.snippets.html).not.toContain('@methane/ui/');
+        expect(entry.snippets.react).not.toContain('@methane/ui/');
+      }
+      for (const snippet of Object.values(entry.snippets)) {
+        expect(snippet, `Malformed quotes in ${entry.tagName}`).not.toContain('"""');
+        expect(snippet, `Double-quoted attr in ${entry.tagName}`).not.toMatch(/=""[A-Za-z0-9#]/);
+        expect(snippet, `Union misparse in ${entry.tagName}`).not.toContain('" | "');
+      }
+    }
   });
 
   it('dynamically discovers non-fixture workspace CEM and ComponentBehaviorSpec files (spec.js and x-methane-spec)', async () => {
@@ -269,6 +322,9 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     );
 
     const shippedTags = [
+      'mth-button',
+      'mth-checkbox',
+      'mth-switch',
       'mth-input',
       'mth-field',
       'mth-combobox',
@@ -287,12 +343,19 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
       expect(compHtml).toContain(`<${tag}`);
     }
 
-    for (const tag of ['mth-button', 'mth-checkbox', 'mth-switch']) {
-      const compHtml = readFileSync(resolve(distDir, `components/${tag}/index.html`), 'utf8');
-      expect(compHtml).toContain(`data-preview-tag="${tag}"`);
-      expect(compHtml).toContain('data-preview-upcoming="true"');
-      expect(compHtml).toContain('Token-Styled Preview');
+    const builtComponentPages = collectFiles(resolve(distDir, 'components'), '.html');
+    expect(builtComponentPages.length).toBeGreaterThanOrEqual(231);
+    for (const page of builtComponentPages) {
+      const html = readFileSync(page, 'utf8');
+      expect(html).not.toContain('data-preview-upcoming="true"');
     }
+
+    const componentsIndexHtml = readFileSync(resolve(distDir, 'components/index.html'), 'utf8');
+    expect(componentsIndexHtml).toContain('data-comp-search');
+    expect(componentsIndexHtml).toContain('data-group-filter="kits"');
+    expect(componentsIndexHtml).toContain('data-group-filter="satellites"');
+    expect(componentsIndexHtml).toContain('@methane/auth');
+    expect(componentsIndexHtml).toContain('@methane/datagrid');
 
     const clientSrc = readFileSync(resolve(docsRoot, 'src/lib/astro-client.ts'), 'utf8');
     expect(clientSrc).toContain('registerUtilityElements()');

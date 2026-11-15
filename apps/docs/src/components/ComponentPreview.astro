@@ -7,9 +7,10 @@ interface Props {
 
 const { entry } = Astro.props;
 const stageId = `preview-${entry.tagName}`;
-
-const PHASE1_UPCOMING_TAGS = new Set(['mth-button', 'mth-checkbox', 'mth-switch']);
-const isUpcoming = PHASE1_UPCOMING_TAGS.has(entry.tagName);
+const isLivePackage =
+  entry.packageName === '@methane/ui' || entry.packageName === '@methane/primitives';
+const PreviewTag = entry.tagName as unknown as string;
+const hasDefaultSlot = entry.model.slots.some((s) => s.name === '');
 
 interface PropControl {
   name: string;
@@ -66,7 +67,7 @@ const propControls = buildControls();
   id={stageId}
   data-preview-stage
   data-preview-tag={entry.tagName}
-  data-preview-upcoming={isUpcoming ? 'true' : 'false'}
+  data-preview-upcoming="false"
   aria-label={`Live interactive preview for ${entry.tagName}`}
 >
   <div class="docs-preview-toolbar">
@@ -74,9 +75,9 @@ const propControls = buildControls();
       <strong>Interactive Stage</strong>
       <span class="docs-badge" data-preview-status>
         {
-          isUpcoming
-            ? `Token-Styled Preview · Phase 1 <${entry.tagName}> upcoming`
-            : `Live Custom Element · <${entry.tagName}>`
+          isLivePackage
+            ? `Live Custom Element · <${entry.tagName}> (${entry.packageName})`
+            : `Token-Styled Preview · <${entry.tagName}> (${entry.packageName})`
         }
       </span>
     </mth-flex>
@@ -287,45 +288,28 @@ const propControls = buildControls();
       )
     }
 
-    {/* 3 Phase 1 Upcoming Token-Styled Previews */}
+    {/* Shipped Live Core Form Controls */}
     {
       entry.tagName === 'mth-button' && (
-        <button
-          type="button"
-          class="mth-preview-btn"
-          data-preview-target
-          data-variant="primary"
-          data-size="md"
-        >
+        <mth-button variant="solid" size="md" data-preview-target>
           Continue Action
-        </button>
+        </mth-button>
       )
     }
 
     {
       entry.tagName === 'mth-checkbox' && (
-        <label class="mth-flex" data-gap="2" data-align="center" style="cursor:pointer">
-          <input type="checkbox" data-preview-target />
-          <span>Accept Methane Design System terms</span>
-        </label>
+        <mth-checkbox data-preview-target>
+          Accept Methane Design System terms
+        </mth-checkbox>
       )
     }
 
     {
       entry.tagName === 'mth-switch' && (
-        <div class="mth-preview-switch-wrap">
-          <button
-            type="button"
-            role="switch"
-            aria-checked="false"
-            aria-label="Enable automatic OKLCH dark mode"
-            class="mth-preview-switch"
-            data-preview-target
-          >
-            <span class="mth-preview-switch-thumb" />
-          </button>
-          <span>Automatic OKLCH dark mode</span>
-        </div>
+        <mth-switch data-preview-target>
+          Automatic OKLCH dark mode
+        </mth-switch>
       )
     }
 
@@ -343,11 +327,28 @@ const propControls = buildControls();
         'mth-button',
         'mth-checkbox',
         'mth-switch',
-      ].includes(entry.tagName) && (
-        <div class="docs-card" data-preview-target>
-          <code>&lt;{entry.tagName}&gt;</code> live preview surface
-        </div>
-      )
+      ].includes(entry.tagName) &&
+        (isLivePackage ? (
+          <div class="docs-card" style="display:grid;gap:var(--mth-space-3);justify-items:center">
+            <mth-flex data-gap="2" data-align="center">
+              <span class="docs-badge">{entry.packageName}</span>
+              <code>&lt;{entry.tagName}&gt;</code>
+            </mth-flex>
+            <PreviewTag data-preview-target>
+              {hasDefaultSlot ? `${entry.className} live preview` : undefined}
+            </PreviewTag>
+          </div>
+        ) : (
+          <div class="docs-card" data-preview-target style="display:grid;gap:var(--mth-space-2);max-inline-size:32rem">
+            <mth-flex data-gap="2" data-align="center" data-justify="between">
+              <code>&lt;{entry.tagName}&gt;</code>
+              <span class="docs-badge">{entry.packageName}</span>
+            </mth-flex>
+            <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
+              {entry.description}
+            </p>
+          </div>
+        ))
     }
   </div>
 
@@ -537,19 +538,19 @@ const propControls = buildControls();
       });
     } else if (tag === 'mth-button' && targetEl) {
       let clicks = 0;
-      targetEl.addEventListener('click', () => {
+      targetEl.addEventListener('mth-press', () => {
         clicks++;
-        setReadout(`<mth-button> preview activated (${clicks} click${clicks === 1 ? '' : 's'})`);
+        setReadout(`<mth-button> mth-press activated (${clicks} time${clicks === 1 ? '' : 's'})`);
       });
     } else if (tag === 'mth-switch' && targetEl) {
-      targetEl.addEventListener('click', () => {
-        const next = targetEl.getAttribute('aria-checked') !== 'true';
-        targetEl.setAttribute('aria-checked', String(next));
-        setReadout(`mth-change preview: { checked: ${next} }`);
+      targetEl.addEventListener('mth-change', (ev) => {
+        const detail = (ev as CustomEvent<{ checked?: boolean }>).detail;
+        setReadout(`<mth-switch> mth-change: { checked: ${Boolean(detail?.checked)} }`);
       });
-    } else if (tag === 'mth-checkbox' && targetEl instanceof HTMLInputElement) {
-      targetEl.addEventListener('change', () => {
-        setReadout(`mth-change preview: { checked: ${targetEl.checked} }`);
+    } else if (tag === 'mth-checkbox' && targetEl) {
+      targetEl.addEventListener('mth-change', (ev) => {
+        const detail = (ev as CustomEvent<{ checked?: boolean }>).detail;
+        setReadout(`<mth-checkbox> mth-change: { checked: ${Boolean(detail?.checked)} }`);
       });
     }
   }

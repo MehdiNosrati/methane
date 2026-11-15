@@ -1,6 +1,12 @@
 ---
 import DocsLayout from '../components/DocsLayout.astro';
+import { loadComponentDocs } from '../lib/component-loader.js';
+import { CSS_PRIMITIVE_CATALOG } from '../lib/css-catalog.js';
 import { withBase } from '../lib/links.js';
+
+const components = await loadComponentDocs();
+const totalDeliverables = components.length + CSS_PRIMITIVE_CATALOG.length;
+const packageCount = new Set(components.map((c) => c.packageName)).size;
 ---
 
 <DocsLayout title="Introduction">
@@ -10,12 +16,16 @@ import { withBase } from '../lib/links.js';
         <span class="mth-hero-eyebrow">Methane Design System · @methane/*</span>
         <h1 class="mth-hero-title">Spec-first Web Components &amp; 0 B JS CSS Primitives</h1>
         <p class="mth-hero-lead">
-          ~250+ UI capabilities organized into a strictly acyclic layered architecture:
-          23 zero-JS Light-DOM CSS primitives, Lit 3 + UIElement, 24 shared behavioral primitives,
-          streaming DSD SSR across 6 frameworks, and auto-generated wrappers.
+          {totalDeliverables} UI deliverables ({components.length} custom elements across {packageCount}{' '}
+          component packages plus {CSS_PRIMITIVE_CATALOG.length} zero-JS Light-DOM CSS primitives)
+          organized into a strictly acyclic layered architecture with Lit 3 + UIElement, shared
+          behavioral primitives, streaming DSD SSR across 6 frameworks, and auto-generated wrappers.
         </p>
         <div class="mth-hero-actions">
           <a class="docs-btn docs-btn-primary" href={withBase('/quickstart')}>Get Started</a>
+          <a class="docs-btn" href={withBase('/components')}>
+            Browse {components.length} Components
+          </a>
           <a class="docs-btn" href={withBase('/css')}>Explore 23 CSS Primitives</a>
           <a class="docs-btn" href={withBase('/theme-builder')}>OKLCH Theme Builder</a>
         </div>

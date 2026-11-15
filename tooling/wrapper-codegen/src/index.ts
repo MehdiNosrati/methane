@@ -5,7 +5,18 @@ export { generateIdeFiles } from './generators/ide.js';
 export { generateReactFiles } from './generators/react.js';
 export { generateSvelteFiles } from './generators/svelte.js';
 export { generateVueFiles } from './generators/vue.js';
-export { normalizeManifest, toCamelCase, toPascalCase } from './normalize.js';
+export {
+  normalizeManifest,
+  sanitizeTypeText,
+  toCamelCase,
+  toPascalCase,
+} from './normalize.js';
+export {
+  PRIMITIVES_UTILITY_MANIFEST,
+  PRIMITIVES_UTILITY_SPECS,
+  hasWorkspaceManifests,
+  loadWorkspaceManifestAndSpecs,
+} from './workspace.js';
 export type {
   BindableControlProp,
   CemCssProperty,

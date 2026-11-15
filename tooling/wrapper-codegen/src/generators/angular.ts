@@ -30,7 +30,7 @@ function emitAngularDirective(model: NormalizedComponentModel): string {
   private lastValueEvent: Event | null = null;
   private lastBlurEvent: Event | null = null;
 
-  constructor(private readonly elementRef: ElementRef<HTMLElement & Record<string, unknown>>) {
+  constructor(@Inject(ElementRef) private readonly elementRef: ElementRef<HTMLElement & Record<string, unknown>>) {
     const el = this.elementRef?.nativeElement;
     if (el && typeof el.addEventListener === 'function') {
       const signal = this.destroyController.signal;
@@ -113,6 +113,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
+  Inject,
   Input,
   Output,
   forwardRef,
