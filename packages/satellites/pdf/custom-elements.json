@@ -1,0 +1,700 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pdf-viewer/pdf-viewer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPdfViewer",
+          "tagName": "mth-pdf-viewer",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Wrap-first Mozilla pdf.js `<mth-pdf-viewer>` component supporting page navigation, zoom presets, text search, document outline, URL sanitization, keyboard/RTL navigation, and `<slot name=\"fallback\">`.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "attribute": "src",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "URL to PDF document (validated with @methane/sanitize isSafeUrl)."
+            },
+            {
+              "kind": "field",
+              "name": "workerSrc",
+              "attribute": "worker-src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom pdf.js worker script URL."
+            },
+            {
+              "kind": "field",
+              "name": "documentTitle",
+              "attribute": "document-title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible PDF title shown in viewer label."
+            },
+            {
+              "kind": "field",
+              "name": "page",
+              "attribute": "page",
+              "reflect": true,
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "1-based active page number."
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "attribute": "total-pages",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total page count reported by pdf.js."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "reflect": true,
+              "type": {
+                "text": "number | 'auto' | 'page-fit' | 'page-width'"
+              },
+              "default": "1",
+              "description": "Numeric scale or preset (`auto`, `page-fit`, `page-width`)."
+            },
+            {
+              "kind": "field",
+              "name": "rotation",
+              "attribute": "rotation",
+              "type": {
+                "text": "0 | 90 | 180 | 270"
+              },
+              "default": "0",
+              "description": "Page rotation angle in degrees (0, 90, 180, 270)."
+            },
+            {
+              "kind": "field",
+              "name": "searchQuery",
+              "attribute": "search-query",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Search term highlighted/counted across extracted page text."
+            },
+            {
+              "kind": "field",
+              "name": "showOutline",
+              "attribute": "show-outline",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls visibility of the PDF outline panel."
+            },
+            {
+              "kind": "field",
+              "name": "showToolbar",
+              "attribute": "show-toolbar",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of the viewer toolbar."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible loading state."
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "attribute": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Human-readable error message when PDF loading fails."
+            },
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "Uint8Array | ArrayBuffer | null"
+              },
+              "description": "Raw PDF binary bytes passed directly via JS property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "URL to PDF document (validated with @methane/sanitize isSafeUrl)."
+            },
+            {
+              "name": "worker-src",
+              "fieldName": "workerSrc",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional custom pdf.js worker script URL."
+            },
+            {
+              "name": "document-title",
+              "fieldName": "documentTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible PDF title shown in viewer label."
+            },
+            {
+              "name": "page",
+              "fieldName": "page",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "1-based active page number."
+            },
+            {
+              "name": "total-pages",
+              "fieldName": "totalPages",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total page count reported by pdf.js."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number | 'auto' | 'page-fit' | 'page-width'"
+              },
+              "default": "1",
+              "description": "Numeric scale or preset (`auto`, `page-fit`, `page-width`)."
+            },
+            {
+              "name": "rotation",
+              "fieldName": "rotation",
+              "type": {
+                "text": "0 | 90 | 180 | 270"
+              },
+              "default": "0",
+              "description": "Page rotation angle in degrees (0, 90, 180, 270)."
+            },
+            {
+              "name": "search-query",
+              "fieldName": "searchQuery",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Search term highlighted/counted across extracted page text."
+            },
+            {
+              "name": "show-outline",
+              "fieldName": "showOutline",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Controls visibility of the PDF outline panel."
+            },
+            {
+              "name": "show-toolbar",
+              "fieldName": "showToolbar",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of the viewer toolbar."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible loading state."
+            },
+            {
+              "name": "error",
+              "fieldName": "error",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Human-readable error message when PDF loading fails."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-pdf-load",
+              "type": {
+                "text": "CustomEvent<{ numPages: number; title: string }>"
+              },
+              "description": "Emitted when the PDF document finishes loading."
+            },
+            {
+              "name": "mth-page-change",
+              "type": {
+                "text": "CustomEvent<{ page: number; totalPages: number }>"
+              },
+              "description": "Emitted when active page index changes."
+            },
+            {
+              "name": "mth-zoom-change",
+              "type": {
+                "text": "CustomEvent<{ zoom: number | 'auto' | 'page-fit' | 'page-width' }>"
+              },
+              "description": "Emitted when zoom level or preset changes."
+            },
+            {
+              "name": "mth-search-change",
+              "type": {
+                "text": "CustomEvent<{ query: string; matchCount: number }>"
+              },
+              "description": "Emitted when search query runs against extracted text."
+            },
+            {
+              "name": "mth-pdf-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Emitted on unsafe URL or pdf.js load failure."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Accessible fallback download link or alternative document view."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer viewer container."
+            },
+            {
+              "name": "toolbar",
+              "description": "PDF navigation, zoom, search, and outline toolbar."
+            },
+            {
+              "name": "prev-btn",
+              "description": "Previous page button."
+            },
+            {
+              "name": "page-input",
+              "description": "Direct page jump numeric input."
+            },
+            {
+              "name": "page-count",
+              "description": "Total page count indicator."
+            },
+            {
+              "name": "next-btn",
+              "description": "Next page button."
+            },
+            {
+              "name": "zoom-out",
+              "description": "Zoom out button."
+            },
+            {
+              "name": "zoom-select",
+              "description": "Zoom preset selector."
+            },
+            {
+              "name": "zoom-in",
+              "description": "Zoom in button."
+            },
+            {
+              "name": "search-input",
+              "description": "Text search input."
+            },
+            {
+              "name": "outline-toggle",
+              "description": "Outline sidebar toggle button."
+            },
+            {
+              "name": "download",
+              "description": "Sanitized PDF download anchor."
+            },
+            {
+              "name": "outline",
+              "description": "Document outline navigation sidebar."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable PDF canvas viewport."
+            },
+            {
+              "name": "canvas",
+              "description": "Rendered PDF page canvas."
+            },
+            {
+              "name": "fallback",
+              "description": "Slotted fallback container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Viewer background color."
+            },
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Toolbar background color."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Viewport and outline background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Foreground text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted status/fallback text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            },
+            {
+              "name": "has-document",
+              "description": "Custom element state :state(has-document)."
+            },
+            {
+              "name": "outline-open",
+              "description": "Custom element state :state(outline-open)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-pdf-viewer",
+            "package": "@methane/pdf",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "MotionController",
+              "ObserverPoolController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "loading",
+              "error",
+              "has-document",
+              "outline-open",
+              "reduced-motion"
+            ],
+            "keyboard": [
+              {
+                "key": "PageDown",
+                "when": "viewer viewport is focused",
+                "expect": "advances to the next PDF page"
+              },
+              {
+                "key": "PageUp",
+                "when": "viewer viewport is focused",
+                "expect": "returns to the previous PDF page"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "viewer viewport is focused",
+                "expect": "advances to the next PDF page"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "viewer viewport is focused",
+                "expect": "advances to the next PDF page in RTL"
+              },
+              {
+                "key": "Home",
+                "when": "viewer viewport is focused",
+                "expect": "jumps to page 1"
+              },
+              {
+                "key": "End",
+                "when": "viewer viewport is focused",
+                "expect": "jumps to the last page"
+              }
+            ],
+            "props": [
+              {
+                "name": "src",
+                "attr": "src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "workerSrc",
+                "attr": "worker-src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "documentTitle",
+                "attr": "document-title",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "page",
+                "attr": "page",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "totalPages",
+                "attr": "total-pages",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number | 'auto' | 'page-fit' | 'page-width'",
+                "default": 1
+              },
+              {
+                "name": "rotation",
+                "attr": "rotation",
+                "type": "0 | 90 | 180 | 270",
+                "default": 0
+              },
+              {
+                "name": "searchQuery",
+                "attr": "search-query",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showOutline",
+                "attr": "show-outline",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "showToolbar",
+                "attr": "show-toolbar",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "error",
+                "attr": "error",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "data",
+                "attr": false,
+                "type": "Uint8Array | ArrayBuffer | null"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-pdf-load",
+                "cancelable": false,
+                "detailType": "{ numPages: number; title: string }"
+              },
+              {
+                "name": "mth-page-change",
+                "cancelable": false,
+                "detailType": "{ page: number; totalPages: number }"
+              },
+              {
+                "name": "mth-zoom-change",
+                "cancelable": false,
+                "detailType": "{ zoom: number | 'auto' | 'page-fit' | 'page-width' }"
+              },
+              {
+                "name": "mth-search-change",
+                "cancelable": false,
+                "detailType": "{ query: string; matchCount: number }"
+              },
+              {
+                "name": "mth-pdf-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Accessible fallback download link or alternative document view."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer viewer container."
+              },
+              {
+                "name": "toolbar",
+                "description": "PDF navigation, zoom, search, and outline toolbar."
+              },
+              {
+                "name": "prev-btn",
+                "description": "Previous page button."
+              },
+              {
+                "name": "page-input",
+                "description": "Direct page jump numeric input."
+              },
+              {
+                "name": "page-count",
+                "description": "Total page count indicator."
+              },
+              {
+                "name": "next-btn",
+                "description": "Next page button."
+              },
+              {
+                "name": "zoom-out",
+                "description": "Zoom out button."
+              },
+              {
+                "name": "zoom-select",
+                "description": "Zoom preset selector."
+              },
+              {
+                "name": "zoom-in",
+                "description": "Zoom in button."
+              },
+              {
+                "name": "search-input",
+                "description": "Text search input."
+              },
+              {
+                "name": "outline-toggle",
+                "description": "Outline sidebar toggle button."
+              },
+              {
+                "name": "download",
+                "description": "Sanitized PDF download anchor."
+              },
+              {
+                "name": "outline",
+                "description": "Document outline navigation sidebar."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable PDF canvas viewport."
+              },
+              {
+                "name": "canvas",
+                "description": "Rendered PDF page canvas."
+              },
+              {
+                "name": "fallback",
+                "description": "Slotted fallback container."
+              }
+            ],
+            "messages": {
+              "viewerLabel": "PDF document viewer",
+              "toolbarLabel": "PDF viewer controls",
+              "prevPage": "Previous page",
+              "nextPage": "Next page",
+              "pageNumber": "Current page number",
+              "zoomLabel": "Zoom level",
+              "zoomIn": "Zoom in",
+              "zoomOut": "Zoom out",
+              "zoomAuto": "Auto zoom",
+              "zoomPageFit": "Page fit",
+              "zoomPageWidth": "Page width",
+              "searchLabel": "Search document text",
+              "searchPlaceholder": "Find in document...",
+              "outlineToggle": "Toggle document outline",
+              "outlineLabel": "Document outline",
+              "outlineEmpty": "No document outline available",
+              "downloadLabel": "Download PDF",
+              "loadingLabel": "Loading PDF document...",
+              "invalidUrlError": "Blocked unsafe PDF source URL"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPdfViewer",
+          "declaration": {
+            "name": "MthPdfViewer",
+            "module": "src/components/pdf-viewer/pdf-viewer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-pdf-viewer",
+          "declaration": {
+            "name": "MthPdfViewer",
+            "module": "src/components/pdf-viewer/pdf-viewer.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
