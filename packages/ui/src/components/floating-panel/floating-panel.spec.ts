@@ -1,0 +1,91 @@
+import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { floatingPanelMessages } from './floating-panel.messages.js';
+
+export const floatingPanelSpec: ComponentBehaviorSpec = {
+  tag: 'mth-floating-panel',
+  package: '@methane/ui',
+  conformance: ['overlay'],
+  controllers: ['OverlayController'],
+  focusModel: 'host',
+  states: ['open', 'minimized', 'docked', 'dragging'],
+  keyboard: [
+    { key: 'Escape', when: 'open', expect: 'Closes the floating panel when closeOnEscape is enabled.' },
+    { key: 'ArrowUp', when: 'drag-handle focused', expect: 'Nudges the floating panel upward.' },
+    { key: 'ArrowDown', when: 'drag-handle focused', expect: 'Nudges the floating panel downward.' },
+    { key: 'ArrowLeft', when: 'drag-handle focused', expect: 'Nudges the floating panel toward inline-start.' },
+    { key: 'ArrowRight', when: 'drag-handle focused', expect: 'Nudges the floating panel toward inline-end.' },
+  ],
+  props: [
+    { name: 'open', attr: 'open', type: 'boolean', default: false },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
+    { name: 'minimized', attr: 'minimized', type: 'boolean', default: false },
+    { name: 'dock', attr: 'dock', type: "'none' | 'start' | 'end' | 'bottom'", default: 'none' },
+    { name: 'x', attr: 'x', type: 'number', default: 24 },
+    { name: 'y', attr: 'y', type: 'number', default: 24 },
+    { name: 'closable', attr: 'closable', type: 'boolean', default: true },
+    { name: 'minimizable', attr: 'minimizable', type: 'boolean', default: true },
+    { name: 'dockable', attr: 'dockable', type: 'boolean', default: true },
+    { name: 'closeOnEscape', attr: 'close-on-escape', type: 'boolean', default: true },
+  ],
+  events: [
+    { name: 'mth-open', cancelable: true, detailType: 'undefined' },
+    { name: 'mth-after-open', cancelable: false, detailType: 'undefined' },
+    { name: 'mth-close', cancelable: true, detailType: '{ reason: string }' },
+    { name: 'mth-after-close', cancelable: false, detailType: 'undefined' },
+    { name: 'mth-move', cancelable: false, detailType: '{ x: number; y: number }' },
+    { name: 'mth-minimize-change', cancelable: false, detailType: '{ minimized: boolean }' },
+    { name: 'mth-dock-change', cancelable: false, detailType: "{ dock: 'none' | 'start' | 'end' | 'bottom' }" },
+  ],
+  slots: [
+    { name: '', description: 'Main body content inside the floating panel.' },
+    { name: 'header', description: 'Optional custom header title content.' },
+    { name: 'footer', description: 'Optional footer actions.' },
+  ],
+  parts: [
+    { name: 'base', description: 'Floating non-modal panel surface.' },
+    { name: 'header', description: 'Draggable header bar with title and window controls.' },
+    { name: 'drag-handle', description: 'Interactive drag bar supporting pointer drag and arrow-key nudge.' },
+    { name: 'title', description: 'Accessible panel heading.' },
+    { name: 'controls', description: 'Container for dock, minimize, and close controls.' },
+    { name: 'dock-button', description: 'Button toggling docked vs floating layout.' },
+    { name: 'minimize-button', description: 'Button collapsing/restoring panel body.' },
+    { name: 'close-button', description: 'Button closing the floating panel.' },
+    { name: 'body', description: 'Scrollable panel content body.' },
+    { name: 'footer', description: 'Panel footer container.' },
+  ],
+  messages: { ...floatingPanelMessages },
+};
+
+export const CEM_METADATA = {
+  description:
+    'Non-modal floating utility panel using `OverlayController` with pointer/keyboard drag positioning, docking, and minimization.',
+  propDescriptions: {
+    open: 'Controls whether the floating panel is visible.',
+    label: 'Accessible heading and region label.',
+    minimized: 'Collapses the panel body while keeping the header bar visible.',
+    dock: 'Docks the panel to `start`, `end`, `bottom`, or floats freely (`none`).',
+    x: 'Horizontal offset in pixels while floating.',
+    y: 'Vertical offset in pixels while floating.',
+    closable: 'Renders the close button in the header.',
+    minimizable: 'Renders the minimize/restore toggle button.',
+    dockable: 'Renders the dock toggle button.',
+    closeOnEscape: 'Allows closing the panel on Escape.',
+  },
+  eventDescriptions: {
+    'mth-open': 'Cancelable event fired before opening the panel.',
+    'mth-after-open': 'Fired after the panel opens.',
+    'mth-close': 'Cancelable event fired before closing the panel.',
+    'mth-after-close': 'Fired after the panel closes.',
+    'mth-move': 'Fired when the panel position `(x, y)` updates.',
+    'mth-minimize-change': 'Fired when minimized state toggles.',
+    'mth-dock-change': 'Fired when dock mode changes.',
+  },
+  cssProperties: [
+    { name: '--mth-color-surface-raised', description: 'Floating panel background color' },
+    { name: '--mth-color-fg', description: 'Panel foreground text color' },
+    { name: '--mth-color-border', description: 'Panel border color' },
+    { name: '--mth-radius-lg', description: 'Panel corner radius' },
+    { name: '--mth-shadow-lg', description: 'Panel elevation shadow' },
+    { name: '--mth-z-index-popover', description: 'Stacking z-index for the floating panel' },
+  ],
+};
