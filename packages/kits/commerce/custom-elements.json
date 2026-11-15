@@ -1,0 +1,3777 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/cart/cart.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCart",
+          "tagName": "mth-cart",
+          "customElement": true,
+          "description": "Accessible shopping cart line-item list with quantity adjustments, item removal, URL sanitization, and localized currency breakdown.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "ReadonlyArray<CartItem>"
+              },
+              "description": "Array of CartItem entries in the cart."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code used by Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "kind": "field",
+              "name": "taxRate",
+              "attribute": "tax-rate",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Fractional tax rate applied to discounted subtotal (e.g., 0.08)."
+            },
+            {
+              "kind": "field",
+              "name": "shippingAmount",
+              "attribute": "shipping-amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat shipping amount added to total."
+            },
+            {
+              "kind": "field",
+              "name": "discountAmount",
+              "attribute": "discount-amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat discount subtracted from subtotal before tax."
+            },
+            {
+              "kind": "field",
+              "name": "allowRemove",
+              "attribute": "allow-remove",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows item removal controls when true."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interactive quantity, remove, and checkout actions."
+            },
+            {
+              "kind": "field",
+              "name": "checkoutLabel",
+              "attribute": "checkout-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Overrides localized checkout CTA label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code used by Intl.NumberFormat."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "name": "tax-rate",
+              "fieldName": "taxRate",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Fractional tax rate applied to discounted subtotal (e.g., 0.08)."
+            },
+            {
+              "name": "shipping-amount",
+              "fieldName": "shippingAmount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat shipping amount added to total."
+            },
+            {
+              "name": "discount-amount",
+              "fieldName": "discountAmount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat discount subtracted from subtotal before tax."
+            },
+            {
+              "name": "allow-remove",
+              "fieldName": "allowRemove",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Shows item removal controls when true."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interactive quantity, remove, and checkout actions."
+            },
+            {
+              "name": "checkout-label",
+              "fieldName": "checkoutLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Overrides localized checkout CTA label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-quantity-change",
+              "type": {
+                "text": "CustomEvent<{ id: string; quantity: number }>"
+              },
+              "description": "Emitted event mth-quantity-change."
+            },
+            {
+              "name": "mth-remove-item",
+              "type": {
+                "text": "CustomEvent<{ id: string }>"
+              },
+              "description": "Emitted event mth-remove-item."
+            },
+            {
+              "name": "mth-checkout",
+              "type": {
+                "text": "CustomEvent<{ items: ReadonlyArray<CartItem>; subtotal: number; total: number }>"
+              },
+              "description": "Emitted event mth-checkout."
+            }
+          ],
+          "slots": [
+            {
+              "name": "header",
+              "description": "Optional header slot above cart items."
+            },
+            {
+              "name": "empty",
+              "description": "Custom empty-cart callout."
+            },
+            {
+              "name": "footer",
+              "description": "Additional footer content below checkout button."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root cart section container."
+            },
+            {
+              "name": "items",
+              "description": "Line items list."
+            },
+            {
+              "name": "item",
+              "description": "Individual cart line item."
+            },
+            {
+              "name": "summary",
+              "description": "Price totals breakdown."
+            },
+            {
+              "name": "checkout-button",
+              "description": "Primary checkout button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Cart card surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Line item divider border color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Secondary item metadata text color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-cart",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "empty",
+              "disabled"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "items",
+                "attr": false,
+                "type": "ReadonlyArray<CartItem>"
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "taxRate",
+                "attr": "tax-rate",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "shippingAmount",
+                "attr": "shipping-amount",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "discountAmount",
+                "attr": "discount-amount",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "allowRemove",
+                "attr": "allow-remove",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "checkoutLabel",
+                "attr": "checkout-label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-quantity-change",
+                "cancelable": false,
+                "detailType": "{ id: string; quantity: number }"
+              },
+              {
+                "name": "mth-remove-item",
+                "cancelable": false,
+                "detailType": "{ id: string }"
+              },
+              {
+                "name": "mth-checkout",
+                "cancelable": false,
+                "detailType": "{ items: ReadonlyArray<CartItem>; subtotal: number; total: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "header",
+                "description": "Optional header slot above cart items."
+              },
+              {
+                "name": "empty",
+                "description": "Custom empty-cart callout."
+              },
+              {
+                "name": "footer",
+                "description": "Additional footer content below checkout button."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root cart section container."
+              },
+              {
+                "name": "items",
+                "description": "Line items list."
+              },
+              {
+                "name": "item",
+                "description": "Individual cart line item."
+              },
+              {
+                "name": "summary",
+                "description": "Price totals breakdown."
+              },
+              {
+                "name": "checkout-button",
+                "description": "Primary checkout button."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Shopping cart",
+              "emptyTitle": "Your cart is empty",
+              "subtotalLabel": "Subtotal",
+              "shippingLabel": "Shipping",
+              "taxLabel": "Estimated tax",
+              "discountLabel": "Discount",
+              "totalLabel": "Total",
+              "removeLabel": "Remove {title}",
+              "checkoutLabel": "Proceed to checkout",
+              "itemCountLabel": "{count} items",
+              "freeShippingLabel": "Free"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCart",
+          "declaration": {
+            "name": "MthCart",
+            "module": "src/components/cart/cart.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-cart",
+          "declaration": {
+            "name": "MthCart",
+            "module": "src/components/cart/cart.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/checkout-steps/checkout-steps.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCheckoutSteps",
+          "tagName": "mth-checkout-steps",
+          "customElement": true,
+          "description": "Multi-step checkout progress coordinator supporting linear completion gating, vertical/horizontal layouts, and RTL roving focus.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "steps",
+              "type": {
+                "text": "ReadonlyArray<CheckoutStep>"
+              },
+              "description": "Ordered list of CheckoutStep items (shipping, delivery, payment, review)."
+            },
+            {
+              "kind": "field",
+              "name": "activeStep",
+              "attribute": "active-step",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently active step ID."
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "attribute": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Step list orientation: horizontal or vertical."
+            },
+            {
+              "kind": "field",
+              "name": "linear",
+              "attribute": "linear",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true, prevents activating steps ahead of incomplete preceding steps."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible navigation label overriding localized default."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "active-step",
+              "fieldName": "activeStep",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently active step ID."
+            },
+            {
+              "name": "orientation",
+              "fieldName": "orientation",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "\"horizontal\"",
+              "description": "Step list orientation: horizontal or vertical."
+            },
+            {
+              "name": "linear",
+              "fieldName": "linear",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "When true, prevents activating steps ahead of incomplete preceding steps."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible navigation label overriding localized default."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-step-change",
+              "type": {
+                "text": "CustomEvent<{ stepId: string; index: number }>"
+              },
+              "description": "Emitted event mth-step-change."
+            },
+            {
+              "name": "mth-step-complete",
+              "type": {
+                "text": "CustomEvent<{ stepId: string }>"
+              },
+              "description": "Emitted event mth-step-complete."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root navigation list container."
+            },
+            {
+              "name": "step",
+              "description": "Individual step list item."
+            },
+            {
+              "name": "step-button",
+              "description": "Focusable step trigger button."
+            },
+            {
+              "name": "indicator",
+              "description": "Step number or completion indicator."
+            },
+            {
+              "name": "label",
+              "description": "Step label text."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-accent",
+              "description": "Active and completed step indicator accent."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Step connector and card border color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Step validation error accent color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "vertical",
+              "description": "Custom element state :state(vertical)."
+            },
+            {
+              "name": "linear",
+              "description": "Custom element state :state(linear)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-checkout-steps",
+            "package": "@methane/commerce",
+            "conformance": [
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "vertical",
+              "linear"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "horizontal",
+                "expect": "Move focus to next step (previous in RTL)."
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "horizontal",
+                "expect": "Move focus to previous step (next in RTL)."
+              },
+              {
+                "key": "ArrowDown",
+                "when": "vertical",
+                "expect": "Move focus to next step in vertical orientation."
+              },
+              {
+                "key": "ArrowUp",
+                "when": "vertical",
+                "expect": "Move focus to previous step in vertical orientation."
+              },
+              {
+                "key": "Home",
+                "when": "focused",
+                "expect": "Focus first step."
+              },
+              {
+                "key": "End",
+                "when": "focused",
+                "expect": "Focus last step."
+              },
+              {
+                "key": "Enter",
+                "when": "step-button focused",
+                "expect": "Activate unlocked step."
+              }
+            ],
+            "props": [
+              {
+                "name": "steps",
+                "attr": false,
+                "type": "ReadonlyArray<CheckoutStep>"
+              },
+              {
+                "name": "activeStep",
+                "attr": "active-step",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "orientation",
+                "attr": "orientation",
+                "type": "'horizontal' | 'vertical'",
+                "default": "horizontal"
+              },
+              {
+                "name": "linear",
+                "attr": "linear",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-step-change",
+                "cancelable": false,
+                "detailType": "{ stepId: string; index: number }"
+              },
+              {
+                "name": "mth-step-complete",
+                "cancelable": false,
+                "detailType": "{ stepId: string }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root navigation list container."
+              },
+              {
+                "name": "step",
+                "description": "Individual step list item."
+              },
+              {
+                "name": "step-button",
+                "description": "Focusable step trigger button."
+              },
+              {
+                "name": "indicator",
+                "description": "Step number or completion indicator."
+              },
+              {
+                "name": "label",
+                "description": "Step label text."
+              }
+            ],
+            "messages": {
+              "navLabel": "Checkout steps",
+              "completedLabel": "Completed",
+              "currentLabel": "Current step",
+              "lockedLabel": "Locked",
+              "errorPrefix": "Error:"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCheckoutSteps",
+          "declaration": {
+            "name": "MthCheckoutSteps",
+            "module": "src/components/checkout-steps/checkout-steps.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-checkout-steps",
+          "declaration": {
+            "name": "MthCheckoutSteps",
+            "module": "src/components/checkout-steps/checkout-steps.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/facet-filters/facet-filters.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFacetFilters",
+          "tagName": "mth-facet-filters",
+          "customElement": true,
+          "description": "Collapsible faceted product filter sidebar supporting checkbox lists, CSP-safe adopted-stylesheet color swatches, and numeric range bounds.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "facets",
+              "type": {
+                "text": "ReadonlyArray<FacetGroup>"
+              },
+              "description": "Array of FacetGroup definitions (checkbox, swatch, or range)."
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "Record<string, ReadonlyArray<string>>"
+              },
+              "description": "Map of facet group ID to selected option values."
+            },
+            {
+              "kind": "field",
+              "name": "ranges",
+              "type": {
+                "text": "Record<string, FacetRangeValue>"
+              },
+              "description": "Map of range facet group ID to min/max bounds."
+            },
+            {
+              "kind": "field",
+              "name": "collapsible",
+              "attribute": "collapsible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows facet groups to toggle expanded/collapsed state."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "collapsible",
+              "fieldName": "collapsible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Allows facet groups to toggle expanded/collapsed state."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-filter-change",
+              "type": {
+                "text": "CustomEvent<{ groupId: string; selected: Record<string, ReadonlyArray<string>>; ranges: Record<string, FacetRangeValue> }>"
+              },
+              "description": "Emitted event mth-filter-change."
+            },
+            {
+              "name": "mth-filter-clear",
+              "type": {
+                "text": "CustomEvent<{}>"
+              },
+              "description": "Emitted event mth-filter-clear."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer filters form/aside container."
+            },
+            {
+              "name": "clear-button",
+              "description": "Clear all active filters button."
+            },
+            {
+              "name": "group",
+              "description": "Individual facet group."
+            },
+            {
+              "name": "group-toggle",
+              "description": "Collapsible group header button."
+            },
+            {
+              "name": "swatch",
+              "description": "Color swatch button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Filter panel background surface."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Group divider border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active swatch ring and badge accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "has-active-filters",
+              "description": "Custom element state :state(has-active-filters)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-facet-filters",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "has-active-filters"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "facets",
+                "attr": false,
+                "type": "ReadonlyArray<FacetGroup>"
+              },
+              {
+                "name": "selected",
+                "attr": false,
+                "type": "Record<string, ReadonlyArray<string>>"
+              },
+              {
+                "name": "ranges",
+                "attr": false,
+                "type": "Record<string, FacetRangeValue>"
+              },
+              {
+                "name": "collapsible",
+                "attr": "collapsible",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-filter-change",
+                "cancelable": false,
+                "detailType": "{ groupId: string; selected: Record<string, ReadonlyArray<string>>; ranges: Record<string, FacetRangeValue> }"
+              },
+              {
+                "name": "mth-filter-clear",
+                "cancelable": false,
+                "detailType": "{}"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer filters form/aside container."
+              },
+              {
+                "name": "clear-button",
+                "description": "Clear all active filters button."
+              },
+              {
+                "name": "group",
+                "description": "Individual facet group."
+              },
+              {
+                "name": "group-toggle",
+                "description": "Collapsible group header button."
+              },
+              {
+                "name": "swatch",
+                "description": "Color swatch button."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Product filters",
+              "clearAllLabel": "Clear all filters",
+              "minLabel": "Min",
+              "maxLabel": "Max",
+              "emptyLabel": "No filters available."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFacetFilters",
+          "declaration": {
+            "name": "MthFacetFilters",
+            "module": "src/components/facet-filters/facet-filters.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-facet-filters",
+          "declaration": {
+            "name": "MthFacetFilters",
+            "module": "src/components/facet-filters/facet-filters.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/invoice/invoice.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthInvoice",
+          "tagName": "mth-invoice",
+          "customElement": true,
+          "description": "Print-friendly structured invoice view with localized Intl.NumberFormat line totals, sanitized brand logo URL, and status badge.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "invoiceNumber",
+              "attribute": "invoice-number",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Invoice identifier string."
+            },
+            {
+              "kind": "field",
+              "name": "issueDate",
+              "attribute": "issue-date",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Formatted or ISO issue date."
+            },
+            {
+              "kind": "field",
+              "name": "dueDate",
+              "attribute": "due-date",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Formatted or ISO payment due date."
+            },
+            {
+              "kind": "field",
+              "name": "status",
+              "attribute": "status",
+              "type": {
+                "text": "'paid' | 'pending' | 'overdue' | 'draft'"
+              },
+              "default": "\"pending\"",
+              "description": "Payment status: paid, pending, overdue, or draft."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code for Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "kind": "field",
+              "name": "seller",
+              "type": {
+                "text": "InvoiceParty | null"
+              },
+              "description": "Seller contact and billing address metadata."
+            },
+            {
+              "kind": "field",
+              "name": "buyer",
+              "type": {
+                "text": "InvoiceParty | null"
+              },
+              "description": "Buyer contact and billing address metadata."
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "ReadonlyArray<InvoiceItem>"
+              },
+              "description": "Invoice line items with description, quantity, and unitPrice."
+            },
+            {
+              "kind": "field",
+              "name": "taxRate",
+              "attribute": "tax-rate",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Fractional tax rate applied after discount."
+            },
+            {
+              "kind": "field",
+              "name": "discountAmount",
+              "attribute": "discount-amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat discount subtracted before tax."
+            },
+            {
+              "kind": "field",
+              "name": "notes",
+              "attribute": "notes",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional memo or payment instructions."
+            },
+            {
+              "kind": "field",
+              "name": "logoUrl",
+              "attribute": "logo-url",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional brand logo URL validated via @methane/sanitize."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "invoice-number",
+              "fieldName": "invoiceNumber",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Invoice identifier string."
+            },
+            {
+              "name": "issue-date",
+              "fieldName": "issueDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Formatted or ISO issue date."
+            },
+            {
+              "name": "due-date",
+              "fieldName": "dueDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Formatted or ISO payment due date."
+            },
+            {
+              "name": "status",
+              "fieldName": "status",
+              "type": {
+                "text": "'paid' | 'pending' | 'overdue' | 'draft'"
+              },
+              "default": "\"pending\"",
+              "description": "Payment status: paid, pending, overdue, or draft."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code for Intl.NumberFormat."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "name": "tax-rate",
+              "fieldName": "taxRate",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Fractional tax rate applied after discount."
+            },
+            {
+              "name": "discount-amount",
+              "fieldName": "discountAmount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Flat discount subtracted before tax."
+            },
+            {
+              "name": "notes",
+              "fieldName": "notes",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional memo or payment instructions."
+            },
+            {
+              "name": "logo-url",
+              "fieldName": "logoUrl",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional brand logo URL validated via @methane/sanitize."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "footer",
+              "description": "Optional footer terms or payment link."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer invoice document surface."
+            },
+            {
+              "name": "header",
+              "description": "Top invoice metadata header."
+            },
+            {
+              "name": "parties",
+              "description": "Seller and buyer address grid."
+            },
+            {
+              "name": "table",
+              "description": "Line items table."
+            },
+            {
+              "name": "totals",
+              "description": "Subtotal, discount, tax, and total summary."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Invoice document background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Invoice section and table border color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted header and address label color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "paid",
+              "description": "Custom element state :state(paid)."
+            },
+            {
+              "name": "overdue",
+              "description": "Custom element state :state(overdue)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-invoice",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "paid",
+              "overdue"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "invoiceNumber",
+                "attr": "invoice-number",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "issueDate",
+                "attr": "issue-date",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "dueDate",
+                "attr": "due-date",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "status",
+                "attr": "status",
+                "type": "'paid' | 'pending' | 'overdue' | 'draft'",
+                "default": "pending"
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "seller",
+                "attr": false,
+                "type": "InvoiceParty | null"
+              },
+              {
+                "name": "buyer",
+                "attr": false,
+                "type": "InvoiceParty | null"
+              },
+              {
+                "name": "items",
+                "attr": false,
+                "type": "ReadonlyArray<InvoiceItem>"
+              },
+              {
+                "name": "taxRate",
+                "attr": "tax-rate",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "discountAmount",
+                "attr": "discount-amount",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "notes",
+                "attr": "notes",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "logoUrl",
+                "attr": "logo-url",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "footer",
+                "description": "Optional footer terms or payment link."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer invoice document surface."
+              },
+              {
+                "name": "header",
+                "description": "Top invoice metadata header."
+              },
+              {
+                "name": "parties",
+                "description": "Seller and buyer address grid."
+              },
+              {
+                "name": "table",
+                "description": "Line items table."
+              },
+              {
+                "name": "totals",
+                "description": "Subtotal, discount, tax, and total summary."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Invoice",
+              "invoiceHeading": "Invoice",
+              "issuedLabel": "Issued",
+              "dueLabel": "Due",
+              "fromLabel": "From",
+              "billToLabel": "Bill to",
+              "descriptionCol": "Description",
+              "quantityCol": "Qty",
+              "unitPriceCol": "Unit price",
+              "amountCol": "Amount",
+              "subtotalLabel": "Subtotal",
+              "discountLabel": "Discount",
+              "taxLabel": "Tax",
+              "totalLabel": "Total",
+              "statusPaid": "Paid",
+              "statusPending": "Pending",
+              "statusOverdue": "Overdue",
+              "statusDraft": "Draft"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthInvoice",
+          "declaration": {
+            "name": "MthInvoice",
+            "module": "src/components/invoice/invoice.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-invoice",
+          "declaration": {
+            "name": "MthInvoice",
+            "module": "src/components/invoice/invoice.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/payment-form/payment-form.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPaymentForm",
+          "tagName": "mth-payment-form",
+          "customElement": true,
+          "formAssociated": true,
+          "description": "Form-associated payment card entry form using MaskAndFormatEngine + Luhn validation, proper cc-* autocomplete hints, and non-PAN submission detail.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form-associated cardholder name value submitted in FormData."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "kind": "field",
+              "name": "amount",
+              "attribute": "amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Optional order total formatted onto the submit CTA."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "kind": "field",
+              "name": "submitLabel",
+              "attribute": "submit-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Overrides localized submit button label."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all payment inputs and submit action."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enforces required cardholder constraint validation."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form-associated cardholder name value submitted in FormData."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "name": "amount",
+              "fieldName": "amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Optional order total formatted onto the submit CTA."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "name": "submit-label",
+              "fieldName": "submitLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Overrides localized submit button label."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all payment inputs and submit action."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enforces required cardholder constraint validation."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ cardholderName: string; last4: string; valid: boolean }>"
+              },
+              "description": "Emitted event mth-change."
+            },
+            {
+              "name": "mth-submit",
+              "type": {
+                "text": "CustomEvent<{ cardholderName: string; last4: string; expiry: string; valid: boolean }>"
+              },
+              "description": "Emitted event mth-submit."
+            }
+          ],
+          "slots": [
+            {
+              "name": "footer",
+              "description": "Optional trust badges or terms note."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root payment form container."
+            },
+            {
+              "name": "name-input",
+              "description": "Cardholder name input."
+            },
+            {
+              "name": "number-input",
+              "description": "Masked card number input."
+            },
+            {
+              "name": "expiry-input",
+              "description": "MM/YY expiry input."
+            },
+            {
+              "name": "cvc-input",
+              "description": "Security code input."
+            },
+            {
+              "name": "submit-button",
+              "description": "Primary submit button."
+            },
+            {
+              "name": "error",
+              "description": "Validation error summary."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Payment form background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Field border color."
+            },
+            {
+              "name": "--mth-color-danger",
+              "description": "Validation error border and message color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-payment-form",
+            "package": "@methane/commerce",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "MaskAndFormatEngine"
+            ],
+            "focusModel": "none",
+            "states": [
+              "disabled",
+              "invalid"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "input focused",
+                "expect": "Validate and submit payment form."
+              }
+            ],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "amount",
+                "attr": "amount",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "submitLabel",
+                "attr": "submit-label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ cardholderName: string; last4: string; valid: boolean }"
+              },
+              {
+                "name": "mth-submit",
+                "cancelable": false,
+                "detailType": "{ cardholderName: string; last4: string; expiry: string; valid: boolean }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "footer",
+                "description": "Optional trust badges or terms note."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root payment form container."
+              },
+              {
+                "name": "name-input",
+                "description": "Cardholder name input."
+              },
+              {
+                "name": "number-input",
+                "description": "Masked card number input."
+              },
+              {
+                "name": "expiry-input",
+                "description": "MM/YY expiry input."
+              },
+              {
+                "name": "cvc-input",
+                "description": "Security code input."
+              },
+              {
+                "name": "submit-button",
+                "description": "Primary submit button."
+              },
+              {
+                "name": "error",
+                "description": "Validation error summary."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Payment details",
+              "cardholderLabel": "Name on card",
+              "cardNumberLabel": "Card number",
+              "expiryLabel": "Expiration (MM/YY)",
+              "cvcLabel": "Security code",
+              "submitLabel": "Pay now",
+              "invalidCardError": "Enter a valid card number.",
+              "invalidExpiryError": "Enter a valid expiration date (MM/YY).",
+              "invalidCvcError": "Enter a valid 3 or 4 digit security code.",
+              "invalidNameError": "Enter the cardholder name."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPaymentForm",
+          "declaration": {
+            "name": "MthPaymentForm",
+            "module": "src/components/payment-form/payment-form.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-payment-form",
+          "declaration": {
+            "name": "MthPaymentForm",
+            "module": "src/components/payment-form/payment-form.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/plan-picker/plan-picker.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPlanPicker",
+          "tagName": "mth-plan-picker",
+          "customElement": true,
+          "formAssociated": true,
+          "description": "Form-associated SaaS subscription plan picker with monthly/annual billing toggle, SelectionController + RovingFocusController, and Intl currency formatting.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "plans",
+              "type": {
+                "text": "ReadonlyArray<BillingPlan>"
+              },
+              "description": "Array of BillingPlan tier definitions."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected plan ID."
+            },
+            {
+              "kind": "field",
+              "name": "billingCycle",
+              "attribute": "billing-cycle",
+              "type": {
+                "text": "'monthly' | 'annual'"
+              },
+              "default": "\"monthly\"",
+              "description": "Active billing interval: monthly or annual."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables billing cycle toggle and plan tier selection."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enforces a selected plan tier during constraint validation."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Currently selected plan ID."
+            },
+            {
+              "name": "billing-cycle",
+              "fieldName": "billingCycle",
+              "type": {
+                "text": "'monthly' | 'annual'"
+              },
+              "default": "\"monthly\"",
+              "description": "Active billing interval: monthly or annual."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables billing cycle toggle and plan tier selection."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enforces a selected plan tier during constraint validation."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ planId: string; billingCycle: \"monthly\" | \"annual\" }>"
+              },
+              "description": "Emitted event mth-change."
+            },
+            {
+              "name": "mth-cycle-change",
+              "type": {
+                "text": "CustomEvent<{ billingCycle: \"monthly\" | \"annual\" }>"
+              },
+              "description": "Emitted event mth-cycle-change."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root plan picker container."
+            },
+            {
+              "name": "cycle-toggle",
+              "description": "Monthly vs annual billing interval switch group."
+            },
+            {
+              "name": "grid",
+              "description": "Radiogroup container for plan cards."
+            },
+            {
+              "name": "plan",
+              "description": "Selectable plan tier radio button card."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-accent",
+              "description": "Selected plan ring and featured badge accent."
+            },
+            {
+              "name": "--mth-color-surface",
+              "description": "Plan card surface background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Plan card border color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "annual",
+              "description": "Custom element state :state(annual)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-plan-picker",
+            "package": "@methane/commerce",
+            "conformance": [
+              "form-control",
+              "roving-focus"
+            ],
+            "controllers": [
+              "FormControlController",
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "annual",
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "when": "plan card focused",
+                "expect": "Focus next plan tier card (previous in RTL)."
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "plan card focused",
+                "expect": "Focus previous plan tier card (next in RTL)."
+              },
+              {
+                "key": "Home",
+                "when": "plan card focused",
+                "expect": "Focus first plan tier card."
+              },
+              {
+                "key": "End",
+                "when": "plan card focused",
+                "expect": "Focus last plan tier card."
+              },
+              {
+                "key": "Enter",
+                "when": "plan card focused",
+                "expect": "Select focused plan tier."
+              }
+            ],
+            "props": [
+              {
+                "name": "plans",
+                "attr": false,
+                "type": "ReadonlyArray<BillingPlan>"
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "billingCycle",
+                "attr": "billing-cycle",
+                "type": "'monthly' | 'annual'",
+                "default": "monthly"
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ planId: string; billingCycle: \"monthly\" | \"annual\" }"
+              },
+              {
+                "name": "mth-cycle-change",
+                "cancelable": false,
+                "detailType": "{ billingCycle: \"monthly\" | \"annual\" }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root plan picker container."
+              },
+              {
+                "name": "cycle-toggle",
+                "description": "Monthly vs annual billing interval switch group."
+              },
+              {
+                "name": "grid",
+                "description": "Radiogroup container for plan cards."
+              },
+              {
+                "name": "plan",
+                "description": "Selectable plan tier radio button card."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Subscription plans",
+              "billingCycleLabel": "Billing interval",
+              "monthlyLabel": "Monthly",
+              "annualLabel": "Annual",
+              "perMonthSuffix": "/mo",
+              "perYearSuffix": "/yr",
+              "popularBadge": "Popular",
+              "selectPlanLabel": "Choose plan",
+              "selectedLabel": "Selected"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPlanPicker",
+          "declaration": {
+            "name": "MthPlanPicker",
+            "module": "src/components/plan-picker/plan-picker.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-plan-picker",
+          "declaration": {
+            "name": "MthPlanPicker",
+            "module": "src/components/plan-picker/plan-picker.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/price-display/price-display.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPriceDisplay",
+          "tagName": "mth-price-display",
+          "customElement": true,
+          "description": "Locale-aware currency price formatter supporting compare-at pricing, discount badges, and billing cadence.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "amount",
+              "attribute": "amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Numeric monetary amount."
+            },
+            {
+              "kind": "field",
+              "name": "compareAtAmount",
+              "attribute": "compare-at-amount",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional original price shown struck through when higher than amount."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "kind": "field",
+              "name": "period",
+              "attribute": "period",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional recurring billing period suffix (e.g., `/mo`)."
+            },
+            {
+              "kind": "field",
+              "name": "showDiscountBadge",
+              "attribute": "show-discount-badge",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays percentage savings badge when compareAtAmount exceeds amount."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "amount",
+              "fieldName": "amount",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Numeric monetary amount."
+            },
+            {
+              "name": "compare-at-amount",
+              "fieldName": "compareAtAmount",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional original price shown struck through when higher than amount."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code passed to Intl.NumberFormat."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override; defaults to UIElement resolvedLocale."
+            },
+            {
+              "name": "period",
+              "fieldName": "period",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional recurring billing period suffix (e.g., `/mo`)."
+            },
+            {
+              "name": "show-discount-badge",
+              "fieldName": "showDiscountBadge",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays percentage savings badge when compareAtAmount exceeds amount."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "period",
+              "description": "Optional custom billing cadence suffix."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root price wrapper."
+            },
+            {
+              "name": "current",
+              "description": "Formatted active price."
+            },
+            {
+              "name": "period",
+              "description": "Optional billing cadence suffix."
+            },
+            {
+              "name": "compare-at",
+              "description": "Strikethrough original price when on sale."
+            },
+            {
+              "name": "discount",
+              "description": "Percentage discount badge when on sale."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-fg",
+              "description": "Active price foreground color."
+            },
+            {
+              "name": "--mth-color-fg-subtle",
+              "description": "Compare-at strikethrough price color."
+            },
+            {
+              "name": "--mth-color-success",
+              "description": "On-sale price highlight color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "on-sale",
+              "description": "Custom element state :state(on-sale)."
+            },
+            {
+              "name": "free",
+              "description": "Custom element state :state(free)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-price-display",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "on-sale",
+              "free"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "amount",
+                "attr": "amount",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "compareAtAmount",
+                "attr": "compare-at-amount",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "period",
+                "attr": "period",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showDiscountBadge",
+                "attr": "show-discount-badge",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [],
+            "slots": [
+              {
+                "name": "period",
+                "description": "Optional custom billing cadence suffix."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root price wrapper."
+              },
+              {
+                "name": "current",
+                "description": "Formatted active price."
+              },
+              {
+                "name": "period",
+                "description": "Optional billing cadence suffix."
+              },
+              {
+                "name": "compare-at",
+                "description": "Strikethrough original price when on sale."
+              },
+              {
+                "name": "discount",
+                "description": "Percentage discount badge when on sale."
+              }
+            ],
+            "messages": {
+              "savePercent": "Save {percent}%",
+              "wasPrice": "Original price: {price}",
+              "freeLabel": "Free"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPriceDisplay",
+          "declaration": {
+            "name": "MthPriceDisplay",
+            "module": "src/components/price-display/price-display.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-price-display",
+          "declaration": {
+            "name": "MthPriceDisplay",
+            "module": "src/components/price-display/price-display.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/product-card/product-card.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthProductCard",
+          "tagName": "mth-product-card",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "E-commerce product card with sanitized media/link URLs, locale-aware currency pricing, accessible rating summary, and quick-add action.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "title",
+              "attribute": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Product display title."
+            },
+            {
+              "kind": "field",
+              "name": "subtitle",
+              "attribute": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional secondary product descriptor."
+            },
+            {
+              "kind": "field",
+              "name": "imageSrc",
+              "attribute": "image-src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Product image URL validated via `@methane/sanitize` `isSafeUrl`."
+            },
+            {
+              "kind": "field",
+              "name": "imageAlt",
+              "attribute": "image-alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Alternative text for product image."
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "attribute": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional product detail link validated via `isSafeUrl`."
+            },
+            {
+              "kind": "field",
+              "name": "price",
+              "attribute": "price",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Current unit price in `currency`."
+            },
+            {
+              "kind": "field",
+              "name": "compareAtPrice",
+              "attribute": "compare-at-price",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional original strikethrough price."
+            },
+            {
+              "kind": "field",
+              "name": "currency",
+              "attribute": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code."
+            },
+            {
+              "kind": "field",
+              "name": "locale",
+              "attribute": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override for Intl.NumberFormat."
+            },
+            {
+              "kind": "field",
+              "name": "badge",
+              "attribute": "badge",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional promotional badge text."
+            },
+            {
+              "kind": "field",
+              "name": "rating",
+              "attribute": "rating",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional numeric star rating (0–5)."
+            },
+            {
+              "kind": "field",
+              "name": "reviewCount",
+              "attribute": "review-count",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional total review count shown alongside rating."
+            },
+            {
+              "kind": "field",
+              "name": "inStock",
+              "attribute": "in-stock",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether the product is purchasable."
+            },
+            {
+              "kind": "field",
+              "name": "actionLabel",
+              "attribute": "action-label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom CTA label overriding localized Add to cart text."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "title",
+              "fieldName": "title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Product display title."
+            },
+            {
+              "name": "subtitle",
+              "fieldName": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional secondary product descriptor."
+            },
+            {
+              "name": "image-src",
+              "fieldName": "imageSrc",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Product image URL validated via `@methane/sanitize` `isSafeUrl`."
+            },
+            {
+              "name": "image-alt",
+              "fieldName": "imageAlt",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Alternative text for product image."
+            },
+            {
+              "name": "href",
+              "fieldName": "href",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional product detail link validated via `isSafeUrl`."
+            },
+            {
+              "name": "price",
+              "fieldName": "price",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Current unit price in `currency`."
+            },
+            {
+              "name": "compare-at-price",
+              "fieldName": "compareAtPrice",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional original strikethrough price."
+            },
+            {
+              "name": "currency",
+              "fieldName": "currency",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"USD\"",
+              "description": "ISO 4217 currency code."
+            },
+            {
+              "name": "locale",
+              "fieldName": "locale",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional BCP 47 locale override for Intl.NumberFormat."
+            },
+            {
+              "name": "badge",
+              "fieldName": "badge",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional promotional badge text."
+            },
+            {
+              "name": "rating",
+              "fieldName": "rating",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional numeric star rating (0–5)."
+            },
+            {
+              "name": "review-count",
+              "fieldName": "reviewCount",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Optional total review count shown alongside rating."
+            },
+            {
+              "name": "in-stock",
+              "fieldName": "inStock",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether the product is purchasable."
+            },
+            {
+              "name": "action-label",
+              "fieldName": "actionLabel",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Custom CTA label overriding localized Add to cart text."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-add-to-cart",
+              "type": {
+                "text": "CustomEvent<{ title: string; price: number | null; currency: string }>"
+              },
+              "description": "Fired when the user clicks the Add to cart button."
+            },
+            {
+              "name": "mth-product-select",
+              "type": {
+                "text": "CustomEvent<{ title: string; href: string }>"
+              },
+              "description": "Fired when the user activates the product link/title."
+            }
+          ],
+          "slots": [
+            {
+              "name": "media",
+              "description": "Optional custom media overriding default product image."
+            },
+            {
+              "name": "badge",
+              "description": "Optional badge overlay content."
+            },
+            {
+              "name": "footer",
+              "description": "Optional extra footer controls."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root product card article container."
+            },
+            {
+              "name": "media",
+              "description": "Aspect-ratio product media frame."
+            },
+            {
+              "name": "image",
+              "description": "Sanitized product image element."
+            },
+            {
+              "name": "badge",
+              "description": "Promotional or availability badge."
+            },
+            {
+              "name": "title",
+              "description": "Product title heading or link."
+            },
+            {
+              "name": "subtitle",
+              "description": "Optional secondary subtitle text."
+            },
+            {
+              "name": "rating",
+              "description": "Accessible star rating summary."
+            },
+            {
+              "name": "price",
+              "description": "Formatted active and compare-at price row."
+            },
+            {
+              "name": "action",
+              "description": "Primary add-to-cart button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Card background surface color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Card border color."
+            },
+            {
+              "name": "--mth-radius-lg",
+              "description": "Card outer corner radius."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "out-of-stock",
+              "description": "Custom element state :state(out-of-stock)."
+            },
+            {
+              "name": "on-sale",
+              "description": "Custom element state :state(on-sale)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-product-card",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "out-of-stock",
+              "on-sale"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "title",
+                "attr": "title",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "subtitle",
+                "attr": "subtitle",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "imageSrc",
+                "attr": "image-src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "imageAlt",
+                "attr": "image-alt",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "href",
+                "attr": "href",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "price",
+                "attr": "price",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "compareAtPrice",
+                "attr": "compare-at-price",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "currency",
+                "attr": "currency",
+                "type": "string",
+                "default": "USD"
+              },
+              {
+                "name": "locale",
+                "attr": "locale",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "badge",
+                "attr": "badge",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "rating",
+                "attr": "rating",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "reviewCount",
+                "attr": "review-count",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "inStock",
+                "attr": "in-stock",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "actionLabel",
+                "attr": "action-label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-add-to-cart",
+                "cancelable": false,
+                "detailType": "{ title: string; price: number | null; currency: string }"
+              },
+              {
+                "name": "mth-product-select",
+                "cancelable": false,
+                "detailType": "{ title: string; href: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "media",
+                "description": "Optional custom media overriding default product image."
+              },
+              {
+                "name": "badge",
+                "description": "Optional badge overlay content."
+              },
+              {
+                "name": "footer",
+                "description": "Optional extra footer controls."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root product card article container."
+              },
+              {
+                "name": "media",
+                "description": "Aspect-ratio product media frame."
+              },
+              {
+                "name": "image",
+                "description": "Sanitized product image element."
+              },
+              {
+                "name": "badge",
+                "description": "Promotional or availability badge."
+              },
+              {
+                "name": "title",
+                "description": "Product title heading or link."
+              },
+              {
+                "name": "subtitle",
+                "description": "Optional secondary subtitle text."
+              },
+              {
+                "name": "rating",
+                "description": "Accessible star rating summary."
+              },
+              {
+                "name": "price",
+                "description": "Formatted active and compare-at price row."
+              },
+              {
+                "name": "action",
+                "description": "Primary add-to-cart button."
+              }
+            ],
+            "messages": {
+              "addToCart": "Add to cart",
+              "outOfStock": "Out of stock",
+              "noImage": "No product image",
+              "ratingSummary": "{rating} out of 5 stars ({count} reviews)",
+              "ratingOnly": "{rating} out of 5 stars"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthProductCard",
+          "declaration": {
+            "name": "MthProductCard",
+            "module": "src/components/product-card/product-card.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-product-card",
+          "declaration": {
+            "name": "MthProductCard",
+            "module": "src/components/product-card/product-card.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/quantity-selector/quantity-selector.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthQuantitySelector",
+          "tagName": "mth-quantity-selector",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated accessible quantity stepper with min/max/step clamping, spinbutton keyboard navigation, and FACE support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current numeric quantity value."
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "attribute": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Minimum allowed quantity."
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "attribute": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "99",
+              "description": "Maximum allowed quantity."
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "attribute": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step increment applied on stepper button or arrow key actions."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label overriding localized default."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables decrement, input, and increment controls."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks field required during form constraint validation."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Current numeric quantity value."
+            },
+            {
+              "name": "min",
+              "fieldName": "min",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Minimum allowed quantity."
+            },
+            {
+              "name": "max",
+              "fieldName": "max",
+              "type": {
+                "text": "number"
+              },
+              "default": "99",
+              "description": "Maximum allowed quantity."
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Step increment applied on stepper button or arrow key actions."
+            },
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted via FormData."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible group label overriding localized default."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables decrement, input, and increment controls."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks field required during form constraint validation."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: number }>"
+              },
+              "description": "Emitted event mth-input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: number }>"
+              },
+              "description": "Emitted event mth-change."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer stepper group container."
+            },
+            {
+              "name": "decrement",
+              "description": "Decrease quantity button."
+            },
+            {
+              "name": "input",
+              "description": "Numeric spinbutton input."
+            },
+            {
+              "name": "increment",
+              "description": "Increase quantity button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-border",
+              "description": "Stepper border color."
+            },
+            {
+              "name": "--mth-color-surface",
+              "description": "Stepper background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Value text color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "min",
+              "description": "Custom element state :state(min)."
+            },
+            {
+              "name": "max",
+              "description": "Custom element state :state(max)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-quantity-selector",
+            "package": "@methane/commerce",
+            "conformance": [
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "min",
+              "max"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowUp",
+                "when": "spinbutton focused",
+                "expect": "Increment quantity by step."
+              },
+              {
+                "key": "ArrowDown",
+                "when": "spinbutton focused",
+                "expect": "Decrement quantity by step."
+              },
+              {
+                "key": "PageUp",
+                "when": "spinbutton focused",
+                "expect": "Increment quantity by 10x step."
+              },
+              {
+                "key": "PageDown",
+                "when": "spinbutton focused",
+                "expect": "Decrement quantity by 10x step."
+              },
+              {
+                "key": "Home",
+                "when": "spinbutton focused",
+                "expect": "Jump to minimum quantity."
+              },
+              {
+                "key": "End",
+                "when": "spinbutton focused",
+                "expect": "Jump to maximum quantity."
+              }
+            ],
+            "props": [
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "min",
+                "attr": "min",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "max",
+                "attr": "max",
+                "type": "number",
+                "default": 99
+              },
+              {
+                "name": "step",
+                "attr": "step",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: number }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: number }"
+              }
+            ],
+            "slots": [],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer stepper group container."
+              },
+              {
+                "name": "decrement",
+                "description": "Decrease quantity button."
+              },
+              {
+                "name": "input",
+                "description": "Numeric spinbutton input."
+              },
+              {
+                "name": "increment",
+                "description": "Increase quantity button."
+              }
+            ],
+            "messages": {
+              "groupLabel": "Quantity",
+              "inputLabel": "Quantity value",
+              "decrementLabel": "Decrease quantity",
+              "incrementLabel": "Increase quantity",
+              "minReached": "Minimum quantity reached",
+              "maxReached": "Maximum quantity reached"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthQuantitySelector",
+          "declaration": {
+            "name": "MthQuantitySelector",
+            "module": "src/components/quantity-selector/quantity-selector.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-quantity-selector",
+          "declaration": {
+            "name": "MthQuantitySelector",
+            "module": "src/components/quantity-selector/quantity-selector.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/review-summary/review-summary.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthReviewSummary",
+          "tagName": "mth-review-summary",
+          "customElement": true,
+          "description": "Aggregate rating summary with 5-to-1 distribution bars rendered via adopted CSSStyleSheet and interactive star-filter toggles.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "average",
+              "attribute": "average",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Average rating value."
+            },
+            {
+              "kind": "field",
+              "name": "totalReviews",
+              "attribute": "total-reviews",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of reviews."
+            },
+            {
+              "kind": "field",
+              "name": "breakdown",
+              "type": {
+                "text": "Record<number, number>"
+              },
+              "description": "Map from star rating (1..5) to review count."
+            },
+            {
+              "kind": "field",
+              "name": "activeStar",
+              "attribute": "active-star",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Currently active star filter, or null when unfiltered."
+            },
+            {
+              "kind": "field",
+              "name": "maxStars",
+              "attribute": "max-stars",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum rating scale (default 5)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "average",
+              "fieldName": "average",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Average rating value."
+            },
+            {
+              "name": "total-reviews",
+              "fieldName": "totalReviews",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total number of reviews."
+            },
+            {
+              "name": "active-star",
+              "fieldName": "activeStar",
+              "type": {
+                "text": "number | null"
+              },
+              "default": "null",
+              "description": "Currently active star filter, or null when unfiltered."
+            },
+            {
+              "name": "max-stars",
+              "fieldName": "maxStars",
+              "type": {
+                "text": "number"
+              },
+              "default": "5",
+              "description": "Maximum rating scale (default 5)."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label overriding localized default."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-rating-filter",
+              "type": {
+                "text": "CustomEvent<{ star: number | null }>"
+              },
+              "description": "Emitted event mth-rating-filter."
+            }
+          ],
+          "slots": [
+            {
+              "name": "actions",
+              "description": "Optional call-to-action slot (e.g. Write a review)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root summary container."
+            },
+            {
+              "name": "score",
+              "description": "Average numeric rating."
+            },
+            {
+              "name": "total",
+              "description": "Total review count."
+            },
+            {
+              "name": "row",
+              "description": "Interactive star distribution row button."
+            },
+            {
+              "name": "bar",
+              "description": "Distribution bar track and fill."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-warning",
+              "description": "Star rating fill accent color."
+            },
+            {
+              "name": "--mth-color-surface",
+              "description": "Summary container background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Summary container border color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "filtered",
+              "description": "Custom element state :state(filtered)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-review-summary",
+            "package": "@methane/commerce",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "filtered",
+              "empty"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "average",
+                "attr": "average",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "totalReviews",
+                "attr": "total-reviews",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "breakdown",
+                "attr": false,
+                "type": "Record<number, number>"
+              },
+              {
+                "name": "activeStar",
+                "attr": "active-star",
+                "type": "number | null",
+                "default": null
+              },
+              {
+                "name": "maxStars",
+                "attr": "max-stars",
+                "type": "number",
+                "default": 5
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-rating-filter",
+                "cancelable": false,
+                "detailType": "{ star: number | null }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "actions",
+                "description": "Optional call-to-action slot (e.g. Write a review)."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root summary container."
+              },
+              {
+                "name": "score",
+                "description": "Average numeric rating."
+              },
+              {
+                "name": "total",
+                "description": "Total review count."
+              },
+              {
+                "name": "row",
+                "description": "Interactive star distribution row button."
+              },
+              {
+                "name": "bar",
+                "description": "Distribution bar track and fill."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Customer reviews summary",
+              "outOfLabel": "{average} out of {max}",
+              "totalReviewsLabel": "{count} reviews",
+              "starLabel": "{star} stars",
+              "filterClearHint": "Click again to clear rating filter",
+              "noReviewsLabel": "No reviews yet"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthReviewSummary",
+          "declaration": {
+            "name": "MthReviewSummary",
+            "module": "src/components/review-summary/review-summary.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-review-summary",
+          "declaration": {
+            "name": "MthReviewSummary",
+            "module": "src/components/review-summary/review-summary.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
