@@ -21,7 +21,7 @@ npm install @methane/sanitize
 | `sanitizeToTrustedHTML(html, options?)` | Function | Sanitizes HTML and passes through an optional `TrustedTypePolicyLike` when Trusted Types are active |
 | `renderMarkdownToSafeHTML(markdown, options?)` | Function | Renders constrained Markdown (headings, emphasis, lists, links, code blocks) into sanitized HTML |
 | `safeSetMarkdown(target, markdown, options?)` | Function | Renders Markdown and injects it via `safeSetHTML` |
-| `createStreamSanitizer(options?)` | Function | Creates an incremental `StreamSanitizer` for AI/streaming chunks (`push(chunk)`, `flush()`, `reset()`) |
+| `createStreamSanitizer(options?)` | Function | Creates an incremental `StreamSanitizer` for AI/streaming chunks (`push(chunk)`, `flushTo(target, options?)`, `toFragment(options?)`, `reset()`) |
 | `isSafeUrl(rawUrl)` | Function | Validates URLs against `https:`, `http:`, `mailto:`, `tel:` (blocks `javascript:`, `vbscript:`, `data:`, and control-char obfuscation) |
 | `sanitizeUrl(url, fallback?)` | Function | Returns `url` if `isSafeUrl(url)` passes, otherwise returns `fallback` (`'#'`) |
 | `escapeHtml(text)` | Function | Escapes `&`, `<`, `>`, `"`, `'` for plain text interpolation |
@@ -53,10 +53,11 @@ safeSetMarkdown(articleEl, '## Summary\n\n- Verified **safe** output');
 // Incremental AI token stream
 const streamer = createStreamSanitizer({ allowRawHtml: false });
 for await (const chunk of llmStream) {
-  const safeHtmlSnapshot = streamer.push(chunk);
-  safeSetHTML(messageBodyEl, safeHtmlSnapshot);
+  streamer.push(chunk);
+  streamer.flushTo(messageBodyEl);
 }
-const finalHtml = streamer.flush();
+const finalFragment = streamer.toFragment();
+streamer.reset();
 ```
 
 ### Strict Sanitization with Trusted Types

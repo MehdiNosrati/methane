@@ -16,7 +16,7 @@ pnpm add @methane/ui @methane/core @methane/tokens
 npm install @methane/ui @methane/core @methane/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0 || ^1.0.0`) is required.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
@@ -55,7 +55,7 @@ import '@methane/ui/input';
   <mth-field label="Email">
     <mth-input name="email" type="email" required placeholder="you@example.com"></mth-input>
   </mth-field>
-  <mth-button type="submit" variant="primary">Continue</mth-button>
+  <mth-button type="submit" variant="solid">Continue</mth-button>
 </mth-form>
 ```
 
@@ -73,7 +73,7 @@ registerMthDialog('acme'); // defines <acme-dialog>
 
 - **Theming**: Style components globally via `--mth-*` tokens, inspect live state via `:state(disabled)`, `:state(invalid)`, `:state(open)`, `:state(checked)`, and customize internal shadow nodes via `::part(base)`, `::part(control)`, `::part(label)`, etc.
 - **Accessibility & Keyboard**: Implements WAI-ARIA Authoring Practices Guide (APG) keyboard interactions (roving tabindex, focus trapping, `Escape` dismissal, `Home`/`End`, typeahead) with full RTL logical layout.
-- **SSR**: Built on `UIElement` with `@lit-labs/ssr-client` hydration support baked in. Use `@methane/ssr` or framework-specific `@methane/ssr-*` adapters for Declarative Shadow DOM rendering.
+- **SSR**: Built on `UIElement`. Import `@methane/core/hydrate` (or `@methane/ssr/client` / framework `@methane/ssr-*/client` adapters) on the client for opt-in Declarative Shadow DOM hydration.
 
 ## License
 

@@ -41,7 +41,7 @@ npm install @methane/svelte @methane/ui @methane/core
 </script>
 
 <MthInput bind:value={name} placeholder="Your name" />
-<MthButton variant="primary" onclick={() => (open = true)}>Preview</MthButton>
+<MthButton variant="solid" onclick={() => (open = true)}>Preview</MthButton>
 
 <MthDialog bind:open label="Greeting">
   <p>Hello, {name || 'world'}!</p>

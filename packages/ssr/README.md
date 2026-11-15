@@ -30,7 +30,7 @@ npm install @methane/ssr @methane/core
 | `transformHtmlDsd(html, options?)` | Expands un-upgraded `<mth-*>` HTML tags in-place with DSD shadow roots and hoisted stylesheet links |
 | `createSsrTransformStream(options?)` | `TransformStream` for hoisting `<link rel="stylesheet">` tags in streaming HTML responses |
 | `hoistStylesheetLinks(html, options?)` | Extracts and deduplicates shadow stylesheet links into `<head>` |
-| `enableHydrationSupport()` / `hydrateRoot(container)` | Enables `@lit-labs/ssr-client` hydration and hydrates DSD fragments inside a root element |
+| `enableHydrationSupport()` / `hydrateRoot(value, container, options?)` | Enables `@lit-labs/ssr-client` hydration and hydrates a Lit template into a container element |
 | `installSsrDomShim()` | Installs `@lit-labs/ssr-dom-shim` globals before importing custom element modules in Node/Edge |
 
 ## Usage Examples
@@ -44,7 +44,7 @@ import { html } from 'lit';
 import { renderWithMetadata } from '@methane/ssr';
 
 const { html: markup, links } = await renderWithMetadata(
-  html`<mth-button variant="primary">Save</mth-button>`,
+  html`<mth-button variant="solid">Save</mth-button>`,
   {
     styles: 'linked',
     assetBase: '/_methane/styles',
@@ -70,19 +70,22 @@ const result = await transformHtmlDsd(
 ### Client Hydration Entry
 
 ```ts
-// Import BEFORE registering custom elements
+// 1. Activate @lit-labs/ssr-client BEFORE registering custom elements
 import { enableHydrationSupport, hydrateRoot } from '@methane/ssr/client';
+import { html } from 'lit';
 
 enableHydrationSupport();
 await import('@methane/ui/alert');
-hydrateRoot(document.body);
+
+// Or hydrate a Lit TemplateResult into a specific server-rendered root container:
+hydrateRoot(html`<mth-alert variant="info">Ready</mth-alert>`, document.getElementById('app')!);
 ```
 
 ## Architecture & SSR Modes
 
 - **`styles: 'linked'` (default)**: Emits a capped `< 1 KB` (`CRITICAL_SHELL_MAX_BYTES = 1024`) critical host shell `<style>` plus a content-hashed `<link rel="stylesheet" href="${assetBase}/${tag}.${hash}.css">` hoisted into `<head>`.
 - **`styles: 'inline'`**: Embeds full component CSS inside `<template shadowrootmode="open">` for single-file HTML exports, email templates, and serverless edge routes without static asset serving.
-- **Note**: `@methane/core` also bundles `@lit-labs/ssr-client` hydration support automatically when loaded in the browser; `@methane/ssr/client` gives explicit control for framework adapters and `hydrateRoot()`.
+- **Note**: Client hydration support is opt-in via `@methane/core/hydrate` or `@methane/ssr/client` (and framework-specific `@methane/ssr-*/client` adapters) so CSR-only bundles carry zero hydration runtime bytes.
 
 ## License
 

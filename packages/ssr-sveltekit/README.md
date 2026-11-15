@@ -37,11 +37,12 @@ export const handle = createMethaneHandle({
 ### 2. Client Initialization (`src/hooks.client.ts` or `+layout.svelte`)
 
 ```ts
-import { initSvelteKitHydration, hydrateSvelteKitRoot } from '@methane/ssr-sveltekit/client';
+import { initSvelteKitHydration } from '@methane/ssr-sveltekit/client';
 
 initSvelteKitHydration();
 await import('@methane/ui/button');
-hydrateSvelteKitRoot(document.body);
+
+// Or pass a Lit TemplateResult + root element to hydrateSvelteKitRoot(template, container)
 ```
 
 ## Notes

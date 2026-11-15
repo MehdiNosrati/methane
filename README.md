@@ -44,77 +44,77 @@ flowchart TB
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/tokens`](file:///packages/tokens/README.md) | `packages/tokens` | W3C DTCG tokens, `oklch()` color scales, `light-dark()` themes, density & forced-colors CSS + compiler |
-| [`@methane/sanitize`](file:///packages/sanitize/README.md) | `packages/sanitize` | Native `setHTML` + DOMPurify parity HTML/Markdown/streaming sanitizer & URL validator |
-| [`@methane/core`](file:///packages/core/README.md) | `packages/core` | Lit 3 `UIElement` base class, versioned `globalThis` runtime coordinator, i18n, and `@lit/context` tokens |
-| [`@methane/primitives`](file:///packages/primitives/README.md) | `packages/primitives` | ReactiveControllers (overlay, positioning, focus trap, roving focus, masks, virtualizer), `AutoLoader`, utility elements |
-| [`@methane/css`](file:///packages/css/README.md) | `packages/css` | Ordered `@layer` reset, fail-open `:not(:defined)` guard, and 0 B JS layout, prose, and marketing primitives |
-| [`@methane/locales`](file:///packages/locales/README.md) | `packages/locales` | Code-split lazy locale packs (`en`, `es`, `fr`, `de`, `ja`, `zh-CN`, `ar`, `he`) with `Intl.PluralRules` & RTL |
+| [`@methane/tokens`](./packages/tokens/README.md) | `packages/tokens` | W3C DTCG tokens, `oklch()` color scales, `light-dark()` themes, density & forced-colors CSS + compiler |
+| [`@methane/sanitize`](./packages/sanitize/README.md) | `packages/sanitize` | Native `setHTML` + DOMPurify parity HTML/Markdown/streaming sanitizer & URL validator |
+| [`@methane/core`](./packages/core/README.md) | `packages/core` | Lit 3 `UIElement` base class, versioned `globalThis` runtime coordinator, i18n, and `@lit/context` tokens |
+| [`@methane/primitives`](./packages/primitives/README.md) | `packages/primitives` | ReactiveControllers (overlay, positioning, focus trap, roving focus, masks, virtualizer), `AutoLoader`, utility elements |
+| [`@methane/css`](./packages/css/README.md) | `packages/css` | Ordered `@layer` reset, fail-open `:not(:defined)` guard, and 0 B JS layout, prose, and marketing primitives |
+| [`@methane/locales`](./packages/locales/README.md) | `packages/locales` | Code-split lazy locale packs (`en`, `es`, `fr`, `de`, `ja`, `zh-CN`, `ar`, `he`) with `Intl.PluralRules` & RTL |
 
 ### Core UI (Layer 2)
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/ui`](file:///packages/ui/README.md) | `packages/ui` | 167 accessible, form-associated, tree-shakeable Lit 3 core UI Web Components |
+| [`@methane/ui`](./packages/ui/README.md) | `packages/ui` | 167 accessible, form-associated, tree-shakeable Lit 3 core UI Web Components |
 
 ### Domain Kits (Layer 3a)
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/ai`](file:///packages/kits/ai/README.md) | `packages/kits/ai` | 8 AI/LLM UX components (`mth-prompt-input`, `mth-ai-message`, `mth-thinking-indicator`, `mth-tool-call`, `mth-artifact-pane`, …) |
-| [`@methane/auth`](file:///packages/kits/auth/README.md) | `packages/kits/auth` | 7 authentication & RBAC components (`mth-auth-form`, `mth-mfa-challenge`, `mth-passkey-prompt`, `mth-sso-buttons`, …) |
-| [`@methane/admin`](file:///packages/kits/admin/README.md) | `packages/kits/admin` | 13 enterprise dashboard components (`mth-kanban`, `mth-audit-log`, `mth-filter-builder`, `mth-csv-importer`, `mth-settings-shell`, …) |
-| [`@methane/chat`](file:///packages/kits/chat/README.md) | `packages/kits/chat` | 8 real-time collaboration components (`mth-chat-thread`, `mth-message-composer`, `mth-notification-bell`, `mth-reaction-bar`, …) |
-| [`@methane/commerce`](file:///packages/kits/commerce/README.md) | `packages/kits/commerce` | 10 storefront & billing components (`mth-product-card`, `mth-cart`, `mth-payment-form`, `mth-plan-picker`, `mth-invoice`, …) |
+| [`@methane/ai`](./packages/kits/ai/README.md) | `packages/kits/ai` | 8 AI/LLM UX components (`mth-prompt-input`, `mth-ai-message`, `mth-thinking-indicator`, `mth-tool-call`, `mth-artifact-pane`, …) |
+| [`@methane/auth`](./packages/kits/auth/README.md) | `packages/kits/auth` | 7 authentication & RBAC components (`mth-auth-form`, `mth-mfa-challenge`, `mth-passkey-prompt`, `mth-sso-buttons`, …) |
+| [`@methane/admin`](./packages/kits/admin/README.md) | `packages/kits/admin` | 13 enterprise dashboard components (`mth-kanban`, `mth-audit-log`, `mth-filter-builder`, `mth-csv-importer`, `mth-settings-shell`, …) |
+| [`@methane/chat`](./packages/kits/chat/README.md) | `packages/kits/chat` | 8 real-time collaboration components (`mth-chat-thread`, `mth-message-composer`, `mth-notification-bell`, `mth-reaction-bar`, …) |
+| [`@methane/commerce`](./packages/kits/commerce/README.md) | `packages/kits/commerce` | 10 storefront & billing components (`mth-product-card`, `mth-cart`, `mth-payment-form`, `mth-plan-picker`, `mth-invoice`, …) |
 
 ### Wrap-First Satellites (Layer 3b)
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/charts`](file:///packages/satellites/charts/README.md) | `packages/satellites/charts` | Apache ECharts declarative charts (`mth-chart`, `mth-chart-series`) with accessible fallback tables |
-| [`@methane/pdf`](file:///packages/satellites/pdf/README.md) | `packages/satellites/pdf` | Mozilla `pdfjs-dist` accessible document viewer (`mth-pdf-viewer`) with search, outline, zoom & keyboard navigation |
-| [`@methane/3d`](file:///packages/satellites/3d/README.md) | `packages/satellites/3d` | Three.js lazy WebGL/WebGPU 3D viewer (`mth-model-viewer`) with poster fallback & deterministic GPU cleanup |
-| [`@methane/maps`](file:///packages/satellites/maps/README.md) | `packages/satellites/maps` | MapLibre GL JS & SVG spatial components (`mth-map`, `mth-map-route`, `mth-map-draw`, `mth-floor-plan`, `mth-seat-map`, …) |
-| [`@methane/rtc`](file:///packages/satellites/rtc/README.md) | `packages/satellites/rtc` | WebRTC, `MediaDevices`, and `MediaRecorder` components (`mth-audio-recorder`, `mth-camera-capture`, `mth-screen-recorder`, `mth-video-grid`) |
-| [`@methane/flow`](file:///packages/satellites/flow/README.md) | `packages/satellites/flow` | `@dagrejs/dagre` interactive node/DAG editor (`mth-flow-editor`) and organization chart (`mth-org-chart`) |
-| [`@methane/media`](file:///packages/satellites/media/README.md) | `packages/satellites/media` | `@lottiefiles/dotlottie-web` player (`mth-lottie`), audio waveform (`mth-waveform`), and SVG `mth-image-annotator` |
-| [`@methane/editor`](file:///packages/satellites/editor/README.md) | `packages/satellites/editor` | ProseMirror rich editor, Markdown preview/editor, and KaTeX math editor (`mth-rich-editor`, `mth-markdown`, `mth-math-editor`) |
-| [`@methane/code`](file:///packages/satellites/code/README.md) | `packages/satellites/code` | CodeMirror 6 editor (`mth-code-editor`), syntax-highlighted `mth-code-block`, `mth-diff-viewer`, and `mth-json-editor` |
-| [`@methane/datagrid`](file:///packages/satellites/datagrid/README.md) | `packages/satellites/datagrid` | TanStack Table & Virtual Core `mth-datagrid`, `mth-pivot-table`, `mth-tree-table`, `mth-scheduler`, `mth-gantt` |
-| [`@methane/spreadsheet`](file:///packages/satellites/spreadsheet/README.md) | `packages/satellites/spreadsheet` | Virtualized `mth-spreadsheet` & `mth-formula-bar` with clean-room MIT Formula AST evaluator |
+| [`@methane/charts`](./packages/satellites/charts/README.md) | `packages/satellites/charts` | Apache ECharts declarative charts (`mth-chart`, `mth-chart-series`) with accessible fallback tables |
+| [`@methane/pdf`](./packages/satellites/pdf/README.md) | `packages/satellites/pdf` | Mozilla `pdfjs-dist` accessible document viewer (`mth-pdf-viewer`) with search, outline, zoom & keyboard navigation |
+| [`@methane/3d`](./packages/satellites/3d/README.md) | `packages/satellites/3d` | Three.js lazy WebGL/WebGPU 3D viewer (`mth-model-viewer`) with poster fallback & deterministic GPU cleanup |
+| [`@methane/maps`](./packages/satellites/maps/README.md) | `packages/satellites/maps` | MapLibre GL JS & SVG spatial components (`mth-map`, `mth-map-route`, `mth-map-draw`, `mth-floor-plan`, `mth-seat-map`, …) |
+| [`@methane/rtc`](./packages/satellites/rtc/README.md) | `packages/satellites/rtc` | WebRTC, `MediaDevices`, and `MediaRecorder` components (`mth-audio-recorder`, `mth-camera-capture`, `mth-screen-recorder`, `mth-video-grid`) |
+| [`@methane/flow`](./packages/satellites/flow/README.md) | `packages/satellites/flow` | `@dagrejs/dagre` interactive node/DAG editor (`mth-flow-editor`) and organization chart (`mth-org-chart`) |
+| [`@methane/media`](./packages/satellites/media/README.md) | `packages/satellites/media` | `@lottiefiles/dotlottie-web` player (`mth-lottie`), audio waveform (`mth-waveform`), and SVG `mth-image-annotator` |
+| [`@methane/editor`](./packages/satellites/editor/README.md) | `packages/satellites/editor` | ProseMirror rich editor, Markdown preview/editor, and KaTeX math editor (`mth-rich-editor`, `mth-markdown`, `mth-math-editor`) |
+| [`@methane/code`](./packages/satellites/code/README.md) | `packages/satellites/code` | CodeMirror 6 editor (`mth-code-editor`), syntax-highlighted `mth-code-block`, `mth-diff-viewer`, and `mth-json-editor` |
+| [`@methane/datagrid`](./packages/satellites/datagrid/README.md) | `packages/satellites/datagrid` | TanStack Table & Virtual Core `mth-datagrid`, `mth-pivot-table`, `mth-tree-table`, `mth-scheduler`, `mth-gantt` |
+| [`@methane/spreadsheet`](./packages/satellites/spreadsheet/README.md) | `packages/satellites/spreadsheet` | Virtualized `mth-spreadsheet` & `mth-formula-bar` with clean-room MIT Formula AST evaluator |
 
 ### SSR Adapters
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/ssr`](file:///packages/ssr/README.md) | `packages/ssr` | Streaming DSD SSR engine (`@lit-labs/ssr` + hybrid linked/inline CSS delivery, `dom-shim`, `@methane/ssr/client`) |
-| [`@methane/ssr-next`](file:///packages/ssr-next/README.md) | `packages/ssr-next` | Next.js App Router & RSC streaming DSD adapter + `@methane/ssr-next/client` hydration |
-| [`@methane/ssr-nuxt`](file:///packages/ssr-nuxt/README.md) | `packages/ssr-nuxt` | Nuxt 3 / Nitro server plugin + `@methane/ssr-nuxt/client` Vue plugin |
-| [`@methane/ssr-sveltekit`](file:///packages/ssr-sveltekit/README.md) | `packages/ssr-sveltekit` | SvelteKit `handle` hook + `@methane/ssr-sveltekit/client` hydration |
-| [`@methane/ssr-astro`](file:///packages/ssr-astro/README.md) | `packages/ssr-astro` | Astro integration, renderer, middleware + `@methane/ssr-astro/client` island hydration |
-| [`@methane/ssr-angular`](file:///packages/ssr-angular/README.md) | `packages/ssr-angular` | Angular SSR serialization + `@methane/ssr-angular/client` (`provideMethaneHydration()`) |
+| [`@methane/ssr`](./packages/ssr/README.md) | `packages/ssr` | Streaming DSD SSR engine (`@lit-labs/ssr` + hybrid linked/inline CSS delivery, `dom-shim`, `@methane/ssr/client`) |
+| [`@methane/ssr-next`](./packages/ssr-next/README.md) | `packages/ssr-next` | Next.js App Router & RSC streaming DSD adapter + `@methane/ssr-next/client` hydration |
+| [`@methane/ssr-nuxt`](./packages/ssr-nuxt/README.md) | `packages/ssr-nuxt` | Nuxt 3 / Nitro server plugin + `@methane/ssr-nuxt/client` Vue plugin |
+| [`@methane/ssr-sveltekit`](./packages/ssr-sveltekit/README.md) | `packages/ssr-sveltekit` | SvelteKit `handle` hook + `@methane/ssr-sveltekit/client` hydration |
+| [`@methane/ssr-astro`](./packages/ssr-astro/README.md) | `packages/ssr-astro` | Astro integration, renderer, middleware + `@methane/ssr-astro/client` island hydration |
+| [`@methane/ssr-angular`](./packages/ssr-angular/README.md) | `packages/ssr-angular` | Angular SSR serialization + `@methane/ssr-angular/client` (`provideMethaneHydration()`) |
 
 ### Framework Wrappers & Migration
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/react`](file:///packages/react/README.md) | `packages/react` | React 19 native Custom Elements JSX types + React 18 `@lit/react` wrappers (`@methane/react/legacy`) |
-| [`@methane/vue`](file:///packages/vue/README.md) | `packages/vue` | Typed Vue 3 `defineComponent` wrappers with `v-model` & compiler options (`METHANE_VUE_COMPILER_OPTIONS`) |
-| [`@methane/angular`](file:///packages/angular/README.md) | `packages/angular` | Standalone Angular 17+ directives with `ControlValueAccessor` form support (`METHANE_ANGULAR_DIRECTIVES`) |
-| [`@methane/svelte`](file:///packages/svelte/README.md) | `packages/svelte` | Svelte 5 runes (`$bindable()`) wrapper components (`@methane/svelte/*.svelte`) & element types |
-| [`@methane/codemod`](file:///packages/codemod/README.md) | `packages/codemod` | Idempotent AST codemod CLI (`methane-codemod`) for tag/token white-labeling and manifest migrations |
+| [`@methane/react`](./packages/react/README.md) | `packages/react` | React 19 native Custom Elements JSX types + React 18 `@lit/react` wrappers (`@methane/react/legacy`) |
+| [`@methane/vue`](./packages/vue/README.md) | `packages/vue` | Typed Vue 3 `defineComponent` wrappers with `v-model` & compiler options (`METHANE_VUE_COMPILER_OPTIONS`) |
+| [`@methane/angular`](./packages/angular/README.md) | `packages/angular` | Standalone Angular 17+ directives with `ControlValueAccessor` form support (`METHANE_ANGULAR_DIRECTIVES`) |
+| [`@methane/svelte`](./packages/svelte/README.md) | `packages/svelte` | Svelte 5 runes (`$bindable()`) wrapper components (`@methane/svelte/*.svelte`) & element types |
+| [`@methane/codemod`](./packages/codemod/README.md) | `packages/codemod` | Idempotent AST codemod CLI (`methane-codemod`) for tag/token white-labeling and manifest migrations |
 
 ### Tooling
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/lint-plugin`](file:///tooling/lint-plugin/README.md) | `tooling/lint-plugin` | ESLint & Stylelint architectural invariant rules (XSS sinks, logical CSS, Shadow DOM focus/ARIA checks) |
-| [`@methane/spec-compiler`](file:///tooling/spec-compiler/README.md) | `tooling/spec-compiler` | `ComponentBehaviorSpec` validator, Markdown docs compiler, CEM verifier & a11y checklist generator |
-| [`@methane/test-conformance`](file:///tooling/test-conformance/README.md) | `tooling/test-conformance` | `FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`, `scanSameRootAria` |
-| [`@methane/bundle-budget`](file:///tooling/bundle-budget/README.md) | `tooling/bundle-budget` | Cold standalone & marginal brotli/gzip bundle budget measurement (`esbuild` + `node:zlib`) |
-| [`@methane/security-gate`](file:///tooling/security-gate/README.md) | `tooling/security-gate` | Strict CSP + Trusted Types compliance suite, DSD HTML CSP audit, license audit & CI workflow gate |
-| [`@methane/wrapper-codegen`](file:///tooling/wrapper-codegen/README.md) | `tooling/wrapper-codegen` | CEM + BehaviorSpec code generator CLI (`methane-wrapper-codegen`) for React, Vue, Angular, Svelte & IDEs |
-| [`@methane/figma-sync`](file:///tooling/figma-sync/README.md) | `tooling/figma-sync` | Two-way Figma Variables REST API ↔ W3C DTCG token sync (`oklch()`) & `@figma/code-connect` generator |
+| [`@methane/lint-plugin`](./tooling/lint-plugin/README.md) | `tooling/lint-plugin` | ESLint & Stylelint architectural invariant rules (XSS sinks, logical CSS, Shadow DOM focus/ARIA checks) |
+| [`@methane/spec-compiler`](./tooling/spec-compiler/README.md) | `tooling/spec-compiler` | `ComponentBehaviorSpec` validator, Markdown docs compiler, CEM verifier & a11y checklist generator |
+| [`@methane/test-conformance`](./tooling/test-conformance/README.md) | `tooling/test-conformance` | `FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`, `scanSameRootAria` |
+| [`@methane/bundle-budget`](./tooling/bundle-budget/README.md) | `tooling/bundle-budget` | Cold standalone & marginal brotli/gzip bundle budget measurement (`esbuild` + `node:zlib`) |
+| [`@methane/security-gate`](./tooling/security-gate/README.md) | `tooling/security-gate` | Strict CSP + Trusted Types compliance suite, DSD HTML CSP audit, license audit & CI workflow gate |
+| [`@methane/wrapper-codegen`](./tooling/wrapper-codegen/README.md) | `tooling/wrapper-codegen` | CEM + BehaviorSpec code generator CLI (`methane-wrapper-codegen`) for React, Vue, Angular, Svelte & IDEs |
+| [`@methane/figma-sync`](./tooling/figma-sync/README.md) | `tooling/figma-sync` | Two-way Figma Variables REST API ↔ W3C DTCG token sync (`oklch()`) & `@figma/code-connect` generator |
 
 ## Multi-Framework Quickstart
 
@@ -125,7 +125,7 @@ flowchart TB
   <mth-field label="Workspace Name">
     <mth-input name="workspace" placeholder="acme-prod" required></mth-input>
   </mth-field>
-  <mth-button variant="primary">Create Workspace</mth-button>
+  <mth-button variant="solid">Create Workspace</mth-button>
 </mth-stack>
 
 <script type="module">
@@ -150,7 +150,7 @@ export function QuickForm() {
   return (
     <mth-form>
       <mth-input name="email" type="email" required />
-      <mth-button type="submit" variant="primary">Subscribe</mth-button>
+      <mth-button type="submit" variant="solid">Subscribe</mth-button>
     </mth-form>
   );
 }
@@ -171,7 +171,7 @@ const email = ref('');
 
 <template>
   <MthInput v-model="email" type="email" placeholder="you@example.com" />
-  <MthButton variant="primary">Continue</MthButton>
+  <MthButton variant="solid">Continue</MthButton>
 </template>
 ```
 
@@ -191,7 +191,7 @@ import { MthButtonDirective, MthInputDirective } from '@methane/angular';
   imports: [ReactiveFormsModule, MthButtonDirective, MthInputDirective],
   template: `
     <mth-input [formControl]="email" type="email"></mth-input>
-    <mth-button variant="primary">Save</mth-button>
+    <mth-button variant="solid">Save</mth-button>
   `,
 })
 export class ProfileComponent {
@@ -213,19 +213,18 @@ export class ProfileComponent {
 </script>
 
 <MthInput bind:value={name} placeholder="Display name" />
-<MthButton variant="primary">Save {name}</MthButton>
+<MthButton variant="solid">Save {name}</MthButton>
 ```
 
 ### SSR & Client Hydration (Next.js / Astro / Universal)
 
-`@methane/core` imports `@lit-labs/ssr-client/lit-element-hydrate-support.js` automatically on module evaluation, and `@methane/ssr/client` (plus framework adapters `@methane/ssr-next/client`, `@methane/ssr-nuxt/client`, `@methane/ssr-sveltekit/client`, `@methane/ssr-astro/client`, `@methane/ssr-angular/client`) provide explicit hydration sequencing helpers:
+Client Declarative Shadow DOM hydration is opt-in via `@methane/core/hydrate` (for standalone `@methane/core` / Lit apps) or `@methane/ssr/client` (plus framework adapters `@methane/ssr-next/client`, `@methane/ssr-nuxt/client`, `@methane/ssr-sveltekit/client`, `@methane/ssr-astro/client`, `@methane/ssr-angular/client`) provide explicit hydration sequencing helpers:
 
 ```ts
 // Next.js App Router ("use client")
-import { initNextHydration, hydrateNextContainer } from '@methane/ssr-next/client';
+import { initNextHydration } from '@methane/ssr-next/client';
 initNextHydration();
-await import('@methane/ui/button');
-hydrateNextContainer(document.body);
+await import('@methane/ui/button'); // Declarative Shadow DOM elements upgrade in place
 ```
 
 ```ts
@@ -290,6 +289,8 @@ pnpm lint
 pnpm test
 
 # Run Playwright browser end-to-end tests (playwright.config.ts)
+pnpm test:e2e
+# or directly via Playwright CLI
 pnpm exec playwright test
 ```
 

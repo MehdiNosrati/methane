@@ -40,14 +40,14 @@ export default withMethaneNextConfig(nextConfig);
 'use client';
 
 import { useEffect } from 'react';
-import { initNextHydration, hydrateNextContainer } from '@methane/ssr-next/client';
+import { initNextHydration } from '@methane/ssr-next/client';
 
 initNextHydration();
 
 export function MethaneProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Declarative Shadow DOM elements upgrade in place once registered
     void import('@methane/ui/button');
-    hydrateNextContainer(document.body);
   }, []);
 
   return <>{children}</>;

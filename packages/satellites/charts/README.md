@@ -12,7 +12,7 @@ pnpm add @methane/charts @methane/core @methane/tokens
 npm install @methane/charts @methane/core @methane/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0 || ^1.0.0`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
 
 ## Package Exports
 

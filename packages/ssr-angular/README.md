@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Angular SSR server Declarative Shadow DOM serialization and non-destructive client hydration provider (`provideMethaneHydration()`) for **Methane UI** — built on `@methane/ssr`.
+Angular SSR server Declarative Shadow DOM serialization and non-destructive client hydration initializer (`provideMethaneHydration()`) for **Methane UI** — built on `@methane/ssr`.
 
 ## Installation
 
@@ -24,14 +24,20 @@ npm install @methane/ssr-angular @methane/ssr @methane/angular @methane/core
 ### 1. Client Application Config (`app.config.ts`)
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideAppInitializer } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideMethaneHydration } from '@methane/ssr-angular/client';
+import {
+  provideMethaneHydration,
+  upgradeMethaneAngularElements,
+} from '@methane/ssr-angular/client';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(),
-    provideMethaneHydration(),
+    provideAppInitializer(() => {
+      provideMethaneHydration().initialize();
+      upgradeMethaneAngularElements(document);
+    }),
   ],
 };
 ```

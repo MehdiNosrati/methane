@@ -4,7 +4,7 @@
 
 Lit 3 `UIElement` base class, single versioned global runtime (`Symbol.for('@methane/runtime')`), i18n catalog & bidi isolation, and `@lit/context` Community Context Protocol tokens for **Methane UI**.
 
-- Automatically activates `@lit-labs/ssr-client/lit-element-hydrate-support.js` when loaded so Declarative Shadow DOM elements hydrate cleanly.
+- Opt-in client SSR hydration support via `@methane/core/hydrate` (so CSR-only bundles carry zero `@lit-labs/ssr-client` bytes).
 - Includes `ElementInternals` support for Form-Associated Custom Elements (FACE) and ARIA `CustomStateSet` (`:state(...)`) pseudo-classes.
 
 ## Installation
@@ -15,13 +15,14 @@ pnpm add @methane/core
 npm install @methane/core
 ```
 
-> `@methane/core` is a required `peerDependency` of `@methane/primitives`, `@methane/ui`, `@methane/ai`, `@methane/auth`, `@methane/admin`, `@methane/chat`, `@methane/commerce`, and all 11 `@methane/*` satellite packages.
+> `@methane/core` (`^0.1.0`) is a required `peerDependency` of `@methane/primitives`, `@methane/ui`, `@methane/ai`, `@methane/auth`, `@methane/admin`, `@methane/chat`, `@methane/commerce`, and all 11 `@methane/*` satellite packages.
 
 ## Package Exports
 
 | Entrypoint | Key Exports |
 | --- | --- |
 | `@methane/core` | `UIElement`, `getRuntime`, `negotiateRuntime`, `defineComponents`, `registerStyles`, `loadLocalePack`, `registerLocalePack`, `registerLocaleMessages`, `translateMessage`, `THEME_CONTEXT`, `LOCALE_CONTEXT`, `FIELD_CONTEXT`, `FORM_CONTEXT`, `isDevMode`, `devWarn` |
+| `@methane/core/hydrate` | Opt-in client Declarative Shadow DOM hydration side-effect entrypoint wrapping `@lit-labs/ssr-client/lit-element-hydrate-support.js` |
 | `@methane/core/runtime` | `CORE_VERSION`, `CORE_MAJOR`, `RUNTIME_SYMBOL`, `negotiateRuntime`, `getRuntime`, `registerStyles`, `defineComponents`, `parseSemver`, `compareSemver`, coordinator interfaces (`OverlayStackCoordinator`, `NotificationStoreCoordinator`, `HotkeyManagerCoordinator`, `LiveAnnouncerCoordinator`, `SharedObserverPools`) |
 | `@methane/core/i18n` | `registerLocalePack`, `registerLocaleMessages`, `loadLocalePack`, `translateMessage`, `formatI18nMessage`, `normalizeLocale`, `inferDirectionFromLocale`, `isolateBidiValue`, `resolveMessageEntry` |
 | `@methane/core/context` | `THEME_CONTEXT`, `LOCALE_CONTEXT`, `FIELD_CONTEXT`, `FORM_CONTEXT`, defaults (`DEFAULT_THEME_CONTEXT`, `DEFAULT_LOCALE_CONTEXT`), and context value types |
@@ -100,7 +101,7 @@ console.log(inferDirectionFromLocale('ar')); // 'rtl'
 
 - **Theming & States**: `UIElement` manages `:state(...)` flags via `setCustomState()` / `hasCustomState()` on `ElementInternals` (with graceful `data-state-*` / attribute parity) and consumes `THEME_CONTEXT` / `LOCALE_CONTEXT`.
 - **Same-Root Accessibility**: `FIELD_CONTEXT` and `FORM_CONTEXT` propagate labels, descriptions, errors, and validity without cross-shadow `aria-labelledby` breakage.
-- **SSR & Hydration**: `@methane/core` imports `@lit-labs/ssr-client/lit-element-hydrate-support.js` upfront so SSR-rendered Declarative Shadow DOM upgrades cleanly on first module evaluation. Pair with `@methane/ssr/client` (or framework-specific `@methane/ssr-*/client` adapters) to sequence client hydration before component registration.
+- **SSR & Hydration**: Client Declarative Shadow DOM hydration is opt-in via `import '@methane/core/hydrate'` (before element registration or alongside `@methane/ssr/client` / `@methane/ssr-*/client`) so CSR-only bundles do not pay hydration support overhead.
 
 ## License
 

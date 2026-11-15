@@ -12,7 +12,7 @@ pnpm add @methane/spreadsheet @methane/core @methane/tokens
 npm install @methane/spreadsheet @methane/core @methane/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0 || ^1.0.0`) is required.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
@@ -27,7 +27,7 @@ npm install @methane/spreadsheet @methane/core @methane/tokens
 
 | Tag | Class | Key Props / Attributes | Custom Events |
 | --- | --- | --- | --- |
-| `<mth-spreadsheet>` | `MthSpreadsheet` | `rows`, `cols`, `address-mode` (`A1` \| `R1C1`), `active-cell`, `row-height`, `readonly`, `label`, `.data` | `mth-cell-select`, `mth-cell-change` |
+| `<mth-spreadsheet>` | `MthSpreadsheet` | `rows`, `cols`, `address-mode` (`A1` \| `R1C1`), `active-cell`, `row-height`, `readonly`, `label`, `.cells` | `mth-cell-select`, `mth-cell-change` |
 | `<mth-formula-bar>` | `MthFormulaBar` | `name`, `value`, `cell-address`, `placeholder`, `disabled`, `required`, `readonly`, `label` | `mth-formula-input`, `mth-formula-commit` |
 
 ## Usage Examples
@@ -44,20 +44,20 @@ import '@methane/spreadsheet';
 const sheet = document.getElementById('sheet') as any;
 const fx = document.getElementById('fx') as any;
 
-sheet.data = {
-  A1: 1200,
-  A2: 850,
+sheet.cells = {
+  A1: '1200',
+  A2: '850',
   A3: '=SUM(A1:A2)',
   A4: '=AVG(A1:A2)',
 };
 
 sheet.addEventListener('mth-cell-select', (ev: CustomEvent) => {
   fx.cellAddress = ev.detail.address;
-  fx.value = ev.detail.rawValue;
+  fx.value = ev.detail.raw;
 });
 
 fx.addEventListener('mth-formula-commit', (ev: CustomEvent) => {
-  sheet.setCellValue(sheet.activeCell, ev.detail.value);
+  sheet.commitCellValue(ev.detail.cellAddress || sheet.activeCell, ev.detail.value);
 });
 ```
 
@@ -65,7 +65,7 @@ fx.addEventListener('mth-formula-commit', (ev: CustomEvent) => {
 
 - **Supported Syntax**: Arithmetic (`+`, `-`, `*`, `/`, unary `-`, parentheses), comparisons (`=`, `<>`, `<`, `<=`, `>`, `>=`), cell refs (`A1`, lowercase `a1`), and range refs (`A1:B10`).
 - **Built-in Functions**: `SUM`, `AVERAGE` / `AVG`, `MIN`, `MAX`, `COUNT`, `IF`, `ROUND`, `ABS`, `CONCAT`.
-- **Error Reporting**: Returns explicit `#CYCLE!` for circular dependency chains, `#DIV/0!`, `#REF!`, `#NAME?`, and `#ERR!` for invalid syntax.
+- **Error Reporting**: Returns explicit `#CYCLE!` for circular dependency chains, `#DIV/0!`, `#VALUE!`, `#REF!`, and `#ERROR!` for invalid syntax.
 
 ## Theming, A11y & SSR Notes
 

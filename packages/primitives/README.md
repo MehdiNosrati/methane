@@ -12,7 +12,7 @@ pnpm add @methane/primitives @methane/core
 npm install @methane/primitives @methane/core
 ```
 
-> **Peer dependency:** `@methane/core` (`workspace:^` / `>=0.1.0`) is required.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
 
 ## Exported Primitives & Controllers
 

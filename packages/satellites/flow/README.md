@@ -12,7 +12,7 @@ pnpm add @methane/flow @methane/core @methane/tokens
 npm install @methane/flow @methane/core @methane/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0 || ^1.0.0`) is required.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
 
 ## Package Exports
 

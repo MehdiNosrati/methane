@@ -45,7 +45,7 @@ import { MthButtonDirective, MthInputDirective } from '@methane/angular';
       type="email"
       placeholder="name@company.com"
     ></mth-input>
-    <mth-button variant="primary" (click)="submit()">Sign in</mth-button>
+    <mth-button variant="solid" (click)="submit()">Sign in</mth-button>
   `,
 })
 export class LoginComponent {
@@ -73,7 +73,7 @@ export class DashboardComponent {}
 
 ## SSR Notes
 
-- Pair with `@methane/ssr-angular` for Angular SSR / Universal Declarative Shadow DOM serialization and `provideMethaneHydration()`.
+- Pair with `@methane/ssr-angular` for Angular SSR / Universal Declarative Shadow DOM serialization and `provideMethaneHydration().initialize()` inside Angular `provideAppInitializer()`.
 
 ## License
 

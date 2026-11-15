@@ -12,7 +12,7 @@ pnpm add @methane/chat @methane/core @methane/tokens
 npm install @methane/chat @methane/core @methane/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0 || ^1.0.0`) is required.
+> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
@@ -52,7 +52,7 @@ import '@methane/chat/typing-indicator';
 
 const thread = document.getElementById('thread') as any;
 thread.messages = [
-  { id: '1', author: 'Maya', body: 'Shipped the v2 **release notes**!', timestamp: Date.now() },
+  { id: '1', author: 'Maya', body: 'Shipped the v2 **release notes**!', timestamp: '2026-11-15T10:00:00Z' },
 ];
 ```
 

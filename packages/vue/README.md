@@ -60,7 +60,7 @@ const open = ref(false);
 
 <template>
   <MthInput v-model="query" placeholder="Filter records..." />
-  <MthButton variant="primary" @click="open = true">Open Details</MthButton>
+  <MthButton variant="solid" @click="open = true">Open Details</MthButton>
   <MthDialog v-model:open="open" label="Record details">
     <p>Filtering by: {{ query }}</p>
   </MthDialog>
