@@ -1,5 +1,5 @@
 {
-  "name": "@methane/css",
+  "name": "@methane-ui/css",
   "version": "0.1.0",
   "description": "Cascade layers, CSS logical-property reset, fail-open :not(:defined) guard, and 0 B JS Light-DOM CSS primitives for Methane UI",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "./dist/*.css"
   ],
   "dependencies": {
-    "@methane/tokens": "workspace:^"
+    "@methane-ui/tokens": "workspace:^"
   },
   "exports": {
     ".": {
@@ -33,5 +33,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src && stylelint 'src/**/*.css' 'dist/**/*.css' --allow-empty-input",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

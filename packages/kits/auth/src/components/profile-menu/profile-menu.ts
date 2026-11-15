@@ -1,4 +1,4 @@
-import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane/core';
+import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane-ui/core';
 import {
   OverlayController,
   PositioningController,
@@ -6,8 +6,8 @@ import {
   type OverlayCloseReason,
   type Placement,
   type PositioningResult,
-} from '@methane/primitives';
-import type { MthIconName } from '@methane/ui/icon/element.js';
+} from '@methane-ui/primitives';
+import type { MthIconName } from '@methane-ui/ui/icon/element.js';
 import { profileMenuMessages } from './profile-menu.messages.js';
 import { profileMenuStyles } from './profile-menu.styles.js';
 

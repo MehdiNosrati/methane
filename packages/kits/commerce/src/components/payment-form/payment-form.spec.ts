@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { paymentFormMessages } from './payment-form.messages.js';
 
 export const paymentFormSpec: ComponentBehaviorSpec = {
   tag: 'mth-payment-form',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'MaskAndFormatEngine'],
   focusModel: 'none',

@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { RovingFocusController, SelectionController, TableCore } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController, SelectionController, TableCore } from '@methane-ui/primitives';
 import type { ColumnDef, ExpandedState, Row, Table } from '@tanstack/table-core';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';

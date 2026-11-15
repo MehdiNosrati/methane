@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { bookingWidgetMessages } from './booking-widget.messages.js';
 
 export const bookingWidgetSpec: ComponentBehaviorSpec = {
   tag: 'mth-booking-widget',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'CalendarCore'],
   focusModel: 'delegates-focus',

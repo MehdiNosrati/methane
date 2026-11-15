@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { notificationBellMessages } from './notification-bell.messages.js';
 
 export const notificationBellSpec: ComponentBehaviorSpec = {
   tag: 'mth-notification-bell',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController', 'NotificationStoreController'],
   focusModel: 'delegates-focus',
@@ -69,7 +69,7 @@ export const CEM_METADATA = {
     forceFallback: 'Forces non-top-layer positioning fallback mode.',
     unreadCount: 'Optional explicit unread count overriding computed item count.',
     maxCount: 'Maximum unread count before appending `+`.',
-    useStore: 'Subscribes to the shared `@methane/core` runtime notification store.',
+    useStore: 'Subscribes to the shared `@methane-ui/core` runtime notification store.',
     label: 'Optional accessible label for the notification bell button.',
     items: 'Structured list of notification items rendered in the panel.',
   },

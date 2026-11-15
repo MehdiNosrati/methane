@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSettingsShell } from './settings-shell.js';
 
 export { MthSettingsShell, type SettingsSectionItem } from './settings-shell.js';

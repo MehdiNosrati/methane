@@ -10,7 +10,7 @@ import {
   MthInputDirective,
   MthOptionDirective,
   MthOptionGroupDirective,
-} from '@methane/angular';
+} from '@methane-ui/angular';
 import {
   MthErrorBoundaryHostDirective,
   MthSkipLinkHostDirective,

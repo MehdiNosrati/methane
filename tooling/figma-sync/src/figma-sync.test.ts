@@ -1,11 +1,11 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { compileDtcgTokens, dtcgSource } from '@methane/tokens';
+import { compileDtcgTokens, dtcgSource } from '@methane-ui/tokens';
 import {
   DEFAULT_BEHAVIOR_SPECS,
   DEFAULT_CEM_FIXTURE,
   loadWorkspaceManifestAndSpecs,
-} from '@methane/wrapper-codegen';
+} from '@methane-ui/wrapper-codegen';
 import { describe, expect, it } from 'vitest';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -18,7 +18,7 @@ import {
   parseOklchColor,
 } from './index.js';
 
-describe('@methane/figma-sync two-way Figma Variables <-> W3C DTCG sync', () => {
+describe('@methane-ui/figma-sync two-way Figma Variables <-> W3C DTCG sync', () => {
   it('converts OKLCH colors to Figma sRGB RGBA and back accurately', () => {
     const inGamut = parseOklchColor('oklch(0.62 0.14 255)');
     expect(inGamut).not.toBeNull();
@@ -43,7 +43,7 @@ describe('@methane/figma-sync two-way Figma Variables <-> W3C DTCG sync', () => 
     expect(clampedRgba.b).toBeLessThanOrEqual(1);
   });
 
-  it('exports @methane/tokens DTCG source to Figma VariableCollections with Light/Dark/High-Contrast and Density modes', () => {
+  it('exports @methane-ui/tokens DTCG source to Figma VariableCollections with Light/Dark/High-Contrast and Density modes', () => {
     const payload = dtcgToFigmaVariables(dtcgSource);
     const collections = payload.meta.variableCollections;
     const variables = payload.meta.variables;
@@ -104,7 +104,7 @@ describe('@methane/figma-sync two-way Figma Variables <-> W3C DTCG sync', () => 
   });
 });
 
-describe('@methane/figma-sync deterministic Code Connect generator', () => {
+describe('@methane-ui/figma-sync deterministic Code Connect generator', () => {
   it('generates React 19, Vue, Angular, Svelte, and HTML Code Connect files from CEM + specs', () => {
     const files1 = generateCodeConnectFiles(
       { manifest: DEFAULT_CEM_FIXTURE, specs: DEFAULT_BEHAVIOR_SPECS },
@@ -130,12 +130,12 @@ describe('@methane/figma-sync deterministic Code Connect generator', () => {
     const buttonSvelte = files1.find((f) => f.tagName === 'mth-button' && f.framework === 'svelte');
     const buttonHtml = files1.find((f) => f.tagName === 'mth-button' && f.framework === 'html');
 
-    expect(buttonReact?.content).toContain("import '@methane/react';");
+    expect(buttonReact?.content).toContain("import '@methane-ui/react';");
     expect(buttonReact?.content).toContain('node-id=101%3A22');
     expect(buttonReact?.content).toContain("figma.enum('Variant'");
-    expect(buttonVue?.content).toContain("import '@methane/vue';");
+    expect(buttonVue?.content).toContain("import '@methane-ui/vue';");
     expect(buttonAngular?.content).toContain('MthButtonDirective');
-    expect(buttonSvelte?.content).toContain('@methane/svelte');
+    expect(buttonSvelte?.content).toContain('@methane-ui/svelte');
     expect(buttonHtml?.path).toBe('code-connect/html/mth-button.figma.html');
     expect(buttonHtml?.content).toContain('<mth-button');
   });

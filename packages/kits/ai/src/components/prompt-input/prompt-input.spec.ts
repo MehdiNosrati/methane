@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { promptInputMessages } from './prompt-input.messages.js';
 
 export const promptInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-prompt-input',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

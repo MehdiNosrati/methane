@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMfaChallenge } from './mfa-challenge.js';
 
 export { MthMfaChallenge, type MthMfaMode } from './mfa-challenge.js';

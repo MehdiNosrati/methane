@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { authFormMessages } from './auth-form.messages.js';
 
 export const authFormSpec: ComponentBehaviorSpec = {
   tag: 'mth-auth-form',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

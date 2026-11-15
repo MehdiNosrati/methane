@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { drawerMessages } from './drawer.messages.js';
 
 export const drawerSpec: ComponentBehaviorSpec = {
   tag: 'mth-drawer',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'FocusTrapController', 'MotionController'],
   focusModel: 'host',

@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, InputController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, InputController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { newsletterFormMessages } from './newsletter-form.messages.js';

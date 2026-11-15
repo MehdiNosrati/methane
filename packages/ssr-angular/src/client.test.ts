@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { digestForTemplateResult } from '@methane/ssr/client';
+import { digestForTemplateResult } from '@methane-ui/ssr/client';
 import {
   initAngularHydration,
   isAngularHydrationReady,
@@ -17,7 +17,7 @@ class MthNgClientProbe extends LitElement {
   }
 }
 
-describe('@methane/ssr-angular/client', () => {
+describe('@methane-ui/ssr-angular/client', () => {
   it('provides non-destructive Angular client hydration hook and element upgrade', async () => {
     expect(isAngularHydrationReady()).toBe(true);
     const provider = provideMethaneHydration(LitElement);

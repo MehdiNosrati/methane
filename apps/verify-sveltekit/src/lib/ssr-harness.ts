@@ -1,10 +1,10 @@
-import { registerUtilityElements } from '@methane/primitives';
+import { registerUtilityElements } from '@methane-ui/primitives';
 import {
   createMethaneHandle,
   transformSvelteKitHtml,
   type SvelteKitSsrOptions,
-} from '@methane/ssr-sveltekit';
-import { registerAllComponents } from '@methane/ui';
+} from '@methane-ui/ssr-sveltekit';
+import { registerAllComponents } from '@methane-ui/ui';
 import { render } from 'svelte/server';
 import Page from '../routes/+page.svelte';
 

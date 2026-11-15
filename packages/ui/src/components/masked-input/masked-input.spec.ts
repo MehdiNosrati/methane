@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { maskedInputMessages } from './masked-input.messages.js';
 
 export const maskedInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-masked-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'MaskAndFormatEngine', 'ContextProtocol'],
   focusModel: 'delegates-focus',

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthProgressBar } from './progress-bar.js';
 
 export { MthProgressBar } from './progress-bar.js';

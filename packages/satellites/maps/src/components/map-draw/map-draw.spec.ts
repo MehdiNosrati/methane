@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { mapDrawMessages } from './map-draw.messages.js';
 
 export const mapDrawSpec: ComponentBehaviorSpec = {
   tag: 'mth-map-draw',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'host',

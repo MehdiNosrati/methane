@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { checkboxMessages } from './checkbox.messages.js';
 
 export const checkboxSpec: ComponentBehaviorSpec = {
   tag: 'mth-checkbox',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

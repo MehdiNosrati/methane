@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMapCluster } from './map-cluster.js';
 import { mapClusterMessages } from './map-cluster.messages.js';
 import { mapClusterSpec } from './map-cluster.spec.js';

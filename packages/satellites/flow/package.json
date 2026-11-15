@@ -1,5 +1,5 @@
 {
-  "name": "@methane/flow",
+  "name": "@methane-ui/flow",
   "version": "0.1.0",
   "description": "Methane interactive node/DAG flow editor and org-chart satellite components wrapping @dagrejs/dagre (ADR-013)",
   "license": "MIT",
@@ -40,21 +40,29 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.1.3",
-    "@methane/css": "workspace:^",
-    "@methane/primitives": "workspace:^",
-    "@methane/sanitize": "workspace:^",
-    "@methane/tokens": "workspace:^",
+    "@methane-ui/css": "workspace:^",
+    "@methane-ui/primitives": "workspace:^",
+    "@methane-ui/sanitize": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
     "@lit-labs/ssr": "^4.1.0",
     "@lit-labs/ssr-client": "^1.1.8",
     "@lit-labs/ssr-dom-shim": "^1.6.0",
-    "@methane/core": "workspace:^",
-    "@methane/spec-compiler": "workspace:^",
-    "@methane/test-conformance": "workspace:^"
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/spec-compiler": "workspace:^",
+    "@methane-ui/test-conformance": "workspace:^"
   },
   "peerDependencies": {
-    "@methane/core": "^0.1.0"
-  }
+    "@methane-ui/core": "^0.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

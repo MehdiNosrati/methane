@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { CalendarCore, RovingFocusController, type CalendarDate } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { CalendarCore, RovingFocusController, type CalendarDate } from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import {

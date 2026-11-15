@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const listSpec: ComponentBehaviorSpec = {
   tag: 'mth-list',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['SlotCollectionController', 'RovingFocusController', 'SelectionController'],
   focusModel: 'none',

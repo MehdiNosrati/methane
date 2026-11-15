@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFloorPlan } from './floor-plan.js';
 import { floorPlanMessages } from './floor-plan.messages.js';
 import { floorPlanSpec } from './floor-plan.spec.js';

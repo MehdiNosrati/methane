@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormattingUtils } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormattingUtils } from '@methane-ui/primitives';
 import { html, nothing, svg } from 'lit';
 import { property } from 'lit/decorators.js';
 import { sparklineMessages } from './sparkline.messages.js';

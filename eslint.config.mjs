@@ -13,7 +13,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
-      '@methane': methaneEslintPlugin,
+      '@methane-ui': methaneEslintPlugin,
     },
     rules: {
       ...recommendedEslintRules,

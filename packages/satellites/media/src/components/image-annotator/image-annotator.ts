@@ -7,9 +7,9 @@ import {
   svg,
   UIElement,
   type PropertyValues,
-} from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
-import { parseSafeFragment } from '@methane/sanitize';
+} from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
+import { parseSafeFragment } from '@methane-ui/sanitize';
 import {
   collectHostThemeTokens,
   isSafeMediaUrl,

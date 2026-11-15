@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { formMessages } from './form.messages.js';
 
 export const formSpec: ComponentBehaviorSpec = {
   tag: 'mth-form',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['FormContextProviderController', 'ContextProtocol'],
   focusModel: 'none',

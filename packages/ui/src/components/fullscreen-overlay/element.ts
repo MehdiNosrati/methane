@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFullscreenOverlay } from './fullscreen-overlay.js';
 
 export { MthFullscreenOverlay } from './fullscreen-overlay.js';

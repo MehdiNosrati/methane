@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCombobox } from './combobox.js';
 
 export { MthCombobox, type ComboboxOption } from './combobox.js';

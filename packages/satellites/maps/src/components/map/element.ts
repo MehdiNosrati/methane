@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMap } from './map.js';
 import { mapMessages } from './map.messages.js';
 import { mapSpec } from './map.spec.js';

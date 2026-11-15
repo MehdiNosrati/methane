@@ -17,7 +17,7 @@ const srcDir = resolve(pkgRoot, 'src');
 const distDir = resolve(pkgRoot, 'dist');
 const stylelintConfigFile = resolve(repoRoot, 'stylelint.config.mjs');
 
-describe('@methane/css Light-DOM layout, typography, and surface primitives', () => {
+describe('@methane-ui/css Light-DOM layout, typography, and surface primitives', () => {
   const layoutCss = readFileSync(resolve(srcDir, 'layout.css'), 'utf8');
   const proseCss = readFileSync(resolve(srcDir, 'prose.css'), 'utf8');
 
@@ -66,7 +66,7 @@ describe('@methane/css Light-DOM layout, typography, and surface primitives', ()
     expect(proseCss).toContain('@media (forced-colors: active)');
   });
 
-  it('passes Stylelint (stylelint-config-standard + @methane/lint-plugin logical-properties-only) on layout.css and prose.css', async () => {
+  it('passes Stylelint (stylelint-config-standard + @methane-ui/lint-plugin logical-properties-only) on layout.css and prose.css', async () => {
     const result = await stylelint.lint({
       files: [resolve(srcDir, 'layout.css'), resolve(srcDir, 'prose.css')],
       configFile: stylelintConfigFile,

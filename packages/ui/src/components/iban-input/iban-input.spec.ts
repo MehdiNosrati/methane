@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { ibanInputMessages } from './iban-input.messages.js';
 
 export const ibanInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-iban-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'MaskAndFormatEngine', 'ContextProtocol'],
   focusModel: 'delegates-focus',

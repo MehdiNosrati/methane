@@ -15,7 +15,7 @@
           "description": "Wrap-first Three.js `<mth-model-viewer>` component featuring lazy WebGL/WebGPU renderer attachment, keyboard orbit/zoom/reset controls, MotionController reduced-motion gating on `autoRotate`, URL sanitization, and poster/fallback slots.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -27,7 +27,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "glTF/GLB model URL (validated with @methane/sanitize isSafeUrl)."
+              "description": "glTF/GLB model URL (validated with @methane-ui/sanitize isSafeUrl)."
             },
             {
               "kind": "field",
@@ -163,7 +163,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "glTF/GLB model URL (validated with @methane/sanitize isSafeUrl)."
+              "description": "glTF/GLB model URL (validated with @methane-ui/sanitize isSafeUrl)."
             },
             {
               "name": "poster",
@@ -395,7 +395,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-model-viewer",
-            "package": "@methane/3d",
+            "package": "@methane-ui/3d",
             "conformance": [
               "satellite"
             ],

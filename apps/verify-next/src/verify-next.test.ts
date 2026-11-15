@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { withMethaneNextConfig, type NextConfigLike } from '@methane/ssr-next';
+import { withMethaneNextConfig, type NextConfigLike } from '@methane-ui/ssr-next';
 import { describe, expect, it } from 'vitest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -75,15 +75,15 @@ function runNextSsrInNode(): {
   };
 }
 
-describe('@methane/verify-next', () => {
+describe('@methane-ui/verify-next', () => {
   it('applies withMethaneNextConfig transpilePackages and serverExternalPackages', () => {
     const config = withMethaneNextConfig<NextConfigLike>({ reactStrictMode: true });
     expect(config.transpilePackages).toEqual([
-      '@methane/ui',
-      '@methane/core',
-      '@methane/primitives',
+      '@methane-ui/ui',
+      '@methane-ui/core',
+      '@methane-ui/primitives',
     ]);
-    expect(config.serverExternalPackages).toEqual(['@lit-labs/ssr', '@methane/ssr']);
+    expect(config.serverExternalPackages).toEqual(['@lit-labs/ssr', '@methane-ui/ssr']);
   });
 
   it('expands Declarative Shadow DOM, hoists <link> preload tags, and emits HTTP Link header', () => {

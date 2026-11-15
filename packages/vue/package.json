@@ -1,5 +1,5 @@
 {
-  "name": "@methane/vue",
+  "name": "@methane-ui/vue",
   "version": "0.1.0",
   "description": "Vue 3 Volar GlobalComponents, v-model wrappers, and compiler preset for Methane UI (ADR-009)",
   "license": "MIT",
@@ -23,7 +23,15 @@
     "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@methane/wrapper-codegen": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^",
     "vue": "^3.5.45"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthPagination } from './pagination.js';
 
 export { computePaginationRange, MthPagination, type PaginationToken } from './pagination.js';

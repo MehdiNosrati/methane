@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMultiSelect } from './multi-select.js';
 
 export { MthMultiSelect, type MultiSelectOption } from './multi-select.js';

@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, ListboxController, SelectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, ListboxController, SelectionController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { transferListMessages } from './transfer-list.messages.js';

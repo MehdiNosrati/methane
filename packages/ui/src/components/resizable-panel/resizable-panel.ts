@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, property } from '@methane/core';
+import { UIElement, type PropertyValues, html, property } from '@methane-ui/core';
 import { resizablePanelMessages } from './resizable-panel.messages.js';
 import { resizablePanelStyles } from './resizable-panel.styles.js';
 

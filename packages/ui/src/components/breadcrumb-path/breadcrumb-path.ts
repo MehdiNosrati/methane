@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
-import { ObserverPoolController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
+import { ObserverPoolController } from '@methane-ui/primitives';
 import { breadcrumbPathMessages } from './breadcrumb-path.messages.js';
 import { breadcrumbPathStyles } from './breadcrumb-path.styles.js';
 

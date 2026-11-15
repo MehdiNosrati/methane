@@ -1,4 +1,4 @@
-# `@methane/spec-compiler`
+# `@methane-ui/spec-compiler`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Single-source `ComponentBehaviorSpec` validator, Markdown documentation compiler
 ## Installation
 
 ```bash
-pnpm add -D @methane/spec-compiler
+pnpm add -D @methane-ui/spec-compiler
 # or
-npm install -D @methane/spec-compiler
+npm install -D @methane-ui/spec-compiler
 ```
 
 ## Exported API
@@ -20,7 +20,7 @@ npm install -D @methane/spec-compiler
 | `assertValidBehaviorSpec(spec)` | Throws descriptive errors when a `ComponentBehaviorSpec` fails validation |
 | `compileSpec(spec, cem?)` | Produces full `CompiledSpecArtifacts` (docs Markdown, test code scaffold, CEM verification, and a11y checklist) |
 | `compileSpecDocs(spec)` | Generates structured API documentation Markdown from a component spec |
-| `compileSpecTests(spec, options?)` | Emits Vitest conformance test scaffolding targeting `@methane/test-conformance` suites |
+| `compileSpecTests(spec, options?)` | Emits Vitest conformance test scaffolding targeting `@methane-ui/test-conformance` suites |
 | `compileA11yChecklist(spec)` | Produces a structured `A11yChecklist` covering focus model, keyboard bindings, and ARIA contracts |
 | `verifyCustomElementsManifest(spec, cem)` | Cross-checks spec declarations against `custom-elements.json` to catch drift |
 | `runBehaviorSpecAssertions(spec, adapter)` | Executes runtime spec contract assertions directly inside Vitest suites |
@@ -30,7 +30,7 @@ npm install -D @methane/spec-compiler
 ### Defining & Testing a `ComponentBehaviorSpec`
 
 ```ts
-import { assertValidBehaviorSpec, runBehaviorSpecAssertions, type ComponentBehaviorSpec } from '@methane/spec-compiler';
+import { assertValidBehaviorSpec, runBehaviorSpecAssertions, type ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const buttonSpec: ComponentBehaviorSpec = {
   tagName: 'mth-button',
@@ -48,8 +48,8 @@ assertValidBehaviorSpec(buttonSpec);
 ### Verifying `custom-elements.json` Drift in CI
 
 ```ts
-import { verifyCustomElementsManifest } from '@methane/spec-compiler';
-import cem from '@methane/ui/custom-elements.json' with { type: 'json' };
+import { verifyCustomElementsManifest } from '@methane-ui/spec-compiler';
+import cem from '@methane-ui/ui/custom-elements.json' with { type: 'json' };
 import { buttonSpec } from './button.spec.js';
 
 const result = verifyCustomElementsManifest(buttonSpec, cem);
@@ -60,7 +60,7 @@ if (!result.valid) {
 
 ## Notes
 
-- Integrates with `@methane/test-conformance` (`FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `ListboxSuite`, `DataConsumerSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`) and powers `@methane/wrapper-codegen`.
+- Integrates with `@methane-ui/test-conformance` (`FormControlSuite`, `OverlaySuite`, `RovingFocusSuite`, `ListboxSuite`, `DataConsumerSuite`, `SatelliteEngineSuite`, `HydrationPuritySuite`) and powers `@methane-ui/wrapper-codegen`.
 
 ## License
 

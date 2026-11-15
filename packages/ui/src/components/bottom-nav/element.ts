@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBottomNav } from './bottom-nav.js';
 
 export { MthBottomNav, type BottomNavItem } from './bottom-nav.js';

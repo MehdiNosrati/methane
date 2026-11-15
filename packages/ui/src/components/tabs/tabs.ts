@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   RovingFocusController,
   SelectionController,
   SlotCollectionController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { tabsMessages } from './tabs.messages.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthVideoPlayer } from './video-player.js';
 
 export { MthVideoPlayer } from './video-player.js';

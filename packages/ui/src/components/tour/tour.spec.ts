@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { tourMessages } from './tour.messages.js';
 
 export const tourSpec: ComponentBehaviorSpec = {
   tag: 'mth-tour',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController', 'FocusTrapController'],
   focusModel: 'none',

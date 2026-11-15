@@ -1,9 +1,9 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/timeline-item';
-import type { MthTimelineItem } from '@methane/ui/timeline-item';
+import '@methane-ui/ui/timeline-item';
+import type { MthTimelineItem } from '@methane-ui/ui/timeline-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthTimeline, registerMthTimeline, timelineSpec } from './index.js';
 

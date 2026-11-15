@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthChatThread } from './chat-thread.js';
 
 export { MthChatThread, type ChatMessage } from './chat-thread.js';

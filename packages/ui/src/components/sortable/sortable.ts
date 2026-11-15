@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane-ui/core';
 import {
   DragSortController,
   RovingFocusController,
   SlotCollectionController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { sortableMessages } from './sortable.messages.js';
 import { sortableStyles } from './sortable.styles.js';
 

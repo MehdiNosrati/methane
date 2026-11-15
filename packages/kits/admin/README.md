@@ -1,4 +1,4 @@
-# `@methane/admin`
+# `@methane-ui/admin`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Enterprise SaaS dashboard, backoffice, scheduling, and data-operations Web Compo
 ## Installation
 
 ```bash
-pnpm add @methane/admin @methane/core @methane/tokens
+pnpm add @methane-ui/admin @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/admin @methane/core @methane/tokens
+npm install @methane-ui/admin @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/admin` | Auto-registers all 13 admin kit elements and exports `registerAllComponents(prefix?)` |
-| `@methane/admin/<slug>` | Per-component entrypoint (e.g. `@methane/admin/kanban`, `@methane/admin/filter-builder`) |
-| `@methane/admin/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/admin/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/admin` | Auto-registers all 13 admin kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/admin/<slug>` | Per-component entrypoint (e.g. `@methane-ui/admin/kanban`, `@methane-ui/admin/filter-builder`) |
+| `@methane-ui/admin/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/admin/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -52,9 +52,9 @@ npm install @methane/admin @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/admin/kanban';
-import '@methane/admin/bulk-action-bar';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/admin/kanban';
+import '@methane-ui/admin/bulk-action-bar';
 
 const board = document.getElementById('board') as any;
 board.lanes = [
@@ -70,7 +70,7 @@ board.cards = [
 
 - **Theming**: Integrates `--mth-*` semantic tokens and exposes granular parts (`::part(lane)`, `::part(card)`, `::part(nav)`, `::part(save-bar)`, etc.) plus `[data-mth-density="compact"]` density scaling.
 - **Accessibility**: Full keyboard reordering in `<mth-kanban>` and `<mth-column-chooser>`, FACE participation for form widgets (`availability-picker`, `booking-widget`, `query-builder`), and roving focus across calendar/explorer grids.
-- **SSR**: Server-renders cleanly with `@methane/ssr`; interactive drag/virtualization hooks attach on client connect.
+- **SSR**: Server-renders cleanly with `@methane-ui/ssr`; interactive drag/virtualization hooks attach on client connect.
 
 ## License
 

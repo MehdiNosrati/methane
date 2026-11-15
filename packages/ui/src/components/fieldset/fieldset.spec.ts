@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { fieldsetMessages } from './fieldset.messages.js';
 
 export const fieldsetSpec: ComponentBehaviorSpec = {
   tag: 'mth-fieldset',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['FormContextProviderController', 'ContextProtocol'],
   focusModel: 'none',

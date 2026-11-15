@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { transferListMessages } from './transfer-list.messages.js';
 
 export const transferListSpec: ComponentBehaviorSpec = {
   tag: 'mth-transfer-list',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'listbox'],
   controllers: ['FormControlController', 'SelectionController', 'ListboxController'],
   focusModel: 'delegates-focus',

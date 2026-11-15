@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthToc } from './toc.js';
 
 export { MthToc, type TocItem } from './toc.js';

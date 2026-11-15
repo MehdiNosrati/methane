@@ -1,5 +1,5 @@
 {
-  "name": "@methane/test-conformance",
+  "name": "@methane-ui/test-conformance",
   "version": "0.1.0",
   "description": "Reusable Class Conformance Suites, SatelliteEngineSuite, HydrationPuritySuite, and same-root ARIA scanner for Methane UI",
   "license": "MIT",
@@ -18,5 +18,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

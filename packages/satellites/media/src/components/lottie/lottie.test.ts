@@ -1,10 +1,10 @@
 import { DotLottie } from '@lottiefiles/dotlottie-web';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   HydrationPuritySuite,
   SatelliteEngineSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';

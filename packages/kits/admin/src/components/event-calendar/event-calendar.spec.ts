@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { eventCalendarMessages } from './event-calendar.messages.js';
 
 export const eventCalendarSpec: ComponentBehaviorSpec = {
   tag: 'mth-event-calendar',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus'],
   controllers: ['CalendarCore', 'RovingFocusController'],
   focusModel: 'delegates-focus',

@@ -21,7 +21,7 @@ const manifest: MigrationManifest = {
   ],
 };
 
-describe('@methane/codemod HTML AST transform', () => {
+describe('@methane-ui/codemod HTML AST transform', () => {
   it('rewrites tags, deprecated attributes, slots, framework events, and inline styles while preserving comments', () => {
     const input = `<!-- <mth-button kind="primary"></mth-button> -->
 <mth-dialog ?opened=\${isOpen} @mth-close-request=\${onClose} style="--mth-color-bg: var(--mth-color-surface)">

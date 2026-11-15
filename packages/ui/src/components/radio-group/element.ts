@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthRadioGroup } from './radio-group.js';
 
 export { MthRadioGroup } from './radio-group.js';

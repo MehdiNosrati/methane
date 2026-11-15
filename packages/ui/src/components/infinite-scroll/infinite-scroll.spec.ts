@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const infiniteScrollSpec: ComponentBehaviorSpec = {
   tag: 'mth-infinite-scroll',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['data-consumer'],
   controllers: ['ObserverPoolController', 'DataController'],
   focusModel: 'delegates-focus',

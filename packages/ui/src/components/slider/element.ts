@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSlider } from './slider.js';
 
 export { MthSlider, type SliderOrientation, type SliderSize } from './slider.js';

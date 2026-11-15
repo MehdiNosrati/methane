@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
 import {
   FormControlController,
   FormattingUtils,
   OverlayController,
   PositioningController,
   RovingFocusController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { monthPickerMessages } from './month-picker.messages.js';
 import { monthPickerStyles } from './month-picker.styles.js';
 

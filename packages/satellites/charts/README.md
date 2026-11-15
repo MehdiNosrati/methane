@@ -1,4 +1,4 @@
-# `@methane/charts`
+# `@methane-ui/charts`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first Apache ECharts (`echarts`) declarative data visualization Web Compone
 ## Installation
 
 ```bash
-pnpm add @methane/charts @methane/core @methane/tokens
+pnpm add @methane-ui/charts @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/charts @methane/core @methane/tokens
+npm install @methane-ui/charts @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required. Bundles `echarts` as a lazy runtime dependency so SSR and core bundles stay lightweight.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/charts` | Registers `<mth-chart>` and `<mth-chart-series>` and exports `registerAllComponents(prefix?)` |
-| `@methane/charts/chart` / `@methane/charts/chart-series` | Per-component tree-shakeable entrypoints |
-| `@methane/charts/*/element` | Unregistered component classes and `registerMth*()` helpers |
-| `@methane/charts/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/charts` | Registers `<mth-chart>` and `<mth-chart-series>` and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/charts/chart` / `@methane-ui/charts/chart-series` | Per-component tree-shakeable entrypoints |
+| `@methane-ui/charts/*/element` | Unregistered component classes and `registerMth*()` helpers |
+| `@methane-ui/charts/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -56,8 +56,8 @@ npm install @methane/charts @methane/core @methane/tokens
 ### Programmatic ECharts Option Override
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/charts';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/charts';
 
 const chart = document.querySelector('mth-chart')!;
 chart.addEventListener('mth-chart-ready', (ev) => {

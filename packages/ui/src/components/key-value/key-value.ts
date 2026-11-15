@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { ClipboardAndShare, LiveAnnouncer } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { ClipboardAndShare, LiveAnnouncer } from '@methane-ui/primitives';
 import { html, nothing, svg } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { keyValueMessages } from './key-value.messages.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFieldset } from './fieldset.js';
 
 export { MthFieldset } from './fieldset.js';

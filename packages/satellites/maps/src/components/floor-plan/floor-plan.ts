@@ -1,5 +1,5 @@
-import { html, property, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { RovingFocusController, SelectionController } from '@methane/primitives';
+import { html, property, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { RovingFocusController, SelectionController } from '@methane-ui/primitives';
 import { clampNumber, createMapEngine, type MapEngineHandle } from '../shared/map-engine.js';
 import { floorPlanMessages } from './floor-plan.messages.js';
 import { floorPlanStyles } from './floor-plan.styles.js';

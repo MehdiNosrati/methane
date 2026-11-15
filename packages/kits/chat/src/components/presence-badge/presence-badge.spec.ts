@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { presenceBadgeMessages } from './presence-badge.messages.js';
 
 export const presenceBadgeSpec: ComponentBehaviorSpec = {
   tag: 'mth-presence-badge',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: [],
   controllers: [],
   focusModel: 'none',

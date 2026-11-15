@@ -6,9 +6,9 @@ import {
   query,
   state,
   type PropertyValues,
-} from '@methane/core';
-import { ClipboardAndShare, MotionController, RovingFocusController } from '@methane/primitives';
-import { safeSetHTML, safeSetMarkdown } from '@methane/sanitize';
+} from '@methane-ui/core';
+import { ClipboardAndShare, MotionController, RovingFocusController } from '@methane-ui/primitives';
+import { safeSetHTML, safeSetMarkdown } from '@methane-ui/sanitize';
 import { artifactPaneMessages } from './artifact-pane.messages.js';
 import { artifactPaneStyles } from './artifact-pane.styles.js';
 
@@ -26,7 +26,7 @@ export interface ArtifactVersion {
 
 /**
  * `<mth-artifact-pane>`: tabbed AI artifact viewer with version switching,
- * `ClipboardAndShare` copy, close action, and strict `@methane/sanitize` preview.
+ * `ClipboardAndShare` copy, close action, and strict `@methane-ui/sanitize` preview.
  */
 export class MthArtifactPane extends UIElement {
   static override messages = artifactPaneMessages;

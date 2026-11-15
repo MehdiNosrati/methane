@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSkeleton } from './skeleton.js';
 
 export { MthSkeleton, type MthSkeletonVariant } from './skeleton.js';

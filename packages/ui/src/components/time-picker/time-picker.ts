@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane-ui/core';
 import {
   FormControlController,
   FormattingUtils,
   OverlayController,
   PositioningController,
   RovingFocusController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { timePickerMessages } from './time-picker.messages.js';
 import { timePickerStyles } from './time-picker.styles.js';
 

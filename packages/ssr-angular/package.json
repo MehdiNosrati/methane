@@ -1,5 +1,5 @@
 {
-  "name": "@methane/ssr-angular",
+  "name": "@methane-ui/ssr-angular",
   "version": "0.1.0",
   "description": "Angular SSR server serialization and non-destructive client hydration adapter for Methane UI (ADR-009)",
   "license": "MIT",
@@ -24,7 +24,15 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/ssr": "workspace:^",
+    "@methane-ui/ssr": "workspace:^",
     "lit": "^3.3.3"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

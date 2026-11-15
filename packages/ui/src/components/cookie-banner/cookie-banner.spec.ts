@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { cookieBannerMessages } from './cookie-banner.messages.js';
 
 export const cookieBannerSpec: ComponentBehaviorSpec = {
   tag: 'mth-cookie-banner',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController'],
   focusModel: 'none',

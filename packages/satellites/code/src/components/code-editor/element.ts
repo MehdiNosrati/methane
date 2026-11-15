@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCodeEditor } from './code-editor.js';
 
 export { MthCodeEditor, type CodeEditorEngine } from './code-editor.js';

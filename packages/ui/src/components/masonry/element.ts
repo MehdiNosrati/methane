@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMasonry } from './masonry.js';
 
 export { MthMasonry } from './masonry.js';

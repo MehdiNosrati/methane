@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { locationPickerMessages } from './location-picker.messages.js';
 
 export const locationPickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-location-picker',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['form-control', 'satellite'],
   controllers: ['FormControlController'],
   focusModel: 'delegates-focus',

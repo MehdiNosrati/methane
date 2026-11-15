@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTabPanel } from './tab-panel.js';
 
 export { MthTabPanel } from './tab-panel.js';

@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import '@methane/ui/avatar';
-import '@methane/ui/badge';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import '@methane-ui/ui/avatar';
+import '@methane-ui/ui/badge';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';
@@ -20,7 +20,7 @@ export interface CommentItem {
 
 /**
  * `<mth-comment-thread>`: nested comment discussion thread supporting collapsible replies,
- * resolve/reopen toggling, inline replies, and `@methane/sanitize` markdown bodies.
+ * resolve/reopen toggling, inline replies, and `@methane-ui/sanitize` markdown bodies.
  */
 export class MthCommentThread extends UIElement {
   static override shadowRootOptions = { mode: 'open' as const, delegatesFocus: true };

@@ -1,5 +1,5 @@
 {
-  "name": "@methane/security-gate",
+  "name": "@methane-ui/security-gate",
   "version": "0.1.0",
   "description": "Strict CSP Trusted Types compliance suite, permissive supply-chain license audit, and workflow security gates for Methane UI",
   "license": "MIT",
@@ -14,10 +14,10 @@
     "dist"
   ],
   "dependencies": {
-    "@methane/core": "workspace:^",
-    "@methane/primitives": "workspace:^",
-    "@methane/sanitize": "workspace:^",
-    "@methane/ssr": "workspace:^",
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/primitives": "workspace:^",
+    "@methane-ui/sanitize": "workspace:^",
+    "@methane-ui/ssr": "workspace:^",
     "lit": "^3.2.1"
   },
   "scripts": {
@@ -25,5 +25,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { addressInputMessages } from './address-input.messages.js';
 
 export const addressInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-address-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

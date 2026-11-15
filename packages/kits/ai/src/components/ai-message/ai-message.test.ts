@@ -1,5 +1,5 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
@@ -35,7 +35,7 @@ describe('<mth-ai-message>', () => {
     expect(scanSameRootAria(msg).valid).toBe(true);
   });
 
-  it('sanitizes opt-in allowRawHtml via @methane/sanitize and supports streaming pushChunk & actions', async () => {
+  it('sanitizes opt-in allowRawHtml via @methane-ui/sanitize and supports streaming pushChunk & actions', async () => {
     const msg = document.createElement('mth-ai-message') as MthAiMessage;
     msg.allowRawHtml = true;
     msg.streaming = true;

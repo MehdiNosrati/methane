@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { passwordInputMessages } from './password-input.messages.js';
 
 export const passwordInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-password-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

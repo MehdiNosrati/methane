@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBackToTop } from './back-to-top.js';
 
 export { MthBackToTop } from './back-to-top.js';

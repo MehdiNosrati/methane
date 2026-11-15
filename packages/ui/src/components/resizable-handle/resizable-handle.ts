@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, property, query } from '@methane-ui/core';
 import { resizableHandleMessages } from './resizable-handle.messages.js';
 import { resizableHandleStyles } from './resizable-handle.styles.js';
 

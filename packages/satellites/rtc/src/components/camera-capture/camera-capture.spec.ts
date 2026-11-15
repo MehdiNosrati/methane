@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { cameraCaptureMessages } from './camera-capture.messages.js';
 
 export const cameraCaptureSpec: ComponentBehaviorSpec = {
   tag: 'mth-camera-capture',
-  package: '@methane/rtc',
+  package: '@methane-ui/rtc',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'delegates-focus',

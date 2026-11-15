@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthGantt } from './gantt.js';
 
 export { MthGantt, type GanttBarLayout, type GanttTask, type MthGanttEngine } from './gantt.js';

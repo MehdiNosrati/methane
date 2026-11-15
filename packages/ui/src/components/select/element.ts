@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSelect } from './select.js';
 
 export { MthSelect, supportsCustomizableSelect, type SelectOption } from './select.js';

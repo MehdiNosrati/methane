@@ -21,7 +21,7 @@ function getAnnotations(target: unknown): ReadonlyArray<AngularDirectiveAnnotati
     .__annotations__ ?? [];
 }
 
-describe('@methane/angular', () => {
+describe('@methane-ui/angular', () => {
   it('emits real @angular/core standalone directives with NG_VALUE_ACCESSOR for formAssociated controls', () => {
     expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthDialogDirective);
     expect(METHANE_ANGULAR_DIRECTIVES).toContain(MthInputDirective);

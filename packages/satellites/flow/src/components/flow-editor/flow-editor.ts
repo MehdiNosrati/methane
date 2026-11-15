@@ -7,8 +7,8 @@ import {
   svg,
   UIElement,
   type PropertyValues,
-} from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+} from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
 import {
   collectHostThemeTokens,
   createAdoptedSheet,

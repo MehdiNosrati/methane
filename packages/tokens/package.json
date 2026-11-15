@@ -1,5 +1,5 @@
 {
-  "name": "@methane/tokens",
+  "name": "@methane-ui/tokens",
   "version": "0.1.0",
   "description": "W3C DTCG design tokens, oklch color ramps, light-dark themes, density, and forced-colors support for Methane UI",
   "license": "MIT",
@@ -28,5 +28,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src && stylelint dist/tokens.css --allow-empty-input",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

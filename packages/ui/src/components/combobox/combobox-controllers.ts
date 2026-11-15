@@ -9,8 +9,8 @@ import {
   type DataControllerStatus,
   type DataSource,
   type Placement,
-} from '@methane/primitives';
-import type { PropertyValues, UIElement } from '@methane/core';
+} from '@methane-ui/primitives';
+import type { PropertyValues, UIElement } from '@methane-ui/core';
 import { comboboxMessages } from './combobox.messages.js';
 import type { ComboboxOption } from './combobox-options.js';
 

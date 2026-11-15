@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export interface ErrorSummaryItem {
   readonly id?: string;
@@ -13,7 +13,7 @@ export const EMPTY_ERROR_SUMMARY_ITEMS: ReadonlyArray<ErrorSummaryItem> = Object
 
 export const errorSummarySpec: ComponentBehaviorSpec = {
   tag: 'mth-error-summary',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['LiveAnnouncer'],
   focusModel: 'delegates-focus',

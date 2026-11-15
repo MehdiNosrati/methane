@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, property, query, state } from '@methane/core';
-import { FormControlController, InputController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, property, query, state } from '@methane-ui/core';
+import { FormControlController, InputController } from '@methane-ui/primitives';
 import { inlineEditMessages } from './inline-edit.messages.js';
 import { inlineEditStyles } from './inline-edit.styles.js';
 

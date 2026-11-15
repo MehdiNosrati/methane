@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { artifactPaneMessages } from './artifact-pane.messages.js';
 
 export const artifactPaneSpec: ComponentBehaviorSpec = {
   tag: 'mth-artifact-pane',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: [],
   controllers: ['RovingFocusController', 'MotionController'],
   focusModel: 'none',
@@ -43,7 +43,7 @@ export const artifactPaneSpec: ComponentBehaviorSpec = {
 
 export const CEM_METADATA = {
   description:
-    'Tabbed AI artifact viewer with version selection, ClipboardAndShare copy, close action, and `@methane/sanitize` HTML/Markdown preview.',
+    'Tabbed AI artifact viewer with version selection, ClipboardAndShare copy, close action, and `@methane-ui/sanitize` HTML/Markdown preview.',
   propDescriptions: {
     open: 'Controls whether the artifact pane is visible.',
     title: 'Artifact display title.',

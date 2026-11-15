@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { ClipboardAndShare } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { ClipboardAndShare } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { readHostTokenValue, syncTokenStylesheet } from '../../shared/theme-sync.js';

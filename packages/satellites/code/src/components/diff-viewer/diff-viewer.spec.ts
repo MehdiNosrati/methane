@@ -1,11 +1,11 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { diffViewerMessages } from './diff-viewer.messages.js';
 
 export type DiffViewMode = 'unified' | 'split';
 
 export const diffViewerSpec: ComponentBehaviorSpec = {
   tag: 'mth-diff-viewer',
-  package: '@methane/code',
+  package: '@methane-ui/code',
   conformance: ['satellite'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { commentThreadMessages } from './comment-thread.messages.js';
 
 export const commentThreadSpec: ComponentBehaviorSpec = {
   tag: 'mth-comment-thread',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',
@@ -40,13 +40,13 @@ export const commentThreadSpec: ComponentBehaviorSpec = {
 
 export const CEM_METADATA = {
   description:
-    'Nested discussion comment thread with collapse/expand replies, resolve/reopen actions, inline replies, and @methane/sanitize markdown bodies.',
+    'Nested discussion comment thread with collapse/expand replies, resolve/reopen actions, inline replies, and @methane-ui/sanitize markdown bodies.',
   propDescriptions: {
     comments: 'Top-level comments with optional recursive `replies` arrays.',
     label: 'Accessible region label.',
     allowReply: 'Enables inline reply triggers and forms.',
     allowResolve: 'Enables resolve/reopen controls on top-level threads.',
-    allowRawHtml: 'Opt-in flag forwarded to @methane/sanitize (defaults to false).',
+    allowRawHtml: 'Opt-in flag forwarded to @methane-ui/sanitize (defaults to false).',
   },
   eventDescriptions: {
     'mth-reply': 'Fired when an inline reply is submitted.',

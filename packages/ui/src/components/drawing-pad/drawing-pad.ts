@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, property, query, state } from '@methane/core';
+import { UIElement, type PropertyValues, html, property, query, state } from '@methane-ui/core';
 import { drawingPadMessages } from './drawing-pad.messages.js';
 import { drawingPadStyles } from './drawing-pad.styles.js';
 

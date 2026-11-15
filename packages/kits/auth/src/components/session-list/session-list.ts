@@ -1,4 +1,4 @@
-import { UIElement, html, nothing, property } from '@methane/core';
+import { UIElement, html, nothing, property } from '@methane-ui/core';
 import { sessionListMessages } from './session-list.messages.js';
 import { sessionListStyles } from './session-list.styles.js';
 

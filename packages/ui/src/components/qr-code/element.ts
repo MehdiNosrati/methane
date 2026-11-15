@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthQrCode } from './qr-code.js';
 
 export { encodeQrMatrix, MthQrCode, type QrErrorCorrection } from './qr-code.js';

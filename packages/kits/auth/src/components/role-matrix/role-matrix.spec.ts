@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { roleMatrixMessages } from './role-matrix.messages.js';
 
 export const roleMatrixSpec: ComponentBehaviorSpec = {
   tag: 'mth-role-matrix',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'host',

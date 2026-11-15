@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormattingUtils } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormattingUtils } from '@methane-ui/primitives';
 import { html, nothing, svg } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { clockMessages } from './clock.messages.js';

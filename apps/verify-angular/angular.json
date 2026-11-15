@@ -26,8 +26,8 @@
             "aot": false,
             "optimization": false,
             "styles": [
-              "@methane/tokens/tokens.css",
-              "@methane/css/index.css"
+              "@methane-ui/tokens/tokens.css",
+              "@methane-ui/css/index.css"
             ],
             "scripts": []
           },

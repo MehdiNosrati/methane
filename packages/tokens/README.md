@@ -1,44 +1,44 @@
-# `@methane/tokens`
+# `@methane-ui/tokens`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 W3C Design Tokens Community Group (DTCG) design tokens, perceptual `oklch()` color ramps, automatic light/dark theming, density presets, reduced-motion overrides, and `forced-colors` high-contrast support for **Methane UI**.
 
-- Zero runtime dependencies — ships precompiled CSS (`tokens.css`), raw DTCG JSON (`tokens.json`), and a standalone programmatic DTCG compiler (`@methane/tokens/compiler`).
+- Zero runtime dependencies — ships precompiled CSS (`tokens.css`), raw DTCG JSON (`tokens.json`), and a standalone programmatic DTCG compiler (`@methane-ui/tokens/compiler`).
 - All CSS custom properties live inside `@layer mth.tokens` so consumer utilities cleanly cascade over defaults.
 
 ## Installation
 
 ```bash
-pnpm add @methane/tokens
+pnpm add @methane-ui/tokens
 # or
-npm install @methane/tokens
+npm install @methane-ui/tokens
 ```
 
 ## Package Exports
 
 | Entrypoint | Purpose |
 | --- | --- |
-| `@methane/tokens` | Precompiled `compiledTokens`, `tokensCss`, `dtcgSource`, typed `tokenVars` CSS variable map, and compiler helpers |
-| `@methane/tokens/tokens.css` | Prebuilt CSS stylesheet (`@layer mth.tokens`) defining `:root`, `[data-mth-theme]`, `[data-mth-density]`, reduced motion, and forced-colors rules |
-| `@methane/tokens/tokens.json` | Canonical W3C DTCG source JSON (`src/tokens.dtcg.json`) |
-| `@methane/tokens/compiler` | Standalone DTCG-to-CSS compiler (`compileDtcgTokens`, `pathToCssVar`, `toKebabCase`) |
+| `@methane-ui/tokens` | Precompiled `compiledTokens`, `tokensCss`, `dtcgSource`, typed `tokenVars` CSS variable map, and compiler helpers |
+| `@methane-ui/tokens/tokens.css` | Prebuilt CSS stylesheet (`@layer mth.tokens`) defining `:root`, `[data-mth-theme]`, `[data-mth-density]`, reduced motion, and forced-colors rules |
+| `@methane-ui/tokens/tokens.json` | Canonical W3C DTCG source JSON (`src/tokens.dtcg.json`) |
+| `@methane-ui/tokens/compiler` | Standalone DTCG-to-CSS compiler (`compileDtcgTokens`, `pathToCssVar`, `toKebabCase`) |
 
 ## Quick Start
 
 ### Importing Prebuilt CSS
 
 ```css
-/* Load cascade layer order first if using @methane/css */
-@import '@methane/css/layers.css';
-@import '@methane/tokens/tokens.css';
+/* Load cascade layer order first if using @methane-ui/css */
+@import '@methane-ui/css/layers.css';
+@import '@methane-ui/tokens/tokens.css';
 ```
 
 Or in a TypeScript/bundler entrypoint:
 
 ```ts
-import '@methane/tokens/tokens.css';
-import { tokenVars } from '@methane/tokens';
+import '@methane-ui/tokens/tokens.css';
+import { tokenVars } from '@methane-ui/tokens';
 
 // Reference strongly-typed CSS custom property names in JS/TS
 document.documentElement.style.setProperty(
@@ -50,8 +50,8 @@ document.documentElement.style.setProperty(
 ### Programmatic DTCG Compilation
 
 ```ts
-import { compileDtcgTokens, pathToCssVar } from '@methane/tokens/compiler';
-import source from '@methane/tokens/tokens.json' with { type: 'json' };
+import { compileDtcgTokens, pathToCssVar } from '@methane-ui/tokens/compiler';
+import source from '@methane-ui/tokens/tokens.json' with { type: 'json' };
 
 const { tokens, tokenMap, css } = compileDtcgTokens(source);
 console.log(tokens.length, pathToCssVar('color.accent'), tokenMap['color.bg']);

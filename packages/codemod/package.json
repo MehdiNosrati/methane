@@ -1,5 +1,5 @@
 {
-  "name": "@methane/codemod",
+  "name": "@methane-ui/codemod",
   "version": "0.1.0",
   "description": "Idempotent AST codemod CLI and migration transforms for Methane UI",
   "license": "MIT",
@@ -32,5 +32,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

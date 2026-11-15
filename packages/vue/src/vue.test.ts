@@ -11,7 +11,7 @@ import {
   isMethaneVueTag,
 } from './index.js';
 
-describe('@methane/vue', () => {
+describe('@methane-ui/vue', () => {
   it('provides Volar GlobalComponents and isCustomElement preset', () => {
     expect(METHANE_VUE_COMPILER_OPTIONS.isCustomElement('mth-combobox')).toBe(true);
     expect(isMethaneVueTag('mth-input')).toBe(true);

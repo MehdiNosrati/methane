@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { codeTabsMessages } from './code-tabs.messages.js';
 
 export const codeTabsSpec: ComponentBehaviorSpec = {
   tag: 'mth-code-tabs',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController', 'SlotCollectionController'],
   focusModel: 'delegates-focus',

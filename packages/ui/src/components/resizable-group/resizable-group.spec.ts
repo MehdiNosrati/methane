@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const resizableGroupSpec: ComponentBehaviorSpec = {
   tag: 'mth-resizable-group',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['SlotCollectionController'],
   focusModel: 'none',

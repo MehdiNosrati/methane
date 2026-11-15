@@ -1,5 +1,5 @@
-import { UIElement, html, nothing, property, type PropertyValues } from '@methane/core';
-import { RovingFocusController, SelectionController } from '@methane/primitives';
+import { UIElement, html, nothing, property, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController, SelectionController } from '@methane-ui/primitives';
 import { aiFeedbackMessages } from './ai-feedback.messages.js';
 import { aiFeedbackStyles } from './ai-feedback.styles.js';
 

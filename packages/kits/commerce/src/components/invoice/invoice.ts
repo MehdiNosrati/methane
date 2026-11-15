@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { isSafeUrl } from '@methane/sanitize';
-import { registerMthBadge } from '@methane/ui/badge';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { isSafeUrl } from '@methane-ui/sanitize';
+import { registerMthBadge } from '@methane-ui/ui/badge';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { invoiceMessages } from './invoice.messages.js';
@@ -20,7 +20,7 @@ export interface InvoiceItem {
 
 /**
  * `<mth-invoice>`: structured print-friendly invoice display with localized `Intl.NumberFormat`
- * currency formatting, status badge, and `@methane/sanitize` logo URL validation.
+ * currency formatting, status badge, and `@methane-ui/sanitize` logo URL validation.
  */
 export class MthInvoice extends UIElement {
   static override messages = invoiceMessages;

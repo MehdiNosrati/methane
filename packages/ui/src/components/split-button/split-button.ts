@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   OverlayController,
   PositioningController,
   RovingFocusController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { splitButtonMessages } from './split-button.messages.js';

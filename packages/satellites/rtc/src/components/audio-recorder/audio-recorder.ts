@@ -6,7 +6,7 @@ import {
   state,
   UIElement,
   type PropertyValues,
-} from '@methane/core';
+} from '@methane-ui/core';
 import {
   collectHostThemeTokens,
   createAdoptedSheet,

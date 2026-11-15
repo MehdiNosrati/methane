@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { filterBuilderMessages } from './filter-builder.messages.js';
 
 export const filterBuilderSpec: ComponentBehaviorSpec = {
   tag: 'mth-filter-builder',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',

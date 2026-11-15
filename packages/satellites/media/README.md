@@ -1,4 +1,4 @@
-# `@methane/media`
+# `@methane-ui/media`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first media satellite components for **Methane UI** — `@lottiefiles/dotlo
 ## Installation
 
 ```bash
-pnpm add @methane/media @methane/core @methane/tokens
+pnpm add @methane-ui/media @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/media @methane/core @methane/tokens
+npm install @methane-ui/media @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/media` | Auto-registers all 3 media elements and exports `registerAllComponents(prefix?)` |
-| `@methane/media/<slug>` | Per-component tree-shakeable import (`lottie`, `waveform`, `image-annotator`) |
-| `@methane/media/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` helpers |
-| `@methane/media/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/media` | Auto-registers all 3 media elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/media/<slug>` | Per-component tree-shakeable import (`lottie`, `waveform`, `image-annotator`) |
+| `@methane-ui/media/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` helpers |
+| `@methane-ui/media/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -46,9 +46,9 @@ npm install @methane/media @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/media/waveform';
-import '@methane/media/image-annotator';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/media/waveform';
+import '@methane-ui/media/image-annotator';
 
 const annotator = document.querySelector('mth-image-annotator')!;
 annotator.addEventListener('mth-annotation-add', (ev) => {
@@ -59,7 +59,7 @@ annotator.addEventListener('mth-annotation-add', (ev) => {
 ## Theming, A11y & Security Notes
 
 - **Theming**: Customize via `::part(base)`, `::part(controls)`, `::part(scrubber)`, `::part(bars)`, `::part(progress)`, `::part(stage)`, and `--mth-*` tokens.
-- **Security**: Media `src` attributes reject unsafe `javascript:` / untrusted `data:` protocols via `@methane/sanitize`, and `<mth-image-annotator>` sanitizes text labels before SVG rendering.
+- **Security**: Media `src` attributes reject unsafe `javascript:` / untrusted `data:` protocols via `@methane-ui/sanitize`, and `<mth-image-annotator>` sanitizes text labels before SVG rendering.
 - **Accessibility & Reduced Motion**: `<mth-waveform>` exposes slider/button keyboard controls (`ArrowLeft`/`ArrowRight` seeking); `<mth-lottie>` suppresses `autoplay` under `prefers-reduced-motion: reduce`.
 - **SSR & Lazy Engine**: `DotLottie` and `AudioContext` / Web Audio decoding run lazily on client connect so SSR emits clean interactive shells.
 

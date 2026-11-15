@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { savedViewsMessages } from './saved-views.messages.js';
 
 export const savedViewsSpec: ComponentBehaviorSpec = {
   tag: 'mth-saved-views',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus'],
   controllers: ['SelectionController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

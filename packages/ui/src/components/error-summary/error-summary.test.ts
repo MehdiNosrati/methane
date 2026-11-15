@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { LiveAnnouncer } from '@methane/primitives';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { LiveAnnouncer } from '@methane-ui/primitives';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import '@methane/ui/input';
+import '@methane-ui/ui/input';
 import { errorSummarySpec } from './error-summary.spec.js';
 import { MthErrorSummary, registerMthErrorSummary } from './index.js';
 

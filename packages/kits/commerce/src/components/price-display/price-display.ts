@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { registerMthBadge } from '@methane/ui/badge';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { registerMthBadge } from '@methane-ui/ui/badge';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { priceDisplayMessages } from './price-display.messages.js';

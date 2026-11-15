@@ -17,7 +17,7 @@ const manifest: MigrationManifest = {
   ],
 };
 
-describe('@methane/codemod CSS AST transform', () => {
+describe('@methane-ui/codemod CSS AST transform', () => {
   it('rewrites custom element type selectors, --mth-* tokens, var(), @property, and attribute/slot selectors while leaving classes and comments intact', () => {
     const input = `/* mth-button and --mth-color-primary in comment stay untouched */
 @property --mth-color-primary {

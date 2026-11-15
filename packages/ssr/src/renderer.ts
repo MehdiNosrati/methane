@@ -195,7 +195,7 @@ export function renderToStringStream(
             value = await (value as PromiseLike<unknown>);
             continue;
           }
-          throw new Error(`Unexpected value in @methane/ssr render stream: ${String(value)}`);
+          throw new Error(`Unexpected value in @methane-ui/ssr render stream: ${String(value)}`);
         }
       }
       controller.close();

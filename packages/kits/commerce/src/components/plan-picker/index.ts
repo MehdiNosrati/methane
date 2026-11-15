@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthPlanPicker } from './element.js';
 
 export { MthPlanPicker, type BillingPlan } from './element.js';

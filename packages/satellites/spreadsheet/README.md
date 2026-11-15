@@ -1,4 +1,4 @@
-# `@methane/spreadsheet`
+# `@methane-ui/spreadsheet`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Virtualized spreadsheet grid (`<mth-spreadsheet>`) and synchronized formula bar 
 ## Installation
 
 ```bash
-pnpm add @methane/spreadsheet @methane/core @methane/tokens
+pnpm add @methane-ui/spreadsheet @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/spreadsheet @methane/core @methane/tokens
+npm install @methane-ui/spreadsheet @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/spreadsheet` | Auto-registers `<mth-spreadsheet>` and `<mth-formula-bar>` and exports `registerAllComponents(prefix?)` |
-| `@methane/spreadsheet/spreadsheet` / `@methane/spreadsheet/formula-bar` | Per-component tree-shakeable entrypoints |
-| `@methane/spreadsheet/*/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
-| `@methane/spreadsheet/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/spreadsheet` | Auto-registers `<mth-spreadsheet>` and `<mth-formula-bar>` and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/spreadsheet/spreadsheet` / `@methane-ui/spreadsheet/formula-bar` | Per-component tree-shakeable entrypoints |
+| `@methane-ui/spreadsheet/*/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
+| `@methane-ui/spreadsheet/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -38,8 +38,8 @@ npm install @methane/spreadsheet @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/spreadsheet';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/spreadsheet';
 
 const sheet = document.getElementById('sheet') as any;
 const fx = document.getElementById('fx') as any;

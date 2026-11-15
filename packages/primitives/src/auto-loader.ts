@@ -1,4 +1,4 @@
-import { UIElement, css, getRuntime, html, property, state, type MessageCatalog } from '@methane/core';
+import { UIElement, css, getRuntime, html, property, state, type MessageCatalog } from '@methane-ui/core';
 
 export type TagLoaderFn = (tagName: string) => Promise<void> | void;
 

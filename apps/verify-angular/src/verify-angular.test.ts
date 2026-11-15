@@ -1,11 +1,11 @@
 import '@angular/compiler';
 import { ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MthCheckboxDirective, MthComboboxDirective, MthInputDirective } from '@methane/angular';
+import { MthCheckboxDirective, MthComboboxDirective, MthInputDirective } from '@methane-ui/angular';
 import { describe, expect, it } from 'vitest';
 import { renderVerifyAngularSsr } from './server.js';
 
-describe('@methane/verify-angular', () => {
+describe('@methane-ui/verify-angular', () => {
   it('renders Angular 19 SSR with Reactive Forms, DSD shadow roots, <head> link hoisting, and ng markers without CUSTOM_ELEMENTS_SCHEMA', async () => {
     const result = await renderVerifyAngularSsr();
 

@@ -6,7 +6,7 @@ export const CORE_MAJOR = 1;
 /**
  * Locked Section 7 Contract (ADR-007): Global Versioned Runtime Symbol.
  */
-export const RUNTIME_SYMBOL = Symbol.for('@methane/runtime');
+export const RUNTIME_SYMBOL = Symbol.for('@methane-ui/runtime');
 
 export interface OverlayStackEntry {
   readonly id: string;
@@ -636,7 +636,7 @@ export interface NegotiateRuntimeOptions {
   readonly hostGlobal?: Record<symbol, unknown>;
 }
 
-const RUNTIME_BUNDLE_IDS_SYMBOL = Symbol.for('@methane/runtime:bundles');
+const RUNTIME_BUNDLE_IDS_SYMBOL = Symbol.for('@methane-ui/runtime:bundles');
 
 export function negotiateRuntime(options?: NegotiateRuntimeOptions): MethaneRuntime {
   const version = options?.version ?? CORE_VERSION;
@@ -668,14 +668,14 @@ export function negotiateRuntime(options?: NegotiateRuntimeOptions): MethaneRunt
 
   if (existing.major !== parsed.major) {
     throw new Error(
-      `Incompatible @methane/core runtime major version: existing=${existing.major} (${existing.version}), candidate=${parsed.major} (${version}).`,
+      `Incompatible @methane-ui/core runtime major version: existing=${existing.major} (${existing.version}), candidate=${parsed.major} (${version}).`,
     );
   }
 
   if (!bundleIds.has(bundleId)) {
     bundleIds.add(bundleId);
     devWarn(
-      `Duplicate @methane/core bundle detected ("${bundleId}" alongside existing "${existing.version}"). Sharing global runtime at Symbol.for('@methane/runtime').`,
+      `Duplicate @methane-ui/core bundle detected ("${bundleId}" alongside existing "${existing.version}"). Sharing global runtime at Symbol.for('@methane-ui/runtime').`,
     );
   }
 

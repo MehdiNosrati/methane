@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { auditLogMessages } from './audit-log.messages.js';
 
 export const auditLogSpec: ComponentBehaviorSpec = {
   tag: 'mth-audit-log',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['data-consumer'],
   controllers: ['DataController', 'VirtualizerController'],
   focusModel: 'delegates-focus',

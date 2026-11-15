@@ -1,5 +1,5 @@
-@import url('@methane/tokens/tokens.css');
-@import url('@methane/css/index.css');
+@import url('@methane-ui/tokens/tokens.css');
+@import url('@methane-ui/css/index.css');
 
 @layer mth.utilities {
   body {

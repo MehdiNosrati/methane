@@ -1,4 +1,4 @@
-import { UIElement } from '@methane/core';
+import { UIElement } from '@methane-ui/core';
 import { html, nothing, svg, type SVGTemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { iconMessages } from './icon.messages.js';

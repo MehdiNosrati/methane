@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFormWizard } from './form-wizard.js';
 
 export { MthFormWizard, type StepValidator } from './form-wizard.js';

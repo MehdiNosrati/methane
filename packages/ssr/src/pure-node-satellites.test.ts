@@ -23,7 +23,7 @@ const SATELLITE_TAGS = [
 ] as const;
 
 describe('Pure-Node SSR barrel imports and satellite DSD rendering', () => {
-  it('imports @methane/ui, all 5 kits, and all 11 satellites in pure Node without jsdom and renders valid DSD templates', () => {
+  it('imports @methane-ui/ui, all 5 kits, and all 11 satellites in pure Node without jsdom and renders valid DSD templates', () => {
     const script = `
 import './packages/ssr/dist/dom-shim.js';
 import { transformHtmlDsd } from './packages/ssr/dist/index.js';

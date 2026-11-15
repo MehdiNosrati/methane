@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { collabCursorsMessages } from './collab-cursors.messages.js';
 
 export const collabCursorsSpec: ComponentBehaviorSpec = {
   tag: 'mth-collab-cursors',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: [],
   controllers: [],
   focusModel: 'none',

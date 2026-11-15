@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBadge } from './badge.js';
 
 export { MthBadge, type MthBadgeSize, type MthBadgeVariant } from './badge.js';

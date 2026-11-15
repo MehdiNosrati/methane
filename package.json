@@ -9,18 +9,20 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "pnpm --filter \"./packages/**\" --filter \"!@methane/react\" --filter \"!@methane/vue\" --filter \"!@methane/angular\" --filter \"!@methane/svelte\" --filter \"./tooling/**\" --if-present run build && pnpm run codegen && pnpm --filter @methane/react --filter @methane/vue --filter @methane/angular --filter @methane/svelte --filter \"./apps/**\" --if-present run build",
+    "build": "pnpm --filter \"./packages/**\" --filter \"!@methane-ui/react\" --filter \"!@methane-ui/vue\" --filter \"!@methane-ui/angular\" --filter \"!@methane-ui/svelte\" --filter \"./tooling/**\" --if-present run build && pnpm run codegen && pnpm --filter @methane-ui/react --filter @methane-ui/vue --filter @methane-ui/angular --filter @methane-ui/svelte --filter \"./apps/**\" --if-present run build",
     "codegen": "node tooling/wrapper-codegen/dist/cli.js --workspace && node tooling/figma-sync/dist/cli.js",
     "codegen:check": "node tooling/wrapper-codegen/dist/cli.js --workspace --check",
     "typecheck": "pnpm -r --if-present run typecheck",
     "lint": "pnpm -r --if-present run lint",
     "test": "pnpm -r --if-present run test",
-    "test:e2e": "METHANE_E2E_SERVERS=1 playwright test"
+    "test:e2e": "METHANE_E2E_SERVERS=1 playwright test",
+    "release:dry-run": "pnpm -r --filter \"./packages/**\" --filter \"./tooling/*\" --no-git-checks publish --access public --dry-run",
+    "release:publish": "pnpm -r --filter \"./packages/**\" --filter \"./tooling/*\" --no-git-checks publish --access public"
   },
   "pnpm": {
     "peerDependencyRules": {
       "allowedVersions": {
-        "@methane/core": "*"
+        "@methane-ui/core": "*"
       }
     }
   },

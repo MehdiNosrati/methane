@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { orgChartMessages } from './org-chart.messages.js';
 
 export const orgChartSpec: ComponentBehaviorSpec = {
   tag: 'mth-org-chart',
-  package: '@methane/flow',
+  package: '@methane-ui/flow',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

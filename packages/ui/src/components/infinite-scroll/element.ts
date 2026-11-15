@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthInfiniteScroll } from './infinite-scroll.js';
 
 export { MthInfiniteScroll } from './infinite-scroll.js';

@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { OverlayController, type OverlayCloseReason } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { OverlayController, type OverlayCloseReason } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { cookieBannerMessages } from './cookie-banner.messages.js';

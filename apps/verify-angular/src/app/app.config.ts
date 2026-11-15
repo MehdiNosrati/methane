@@ -1,5 +1,5 @@
 import { type ApplicationConfig } from '@angular/core';
-import { provideMethaneHydration } from '@methane/ssr-angular/client';
+import { provideMethaneHydration } from '@methane-ui/ssr-angular/client';
 
 export const appConfig: ApplicationConfig = {
   providers: [

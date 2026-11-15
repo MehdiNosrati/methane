@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDropdownMenu } from './dropdown-menu.js';
 
 export { MthDropdownMenu, type MthDropdownMenuRoleMode } from './dropdown-menu.js';

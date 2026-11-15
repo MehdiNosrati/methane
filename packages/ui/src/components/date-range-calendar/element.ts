@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDateRangeCalendar } from './date-range-calendar.js';
 
 export { MthDateRangeCalendar } from './date-range-calendar.js';

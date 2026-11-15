@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDurationInput } from './duration-input.js';
 
 export { MthDurationInput } from './duration-input.js';

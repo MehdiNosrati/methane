@@ -1,5 +1,5 @@
-import { html, nothing, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { ObserverPoolController } from '@methane/primitives';
+import { html, nothing, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { ObserverPoolController } from '@methane-ui/primitives';
 import type { StyleSpecification } from 'maplibre-gl';
 import { createMapEngine, type LngLatTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapMessages } from './map.messages.js';

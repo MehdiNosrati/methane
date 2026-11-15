@@ -1,5 +1,5 @@
-import { defineComponents } from '@methane/core';
-import { registerMthBadge } from '@methane/ui/badge/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthBadge } from '@methane-ui/ui/badge/element.js';
 import { MthSessionList } from './session-list.js';
 
 export { MthSessionList, type SessionListItem } from './session-list.js';

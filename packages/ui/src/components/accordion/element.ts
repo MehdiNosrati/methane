@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthAccordion } from './accordion.js';
 
 export { MthAccordion } from './accordion.js';

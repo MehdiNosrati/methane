@@ -7,8 +7,8 @@ import { describe, expect, it } from 'vitest';
 const THIS_DIR = dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = resolve(THIS_DIR, '..');
 
-describe('@methane/core/hydrate opt-in SSR hydration', () => {
-  it('does not install litElementHydrateSupport when importing @methane/core alone', () => {
+describe('@methane-ui/core/hydrate opt-in SSR hydration', () => {
+  it('does not install litElementHydrateSupport when importing @methane-ui/core alone', () => {
     const coreDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/index.js')).href;
     const script = `
       import ${JSON.stringify(coreDistUrl)};
@@ -24,7 +24,7 @@ describe('@methane/core/hydrate opt-in SSR hydration', () => {
     expect(JSON.parse(stdout)).toEqual({ hasSupport: false });
   });
 
-  it('installs litElementHydrateSupport and patches LitElement when importing @methane/core/hydrate before lit', () => {
+  it('installs litElementHydrateSupport and patches LitElement when importing @methane-ui/core/hydrate before lit', () => {
     const hydrateDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/hydrate.js')).href;
     const coreDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/index.js')).href;
     const script = `
@@ -45,7 +45,7 @@ describe('@methane/core/hydrate opt-in SSR hydration', () => {
     expect(JSON.parse(stdout)).toEqual({ hasSupport: true, patched: true });
   });
 
-  it('retroactively patches LitElement when @methane/core is imported BEFORE @methane/core/hydrate', () => {
+  it('retroactively patches LitElement when @methane-ui/core is imported BEFORE @methane-ui/core/hydrate', () => {
     const hydrateDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/hydrate.js')).href;
     const coreDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/index.js')).href;
     const script = `

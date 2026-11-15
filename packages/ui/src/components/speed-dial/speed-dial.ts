@@ -1,10 +1,10 @@
-import { UIElement, type PropertyValues, html, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, property, query } from '@methane-ui/core';
 import {
   MotionController,
   OverlayController,
   RovingFocusController,
   SlotCollectionController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { speedDialMessages } from './speed-dial.messages.js';
 import { speedDialStyles } from './speed-dial.styles.js';
 

@@ -1,4 +1,4 @@
-import { UIElement, getRuntime, html, registerLocaleMessages } from '@methane/core';
+import { UIElement, getRuntime, html, registerLocaleMessages } from '@methane-ui/core';
 import { describe, expect, it, vi } from 'vitest';
 import {
   AutoLoader,

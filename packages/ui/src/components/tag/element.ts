@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTag } from './tag.js';
 
 export { MthTag, type MthTagSize, type MthTagVariant } from './tag.js';

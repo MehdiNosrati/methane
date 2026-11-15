@@ -14,7 +14,7 @@
           "description": "Virtualized chat message stream with VirtualizerController, DataController support, date/unread dividers, sanitized markdown bodies, and scroll-to-bottom anchor.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -92,7 +92,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Opt-in flag forwarded to @methane/sanitize markdown renderer (defaults to false)."
+              "description": "Opt-in flag forwarded to @methane-ui/sanitize markdown renderer (defaults to false)."
             }
           ],
           "attributes": [
@@ -148,7 +148,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Opt-in flag forwarded to @methane/sanitize markdown renderer (defaults to false)."
+              "description": "Opt-in flag forwarded to @methane-ui/sanitize markdown renderer (defaults to false)."
             }
           ],
           "events": [
@@ -232,7 +232,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-chat-thread",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [],
             "controllers": [
               "VirtualizerController",
@@ -388,7 +388,7 @@
           "description": "Multiplayer live cursor and selection overlay using CSP-safe adopted CSSStyleSheet rules with strict numeric and label sanitization.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -458,7 +458,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-collab-cursors",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [],
             "controllers": [],
             "focusModel": "none",
@@ -537,10 +537,10 @@
           "tagName": "mth-comment-thread",
           "customElement": true,
           "delegatesFocus": true,
-          "description": "Nested discussion comment thread with collapse/expand replies, resolve/reopen actions, inline replies, and @methane/sanitize markdown bodies.",
+          "description": "Nested discussion comment thread with collapse/expand replies, resolve/reopen actions, inline replies, and @methane-ui/sanitize markdown bodies.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -589,7 +589,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Opt-in flag forwarded to @methane/sanitize (defaults to false)."
+              "description": "Opt-in flag forwarded to @methane-ui/sanitize (defaults to false)."
             }
           ],
           "attributes": [
@@ -627,7 +627,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Opt-in flag forwarded to @methane/sanitize (defaults to false)."
+              "description": "Opt-in flag forwarded to @methane-ui/sanitize (defaults to false)."
             }
           ],
           "events": [
@@ -699,7 +699,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-comment-thread",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [],
             "controllers": [],
             "focusModel": "delegates-focus",
@@ -834,7 +834,7 @@
           "description": "Form-associated IME-safe chat message composer with Enter / Mod+Enter submit, attachment and emoji triggers, and streaming stop state.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1210,7 +1210,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-message-composer",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [
               "form-control"
             ],
@@ -1450,7 +1450,7 @@
           "description": "Notification bell trigger with unread badge and accessible anchored notification feed popover.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1536,7 +1536,7 @@
                 "text": "boolean"
               },
               "default": "true",
-              "description": "Subscribes to the shared `@methane/core` runtime notification store."
+              "description": "Subscribes to the shared `@methane-ui/core` runtime notification store."
             },
             {
               "kind": "field",
@@ -1628,7 +1628,7 @@
                 "text": "boolean"
               },
               "default": "true",
-              "description": "Subscribes to the shared `@methane/core` runtime notification store."
+              "description": "Subscribes to the shared `@methane-ui/core` runtime notification store."
             },
             {
               "name": "label",
@@ -1769,7 +1769,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-notification-bell",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [
               "overlay"
             ],
@@ -1981,7 +1981,7 @@
           "description": "Accessible user presence indicator with shape-differentiated SVG markers for forced-colors safety.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2124,7 +2124,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-presence-badge",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [],
             "controllers": [],
             "focusModel": "none",
@@ -2224,7 +2224,7 @@
           "description": "Accessible emoji reaction pill bar with SelectionController toggling and RTL-aware RovingFocusController navigation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2392,7 +2392,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-reaction-bar",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [
               "roving-focus"
             ],
@@ -2532,7 +2532,7 @@
           "description": "Accessible live typing indicator using localized pluralized messages and MotionController reduced-motion support.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2626,7 +2626,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-typing-indicator",
-            "package": "@methane/chat",
+            "package": "@methane-ui/chat",
             "conformance": [],
             "controllers": [
               "MotionController"

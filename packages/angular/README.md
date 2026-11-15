@@ -1,15 +1,15 @@
-# `@methane/angular`
+# `@methane-ui/angular`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Standalone Angular 17+ `@Directive` wrappers, `ControlValueAccessor` form bindings, and strongly-typed `@Input()` / `@Output()` bindings for `@methane/*` custom elements.
+Standalone Angular 17+ `@Directive` wrappers, `ControlValueAccessor` form bindings, and strongly-typed `@Input()` / `@Output()` bindings for `@methane-ui/*` custom elements.
 
 ## Installation
 
 ```bash
-pnpm add @methane/angular @methane/ui @methane/core
+pnpm add @methane-ui/angular @methane-ui/ui @methane-ui/core
 # or
-npm install @methane/angular @methane/ui @methane/core
+npm install @methane-ui/angular @methane-ui/ui @methane-ui/core
 ```
 
 > **Peer dependencies:** `@angular/core >= 17.0.0`, `@angular/forms >= 17.0.0`. Remember to include `CUSTOM_ELEMENTS_SCHEMA` on components rendering `<mth-*>` tags.
@@ -29,10 +29,10 @@ npm install @methane/angular @methane/ui @methane/core
 ```ts
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import '@methane/tokens/tokens.css';
-import '@methane/ui/button';
-import '@methane/ui/input';
-import { MthButtonDirective, MthInputDirective } from '@methane/angular';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/input';
+import { MthButtonDirective, MthInputDirective } from '@methane-ui/angular';
 
 @Component({
   selector: 'app-login',
@@ -60,7 +60,7 @@ export class LoginComponent {
 ### Bulk Import via `METHANE_ANGULAR_DIRECTIVES`
 
 ```ts
-import { METHANE_ANGULAR_DIRECTIVES } from '@methane/angular';
+import { METHANE_ANGULAR_DIRECTIVES } from '@methane-ui/angular';
 
 @Component({
   standalone: true,
@@ -73,7 +73,7 @@ export class DashboardComponent {}
 
 ## SSR Notes
 
-- Pair with `@methane/ssr-angular` for Angular SSR / Universal Declarative Shadow DOM serialization and `provideMethaneHydration().initialize()` inside Angular `provideAppInitializer()`.
+- Pair with `@methane-ui/ssr-angular` for Angular SSR / Universal Declarative Shadow DOM serialization and `provideMethaneHydration().initialize()` inside Angular `provideAppInitializer()`.
 
 ## License
 

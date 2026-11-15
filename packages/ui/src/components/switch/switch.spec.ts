@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { switchMessages } from './switch.messages.js';
 
 export const switchSpec: ComponentBehaviorSpec = {
   tag: 'mth-switch',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

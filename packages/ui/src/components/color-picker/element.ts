@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthColorPicker } from './color-picker.js';
 
 export { MthColorPicker } from './color-picker.js';

@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       dry_run:
@@ -21,7 +23,7 @@ env:
 
 jobs:
   release:
-    name: Verify, Budget Check & Publish (@methane/*)
+    name: Verify, Budget Check & Publish (@methane-ui/*)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,6 +45,9 @@ jobs:
       - name: Build packages
         run: pnpm build
 
+      - name: Verify codegen is up to date
+        run: pnpm run codegen:check
+
       - name: Typecheck
         run: pnpm typecheck
 
@@ -52,25 +57,32 @@ jobs:
       - name: Test (including security & license gates)
         run: pnpm test
 
-      - name: Bundle budget check (@methane/bundle-budget)
+      - name: Bundle budget check (@methane-ui/bundle-budget)
         run: |
           node --input-type=module -e "
             import { checkBundleBudgets } from './tooling/bundle-budget/dist/index.js';
             const report = await checkBundleBudgets([
-              { name: '@methane/sanitize', entryPoint: './packages/sanitize/dist/index.js' },
-              { name: '@methane/core', entryPoint: './packages/core/dist/index.js' },
-              { name: '@methane/primitives', entryPoint: './packages/primitives/dist/index.js' },
+              { name: '@methane-ui/sanitize', entryPoint: './packages/sanitize/dist/index.js' },
+              { name: '@methane-ui/core', entryPoint: './packages/core/dist/index.js' },
+              { name: '@methane-ui/primitives', entryPoint: './packages/primitives/dist/index.js' },
             ]);
             console.log(report.markdown);
             if (!report.passed) process.exit(1);
           "
 
-      - name: Publish @methane/* packages with Sigstore provenance
+      - name: Publish @methane-ui/* packages with Sigstore provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          if [ -z "$NODE_AUTH_TOKEN" ] && [ -n "${NPM_CONFIG_USERCONFIG:-}" ] && [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+            sed -i '/_authToken=/d' "$NPM_CONFIG_USERCONFIG"
+          fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
+            unset NPM_CONFIG_PROVENANCE
             pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public --dry-run
           else
+            if [ -z "$NODE_AUTH_TOKEN" ]; then
+              npm install -g npm@latest
+            fi
             pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public
           fi

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { formulaBarMessages } from './formula-bar.messages.js';
 
 export const formulaBarSpec: ComponentBehaviorSpec = {
   tag: 'mth-formula-bar',
-  package: '@methane/spreadsheet',
+  package: '@methane-ui/spreadsheet',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

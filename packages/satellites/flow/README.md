@@ -1,4 +1,4 @@
-# `@methane/flow`
+# `@methane-ui/flow`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first interactive node/DAG flow diagram editor (`<mth-flow-editor>`) and hi
 ## Installation
 
 ```bash
-pnpm add @methane/flow @methane/core @methane/tokens
+pnpm add @methane-ui/flow @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/flow @methane/core @methane/tokens
+npm install @methane-ui/flow @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/flow` | Auto-registers `<mth-flow-editor>` and `<mth-org-chart>` and exports `registerAllComponents(prefix?)` |
-| `@methane/flow/flow-editor` / `@methane/flow/org-chart` | Per-component tree-shakeable entrypoints |
-| `@methane/flow/*/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` helpers |
-| `@methane/flow/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/flow` | Auto-registers `<mth-flow-editor>` and `<mth-org-chart>` and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/flow/flow-editor` / `@methane-ui/flow/org-chart` | Per-component tree-shakeable entrypoints |
+| `@methane-ui/flow/*/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` helpers |
+| `@methane-ui/flow/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -37,8 +37,8 @@ npm install @methane/flow @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/flow/flow-editor';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/flow/flow-editor';
 
 const flow = document.getElementById('pipeline') as any;
 flow.nodes = [

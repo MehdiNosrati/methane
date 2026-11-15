@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthColumnChooser } from './column-chooser.js';
 
 export { MthColumnChooser, type ColumnChooserItem } from './column-chooser.js';

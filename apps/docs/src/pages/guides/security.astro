@@ -4,12 +4,12 @@ import DocsLayout from '../../components/DocsLayout.astro';
 
 <DocsLayout title="Security & Sanitization">
   <article class="mth-prose">
-    <h1>Security &amp; Sanitization (<code>@methane/sanitize</code>)</h1>
+    <h1>Security &amp; Sanitization (<code>@methane-ui/sanitize</code>)</h1>
     <p>
       Every rich text, Markdown, and AI streaming surface in Methane sanitizes untrusted HTML
-      through <code>@methane/sanitize</code>. Raw <code>innerHTML</code> and Lit
-      <code>unsafeHTML</code> outside <code>@methane/sanitize</code> are statically banned by
-      <code>@methane/lint-plugin</code>.
+      through <code>@methane-ui/sanitize</code>. Raw <code>innerHTML</code> and Lit
+      <code>unsafeHTML</code> outside <code>@methane-ui/sanitize</code> are statically banned by
+      <code>@methane-ui/lint-plugin</code>.
     </p>
 
     <h2>Defense-in-Depth Rules</h2>
@@ -38,7 +38,7 @@ import DocsLayout from '../../components/DocsLayout.astro';
       </li>
     </ul>
 
-    <pre><code>{`import { safeSetHTML, parseSafeFragment, isSafeUrl } from '@methane/sanitize';
+    <pre><code>{`import { safeSetHTML, parseSafeFragment, isSafeUrl } from '@methane-ui/sanitize';
 
 safeSetHTML(containerEl, untrustedHtml);`}</code></pre>
   </article>

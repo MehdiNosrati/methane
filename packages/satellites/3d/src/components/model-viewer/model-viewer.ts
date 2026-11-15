@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { MotionController, ObserverPoolController } from '@methane/primitives';
-import { isSafeUrl, sanitizeUrl } from '@methane/sanitize';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { MotionController, ObserverPoolController } from '@methane-ui/primitives';
+import { isSafeUrl, sanitizeUrl } from '@methane-ui/sanitize';
 import { html } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import type * as THREE from 'three';

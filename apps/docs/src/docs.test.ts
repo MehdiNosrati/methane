@@ -2,9 +2,9 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { MTH_CSS_PRIMITIVES } from '@methane/css';
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
-import { compileDtcgTokens } from '@methane/tokens';
+import { MTH_CSS_PRIMITIVES } from '@methane-ui/css';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
+import { compileDtcgTokens } from '@methane-ui/tokens';
 import { describe, expect, it } from 'vitest';
 import { ADRS } from './lib/adrs.js';
 import { loadComponentDocs } from './lib/component-loader.js';
@@ -33,8 +33,8 @@ function collectFiles(dir: string, suffix: string): string[] {
   return out;
 }
 
-describe('@methane/docs catalog, loaders, theme builder, and built Astro site', () => {
-  it('covers all 23 @methane/css primitives with When NOT to use guidance and 5 framework snippets', () => {
+describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site', () => {
+  it('covers all 23 @methane-ui/css primitives with When NOT to use guidance and 5 framework snippets', () => {
     expect(CSS_PRIMITIVE_CATALOG).toHaveLength(23);
     const ids = new Set(CSS_PRIMITIVE_CATALOG.map((c) => c.id));
     for (const expected of MTH_CSS_PRIMITIVES) {
@@ -56,24 +56,24 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
 
     const packages = new Set(components.map((c) => c.packageName));
     for (const expectedPkg of [
-      '@methane/ui',
-      '@methane/primitives',
-      '@methane/admin',
-      '@methane/ai',
-      '@methane/auth',
-      '@methane/chat',
-      '@methane/commerce',
-      '@methane/3d',
-      '@methane/charts',
-      '@methane/code',
-      '@methane/datagrid',
-      '@methane/editor',
-      '@methane/flow',
-      '@methane/maps',
-      '@methane/media',
-      '@methane/pdf',
-      '@methane/rtc',
-      '@methane/spreadsheet',
+      '@methane-ui/ui',
+      '@methane-ui/primitives',
+      '@methane-ui/admin',
+      '@methane-ui/ai',
+      '@methane-ui/auth',
+      '@methane-ui/chat',
+      '@methane-ui/commerce',
+      '@methane-ui/3d',
+      '@methane-ui/charts',
+      '@methane-ui/code',
+      '@methane-ui/datagrid',
+      '@methane-ui/editor',
+      '@methane-ui/flow',
+      '@methane-ui/maps',
+      '@methane-ui/media',
+      '@methane-ui/pdf',
+      '@methane-ui/rtc',
+      '@methane-ui/spreadsheet',
     ]) {
       expect(packages.has(expectedPkg), `Missing package ${expectedPkg}`).toBe(true);
     }
@@ -86,32 +86,32 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(combobox!.whenNotToUse.length).toBeGreaterThan(10);
 
     const button = components.find((c) => c.tagName === 'mth-button');
-    expect(button?.snippets.html).toContain('@methane/ui/button');
+    expect(button?.snippets.html).toContain('@methane-ui/ui/button');
     expect(button?.snippets.angular).toContain('CUSTOM_ELEMENTS_SCHEMA');
-    expect(button?.snippets.angular).toContain("import '@methane/ui/button';");
-    expect(button?.snippets.svelte).toContain("import '@methane/ui/button';");
-    expect(button?.snippets.svelte).toContain("import MthButton from '@methane/svelte/MthButton.svelte';");
-    expect(button?.snippets.svelte).not.toContain("from '@methane/svelte';");
+    expect(button?.snippets.angular).toContain("import '@methane-ui/ui/button';");
+    expect(button?.snippets.svelte).toContain("import '@methane-ui/ui/button';");
+    expect(button?.snippets.svelte).toContain("import MthButton from '@methane-ui/svelte/MthButton.svelte';");
+    expect(button?.snippets.svelte).not.toContain("from '@methane-ui/svelte';");
 
     const skipLink = components.find((c) => c.tagName === 'mth-skip-link');
-    expect(skipLink?.snippets.html).toContain('src="@methane/primitives"');
-    expect(skipLink?.snippets.react).toContain("import '@methane/primitives';");
+    expect(skipLink?.snippets.html).toContain('src="@methane-ui/primitives"');
+    expect(skipLink?.snippets.react).toContain("import '@methane-ui/primitives';");
 
     const authForm = components.find((c) => c.tagName === 'mth-auth-form');
     expect(authForm?.packageGroup).toBe('kits');
-    expect(authForm?.snippets.html).toContain('@methane/auth/auth-form');
-    expect(authForm?.snippets.react).not.toContain('@methane/ui/');
+    expect(authForm?.snippets.html).toContain('@methane-ui/auth/auth-form');
+    expect(authForm?.snippets.react).not.toContain('@methane-ui/ui/');
 
     const datagrid = components.find((c) => c.tagName === 'mth-datagrid');
     expect(datagrid?.packageGroup).toBe('satellites');
     expect(datagrid?.bundleBadge.coldLabel).toContain('lazy engine');
-    expect(datagrid?.snippets.html).toContain('@methane/datagrid/datagrid');
-    expect(datagrid?.snippets.react).not.toContain('@methane/ui/');
+    expect(datagrid?.snippets.html).toContain('@methane-ui/datagrid/datagrid');
+    expect(datagrid?.snippets.react).not.toContain('@methane-ui/ui/');
 
     for (const entry of components) {
-      if (entry.packageName !== '@methane/ui') {
-        expect(entry.snippets.html).not.toContain('@methane/ui/');
-        expect(entry.snippets.react).not.toContain('@methane/ui/');
+      if (entry.packageName !== '@methane-ui/ui') {
+        expect(entry.snippets.html).not.toContain('@methane-ui/ui/');
+        expect(entry.snippets.react).not.toContain('@methane-ui/ui/');
       }
       for (const snippet of Object.values(entry.snippets)) {
         expect(snippet, `Malformed quotes in ${entry.tagName}`).not.toContain('"""');
@@ -130,7 +130,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
 
       const customSpec: ComponentBehaviorSpec = {
         tag: 'mth-spark-gauge',
-        package: '@methane/ui',
+        package: '@methane-ui/ui',
         conformance: ['roving-focus'],
         controllers: ['RovingFocusController', 'MotionController'],
         focusModel: 'host',
@@ -177,7 +177,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
                   description: 'Component with embedded x-methane-spec.',
                   'x-methane-spec': {
                     tag: 'mth-inline-card',
-                    package: '@methane/ui',
+                    package: '@methane-ui/ui',
                     conformance: ['overlay'],
                     controllers: ['OverlayController'],
                     focusModel: 'host',
@@ -204,7 +204,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
       expect(gauge!.spec?.keyboard).toHaveLength(2);
       expect(gauge!.specMarkdown).toContain('Increments gauge value');
       expect(gauge!.a11yChecklist?.items.some((i) => i.category === 'keyboard')).toBe(true);
-      expect(gauge!.snippets.svelte).toContain("import MthSparkGauge from '@methane/svelte/MthSparkGauge.svelte';");
+      expect(gauge!.snippets.svelte).toContain("import MthSparkGauge from '@methane-ui/svelte/MthSparkGauge.svelte';");
 
       const inlineCard = loaded.find((c) => c.tagName === 'mth-inline-card');
       expect(inlineCard).toBeDefined();
@@ -316,7 +316,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     }
 
     const buttonHtml = readFileSync(resolve(distDir, 'components/mth-button/index.html'), 'utf8');
-    expect(buttonHtml).toContain('@methane/svelte/MthButton.svelte');
+    expect(buttonHtml).toContain('@methane-ui/svelte/MthButton.svelte');
     expect(buttonHtml).toContain('Live Interactive Preview');
     expect(buttonHtml).toContain('data-preview-stage');
     expect(buttonHtml).toContain('data-preview-theme');
@@ -358,8 +358,8 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(componentsIndexHtml).toContain('data-comp-search');
     expect(componentsIndexHtml).toContain('data-group-filter="kits"');
     expect(componentsIndexHtml).toContain('data-group-filter="satellites"');
-    expect(componentsIndexHtml).toContain('@methane/auth');
-    expect(componentsIndexHtml).toContain('@methane/datagrid');
+    expect(componentsIndexHtml).toContain('@methane-ui/auth');
+    expect(componentsIndexHtml).toContain('@methane-ui/datagrid');
 
     const clientSrc = readFileSync(resolve(docsRoot, 'src/lib/astro-client.ts'), 'utf8');
     expect(clientSrc).toContain('registerUtilityElements()');
@@ -465,7 +465,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(skillsGuideHtml).toContain('methane-contribute');
   });
 
-  it('verifies every @methane/* named import and subpath in ssr.astro and quickstart.astro resolves against actual package exports', async () => {
+  it('verifies every @methane-ui/* named import and subpath in ssr.astro and quickstart.astro resolves against actual package exports', async () => {
     const repoRoot = resolve(docsRoot, '../..');
     const packageMap = new Map<string, { dir: string; exports: Record<string, unknown> }>();
 
@@ -568,7 +568,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
       const source = readFileSync(file, 'utf8');
 
       for (const namedMatch of source.matchAll(
-        /import\s*\{([^}]+)\}\s*from\s*['"](@methane\/[^'"]+)['"]/g,
+        /import\s*\{([^}]+)\}\s*from\s*['"](@methane-ui\/[^'"]+)['"]/g,
       )) {
         const names = namedMatch[1]!
           .split(',')
@@ -602,7 +602,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
       }
 
       for (const sideEffectMatch of source.matchAll(
-        /(?:import\s+['"]|src=['"])(@methane\/[^'"]+)['"]/g,
+        /(?:import\s+['"]|src=['"])(@methane-ui\/[^'"]+)['"]/g,
       )) {
         resolveExportTarget(sideEffectMatch[1]!);
       }
@@ -610,6 +610,6 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
 
     const quickstartSrc = readFileSync(resolve(docsRoot, 'src/pages/quickstart.astro'), 'utf8');
     expect(quickstartSrc).toContain('CUSTOM_ELEMENTS_SCHEMA');
-    expect(quickstartSrc).toContain("import '@methane/ui/button';");
+    expect(quickstartSrc).toContain("import '@methane-ui/ui/button';");
   });
 });

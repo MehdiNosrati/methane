@@ -1,16 +1,16 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthOtpInput, otpInputSpec, registerMthOtpInput } from './index.js';
 import { ContextProvider } from '@lit/context';
-import { LOCALE_CONTEXT } from '@methane/core';
+import { LOCALE_CONTEXT } from '@methane-ui/core';
 
 describe('<mth-otp-input>', () => {
   afterEach(() => {

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { priceDisplayMessages } from './price-display.messages.js';
 
 export const priceDisplaySpec: ComponentBehaviorSpec = {
   tag: 'mth-price-display',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: [],
   controllers: [],
   focusModel: 'none',

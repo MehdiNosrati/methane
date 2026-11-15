@@ -20,7 +20,7 @@ function attachErrorListeners(page: Page) {
   return { pageErrors, consoleErrors };
 }
 
-test.describe('@methane/docs visual, custom-element & interactive QA', () => {
+test.describe('@methane-ui/docs visual, custom-element & interactive QA', () => {
   const routes = [
     '/methane/',
     '/methane/css/',

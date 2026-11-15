@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDatagrid } from './datagrid.js';
 
 export { MthDatagrid, type DatagridColumn, type MthDatagridEngine } from './datagrid.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthHoverCard } from './hover-card.js';
 
 export { MthHoverCard } from './hover-card.js';

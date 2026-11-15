@@ -1,15 +1,15 @@
-# `@methane/svelte`
+# `@methane-ui/svelte`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Svelte 5 runes (`$props()` / `$bindable()`) wrapper components (`@methane/svelte/<Name>.svelte`) and `svelte/elements` JSX/template `HTMLElements` type definitions for `@methane/*` custom elements.
+Svelte 5 runes (`$props()` / `$bindable()`) wrapper components (`@methane-ui/svelte/<Name>.svelte`) and `svelte/elements` JSX/template `HTMLElements` type definitions for `@methane-ui/*` custom elements.
 
 ## Installation
 
 ```bash
-pnpm add @methane/svelte @methane/ui @methane/core
+pnpm add @methane-ui/svelte @methane-ui/ui @methane-ui/core
 # or
-npm install @methane/svelte @methane/ui @methane/core
+npm install @methane-ui/svelte @methane-ui/ui @methane-ui/core
 ```
 
 > **Peer dependency:** `svelte ^5.0.0`.
@@ -18,9 +18,9 @@ npm install @methane/svelte @methane/ui @methane/core
 
 | Export | Description |
 | --- | --- |
-| `@methane/svelte` | Side-effect `svelte/elements` `HTMLElements` type augmentation (`"mth-button": MthButtonProps`, etc.) and exported `Mth*Props` TypeScript interfaces |
-| `@methane/svelte/<ComponentName>.svelte` | Svelte 5 runes wrapper components (e.g. `@methane/svelte/MthButton.svelte`, `@methane/svelte/MthDialog.svelte`) with `$bindable()` state |
-| `@methane/svelte/components/<ComponentName>.svelte` | Explicit path alias for individual `.svelte` wrappers |
+| `@methane-ui/svelte` | Side-effect `svelte/elements` `HTMLElements` type augmentation (`"mth-button": MthButtonProps`, etc.) and exported `Mth*Props` TypeScript interfaces |
+| `@methane-ui/svelte/<ComponentName>.svelte` | Svelte 5 runes wrapper components (e.g. `@methane-ui/svelte/MthButton.svelte`, `@methane-ui/svelte/MthDialog.svelte`) with `$bindable()` state |
+| `@methane-ui/svelte/components/<ComponentName>.svelte` | Explicit path alias for individual `.svelte` wrappers |
 
 ## Usage Examples
 
@@ -28,13 +28,13 @@ npm install @methane/svelte @methane/ui @methane/core
 
 ```svelte
 <script lang="ts">
-  import '@methane/tokens/tokens.css';
-  import '@methane/ui/button';
-  import '@methane/ui/dialog';
-  import '@methane/ui/input';
-  import MthButton from '@methane/svelte/MthButton.svelte';
-  import MthDialog from '@methane/svelte/MthDialog.svelte';
-  import MthInput from '@methane/svelte/MthInput.svelte';
+  import '@methane-ui/tokens/tokens.css';
+  import '@methane-ui/ui/button';
+  import '@methane-ui/ui/dialog';
+  import '@methane-ui/ui/input';
+  import MthButton from '@methane-ui/svelte/MthButton.svelte';
+  import MthDialog from '@methane-ui/svelte/MthDialog.svelte';
+  import MthInput from '@methane-ui/svelte/MthInput.svelte';
 
   let name = $state('');
   let open = $state(false);
@@ -52,8 +52,8 @@ npm install @methane/svelte @methane/ui @methane/core
 
 ```svelte
 <script lang="ts">
-  import '@methane/svelte';
-  import '@methane/ui/button';
+  import '@methane-ui/svelte';
+  import '@methane-ui/ui/button';
 </script>
 
 <mth-button variant="outline" onmth-click={() => console.log('clicked')}>
@@ -63,7 +63,7 @@ npm install @methane/svelte @methane/ui @methane/core
 
 ## SSR Notes
 
-- Pair with `@methane/ssr-sveltekit` for SvelteKit server hooks that serialize Lit Declarative Shadow DOM and coordinate client hydration.
+- Pair with `@methane-ui/ssr-sveltekit` for SvelteKit server hooks that serialize Lit Declarative Shadow DOM and coordinate client hydration.
 
 ## License
 

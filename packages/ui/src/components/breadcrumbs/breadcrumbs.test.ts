@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
-import '@methane/ui/breadcrumb-item';
-import type { MthBreadcrumbItem } from '@methane/ui/breadcrumb-item';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
+import '@methane-ui/ui/breadcrumb-item';
+import type { MthBreadcrumbItem } from '@methane-ui/ui/breadcrumb-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { breadcrumbsSpec } from './breadcrumbs.spec.js';
 import { MthBreadcrumbs, registerMthBreadcrumbs } from './index.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDatetimePicker } from './datetime-picker.js';
 
 export { MthDatetimePicker } from './datetime-picker.js';

@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   DataController,
   RovingFocusController,
@@ -7,7 +7,7 @@ import {
   VirtualizerController,
   type DataControllerStatus,
   type DataSource,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { treeMessages } from './tree.messages.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBanner } from './banner.js';
 
 export { MthBanner, type BannerVariant } from './banner.js';

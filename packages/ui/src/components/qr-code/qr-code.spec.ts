@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { qrCodeMessages } from './qr-code.messages.js';
 
 export const qrCodeSpec: ComponentBehaviorSpec = {
   tag: 'mth-qr-code',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

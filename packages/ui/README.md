@@ -1,31 +1,31 @@
-# `@methane/ui`
+# `@methane-ui/ui`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Accessible, form-associated, RTL-ready Lit 3 Web Components spanning core controls, forms, navigation, overlays, data display, and feedback — built on `@methane/core` and `@methane/tokens`.
+Accessible, form-associated, RTL-ready Lit 3 Web Components spanning core controls, forms, navigation, overlays, data display, and feedback — built on `@methane-ui/core` and `@methane-ui/tokens`.
 
-- **Per-component tree shaking** via `@methane/ui/<slug>` (auto-registers `<mth-*>`) and `@methane/ui/<slug>/element` (unregistered class + `registerMth*(prefix?)` for white-label prefixes).
+- **Per-component tree shaking** via `@methane-ui/ui/<slug>` (auto-registers `<mth-*>`) and `@methane-ui/ui/<slug>/element` (unregistered class + `registerMth*(prefix?)` for white-label prefixes).
 - **Same-root ARIA & FACE**: `<mth-field>` and `<mth-form>` coordinate labels, descriptions, errors, and native `ElementInternals` constraint validation without cross-shadow ARIA mismatches.
-- **Custom Elements Manifest**: Ships `custom-elements.json` at `@methane/ui/custom-elements.json` for IDE autocomplete and wrapper codegen.
+- **Custom Elements Manifest**: Ships `custom-elements.json` at `@methane-ui/ui/custom-elements.json` for IDE autocomplete and wrapper codegen.
 
 ## Installation
 
 ```bash
-pnpm add @methane/ui @methane/core @methane/tokens
+pnpm add @methane-ui/ui @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/ui @methane/core @methane/tokens
+npm install @methane-ui/ui @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Export | Description |
 | --- | --- |
-| `@methane/ui` | Barrel export registering and re-exporting all core UI custom elements |
-| `@methane/ui/<slug>` | Per-component auto-registering entrypoint (e.g. `@methane/ui/button`, `@methane/ui/dialog`) |
-| `@methane/ui/<slug>/element` | Exports class, spec, styles, messages, and `registerMth<Name>(prefix?)` without side-effect registration |
-| `@methane/ui/custom-elements.json` | Custom Elements Manifest (CEM) JSON metadata |
+| `@methane-ui/ui` | Barrel export registering and re-exporting all core UI custom elements |
+| `@methane-ui/ui/<slug>` | Per-component auto-registering entrypoint (e.g. `@methane-ui/ui/button`, `@methane-ui/ui/dialog`) |
+| `@methane-ui/ui/<slug>/element` | Exports class, spec, styles, messages, and `registerMth<Name>(prefix?)` without side-effect registration |
+| `@methane-ui/ui/custom-elements.json` | Custom Elements Manifest (CEM) JSON metadata |
 
 ## Component Catalog
 
@@ -44,10 +44,10 @@ npm install @methane/ui @methane/core @methane/tokens
 ### Per-Component Import (Recommended for Bundle Size)
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/ui/button';
-import '@methane/ui/dialog';
-import '@methane/ui/input';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/dialog';
+import '@methane-ui/ui/input';
 ```
 
 ```html
@@ -62,8 +62,8 @@ import '@methane/ui/input';
 ### Custom Tag Prefix Registration
 
 ```ts
-import { registerMthButton } from '@methane/ui/button/element';
-import { registerMthDialog } from '@methane/ui/dialog/element';
+import { registerMthButton } from '@methane-ui/ui/button/element';
+import { registerMthDialog } from '@methane-ui/ui/dialog/element';
 
 registerMthButton('acme'); // defines <acme-button>
 registerMthDialog('acme'); // defines <acme-dialog>
@@ -73,7 +73,7 @@ registerMthDialog('acme'); // defines <acme-dialog>
 
 - **Theming**: Style components globally via `--mth-*` tokens, inspect live state via `:state(disabled)`, `:state(invalid)`, `:state(open)`, `:state(checked)`, and customize internal shadow nodes via `::part(base)`, `::part(control)`, `::part(label)`, etc.
 - **Accessibility & Keyboard**: Implements WAI-ARIA Authoring Practices Guide (APG) keyboard interactions (roving tabindex, focus trapping, `Escape` dismissal, `Home`/`End`, typeahead) with full RTL logical layout.
-- **SSR**: Built on `UIElement`. Import `@methane/core/hydrate` (or `@methane/ssr/client` / framework `@methane/ssr-*/client` adapters) on the client for opt-in Declarative Shadow DOM hydration.
+- **SSR**: Built on `UIElement`. Import `@methane-ui/core/hydrate` (or `@methane-ui/ssr/client` / framework `@methane-ui/ssr-*/client` adapters) on the client for opt-in Declarative Shadow DOM hydration.
 
 ## License
 

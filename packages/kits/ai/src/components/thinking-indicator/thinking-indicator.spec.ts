@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { thinkingIndicatorMessages } from './thinking-indicator.messages.js';
 
 export const thinkingIndicatorSpec: ComponentBehaviorSpec = {
   tag: 'mth-thinking-indicator',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: [],
   controllers: ['MotionController'],
   focusModel: 'none',

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthGallery } from './gallery.js';
 
 export { MthGallery, type GalleryItem } from './gallery.js';

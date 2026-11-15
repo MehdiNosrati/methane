@@ -8,7 +8,7 @@ import {
   MthInput,
   MthOption,
   MthOptionGroup,
-} from '@methane/vue';
+} from '@methane-ui/vue';
 
 const canaryValue = ref('nuxt-ssr@methane.dev');
 const frameworkValue = ref('lit');

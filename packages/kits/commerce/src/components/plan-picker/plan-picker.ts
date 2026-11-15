@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, RovingFocusController, SelectionController } from '@methane/primitives';
-import { registerMthBadge } from '@methane/ui/badge';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, RovingFocusController, SelectionController } from '@methane-ui/primitives';
+import { registerMthBadge } from '@methane-ui/ui/badge';
 import { html, nothing } from 'lit';
 import { property, query, queryAll } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';

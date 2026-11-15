@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { invoiceMessages } from './invoice.messages.js';
 
 export const invoiceSpec: ComponentBehaviorSpec = {
   tag: 'mth-invoice',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: [],
   controllers: [],
   focusModel: 'none',
@@ -52,7 +52,7 @@ export const CEM_METADATA = {
     taxRate: 'Fractional tax rate applied after discount.',
     discountAmount: 'Flat discount subtracted before tax.',
     notes: 'Optional memo or payment instructions.',
-    logoUrl: 'Optional brand logo URL validated via @methane/sanitize.',
+    logoUrl: 'Optional brand logo URL validated via @methane-ui/sanitize.',
   },
   cssProperties: [
     { name: '--mth-color-surface', description: 'Invoice document background.' },

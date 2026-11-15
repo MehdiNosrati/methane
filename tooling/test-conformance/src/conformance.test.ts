@@ -11,7 +11,7 @@ import {
   type ConformanceDataSource,
 } from './index.js';
 
-describe('@methane/test-conformance same-root ARIA scanner (ADR-003)', () => {
+describe('@methane-ui/test-conformance same-root ARIA scanner (ADR-003)', () => {
   it('passes when all aria-* IDREFs resolve inside the same DOM root (including ShadowRoot)', () => {
     const host = document.createElement('div');
     const shadow = host.attachShadow({ mode: 'open' });
@@ -93,7 +93,7 @@ describe('@methane/test-conformance same-root ARIA scanner (ADR-003)', () => {
   });
 });
 
-describe('@methane/test-conformance Class & Satellite Suites', () => {
+describe('@methane-ui/test-conformance Class & Satellite Suites', () => {
   it('runs FormControlSuite against a compliant FACE harness and rejects host disabled mutation', async () => {
     class MockFormInput extends HTMLElement {
       static formAssociated = true;

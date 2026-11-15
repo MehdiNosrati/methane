@@ -15,7 +15,7 @@
           "description": "Accessible node/DAG flow editor wrapping @dagrejs/dagre with pan/zoom plane and keyboard node traversal.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -262,7 +262,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-flow-editor",
-            "package": "@methane/flow",
+            "package": "@methane-ui/flow",
             "conformance": [
               "satellite",
               "roving-focus"
@@ -441,7 +441,7 @@
           "description": "Accessible hierarchical org-chart wrapping @dagrejs/dagre with subtree collapse/expand and member search.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -597,7 +597,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-org-chart",
-            "package": "@methane/flow",
+            "package": "@methane-ui/flow",
             "conformance": [
               "satellite",
               "roving-focus"

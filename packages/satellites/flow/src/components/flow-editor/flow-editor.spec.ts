@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { flowEditorMessages } from './flow-editor.messages.js';
 
 export const flowEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-flow-editor',
-  package: '@methane/flow',
+  package: '@methane-ui/flow',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

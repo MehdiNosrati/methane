@@ -19,7 +19,7 @@ const manifest: MigrationManifest = {
   ],
 };
 
-describe('@methane/codemod TypeScript / TSX / Lit AST transform', () => {
+describe('@methane-ui/codemod TypeScript / TSX / Lit AST transform', () => {
   it('rewrites Lit html/css templates, JSX elements, React event props, DOM APIs, and TS tag maps idempotently', () => {
     const input = `// Comment mentioning <mth-button> and --mth-color-bg must stay unchanged
 import { html, css } from 'lit';

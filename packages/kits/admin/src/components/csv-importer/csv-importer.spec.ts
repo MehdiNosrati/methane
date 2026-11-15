@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { csvImporterMessages } from './csv-importer.messages.js';
 
 export const csvImporterSpec: ComponentBehaviorSpec = {
   tag: 'mth-csv-importer',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',

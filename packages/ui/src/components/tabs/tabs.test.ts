@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import '@methane/ui/tab';
-import '@methane/ui/tab-panel';
-import type { MthTab } from '@methane/ui/tab';
-import type { MthTabPanel } from '@methane/ui/tab-panel';
+import '@methane-ui/ui/tab';
+import '@methane-ui/ui/tab-panel';
+import type { MthTab } from '@methane-ui/ui/tab';
+import type { MthTabPanel } from '@methane-ui/ui/tab-panel';
 import { tabsSpec } from './tabs.spec.js';
 import { MthTabs, registerMthTabs } from './index.js';
 

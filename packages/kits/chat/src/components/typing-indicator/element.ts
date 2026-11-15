@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTypingIndicator } from './typing-indicator.js';
 
 export { MthTypingIndicator } from './typing-indicator.js';

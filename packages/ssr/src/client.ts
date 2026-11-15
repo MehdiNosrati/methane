@@ -20,7 +20,7 @@ export function isHydrationSupported(): boolean {
 
 /**
  * Idempotently ensures `litElementHydrateSupport` is attached to `LitElement`
- * even if a bundler evaluated `lit` before `@methane/ssr/client`.
+ * even if a bundler evaluated `lit` before `@methane-ui/ssr/client`.
  */
 export function enableHydrationSupport(litElementClass: unknown = LitElement): boolean {
   const hook = (globalThis as { litElementHydrateSupport?: (arg: { LitElement: unknown }) => void })

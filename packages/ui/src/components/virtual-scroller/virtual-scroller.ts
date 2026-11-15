@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane-ui/core';
 import {
   ObserverPoolController,
   VirtualizerController,
   type VirtualItem,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { virtualScrollerMessages } from './virtual-scroller.messages.js';
 import { virtualScrollerStyles } from './virtual-scroller.styles.js';
 

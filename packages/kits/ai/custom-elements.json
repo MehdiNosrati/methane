@@ -14,7 +14,7 @@
           "description": "AI response rating control with thumbs up/down, multi-select reason chips (`SelectionController`), and RTL-aware roving focus.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -201,7 +201,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-ai-feedback",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [
               "roving-focus"
             ],
@@ -359,7 +359,7 @@
           "description": "AI conversation message bubble with sanitized streaming Markdown rendering (ADR-012) and copy/regenerate actions.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -381,7 +381,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "Markdown text content rendered through `@methane/sanitize`."
+              "description": "Markdown text content rendered through `@methane-ui/sanitize`."
             },
             {
               "kind": "field",
@@ -452,7 +452,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "Markdown text content rendered through `@methane/sanitize`."
+              "description": "Markdown text content rendered through `@methane-ui/sanitize`."
             },
             {
               "name": "allow-raw-html",
@@ -598,7 +598,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-ai-message",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [],
             "controllers": [],
             "focusModel": "none",
@@ -756,10 +756,10 @@
           "name": "MthArtifactPane",
           "tagName": "mth-artifact-pane",
           "customElement": true,
-          "description": "Tabbed AI artifact viewer with version selection, ClipboardAndShare copy, close action, and `@methane/sanitize` HTML/Markdown preview.",
+          "description": "Tabbed AI artifact viewer with version selection, ClipboardAndShare copy, close action, and `@methane-ui/sanitize` HTML/Markdown preview.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1015,7 +1015,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-artifact-pane",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [],
             "controllers": [
               "RovingFocusController",
@@ -1192,7 +1192,7 @@
           "description": "Numbered AI source citation chips with strict `https:`/`http:` URL validation (ADR-012) and RTL-aware roving focus.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1306,7 +1306,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-citation-list",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [
               "roving-focus"
             ],
@@ -1428,7 +1428,7 @@
           "description": "IME-safe auto-sizing AI prompt composer with FormControlController integration, Enter/Mod+Enter submission, and stop-generation state.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1771,7 +1771,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-prompt-input",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [
               "form-control"
             ],
@@ -1980,7 +1980,7 @@
           "description": "Starter prompt chip bar with RTL-aware RovingFocusController navigation and `mth-select` event dispatch.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2100,7 +2100,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-suggestion-chips",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [
               "roving-focus"
             ],
@@ -2220,7 +2220,7 @@
           "description": "Collapsible AI reasoning/chain-of-thought disclosure with elapsed timing and MotionController reduced-motion support.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2406,7 +2406,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-thinking-indicator",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [],
             "controllers": [
               "MotionController"
@@ -2546,7 +2546,7 @@
           "description": "Collapsible AI tool invocation card displaying execution status, escaped JSON arguments, and sanitized text output.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2721,7 +2721,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-tool-call",
-            "package": "@methane/ai",
+            "package": "@methane-ui/ai",
             "conformance": [],
             "controllers": [
               "MotionController"

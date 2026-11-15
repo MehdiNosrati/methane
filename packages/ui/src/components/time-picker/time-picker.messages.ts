@@ -1,4 +1,4 @@
-import type { MessageCatalog } from '@methane/core';
+import type { MessageCatalog } from '@methane-ui/core';
 
 export const timePickerMessages: MessageCatalog = {
   chooseTime: 'Choose time',

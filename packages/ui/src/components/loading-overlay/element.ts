@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthLoadingOverlay } from './loading-overlay.js';
 
 export { MthLoadingOverlay } from './loading-overlay.js';

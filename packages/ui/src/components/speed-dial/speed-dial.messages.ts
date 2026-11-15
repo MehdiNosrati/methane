@@ -1,4 +1,4 @@
-import type { MessageCatalog } from '@methane/core';
+import type { MessageCatalog } from '@methane-ui/core';
 
 export const speedDialMessages: MessageCatalog = {
   triggerLabel: 'Speed dial actions',

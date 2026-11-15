@@ -1,12 +1,12 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import type { ExtendedCustomElementsManifest } from './types.js';
 
 export const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   {
     tag: 'mth-visually-hidden',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'none',
@@ -20,7 +20,7 @@ export const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-skip-link',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'delegates-focus',
@@ -36,7 +36,7 @@ export const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-error-boundary',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'none',
@@ -151,7 +151,7 @@ export function hasWorkspaceManifests(rootDir: string): boolean {
 
 /**
  * Discovers and merges `packages/ui`, `packages/kits/*`, `packages/satellites/*`
- * `custom-elements.json` manifests, `@methane/primitives` utility elements, and
+ * `custom-elements.json` manifests, `@methane-ui/primitives` utility elements, and
  * their `dist/specs.json` / `x-methane-spec` `ComponentBehaviorSpec` entries.
  */
 export function loadWorkspaceManifestAndSpecs(rootDir: string): {

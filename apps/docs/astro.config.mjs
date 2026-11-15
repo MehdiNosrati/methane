@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
-import { createMethaneAstroIntegration } from '@methane/ssr-astro';
+import { createMethaneAstroIntegration } from '@methane-ui/ssr-astro';
 
 const baseIntegration = createMethaneAstroIntegration({ injectClientHydration: false });
 const serverEntrypoint = fileURLToPath(new URL('./src/lib/astro-renderer.ts', import.meta.url));

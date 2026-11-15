@@ -1,5 +1,5 @@
 {
-  "name": "@methane/lint-plugin",
+  "name": "@methane-ui/lint-plugin",
   "version": "0.1.0",
   "description": "ESLint and Stylelint architectural invariant rules for Methane UI (ADR-002, ADR-012, ADR-014)",
   "license": "MIT",
@@ -31,5 +31,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

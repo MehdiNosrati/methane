@@ -1,4 +1,4 @@
-# `@methane/ssr`
+# `@methane-ui/ssr`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,18 +7,18 @@ Streaming Declarative Shadow DOM (DSD) server-side rendering engine for **Methan
 ## Installation
 
 ```bash
-pnpm add @methane/ssr @methane/core
+pnpm add @methane-ui/ssr @methane-ui/core
 # or
-npm install @methane/ssr @methane/core
+npm install @methane-ui/ssr @methane-ui/core
 ```
 
 ## Package Exports
 
 | Entrypoint | Purpose |
 | --- | --- |
-| `@methane/ssr` | Server rendering APIs (`renderToString`, `renderWithMetadata`, `renderToStream`, `transformHtmlDsd`, `createSsrTransformStream`, `hoistStylesheetLinks`, `MethaneElementRenderer`, style hashing/critical extraction) |
-| `@methane/ssr/client` | Client hydration utilities (`enableHydrationSupport`, `hydrateRoot`, `isHydrationSupported`, `digestForTemplateResult`, `LIT_HYDRATE_SUPPORT_IMPORT`) |
-| `@methane/ssr/dom-shim` | Server DOM shim installer (`installSsrDomShim`) |
+| `@methane-ui/ssr` | Server rendering APIs (`renderToString`, `renderWithMetadata`, `renderToStream`, `transformHtmlDsd`, `createSsrTransformStream`, `hoistStylesheetLinks`, `MethaneElementRenderer`, style hashing/critical extraction) |
+| `@methane-ui/ssr/client` | Client hydration utilities (`enableHydrationSupport`, `hydrateRoot`, `isHydrationSupported`, `digestForTemplateResult`, `LIT_HYDRATE_SUPPORT_IMPORT`) |
+| `@methane-ui/ssr/dom-shim` | Server DOM shim installer (`installSsrDomShim`) |
 
 ## Key Exported Symbols
 
@@ -38,10 +38,10 @@ npm install @methane/ssr @methane/core
 ### Server Rendering with Hybrid Linked Styles
 
 ```ts
-import '@methane/ssr/dom-shim';
-import '@methane/ui/button';
+import '@methane-ui/ssr/dom-shim';
+import '@methane-ui/ui/button';
 import { html } from 'lit';
-import { renderWithMetadata } from '@methane/ssr';
+import { renderWithMetadata } from '@methane-ui/ssr';
 
 const { html: markup, links } = await renderWithMetadata(
   html`<mth-button variant="solid">Save</mth-button>`,
@@ -55,11 +55,11 @@ const { html: markup, links } = await renderWithMetadata(
 ### Expanding Framework HTML Output (`transformHtmlDsd`)
 
 ```ts
-import { installSsrDomShim } from '@methane/ssr/dom-shim';
+import { installSsrDomShim } from '@methane-ui/ssr/dom-shim';
 installSsrDomShim();
 
-await import('@methane/ui/alert');
-const { transformHtmlDsd } = await import('@methane/ssr');
+await import('@methane-ui/ui/alert');
+const { transformHtmlDsd } = await import('@methane-ui/ssr');
 
 const result = await transformHtmlDsd(
   '<html><head></head><body><mth-alert variant="info">Ready</mth-alert></body></html>',
@@ -71,11 +71,11 @@ const result = await transformHtmlDsd(
 
 ```ts
 // 1. Activate @lit-labs/ssr-client BEFORE registering custom elements
-import { enableHydrationSupport, hydrateRoot } from '@methane/ssr/client';
+import { enableHydrationSupport, hydrateRoot } from '@methane-ui/ssr/client';
 import { html } from 'lit';
 
 enableHydrationSupport();
-await import('@methane/ui/alert');
+await import('@methane-ui/ui/alert');
 
 // Or hydrate a Lit TemplateResult into a specific server-rendered root container:
 hydrateRoot(html`<mth-alert variant="info">Ready</mth-alert>`, document.getElementById('app')!);
@@ -85,7 +85,7 @@ hydrateRoot(html`<mth-alert variant="info">Ready</mth-alert>`, document.getEleme
 
 - **`styles: 'linked'` (default)**: Emits a capped `< 1 KB` (`CRITICAL_SHELL_MAX_BYTES = 1024`) critical host shell `<style>` plus a content-hashed `<link rel="stylesheet" href="${assetBase}/${tag}.${hash}.css">` hoisted into `<head>`.
 - **`styles: 'inline'`**: Embeds full component CSS inside `<template shadowrootmode="open">` for single-file HTML exports, email templates, and serverless edge routes without static asset serving.
-- **Note**: Client hydration support is opt-in via `@methane/core/hydrate` or `@methane/ssr/client` (and framework-specific `@methane/ssr-*/client` adapters) so CSR-only bundles carry zero hydration runtime bytes.
+- **Note**: Client hydration support is opt-in via `@methane-ui/core/hydrate` or `@methane-ui/ssr/client` (and framework-specific `@methane-ui/ssr-*/client` adapters) so CSR-only bundles carry zero hydration runtime bytes.
 
 ## License
 

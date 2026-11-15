@@ -1,11 +1,11 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import {
   normalizeManifest,
   toCamelCase,
   toPascalCase,
   type NormalizedComponentModel,
   type NormalizedProp,
-} from '@methane/wrapper-codegen';
+} from '@methane-ui/wrapper-codegen';
 import type {
   CodeConnectFramework,
   CodeConnectInput,
@@ -102,7 +102,7 @@ function renderReactCodeConnect(
 
   return [
     `import figma from '@figma/code-connect';`,
-    `import '@methane/react';`,
+    `import '@methane-ui/react';`,
     '',
     `export default figma.connect('${figmaUrl}', {`,
     `  props: {`,
@@ -129,7 +129,7 @@ function renderVueCodeConnect(
 
   return [
     `import figma, { html } from '@figma/code-connect/html';`,
-    `import '@methane/vue';`,
+    `import '@methane-ui/vue';`,
     '',
     `export default figma.connect('${figmaUrl}', {`,
     `  props: {`,
@@ -156,7 +156,7 @@ function renderAngularCodeConnect(
 
   return [
     `import figma, { html } from '@figma/code-connect/html';`,
-    `import { ${model.className}Directive } from '@methane/angular';`,
+    `import { ${model.className}Directive } from '@methane-ui/angular';`,
     '',
     `export default figma.connect('${figmaUrl}', {`,
     `  imports: ['${model.className}Directive'],`,
@@ -184,7 +184,7 @@ function renderSvelteCodeConnect(
 
   return [
     `import figma, { html } from '@figma/code-connect/html';`,
-    `import { ${model.className} } from '@methane/svelte';`,
+    `import { ${model.className} } from '@methane-ui/svelte';`,
     '',
     `export default figma.connect('${figmaUrl}', {`,
     `  props: {`,

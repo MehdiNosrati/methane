@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, queryAll } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';

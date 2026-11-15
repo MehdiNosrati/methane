@@ -3,7 +3,7 @@ import {
   transformHtmlDsd,
   type TransformHtmlDsdOptions,
   type TransformHtmlDsdResult,
-} from '@methane/ssr';
+} from '@methane-ui/ssr';
 
 export interface AngularSsrOptions extends TransformHtmlDsdOptions {
   /** Optional client hydration script URL injected before `</body>`. */

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthLocationPicker } from './location-picker.js';
 import { locationPickerMessages } from './location-picker.messages.js';
 import { locationPickerSpec } from './location-picker.spec.js';

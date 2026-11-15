@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { modelViewerMessages } from './model-viewer.messages.js';
 
 export const modelViewerSpec: ComponentBehaviorSpec = {
   tag: 'mth-model-viewer',
-  package: '@methane/3d',
+  package: '@methane-ui/3d',
   conformance: ['satellite'],
   controllers: ['MotionController', 'ObserverPoolController'],
   focusModel: 'delegates-focus',
@@ -56,7 +56,7 @@ export const CEM_METADATA = {
   description:
     'Wrap-first Three.js `<mth-model-viewer>` component featuring lazy WebGL/WebGPU renderer attachment, keyboard orbit/zoom/reset controls, MotionController reduced-motion gating on `autoRotate`, URL sanitization, and poster/fallback slots.',
   propDescriptions: {
-    src: 'glTF/GLB model URL (validated with @methane/sanitize isSafeUrl).',
+    src: 'glTF/GLB model URL (validated with @methane-ui/sanitize isSafeUrl).',
     poster: 'Optional preview poster image URL shown until the 3D scene loads.',
     alt: 'Accessible description of the 3D model.',
     rendererBackend: 'Preferred Three.js rendering backend (`auto`, `webgl`, or `webgpu`).',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { codeEditorMessages } from './code-editor.messages.js';
 
 export const codeEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-code-editor',
-  package: '@methane/code',
+  package: '@methane-ui/code',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController'],
   focusModel: 'delegates-focus',

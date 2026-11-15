@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { productCardMessages } from './product-card.messages.js';
 
 export const productCardSpec: ComponentBehaviorSpec = {
   tag: 'mth-product-card',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',
@@ -62,7 +62,7 @@ export const CEM_METADATA = {
   propDescriptions: {
     title: 'Product display title.',
     subtitle: 'Optional secondary product descriptor.',
-    imageSrc: 'Product image URL validated via `@methane/sanitize` `isSafeUrl`.',
+    imageSrc: 'Product image URL validated via `@methane-ui/sanitize` `isSafeUrl`.',
     imageAlt: 'Alternative text for product image.',
     href: 'Optional product detail link validated via `isSafeUrl`.',
     price: 'Current unit price in `currency`.',

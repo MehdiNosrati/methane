@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { RovingFocusController, SlotCollectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController, SlotCollectionController } from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { buttonGroupMessages } from './button-group.messages.js';

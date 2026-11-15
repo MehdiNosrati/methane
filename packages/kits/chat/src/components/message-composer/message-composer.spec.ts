@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { messageComposerMessages } from './message-composer.messages.js';
 
 export const messageComposerSpec: ComponentBehaviorSpec = {
   tag: 'mth-message-composer',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

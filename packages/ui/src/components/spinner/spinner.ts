@@ -1,4 +1,4 @@
-import { UIElement } from '@methane/core';
+import { UIElement } from '@methane-ui/core';
 import { html, svg } from 'lit';
 import { property } from 'lit/decorators.js';
 import { spinnerMessages } from './spinner.messages.js';

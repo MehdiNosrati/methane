@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSpinner } from './spinner.js';
 
 export { MthSpinner, type MthSpinnerSize } from './spinner.js';

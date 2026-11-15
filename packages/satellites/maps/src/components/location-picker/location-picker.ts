@@ -1,5 +1,5 @@
-import { html, nothing, property, query, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { FormControlController, ObserverPoolController } from '@methane/primitives';
+import { html, nothing, property, query, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { FormControlController, ObserverPoolController } from '@methane-ui/primitives';
 import { createMapEngine, normalizeLngLat, type MapEngineHandle } from '../shared/map-engine.js';
 import { locationPickerMessages } from './location-picker.messages.js';
 import { locationPickerStyles } from './location-picker.styles.js';

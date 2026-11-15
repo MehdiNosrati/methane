@@ -1,5 +1,5 @@
 {
-  "name": "@methane/primitives",
+  "name": "@methane-ui/primitives",
   "version": "0.1.0",
   "description": "Shared headless Lit ReactiveControllers, state engines, and runtime utilities for Methane UI",
   "license": "MIT",
@@ -15,13 +15,13 @@
   ],
   "dependencies": {
     "@lit/context": "^1.1.4",
-    "@methane/sanitize": "workspace:^",
-    "@methane/tokens": "workspace:^",
+    "@methane-ui/sanitize": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
-    "@methane/core": "workspace:^",
-    "@methane/test-conformance": "workspace:^",
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/test-conformance": "workspace:^",
     "fast-check": "^4.10.2"
   },
   "scripts": {
@@ -31,6 +31,14 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@methane/core": "^0.1.0"
-  }
+    "@methane-ui/core": "^0.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSignaturePad } from './signature-pad.js';
 
 export function registerMthSignaturePad(prefix?: string): ReadonlyArray<string> {

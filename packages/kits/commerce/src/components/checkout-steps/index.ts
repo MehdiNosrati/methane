@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthCheckoutSteps } from './element.js';
 
 export { MthCheckoutSteps, type CheckoutStep } from './element.js';

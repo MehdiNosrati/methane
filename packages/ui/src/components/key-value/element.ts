@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthKeyValue } from './key-value.js';
 
 export { MthKeyValue, type MthKeyValueOrientation } from './key-value.js';

@@ -1,14 +1,14 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   DataConsumerSuite,
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/tree-item';
-import type { MthTreeItem } from '@methane/ui/tree-item';
+import '@methane-ui/ui/tree-item';
+import type { MthTreeItem } from '@methane-ui/ui/tree-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthTree, registerMthTree, treeSpec, type TreeNodeData } from './index.js';
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import '@methane/ssr/dom-shim';
+import '@methane-ui/ssr/dom-shim';
 import { LitElement, css, html } from 'lit';
 import {
   METHANE_VUE_COMPILER_OPTIONS,
@@ -37,14 +37,14 @@ if (!customElements.get('mth-nuxt-alert')) {
   customElements.define('mth-nuxt-alert', MthNuxtAlert);
 }
 
-describe('@methane/ssr-nuxt', () => {
+describe('@methane-ui/ssr-nuxt', () => {
   it('configures Vue compiler isCustomElement for mth-* tags', () => {
     expect(METHANE_VUE_COMPILER_OPTIONS.isCustomElement('mth-button')).toBe(true);
     expect(METHANE_VUE_COMPILER_OPTIONS.isCustomElement('div')).toBe(false);
 
     const cfg = createMethaneNuxtConfig();
     expect(cfg.vue.compilerOptions.isCustomElement('mth-dialog')).toBe(true);
-    expect(cfg.nitro.externals?.inline).toContain('@methane/ssr');
+    expect(cfg.nitro.externals?.inline).toContain('@methane-ui/ssr');
   });
 
   it('expands DSD inside Nitro render:html hook and hoists preload links into head', async () => {

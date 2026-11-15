@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthNavbar } from './navbar.js';
 
 export { MthNavbar } from './navbar.js';

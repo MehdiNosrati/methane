@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMessageComposer } from './message-composer.js';
 
 export { MthMessageComposer } from './message-composer.js';

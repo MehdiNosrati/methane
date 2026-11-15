@@ -15,7 +15,7 @@
           "description": "Chronological virtualized audit log (`<mth-audit-log>`) powered by DataController and VirtualizerController with actor/action/resource/severity filtering.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -147,7 +147,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-audit-log",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "data-consumer"
             ],
@@ -272,7 +272,7 @@
           "description": "Form-associated weekly recurring availability matrix (`<mth-availability-picker>`) supporting pointer click/drag painting, RTL-aware 2D keyboard navigation, and FormControlController validation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -506,7 +506,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-availability-picker",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "form-control",
               "roving-focus"
@@ -682,7 +682,7 @@
           "description": "Form-associated date & time slot booking widget (`<mth-booking-widget>`) combining CalendarCore date selection, time-slot picking, summary confirmation, and FormControlController validation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -927,7 +927,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-booking-widget",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "form-control"
             ],
@@ -1078,7 +1078,7 @@
           "description": "Contextual selection toolbar (`<mth-bulk-action-bar>`) with Intl.PluralRules count formatting, select-all/clear triggers, and RTL-aware RovingFocusController.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1197,7 +1197,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-bulk-action-bar",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],
@@ -1322,7 +1322,7 @@
           "description": "Column visibility & reorder panel (`<mth-column-chooser>`) composing DragSortController, SelectionController, and RovingFocusController.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1418,7 +1418,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-column-chooser",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],
@@ -1541,7 +1541,7 @@
           "description": "CSV file upload and paste importer (`<mth-csv-importer>`) with RFC-4180 parsing, interactive column-to-field mapping, row validation preview, and `mth-import` commit event.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1687,7 +1687,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-csv-importer",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [],
             "controllers": [],
             "focusModel": "delegates-focus",
@@ -1805,7 +1805,7 @@
           "description": "Month/week/day schedule calendar (`<mth-event-calendar>`) powered by CalendarCore, localized FormattingUtils headers, RTL-aware 2D RovingFocusController, and event selection/creation callbacks.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1946,7 +1946,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-event-calendar",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],
@@ -2098,7 +2098,7 @@
           "description": "File and folder explorer (`<mth-file-explorer>`) with hierarchical folder tree, clickable path breadcrumbs, list/grid views, multi-select, and 2D RTL-aware keyboard navigation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2256,7 +2256,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-file-explorer",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],
@@ -2415,7 +2415,7 @@
           "description": "Interactive AND/OR filter rule builder (`<mth-filter-builder>`) for admin tables and search views.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2531,7 +2531,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-filter-builder",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [],
             "controllers": [],
             "focusModel": "delegates-focus",
@@ -2665,7 +2665,7 @@
           "description": "Multi-lane Kanban board (`<mth-kanban>`) with drag/keyboard card reordering, cross-lane moves, WIP limit badges, and async DataSource card loading.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2808,7 +2808,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-kanban",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus",
               "data-consumer"
@@ -2960,7 +2960,7 @@
           "description": "Form-associated nested boolean query builder (`<mth-query-builder>`) with JSON/SQL-style preview and FormControlController validation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -3164,7 +3164,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-query-builder",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "form-control"
             ],
@@ -3316,7 +3316,7 @@
           "description": "Saved table/board view tabs (`<mth-saved-views>`) with create, duplicate, pin, and delete actions powered by SelectionController and RTL-aware RovingFocusController.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -3453,7 +3453,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-saved-views",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],
@@ -3605,7 +3605,7 @@
           "description": "Admin settings shell (`<mth-settings-shell>`) combining a roving-focus section rail, active content pane, and dirty-state save/discard bar.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -3747,7 +3747,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-settings-shell",
-            "package": "@methane/admin",
+            "package": "@methane-ui/admin",
             "conformance": [
               "roving-focus"
             ],

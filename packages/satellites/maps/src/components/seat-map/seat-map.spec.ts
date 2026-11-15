@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { seatMapMessages } from './seat-map.messages.js';
 
 export const seatMapSpec: ComponentBehaviorSpec = {
   tag: 'mth-seat-map',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['form-control', 'roving-focus', 'satellite'],
   controllers: ['FormControlController', 'SelectionController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

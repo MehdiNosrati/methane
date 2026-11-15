@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthClock } from './clock.js';
 
 export { MthClock } from './clock.js';

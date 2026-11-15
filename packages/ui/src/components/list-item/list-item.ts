@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane/core';
+import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { listItemMessages } from './list-item.messages.js';

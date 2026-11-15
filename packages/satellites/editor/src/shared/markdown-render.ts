@@ -1,4 +1,4 @@
-import { escapeHtml, isSafeUrl, safeSetHTML, sanitizeToTrustedHTML } from '@methane/sanitize';
+import { escapeHtml, isSafeUrl, safeSetHTML, sanitizeToTrustedHTML } from '@methane-ui/sanitize';
 
 function applyInlineEmphasis(text: string): string {
   const withStrong = text.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
@@ -48,7 +48,7 @@ function renderInlineMarkdown(text: string, allowRawHtml: boolean): string {
 }
 
 /**
- * Converts Markdown blocks and inline syntax into sanitized HTML via `@methane/sanitize`.
+ * Converts Markdown blocks and inline syntax into sanitized HTML via `@methane-ui/sanitize`.
  * Raw HTML defaults to OFF (`allowRawHtml: false`).
  */
 export function compileMarkdownToSafeHtml(

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCountdown } from './countdown.js';
 
 export { MthCountdown } from './countdown.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthIbanInput } from './iban-input.js';
 
 export { MthIbanInput } from './iban-input.js';

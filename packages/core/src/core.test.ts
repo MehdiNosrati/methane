@@ -174,7 +174,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe('@methane/core UIElement lifecycle & adoptedStyleSheets', () => {
+describe('@methane-ui/core UIElement lifecycle & adoptedStyleSheets', () => {
   it('invokes onFirstConnect once across disconnect and reconnect cycles', async () => {
     const el = document.createElement('mth-test-control') as TestControlElement;
     expect(el.firstConnectCalls).toBe(0);
@@ -254,7 +254,7 @@ describe('@methane/core UIElement lifecycle & adoptedStyleSheets', () => {
   });
 });
 
-describe('@methane/core FACE internals, CustomStateSet, and emitEvent', () => {
+describe('@methane-ui/core FACE internals, CustomStateSet, and emitEvent', () => {
   it('handles formDisabledCallback without mutating host disabled property or attribute (ADR-014)', async () => {
     const el = document.createElement('mth-test-control') as TestControlElement;
     document.body.appendChild(el);
@@ -402,7 +402,7 @@ describe('@methane/core FACE internals, CustomStateSet, and emitEvent', () => {
   });
 });
 
-describe('@methane/core composed ancestor lang/dir inheritance & i18n', () => {
+describe('@methane-ui/core composed ancestor lang/dir inheritance & i18n', () => {
   it('inherits lang from Light DOM ancestor elements and prefers host lang over ancestor', () => {
     document.documentElement.lang = 'en';
     const wrapper = document.createElement('div');
@@ -566,10 +566,10 @@ describe('@methane/core composed ancestor lang/dir inheritance & i18n', () => {
   });
 
   it('exports versioned Symbol.for Context tokens and defaults', () => {
-    expect(THEME_CONTEXT).toBe(Symbol.for('@methane/context/theme'));
-    expect(LOCALE_CONTEXT).toBe(Symbol.for('@methane/context/locale'));
-    expect(FIELD_CONTEXT).toBe(Symbol.for('@methane/context/field'));
-    expect(FORM_CONTEXT).toBe(Symbol.for('@methane/context/form'));
+    expect(THEME_CONTEXT).toBe(Symbol.for('@methane-ui/context/theme'));
+    expect(LOCALE_CONTEXT).toBe(Symbol.for('@methane-ui/context/locale'));
+    expect(FIELD_CONTEXT).toBe(Symbol.for('@methane-ui/context/field'));
+    expect(FORM_CONTEXT).toBe(Symbol.for('@methane-ui/context/form'));
     expect(DEFAULT_THEME_CONTEXT).toEqual({
       version: 1,
       theme: 'system',
@@ -584,7 +584,7 @@ describe('@methane/core composed ancestor lang/dir inheritance & i18n', () => {
   });
 });
 
-describe('@methane/core global runtime singleton & coordinators', () => {
+describe('@methane-ui/core global runtime singleton & coordinators', () => {
   it('negotiates global runtime singleton with SemVer skew protection and duplicate-core __DEV__ warning', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const fakeGlobal: Record<symbol, unknown> = {};
@@ -625,7 +625,7 @@ describe('@methane/core global runtime singleton & coordinators', () => {
     // Incompatible major throws
     expect(() =>
       negotiateRuntime({ version: '2.0.0', bundleId: 'bundle-v2', hostGlobal: fakeGlobal }),
-    ).toThrow(/Incompatible @methane\/core runtime major/);
+    ).toThrow(/Incompatible @methane-ui\/core runtime major/);
   });
 
   it('parses and compares SemVer including prereleases and rejects invalid SemVer', () => {
@@ -1000,7 +1000,7 @@ describe('@methane/core global runtime singleton & coordinators', () => {
   });
 });
 
-describe('@methane/core __DEV__ diagnostics', () => {
+describe('@methane-ui/core __DEV__ diagnostics', () => {
   it('emits __DEV__ diagnostics for cross-root ARIA IDs, missing accessible names, and delegatesFocus + role conflict', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
@@ -1061,7 +1061,7 @@ describe('@methane/core __DEV__ diagnostics', () => {
   });
 });
 
-describe('@methane/core fast-check property-based tests (ADR-001)', () => {
+describe('@methane-ui/core fast-check property-based tests (ADR-001)', () => {
   it('survives arbitrary property/attribute, connect/disconnect/move, and FACE callback sequences', async () => {
     type Action =
       | { type: 'set-prop'; value: string }

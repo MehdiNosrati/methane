@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { treeTableMessages } from './tree-table.messages.js';
 
 export const treeTableSpec: ComponentBehaviorSpec = {
   tag: 'mth-tree-table',
-  package: '@methane/datagrid',
+  package: '@methane-ui/datagrid',
   conformance: ['satellite'],
   controllers: ['TableCore', 'RovingFocusController', 'SelectionController', 'VirtualizerController'],
   focusModel: 'host',

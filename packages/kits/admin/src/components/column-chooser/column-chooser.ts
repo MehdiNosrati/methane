@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   DragSortController,
   RovingFocusController,
   SelectionController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { resolveEffectiveDir, stopRovingKeys } from '../shared/style-sheet.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTimezonePicker } from './timezone-picker.js';
 
 export { MthTimezonePicker } from './timezone-picker.js';

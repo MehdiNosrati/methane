@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { radioGroupMessages } from './radio-group.messages.js';
 
 export const radioGroupSpec: ComponentBehaviorSpec = {
   tag: 'mth-radio-group',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'roving-focus'],
   controllers: [
     'FormControlController',

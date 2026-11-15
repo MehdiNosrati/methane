@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { aiMessageMessages } from './ai-message.messages.js';
 
 export const aiMessageSpec: ComponentBehaviorSpec = {
   tag: 'mth-ai-message',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: [],
   controllers: [],
   focusModel: 'none',
@@ -51,7 +51,7 @@ export const CEM_METADATA = {
     'AI conversation message bubble with sanitized streaming Markdown rendering (ADR-012) and copy/regenerate actions.',
   propDescriptions: {
     role: 'Sender role (`user`, `assistant`, or `system`).',
-    content: 'Markdown text content rendered through `@methane/sanitize`.',
+    content: 'Markdown text content rendered through `@methane-ui/sanitize`.',
     allowRawHtml: 'Opt-in raw HTML sanitization inside Markdown. Disabled (`false`) by default.',
     streaming: 'Displays active streaming cursor indicator and live region updates.',
     author: 'Display author name overriding localized role label.',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { progressBarMessages } from './progress-bar.messages.js';
 
 export const progressBarSpec: ComponentBehaviorSpec = {
   tag: 'mth-progress-bar',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

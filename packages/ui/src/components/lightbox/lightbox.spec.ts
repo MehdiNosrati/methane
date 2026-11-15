@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { lightboxMessages } from './lightbox.messages.js';
 
 export const lightboxSpec: ComponentBehaviorSpec = {
   tag: 'mth-lightbox',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'FocusTrapController'],
   focusModel: 'none',

@@ -1,6 +1,6 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
-import type { DtcgDocument } from '@methane/tokens';
-import type { ExtendedCustomElementsManifest } from '@methane/wrapper-codegen';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
+import type { DtcgDocument } from '@methane-ui/tokens';
+import type { ExtendedCustomElementsManifest } from '@methane-ui/wrapper-codegen';
 
 export type FigmaVariableResolvedType = 'COLOR' | 'FLOAT' | 'STRING' | 'BOOLEAN';
 

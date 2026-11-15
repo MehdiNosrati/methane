@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBeforeAfter } from './before-after.js';
 
 export { MthBeforeAfter } from './before-after.js';

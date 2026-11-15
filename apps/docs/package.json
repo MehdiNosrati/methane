@@ -1,5 +1,5 @@
 {
-  "name": "@methane/docs",
+  "name": "@methane-ui/docs",
   "version": "0.1.0",
   "description": "Methane UI Astro documentation site, live multi-framework playground, and interactive OKLCH theme builder",
   "license": "MIT",
@@ -14,15 +14,15 @@
     "test": "vitest run --testTimeout=30000"
   },
   "dependencies": {
-    "@methane/bundle-budget": "workspace:^",
-    "@methane/core": "workspace:^",
-    "@methane/css": "workspace:^",
-    "@methane/primitives": "workspace:^",
-    "@methane/spec-compiler": "workspace:^",
-    "@methane/ssr-astro": "workspace:^",
-    "@methane/tokens": "workspace:^",
-    "@methane/ui": "workspace:^",
-    "@methane/wrapper-codegen": "workspace:^",
+    "@methane-ui/bundle-budget": "workspace:^",
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/css": "workspace:^",
+    "@methane-ui/primitives": "workspace:^",
+    "@methane-ui/spec-compiler": "workspace:^",
+    "@methane-ui/ssr-astro": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
+    "@methane-ui/ui": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^",
     "astro": "^7.4.12"
   }
 }

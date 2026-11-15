@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { stepperMessages } from './stepper.messages.js';
 
 export type StepperOrientation = 'horizontal' | 'vertical';
@@ -16,7 +16,7 @@ export const EMPTY_STEPPER_STEPS: ReadonlyArray<StepperStepItem> = Object.freeze
 
 export const stepperSpec: ComponentBehaviorSpec = {
   tag: 'mth-stepper',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController', 'SlotCollectionController'],
   focusModel: 'delegates-focus',

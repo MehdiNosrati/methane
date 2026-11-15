@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDateRangePicker } from './date-range-picker.js';
 
 export { MthDateRangePicker } from './date-range-picker.js';

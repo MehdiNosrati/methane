@@ -1,8 +1,8 @@
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { getRuntime } from '@methane/core';
-import { LiveAnnouncer } from '@methane/primitives';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { getRuntime } from '@methane-ui/core';
+import { LiveAnnouncer } from '@methane-ui/primitives';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MthToast, registerMthToast, toastSpec } from './index.js';

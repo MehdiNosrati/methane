@@ -1,4 +1,4 @@
-import { getRuntime, type NotificationItem } from '@methane/core';
+import { getRuntime, type NotificationItem } from '@methane-ui/core';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
 export interface NotifyOptions {

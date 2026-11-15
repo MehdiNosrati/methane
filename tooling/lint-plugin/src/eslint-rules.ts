@@ -259,12 +259,12 @@ export const noRawHtml: Rule.RuleModule = {
     type: 'problem',
     docs: {
       description:
-        'Disallow raw `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, and `unsafeHTML` outside `@methane/sanitize` (ADR-012, ADR-014).',
+        'Disallow raw `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, and `unsafeHTML` outside `@methane-ui/sanitize` (ADR-012, ADR-014).',
     },
     schema: [],
     messages: {
       noRawHtmlSink:
-        'Raw HTML sink "{{name}}" is banned outside `@methane/sanitize`; use `safeSetHTML` or `parseSafeFragment` from `@methane/sanitize`.',
+        'Raw HTML sink "{{name}}" is banned outside `@methane-ui/sanitize`; use `safeSetHTML` or `parseSafeFragment` from `@methane-ui/sanitize`.',
     },
   },
   create(context) {
@@ -349,39 +349,39 @@ export const noRawHtml: Rule.RuleModule = {
 };
 
 export const PACKAGE_LAYER_ORDER: Readonly<Record<string, number>> = {
-  '@methane/tokens': 0,
-  '@methane/css': 0,
-  '@methane/sanitize': 0,
-  '@methane/locales': 0,
-  '@methane/core': 1,
-  '@methane/primitives': 2,
-  '@methane/ui': 3,
-  '@methane/ai': 4,
-  '@methane/auth': 4,
-  '@methane/admin': 4,
-  '@methane/chat': 4,
-  '@methane/commerce': 4,
-  '@methane/datagrid': 5,
-  '@methane/charts': 5,
-  '@methane/editor': 5,
-  '@methane/code': 5,
-  '@methane/spreadsheet': 5,
-  '@methane/flow': 5,
-  '@methane/maps': 5,
-  '@methane/media': 5,
-  '@methane/rtc': 5,
-  '@methane/pdf': 5,
-  '@methane/3d': 5,
-  '@methane/ssr': 6,
-  '@methane/ssr-next': 7,
-  '@methane/ssr-nuxt': 7,
-  '@methane/ssr-sveltekit': 7,
-  '@methane/ssr-astro': 7,
-  '@methane/ssr-angular': 7,
-  '@methane/react': 8,
-  '@methane/vue': 8,
-  '@methane/angular': 8,
-  '@methane/svelte': 8,
+  '@methane-ui/tokens': 0,
+  '@methane-ui/css': 0,
+  '@methane-ui/sanitize': 0,
+  '@methane-ui/locales': 0,
+  '@methane-ui/core': 1,
+  '@methane-ui/primitives': 2,
+  '@methane-ui/ui': 3,
+  '@methane-ui/ai': 4,
+  '@methane-ui/auth': 4,
+  '@methane-ui/admin': 4,
+  '@methane-ui/chat': 4,
+  '@methane-ui/commerce': 4,
+  '@methane-ui/datagrid': 5,
+  '@methane-ui/charts': 5,
+  '@methane-ui/editor': 5,
+  '@methane-ui/code': 5,
+  '@methane-ui/spreadsheet': 5,
+  '@methane-ui/flow': 5,
+  '@methane-ui/maps': 5,
+  '@methane-ui/media': 5,
+  '@methane-ui/rtc': 5,
+  '@methane-ui/pdf': 5,
+  '@methane-ui/3d': 5,
+  '@methane-ui/ssr': 6,
+  '@methane-ui/ssr-next': 7,
+  '@methane-ui/ssr-nuxt': 7,
+  '@methane-ui/ssr-sveltekit': 7,
+  '@methane-ui/ssr-astro': 7,
+  '@methane-ui/ssr-angular': 7,
+  '@methane-ui/react': 8,
+  '@methane-ui/vue': 8,
+  '@methane-ui/angular': 8,
+  '@methane-ui/svelte': 8,
 };
 
 export function isAllowedPackageEdge(fromPackage: string, toPackage: string): boolean {
@@ -396,7 +396,7 @@ export function isAllowedPackageEdge(fromPackage: string, toPackage: string): bo
   // Generic SSR (6) may depend only on core stack layers 0..3.
   if (fromRank === 6) return toRank <= 3;
 
-  // Framework SSR adapters (7) may depend on layers 0..3 and @methane/ssr (6).
+  // Framework SSR adapters (7) may depend on layers 0..3 and @methane-ui/ssr (6).
   if (fromRank === 7) return toRank <= 3 || toRank === 6;
 
   // Framework wrappers (8) may depend on layers 0..3.
@@ -405,9 +405,9 @@ export function isAllowedPackageEdge(fromPackage: string, toPackage: string): bo
   // Lower layers (0..3) cannot depend on higher layers.
   if (toRank > fromRank) return false;
 
-  // Explicit layer 0 rule: only @methane/css may depend on @methane/tokens.
+  // Explicit layer 0 rule: only @methane-ui/css may depend on @methane-ui/tokens.
   if (fromRank === 0 && toRank === 0) {
-    return fromPackage === '@methane/css' && toPackage === '@methane/tokens';
+    return fromPackage === '@methane-ui/css' && toPackage === '@methane-ui/tokens';
   }
   return true;
 }
@@ -454,16 +454,16 @@ export function detectImportCycles(
 function inferPackageFromFilename(filename: string): string | null {
   const normalized = filename.replace(/\\/g, '/');
   const kitMatch = /(?:^|\/)packages\/kits\/([^/]+)\//.exec(normalized);
-  if (kitMatch?.[1]) return `@methane/${kitMatch[1]}`;
+  if (kitMatch?.[1]) return `@methane-ui/${kitMatch[1]}`;
   const satMatch = /(?:^|\/)packages\/satellites\/([^/]+)\//.exec(normalized);
-  if (satMatch?.[1]) return `@methane/${satMatch[1]}`;
+  if (satMatch?.[1]) return `@methane-ui/${satMatch[1]}`;
   const pkgMatch = /(?:^|\/)packages\/([^/]+)\//.exec(normalized);
-  if (pkgMatch?.[1]) return `@methane/${pkgMatch[1]}`;
+  if (pkgMatch?.[1]) return `@methane-ui/${pkgMatch[1]}`;
   return null;
 }
 
 function extractMethanePackageName(specifier: string): string | null {
-  if (!specifier.startsWith('@methane/')) return null;
+  if (!specifier.startsWith('@methane-ui/')) return null;
   const parts = specifier.split('/');
   if (parts.length < 2) return null;
   return `${parts[0]}/${parts[1]}`;
@@ -526,7 +526,7 @@ export const noCrossComponentInternalImports: Rule.RuleModule = {
     schema: [],
     messages: {
       internalImport:
-        'Cross-component internal import "{{specifier}}" is banned by ADR-002; compose @methane/primitives controllers or public <mth-*> exports only.',
+        'Cross-component internal import "{{specifier}}" is banned by ADR-002; compose @methane-ui/primitives controllers or public <mth-*> exports only.',
       dagViolation:
         'Package DAG violation: "{{from}}" cannot depend on "{{to}}" (ADR-002: tokens/sanitize -> core -> primitives -> ui -> kits -> satellites).',
     },
@@ -535,7 +535,7 @@ export const noCrossComponentInternalImports: Rule.RuleModule = {
     const fromPackage = inferPackageFromFilename(context.filename);
 
     function checkSpecifier(node: EstreeNode, specifier: string): void {
-      if (/^@methane\/[^/]+\/(?:src|internal|dist)\//.test(specifier)) {
+      if (/^@methane-ui\/[^/]+\/(?:src|internal|dist)\//.test(specifier)) {
         context.report({
           node,
           messageId: 'internalImport',
@@ -640,17 +640,17 @@ export const eslintRules = {
 
 export const methaneEslintPlugin: ESLint.Plugin = {
   meta: {
-    name: '@methane/lint-plugin',
+    name: '@methane-ui/lint-plugin',
     version: '0.1.0',
   },
   rules: eslintRules,
 };
 
 export const recommendedEslintRules: Readonly<Record<string, 'error'>> = {
-  '@methane/no-host-disabled-in-form-disabled-callback': 'error',
-  '@methane/no-tabindex-in-constructor': 'error',
-  '@methane/no-delegates-focus-with-host-role': 'error',
-  '@methane/no-raw-html': 'error',
-  '@methane/no-cross-component-internal-imports': 'error',
-  '@methane/no-css-violations-in-lit': 'error',
+  '@methane-ui/no-host-disabled-in-form-disabled-callback': 'error',
+  '@methane-ui/no-tabindex-in-constructor': 'error',
+  '@methane-ui/no-delegates-focus-with-host-role': 'error',
+  '@methane-ui/no-raw-html': 'error',
+  '@methane-ui/no-cross-component-internal-imports': 'error',
+  '@methane-ui/no-css-violations-in-lit': 'error',
 };

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCheckbox } from './checkbox.js';
 
 export { MthCheckbox } from './checkbox.js';

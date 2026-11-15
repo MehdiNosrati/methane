@@ -1,4 +1,4 @@
-# `@methane/datagrid`
+# `@methane-ui/datagrid`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Enterprise virtualized data visualization and planning Web Components for **Meth
 ## Installation
 
 ```bash
-pnpm add @methane/datagrid @methane/core @methane/tokens
+pnpm add @methane-ui/datagrid @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/datagrid @methane/core @methane/tokens
+npm install @methane-ui/datagrid @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/datagrid` | Auto-registers all 5 datagrid/planning elements and exports `registerAllComponents(prefix?)` |
-| `@methane/datagrid/<slug>` | Per-component entrypoint (`datagrid`, `pivot-table`, `tree-table`, `scheduler`, `gantt`) |
-| `@methane/datagrid/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
-| `@methane/datagrid/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/datagrid` | Auto-registers all 5 datagrid/planning elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/datagrid/<slug>` | Per-component entrypoint (`datagrid`, `pivot-table`, `tree-table`, `scheduler`, `gantt`) |
+| `@methane-ui/datagrid/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
+| `@methane-ui/datagrid/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -40,8 +40,8 @@ npm install @methane/datagrid @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/datagrid/datagrid';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/datagrid/datagrid';
 
 const grid = document.getElementById('users-grid') as any;
 grid.columns = [

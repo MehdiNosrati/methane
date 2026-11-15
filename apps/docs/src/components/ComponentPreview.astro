@@ -8,7 +8,7 @@ interface Props {
 const { entry } = Astro.props;
 const stageId = `preview-${entry.tagName}`;
 const isLivePackage =
-  entry.packageName === '@methane/ui' || entry.packageName === '@methane/primitives';
+  entry.packageName === '@methane-ui/ui' || entry.packageName === '@methane-ui/primitives';
 const PreviewTag = entry.tagName as unknown as string;
 const hasDefaultSlot = entry.model.slots.some((s) => s.name === '');
 
@@ -601,7 +601,7 @@ const CUSTOM_PREVIEW_TAGS = new Set([
             data-preview-target
           >
             <p style="margin-block:0">
-              Publish <code>@methane/ui</code> release artifacts with Sigstore provenance?
+              Publish <code>@methane-ui/ui</code> release artifacts with Sigstore provenance?
             </p>
           </mth-dialog>
         </mth-stack>
@@ -783,9 +783,9 @@ const CUSTOM_PREVIEW_TAGS = new Set([
     if (tag === 'mth-table' && targetEl) {
       const tableEl = targetEl as HTMLElement & { rows?: Array<Record<string, unknown>> };
       tableEl.rows = [
-        { id: '1', pkg: '@methane/tokens', layer: 'Foundation', size: '1.8 KB' },
-        { id: '2', pkg: '@methane/css', layer: 'Primitives', size: '3.1 KB' },
-        { id: '3', pkg: '@methane/ui', layer: 'Components', size: '8.4 KB' },
+        { id: '1', pkg: '@methane-ui/tokens', layer: 'Foundation', size: '1.8 KB' },
+        { id: '2', pkg: '@methane-ui/css', layer: 'Primitives', size: '3.1 KB' },
+        { id: '3', pkg: '@methane-ui/ui', layer: 'Components', size: '8.4 KB' },
       ];
     }
 

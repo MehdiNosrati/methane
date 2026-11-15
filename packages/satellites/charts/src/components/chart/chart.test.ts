@@ -1,17 +1,17 @@
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   HydrationPuritySuite,
   SatelliteEngineSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MTH_CHART_TYPES } from '../shared/chart-types.js';
 import {
   MthChartSeries,
   registerMthChartSeries,
-} from '@methane/charts/chart-series';
+} from '@methane-ui/charts/chart-series';
 import {
   MthChart,
   chartSpec,

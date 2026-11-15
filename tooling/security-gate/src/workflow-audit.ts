@@ -53,7 +53,7 @@ function hasDuplicatePnpmVersion(yamlText: string): boolean {
  * Validates all `.github/workflows/*.yml` files for CI/supply-chain hygiene:
  * - No `pnpm/action-setup` step specifies `version:` (must use `packageManager` from `package.json`)
  * - Any `permissions:` block uses least-privilege (`contents: read` or explicit scopes, never `write-all`)
- * - `release.yml` enforces Sigstore npm provenance (`id-token: write`, `NPM_CONFIG_PROVENANCE: 'true'`, `--provenance`, `--access public`, `@methane/bundle-budget`, `--frozen-lockfile`, and `dry_run`)
+ * - `release.yml` enforces Sigstore npm provenance (`id-token: write`, `NPM_CONFIG_PROVENANCE: 'true'`, `--provenance`, `--access public`, `@methane-ui/bundle-budget`, `--frozen-lockfile`, and `dry_run`)
  */
 export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowAuditResult {
   const resolvedDir = resolve(workflowsDir);
@@ -146,7 +146,7 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
         findings.push({
           file: fileName,
           rule: 'release-bundle-budget',
-          message: 'release.yml must run `@methane/bundle-budget` before publishing.',
+          message: 'release.yml must run `@methane-ui/bundle-budget` before publishing.',
         });
       }
       if (!content.includes('dry_run') || !content.includes('--dry-run')) {

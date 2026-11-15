@@ -18,7 +18,7 @@ const PHYSICAL_PROPERTY_REGEX =
 const PHYSICAL_DIRECTION_VALUE_REGEX =
   /(?:text-align|float|clear)\s*:\s*(?:left|right)\b/im;
 
-describe('@methane/css cascade layers, logical reset, and fail-open defined guard', () => {
+describe('@methane-ui/css cascade layers, logical reset, and fail-open defined guard', () => {
   const layersCss = readFileSync(resolve(srcDir, 'layers.css'), 'utf8');
   const resetCss = readFileSync(resolve(srcDir, 'reset.css'), 'utf8');
   const definedGuardCss = readFileSync(resolve(srcDir, 'defined-guard.css'), 'utf8');

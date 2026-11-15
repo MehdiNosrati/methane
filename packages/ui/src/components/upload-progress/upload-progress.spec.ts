@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { uploadProgressMessages } from './upload-progress.messages.js';
 
 export const uploadProgressSpec: ComponentBehaviorSpec = {
   tag: 'mth-upload-progress',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

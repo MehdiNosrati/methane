@@ -16,11 +16,11 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^@methane\/datagrid\/([^/]+)\/element(?:\.js)?$/,
+        find: /^@methane-ui\/datagrid\/([^/]+)\/element(?:\.js)?$/,
         replacement: resolve(__dirname, 'src/components/$1/element.ts'),
       },
       {
-        find: /^@methane\/datagrid\/([^/]+)$/,
+        find: /^@methane-ui\/datagrid\/([^/]+)$/,
         replacement: resolve(__dirname, 'src/components/$1/index.ts'),
       },
     ],

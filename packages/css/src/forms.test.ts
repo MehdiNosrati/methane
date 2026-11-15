@@ -9,7 +9,7 @@ const pkgRoot = resolve(here, '..');
 const distDir = resolve(pkgRoot, 'dist');
 const configFile = resolve(pkgRoot, '../../stylelint.config.mjs');
 
-describe('@methane/css form & button primitives', () => {
+describe('@methane-ui/css form & button primitives', () => {
   it('compiles forms.css and bundles it in dist/index.css', () => {
     const formsDist = resolve(distDir, 'forms.css');
     const bundleDist = resolve(distDir, 'index.css');
@@ -56,7 +56,7 @@ describe('@methane/css form & button primitives', () => {
     expect(errors).toEqual([]);
   });
 
-  it('uses canonical @methane/tokens custom properties and non-hex SVG strokes across CSS primitives', () => {
+  it('uses canonical @methane-ui/tokens custom properties and non-hex SVG strokes across CSS primitives', () => {
     for (const file of ['forms.css', 'layout.css', 'prose.css', 'marketing.css']) {
       const css = readFileSync(resolve(here, file), 'utf8');
       expect(css).not.toMatch(/--mth-(text|weight|leading|duration|ease|size-control)-/);

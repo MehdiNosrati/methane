@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthVirtualScroller } from './virtual-scroller.js';
 
 export { MthVirtualScroller } from './virtual-scroller.js';

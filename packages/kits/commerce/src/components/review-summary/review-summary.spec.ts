@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { reviewSummaryMessages } from './review-summary.messages.js';
 
 export const reviewSummarySpec: ComponentBehaviorSpec = {
   tag: 'mth-review-summary',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: [],
   controllers: [],
   focusModel: 'none',

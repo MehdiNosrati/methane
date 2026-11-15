@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDiffViewer } from './diff-viewer.js';
 
 export { MthDiffViewer, type DiffViewerEngine } from './diff-viewer.js';

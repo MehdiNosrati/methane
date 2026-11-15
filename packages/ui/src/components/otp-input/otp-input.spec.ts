@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { otpInputMessages } from './otp-input.messages.js';
 
 export const otpInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-otp-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'roving-focus'],
   controllers: ['FormControlController', 'InputController', 'RovingFocusController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { dropdownMenuMessages } from './dropdown-menu.messages.js';
 
 export const dropdownMenuSpec: ComponentBehaviorSpec = {
   tag: 'mth-dropdown-menu',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['listbox', 'overlay', 'roving-focus'],
   controllers: [
     'ListboxController',

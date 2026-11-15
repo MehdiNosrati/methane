@@ -22,7 +22,7 @@ function lintJs(code: string, filename = 'packages/ui/src/components/button/butt
       {
         files: ['**/*.js', '**/*.mjs', '**/*.ts'],
         languageOptions: { ecmaVersion: 2024, sourceType: 'module' },
-        plugins: { '@methane': methaneEslintPlugin },
+        plugins: { '@methane-ui': methaneEslintPlugin },
         rules: recommendedEslintRules,
       },
     ],
@@ -41,7 +41,7 @@ async function lintCss(code: string) {
   return result.results[0]?.warnings ?? [];
 }
 
-describe('@methane/lint-plugin Stylelint rules (ADR-014)', () => {
+describe('@methane-ui/lint-plugin Stylelint rules (ADR-014)', () => {
   it('bans :host-context() while allowing :host(...) and logical selectors', async () => {
     const bad = await lintCss(`
       :host-context(.dark) .control {
@@ -98,7 +98,7 @@ describe('@methane/lint-plugin Stylelint rules (ADR-014)', () => {
   });
 });
 
-describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => {
+describe('@methane-ui/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => {
   it('bans mutating host disabled inside formDisabledCallback', () => {
     const bad = lintJs(`
       class MthInput extends HTMLElement {
@@ -109,7 +109,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       }
     `);
     expect(
-      bad.filter((m) => m.ruleId === '@methane/no-host-disabled-in-form-disabled-callback'),
+      bad.filter((m) => m.ruleId === '@methane-ui/no-host-disabled-in-form-disabled-callback'),
     ).toHaveLength(2);
 
     const good = lintJs(`
@@ -132,7 +132,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
         }
       }
     `);
-    expect(bad.filter((m) => m.ruleId === '@methane/no-tabindex-in-constructor')).toHaveLength(2);
+    expect(bad.filter((m) => m.ruleId === '@methane-ui/no-tabindex-in-constructor')).toHaveLength(2);
 
     const good = lintJs(`
       class MthButton extends HTMLElement {
@@ -156,7 +156,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       }
     `);
     expect(
-      bad.filter((m) => m.ruleId === '@methane/no-delegates-focus-with-host-role'),
+      bad.filter((m) => m.ruleId === '@methane-ui/no-delegates-focus-with-host-role'),
     ).toHaveLength(1);
 
     const good = lintJs(`
@@ -171,7 +171,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
     expect(good).toHaveLength(0);
   });
 
-  it('bans raw innerHTML/outerHTML/insertAdjacentHTML/unsafeHTML outside @methane/sanitize', () => {
+  it('bans raw innerHTML/outerHTML/insertAdjacentHTML/unsafeHTML outside @methane-ui/sanitize', () => {
     const bad = lintJs(`
       import { unsafeHTML } from 'lit/directives/unsafe-html.js';
       export function render(el, html) {
@@ -180,7 +180,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
         return unsafeHTML(html);
       }
     `);
-    expect(bad.filter((m) => m.ruleId === '@methane/no-raw-html').length).toBeGreaterThanOrEqual(4);
+    expect(bad.filter((m) => m.ruleId === '@methane-ui/no-raw-html').length).toBeGreaterThanOrEqual(4);
 
     const allowedInSanitize = lintJs(
       `
@@ -197,7 +197,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       'packages/ui/src/components/combobox/combobox.js',
     );
     expect(
-      crossComp.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      crossComp.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const deepCrossComp = lintJs(
@@ -205,7 +205,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       'packages/ui/src/components/combobox/sub/list.js',
     );
     expect(
-      deepCrossComp.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      deepCrossComp.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const kitCrossComp = lintJs(
@@ -213,7 +213,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       'packages/kits/ai/src/ai-message/message.js',
     );
     expect(
-      kitCrossComp.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      kitCrossComp.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const satCrossComp = lintJs(
@@ -221,7 +221,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
       'packages/satellites/datagrid/src/tree-table/sub/cell.js',
     );
     expect(
-      satCrossComp.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      satCrossComp.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const sameComp = lintJs(
@@ -231,47 +231,47 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
     expect(sameComp).toHaveLength(0);
 
     const internalSubpath = lintJs(
-      `import { internal } from '@methane/ui/src/button/state.js';`,
+      `import { internal } from '@methane-ui/ui/src/button/state.js';`,
       'packages/kits/ai/src/prompt.js',
     );
     expect(
-      internalSubpath.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      internalSubpath.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const upwardDag = lintJs(
-      `import { MthButton } from '@methane/ui';`,
+      `import { MthButton } from '@methane-ui/ui';`,
       'packages/core/src/ui-element.js',
     );
     expect(
-      upwardDag.some((m) => m.ruleId === '@methane/no-cross-component-internal-imports'),
+      upwardDag.some((m) => m.ruleId === '@methane-ui/no-cross-component-internal-imports'),
     ).toBe(true);
 
     const validDownward = lintJs(
-      `import { UIElement } from '@methane/core';`,
+      `import { UIElement } from '@methane-ui/core';`,
       'packages/ui/src/components/button/button.js',
     );
     expect(validDownward).toHaveLength(0);
 
-    expect(isAllowedPackageEdge('@methane/ui', '@methane/primitives')).toBe(true);
-    expect(isAllowedPackageEdge('@methane/primitives', '@methane/ui')).toBe(false);
-    expect(isAllowedPackageEdge('@methane/ai', '@methane/chat')).toBe(false);
-    expect(isAllowedPackageEdge('@methane/datagrid', '@methane/ui')).toBe(true);
-    expect(isAllowedPackageEdge('@methane/ui', '@methane/ssr')).toBe(false);
-    expect(isAllowedPackageEdge('@methane/core', '@methane/react')).toBe(false);
-    expect(isAllowedPackageEdge('@methane/ssr-next', '@methane/ssr')).toBe(true);
-    expect(isAllowedPackageEdge('@methane/ssr-next', '@methane/ssr-nuxt')).toBe(false);
-    expect(isAllowedPackageEdge('@methane/react', '@methane/ui')).toBe(true);
-    expect(isAllowedPackageEdge('@methane/react', '@methane/vue')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/ui', '@methane-ui/primitives')).toBe(true);
+    expect(isAllowedPackageEdge('@methane-ui/primitives', '@methane-ui/ui')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/ai', '@methane-ui/chat')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/datagrid', '@methane-ui/ui')).toBe(true);
+    expect(isAllowedPackageEdge('@methane-ui/ui', '@methane-ui/ssr')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/core', '@methane-ui/react')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/ssr-next', '@methane-ui/ssr')).toBe(true);
+    expect(isAllowedPackageEdge('@methane-ui/ssr-next', '@methane-ui/ssr-nuxt')).toBe(false);
+    expect(isAllowedPackageEdge('@methane-ui/react', '@methane-ui/ui')).toBe(true);
+    expect(isAllowedPackageEdge('@methane-ui/react', '@methane-ui/vue')).toBe(false);
 
     const cycles = detectImportCycles(
       new Map([
-        ['@methane/a', ['@methane/b']],
-        ['@methane/b', ['@methane/c']],
-        ['@methane/c', ['@methane/a']],
+        ['@methane-ui/a', ['@methane-ui/b']],
+        ['@methane-ui/b', ['@methane-ui/c']],
+        ['@methane-ui/c', ['@methane-ui/a']],
       ]),
     );
     expect(cycles).toHaveLength(1);
-    expect(cycles[0]).toEqual(['@methane/a', '@methane/b', '@methane/c', '@methane/a']);
+    expect(cycles[0]).toEqual(['@methane-ui/a', '@methane-ui/b', '@methane-ui/c', '@methane-ui/a']);
   });
 
   it('flags CSS-in-JS violations inside Lit css tagged templates', () => {
@@ -287,7 +287,7 @@ describe('@methane/lint-plugin ESLint rules (ADR-002, ADR-012, ADR-014)', () => 
         }
       \`;
     `);
-    expect(bad.filter((m) => m.ruleId === '@methane/no-css-violations-in-lit')).toHaveLength(4);
+    expect(bad.filter((m) => m.ruleId === '@methane-ui/no-css-violations-in-lit')).toHaveLength(4);
 
     const good = lintJs(`
       import { css } from 'lit';

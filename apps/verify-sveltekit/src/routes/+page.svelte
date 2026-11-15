@@ -1,12 +1,12 @@
 <script lang="ts">
-  import MthButton from '@methane/svelte/MthButton.svelte';
-  import MthCheckbox from '@methane/svelte/MthCheckbox.svelte';
-  import MthCombobox from '@methane/svelte/MthCombobox.svelte';
-  import MthDialog from '@methane/svelte/MthDialog.svelte';
-  import MthField from '@methane/svelte/MthField.svelte';
-  import MthInput from '@methane/svelte/MthInput.svelte';
-  import MthOption from '@methane/svelte/MthOption.svelte';
-  import MthOptionGroup from '@methane/svelte/MthOptionGroup.svelte';
+  import MthButton from '@methane-ui/svelte/MthButton.svelte';
+  import MthCheckbox from '@methane-ui/svelte/MthCheckbox.svelte';
+  import MthCombobox from '@methane-ui/svelte/MthCombobox.svelte';
+  import MthDialog from '@methane-ui/svelte/MthDialog.svelte';
+  import MthField from '@methane-ui/svelte/MthField.svelte';
+  import MthInput from '@methane-ui/svelte/MthInput.svelte';
+  import MthOption from '@methane-ui/svelte/MthOption.svelte';
+  import MthOptionGroup from '@methane-ui/svelte/MthOptionGroup.svelte';
 
   let canaryValue = $state('sveltekit-ssr@methane.dev');
   let frameworkValue = $state('lit');

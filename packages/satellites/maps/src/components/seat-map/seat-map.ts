@@ -1,5 +1,5 @@
-import { html, nothing, property, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { FormControlController, RovingFocusController, SelectionController } from '@methane/primitives';
+import { html, nothing, property, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { FormControlController, RovingFocusController, SelectionController } from '@methane-ui/primitives';
 import { createMapEngine, type MapEngineHandle } from '../shared/map-engine.js';
 import { seatMapMessages } from './seat-map.messages.js';
 import { seatMapStyles } from './seat-map.styles.js';

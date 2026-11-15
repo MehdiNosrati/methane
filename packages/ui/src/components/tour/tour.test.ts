@@ -1,9 +1,9 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/tour-step';
-import type { MthTourStep } from '@methane/ui/tour-step';
+import '@methane-ui/ui/tour-step';
+import type { MthTourStep } from '@methane-ui/ui/tour-step';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthTour, registerMthTour, tourSpec } from './index.js';
 

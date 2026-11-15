@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { schemaFormMessages } from './schema-form.messages.js';
 
 export const schemaFormSpec: ComponentBehaviorSpec = {
   tag: 'mth-schema-form',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['ContextProtocol'],
   focusModel: 'none',

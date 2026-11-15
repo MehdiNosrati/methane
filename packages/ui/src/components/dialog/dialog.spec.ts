@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { dialogMessages } from './dialog.messages.js';
 
 export const dialogSpec: ComponentBehaviorSpec = {
   tag: 'mth-dialog',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'FocusTrapController', 'MotionController'],
   focusModel: 'host',

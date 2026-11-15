@@ -1,23 +1,23 @@
-# `@methane/ssr-next`
+# `@methane-ui/ssr-next`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Next.js App Router, React Server Components (RSC), and Route/Middleware Declarative Shadow DOM (DSD) streaming SSR adapter for **Methane UI** — built on `@methane/ssr`.
+Next.js App Router, React Server Components (RSC), and Route/Middleware Declarative Shadow DOM (DSD) streaming SSR adapter for **Methane UI** — built on `@methane-ui/ssr`.
 
 ## Installation
 
 ```bash
-pnpm add @methane/ssr-next @methane/ssr @methane/core
+pnpm add @methane-ui/ssr-next @methane-ui/ssr @methane-ui/core
 # or
-npm install @methane/ssr-next @methane/ssr @methane/core
+npm install @methane-ui/ssr-next @methane-ui/ssr @methane-ui/core
 ```
 
 ## Package Exports
 
 | Entrypoint | Environment | Exports |
 | --- | --- | --- |
-| `@methane/ssr-next` | Server (Node / Edge) | `withMethaneNextConfig`, `renderNextHtml`, `transformNextResponse`, `createNextSsrTransformStream`, `formatPreloadLinkHeader` |
-| `@methane/ssr-next/client` | Client (`"use client"`) | `initNextHydration`, `hydrateNextContainer`, `isNextHydrationReady` |
+| `@methane-ui/ssr-next` | Server (Node / Edge) | `withMethaneNextConfig`, `renderNextHtml`, `transformNextResponse`, `createNextSsrTransformStream`, `formatPreloadLinkHeader` |
+| `@methane-ui/ssr-next/client` | Client (`"use client"`) | `initNextHydration`, `hydrateNextContainer`, `isNextHydrationReady` |
 
 ## Usage Examples
 
@@ -25,7 +25,7 @@ npm install @methane/ssr-next @methane/ssr @methane/core
 
 ```ts
 import type { NextConfig } from 'next';
-import { withMethaneNextConfig } from '@methane/ssr-next';
+import { withMethaneNextConfig } from '@methane-ui/ssr-next';
 
 const nextConfig: NextConfig = {
   // your Next.js options
@@ -40,14 +40,14 @@ export default withMethaneNextConfig(nextConfig);
 'use client';
 
 import { useEffect } from 'react';
-import { initNextHydration } from '@methane/ssr-next/client';
+import { initNextHydration } from '@methane-ui/ssr-next/client';
 
 initNextHydration();
 
 export function MethaneProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Declarative Shadow DOM elements upgrade in place once registered
-    void import('@methane/ui/button');
+    void import('@methane-ui/ui/button');
   }, []);
 
   return <>{children}</>;
@@ -57,7 +57,7 @@ export function MethaneProvider({ children }: { children: React.ReactNode }) {
 ### 3. Transform HTML / Streaming Response in Middleware or Route Handler
 
 ```ts
-import { renderNextHtml, formatPreloadLinkHeader } from '@methane/ssr-next';
+import { renderNextHtml, formatPreloadLinkHeader } from '@methane-ui/ssr-next';
 
 const { html, links } = await renderNextHtml(rawHtml, { styles: 'linked' });
 const linkHeader = formatPreloadLinkHeader(links);
@@ -65,7 +65,7 @@ const linkHeader = formatPreloadLinkHeader(links);
 
 ## Notes
 
-- **Theming & FOUC**: Pair with `@methane/tokens/tokens.css` and `@methane/css/defined-guard.css` in your root `layout.tsx`.
+- **Theming & FOUC**: Pair with `@methane-ui/tokens/tokens.css` and `@methane-ui/css/defined-guard.css` in your root `layout.tsx`.
 - **Edge & Streaming**: `createNextSsrTransformStream()` processes chunked Next.js SSR HTML streams while hoisting deduplicated component stylesheets and `Link` preload headers.
 
 ## License

@@ -16,7 +16,7 @@
           "description": "Authentication form supporting sign-in, sign-up, password reset, and magic-link modes with autofill-compatible `autocomplete`, FormControlController validation, and alert error display.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -326,7 +326,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-auth-form",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [
               "form-control"
             ],
@@ -511,7 +511,7 @@
           "description": "Multi-factor authentication challenge supporting 6-digit TOTP entry with multi-cell paste and backup recovery code entry.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -792,7 +792,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-mfa-challenge",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [
               "form-control",
               "roving-focus"
@@ -990,7 +990,7 @@
           "description": "WebAuthn passkey registration and sign-in prompt with PublicKeyCredential feature detection and fallback trigger.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1188,7 +1188,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-passkey-prompt",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [],
             "controllers": [],
             "focusModel": "host",
@@ -1320,7 +1320,7 @@
           "description": "Authenticated user profile menu trigger with positioned overlay popover, role badge, and roving menu items.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1568,7 +1568,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-profile-menu",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [
               "overlay"
             ],
@@ -1735,7 +1735,7 @@
           "description": "Interactive role-by-permission authorization matrix grid with 2D roving keyboard navigation and readonly enforcement.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1870,7 +1870,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-role-matrix",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [
               "roving-focus"
             ],
@@ -1994,7 +1994,7 @@
           "description": "Active authenticated session list displaying device metadata, current-session badge, and single/bulk revocation actions.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2149,7 +2149,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-session-list",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [],
             "controllers": [],
             "focusModel": "host",
@@ -2269,7 +2269,7 @@
           "description": "Federated Single Sign-On provider button group with RovingFocusController navigation and per-provider loading state.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2412,7 +2412,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-sso-buttons",
-            "package": "@methane/auth",
+            "package": "@methane-ui/auth",
             "conformance": [
               "roving-focus"
             ],

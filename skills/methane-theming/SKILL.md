@@ -1,6 +1,6 @@
 ---
 name: methane-theming
-description: Customizes Methane UI themes using OKLCH brand seeds, light/dark modes, density presets, high-contrast forced-colors, W3C DTCG tokens.json compilation, and ::part() or :state() styling. Use when theming or styling @methane/* components.
+description: Customizes Methane UI themes using OKLCH brand seeds, light/dark modes, density presets, high-contrast forced-colors, W3C DTCG tokens.json compilation, and ::part() or :state() styling. Use when theming or styling @methane-ui/* components.
 ---
 
 # Methane Theming & Tokens
@@ -12,9 +12,9 @@ Methane derives perceptual color ramps and semantic tokens in `oklch()` inside `
 Import layers, tokens, and base CSS in order so your own stylesheets override primitives without `!important`:
 
 ```css
-@import '@methane/css/layers.css';
-@import '@methane/tokens/tokens.css';
-@import '@methane/css/index.css';
+@import '@methane-ui/css/layers.css';
+@import '@methane-ui/tokens/tokens.css';
+@import '@methane-ui/css/index.css';
 ```
 
 ## 2. Customize Brand Color in OKLCH
@@ -43,17 +43,17 @@ Apply attributes or helper classes on `<html>` or any container subtree:
 
 ## 4. High Contrast (`forced-colors`) & Reduced Motion
 
-`@methane/tokens/tokens.css` automatically handles accessibility media queries:
+`@methane-ui/tokens/tokens.css` automatically handles accessibility media queries:
 
 - `@media (forced-colors: active)` maps `--mth-color-bg` / `--mth-color-surface` to `Canvas`, `--mth-color-fg` to `CanvasText`, `--mth-color-border` to `ButtonBorder`, `--mth-color-accent` / `--mth-color-border-focus` to `Highlight`, and clears shadows.
 - `@media (prefers-reduced-motion: reduce)` sets all `--mth-motion-duration-*` tokens to `0ms`.
 
 ## 5. Compile Custom W3C DTCG `tokens.json`
 
-Use `@methane/tokens/compiler` to compile custom DTCG JSON documents into `--mth-*` CSS:
+Use `@methane-ui/tokens/compiler` to compile custom DTCG JSON documents into `--mth-*` CSS:
 
 ```ts
-import { compileDtcgTokens, type DtcgDocument } from '@methane/tokens/compiler';
+import { compileDtcgTokens, type DtcgDocument } from '@methane-ui/tokens/compiler';
 
 const dtcg: DtcgDocument = {
   color: {
@@ -82,10 +82,10 @@ mth-input:state(user-invalid)::part(control) {
 }
 ```
 
-- **Constructable Sheet Escape Hatch**: Inject scoped Constructable Stylesheets into `@layer override` via `@methane/core`:
+- **Constructable Sheet Escape Hatch**: Inject scoped Constructable Stylesheets into `@layer override` via `@methane-ui/core`:
 
 ```ts
-import { registerStyles } from '@methane/core';
+import { registerStyles } from '@methane-ui/core';
 
 registerStyles('mth-button', '@layer override { [part="control"] { font-weight: 700; } }');
 ```

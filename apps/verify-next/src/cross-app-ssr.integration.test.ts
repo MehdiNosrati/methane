@@ -30,7 +30,7 @@ const uiElementUrls = {
   'mth-option-group': pathToFileURL(resolve(uiComponentsDir, 'option-group/element.js')).href,
   'mth-option': pathToFileURL(resolve(uiComponentsDir, 'option/element.js')).href,
 } as const;
-const conformanceUrl = pathToFileURL(appRequire.resolve('@methane/test-conformance')).href;
+const conformanceUrl = pathToFileURL(appRequire.resolve('@methane-ui/test-conformance')).href;
 
 const VERIFIED_TAGS = [
   'mth-skip-link',

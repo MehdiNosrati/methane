@@ -1,4 +1,4 @@
-import type { DataControllerStatus } from '@methane/primitives';
+import type { DataControllerStatus } from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {

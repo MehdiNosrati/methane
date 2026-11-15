@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import '@methane/ssr/dom-shim';
+import '@methane-ui/ssr/dom-shim';
 import { LitElement, css, html } from 'lit';
 import {
   createMethaneAstroIntegration,
@@ -38,7 +38,7 @@ if (!customElements.get('mth-astro-card')) {
   customElements.define('mth-astro-card', MthAstroCard);
 }
 
-describe('@methane/ssr-astro', () => {
+describe('@methane-ui/ssr-astro', () => {
   it('registers renderer and client script via createMethaneAstroIntegration', () => {
     const added: Array<{ name: string; serverEntrypoint: string }> = [];
     const scripts: Array<{ stage: string; content: string }> = [];
@@ -50,9 +50,9 @@ describe('@methane/ssr-astro', () => {
     });
 
     expect(added).toHaveLength(1);
-    expect(added[0]!.name).toBe('@methane/ssr-astro');
+    expect(added[0]!.name).toBe('@methane-ui/ssr-astro');
     expect(scripts[0]!.stage).toBe('page');
-    expect(scripts[0]!.content).toContain('@methane/ssr-astro/client');
+    expect(scripts[0]!.content).toContain('@methane-ui/ssr-astro/client');
   });
 
   it('renders static markup for Astro islands and hoists stylesheet preloads in middleware', async () => {

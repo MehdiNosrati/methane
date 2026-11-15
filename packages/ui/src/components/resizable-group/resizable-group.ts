@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, property, query } from '@methane/core';
-import { SlotCollectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, property, query } from '@methane-ui/core';
+import { SlotCollectionController } from '@methane-ui/primitives';
 import { resizableGroupMessages } from './resizable-group.messages.js';
 import { resizableGroupStyles } from './resizable-group.styles.js';
 

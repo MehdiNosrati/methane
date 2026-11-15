@@ -1,4 +1,4 @@
-# `@methane/sanitize`
+# `@methane-ui/sanitize`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Defense-in-depth HTML, Markdown, streaming chunk, and URL sanitization for **Met
 ## Installation
 
 ```bash
-pnpm add @methane/sanitize
+pnpm add @methane-ui/sanitize
 # or
-npm install @methane/sanitize
+npm install @methane-ui/sanitize
 ```
 
 ## Exported API
@@ -34,7 +34,7 @@ npm install @methane/sanitize
 ### Safe DOM & ShadowRoot HTML Injection
 
 ```ts
-import { safeSetHTML, sanitizeUrl } from '@methane/sanitize';
+import { safeSetHTML, sanitizeUrl } from '@methane-ui/sanitize';
 
 const container = document.getElementById('preview')!;
 safeSetHTML(container, '<p>Hello <script>alert(1)</script><a href="javascript:evil()">link</a></p>');
@@ -45,7 +45,7 @@ const safeHref = sanitizeUrl(userProvidedUrl, '/fallback');
 ### Streaming Markdown for AI & Chat Surfaces
 
 ```ts
-import { createStreamSanitizer, safeSetMarkdown } from '@methane/sanitize';
+import { createStreamSanitizer, safeSetMarkdown } from '@methane-ui/sanitize';
 
 // Full Markdown render
 safeSetMarkdown(articleEl, '## Summary\n\n- Verified **safe** output');
@@ -63,7 +63,7 @@ streamer.reset();
 ### Strict Sanitization with Trusted Types
 
 ```ts
-import { sanitizeToTrustedHTML, isTrustedTypesActive } from '@methane/sanitize';
+import { sanitizeToTrustedHTML, isTrustedTypesActive } from '@methane-ui/sanitize';
 
 const policy = isTrustedTypesActive()
   ? window.trustedTypes.createPolicy('methane-markdown', {

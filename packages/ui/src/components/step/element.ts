@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthStep } from './step.js';
 
 export { MthStep, type StepStatus } from './step.js';

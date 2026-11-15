@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { textareaMessages } from './textarea.messages.js';
 
 export const textareaSpec: ComponentBehaviorSpec = {
   tag: 'mth-textarea',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

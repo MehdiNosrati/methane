@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFormulaBar } from './formula-bar.js';
 
 export { MthFormulaBar, type MthFormulaBarEngine } from './formula-bar.js';

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import '@methane/ssr-nuxt/client';
+import '@methane-ui/ssr-nuxt/client';
 import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -7,15 +7,15 @@ import {
   MthErrorBoundaryElement,
   MthSkipLinkElement,
   MthVisuallyHiddenElement,
-} from '@methane/primitives';
-import { createMethaneNuxtPlugin, initNuxtHydration } from '@methane/ssr-nuxt/client';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
-import { MthCombobox } from '@methane/ui/combobox/element';
-import { MthDialog } from '@methane/ui/dialog/element';
-import { MthField } from '@methane/ui/field/element';
-import { MthInput } from '@methane/ui/input/element';
-import { MthOption } from '@methane/ui/option/element';
-import { MthOptionGroup } from '@methane/ui/option-group/element';
+} from '@methane-ui/primitives';
+import { createMethaneNuxtPlugin, initNuxtHydration } from '@methane-ui/ssr-nuxt/client';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
+import { MthCombobox } from '@methane-ui/ui/combobox/element';
+import { MthDialog } from '@methane-ui/ui/dialog/element';
+import { MthField } from '@methane-ui/ui/field/element';
+import { MthInput } from '@methane-ui/ui/input/element';
+import { MthOption } from '@methane-ui/ui/option/element';
+import { MthOptionGroup } from '@methane-ui/ui/option-group/element';
 import { describe, expect, it } from 'vitest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -166,7 +166,7 @@ const ELEMENT_CLASSES = {
   'mth-option': MthOption,
 } as const;
 
-describe('@methane/verify-nuxt hydration purity', () => {
+describe('@methane-ui/verify-nuxt hydration purity', () => {
   it('passes HydrationPuritySuite with 0 shadow-DOM node replacements on client upgrade', async () => {
     const html = renderNuxtSsrHtmlInNode();
     expect(html).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBreadcrumbPath } from './breadcrumb-path.js';
 
 export {

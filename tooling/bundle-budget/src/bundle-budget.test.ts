@@ -56,7 +56,7 @@ afterAll(() => {
   }
 });
 
-describe('@methane/bundle-budget', () => {
+describe('@methane-ui/bundle-budget', () => {
   it('measures cold standalone brotli and marginal brotli sizes via esbuild + zlib.brotliCompressSync', async () => {
     const { entry } = createTempFixture();
 

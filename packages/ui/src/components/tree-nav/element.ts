@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTreeNav } from './tree-nav.js';
 
 export { MthTreeNav, type TreeNavItem } from './tree-nav.js';

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { newsletterFormMessages } from './newsletter-form.messages.js';
 
 export const newsletterFormSpec: ComponentBehaviorSpec = {
   tag: 'mth-newsletter-form',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

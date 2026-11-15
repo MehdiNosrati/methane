@@ -19,7 +19,7 @@ afterEach(() => {
   }
 });
 
-describe('@methane/security-gate GitHub workflows audit', () => {
+describe('@methane-ui/security-gate GitHub workflows audit', () => {
   it('validates all repository .github/workflows/*.yml files pass security and provenance rules', () => {
     const result = auditWorkflowFiles();
     expect(result.filesChecked).toContain('ci.yml');

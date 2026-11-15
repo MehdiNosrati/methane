@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { LiveAnnouncer } from '@methane/primitives';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { LiveAnnouncer } from '@methane-ui/primitives';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { copyButtonSpec } from './copy-button.spec.js';
 import { MthCopyButton, registerMthCopyButton } from './index.js';
@@ -28,7 +28,7 @@ describe('<mth-copy-button>', () => {
 
     const source = document.createElement('code');
     source.id = 'copy-src';
-    source.textContent = 'pnpm add @methane/ui';
+    source.textContent = 'pnpm add @methane-ui/ui';
     document.body.appendChild(source);
 
     const el = document.createElement('mth-copy-button') as MthCopyButton;
@@ -45,8 +45,8 @@ describe('<mth-copy-button>', () => {
     const ok = await el.copy();
     await el.updateComplete;
     expect(ok).toBe(true);
-    expect(writeText).toHaveBeenCalledWith('pnpm add @methane/ui');
-    expect(copiedDetail).toEqual({ value: 'pnpm add @methane/ui', method: 'navigator' });
+    expect(writeText).toHaveBeenCalledWith('pnpm add @methane-ui/ui');
+    expect(copiedDetail).toEqual({ value: 'pnpm add @methane-ui/ui', method: 'navigator' });
     expect(LiveAnnouncer.getLastAnnouncement()).toEqual({
       message: 'Copied to clipboard',
       politeness: 'polite',

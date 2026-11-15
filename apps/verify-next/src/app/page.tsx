@@ -1,4 +1,4 @@
-import '@methane/react';
+import '@methane-ui/react';
 import type {} from '../types/custom-elements';
 
 export default function VerifyNextPage() {

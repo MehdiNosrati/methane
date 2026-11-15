@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { bottomNavMessages } from './bottom-nav.messages.js';

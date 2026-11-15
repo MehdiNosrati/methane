@@ -7,8 +7,8 @@ import {
   svg,
   UIElement,
   type PropertyValues,
-} from '@methane/core';
-import { MotionController } from '@methane/primitives';
+} from '@methane-ui/core';
+import { MotionController } from '@methane-ui/primitives';
 import {
   collectHostThemeTokens,
   createAdoptedSheet,

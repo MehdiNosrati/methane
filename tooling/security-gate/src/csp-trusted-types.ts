@@ -1,4 +1,4 @@
-import { isSafeUrl } from '@methane/sanitize';
+import { isSafeUrl } from '@methane-ui/sanitize';
 
 export interface TrustedHTMLValue {
   toString(): string;
@@ -404,7 +404,7 @@ export function auditDsdHtmlForCsp(
 
 /**
  * Executes the end-to-end strict CSP & Trusted Types compliance suite across
- * `@methane/sanitize`, `@methane/core`, `@methane/primitives`, and `@methane/ssr`.
+ * `@methane-ui/sanitize`, `@methane-ui/core`, `@methane-ui/primitives`, and `@methane-ui/ssr`.
  */
 export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
   const harness = installTrustedTypesAndCspGuards({
@@ -466,12 +466,12 @@ export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
     harness.clearViolations();
 
     // 2. Import Methane packages AFTER Trusted Types harness is active so lit-html creates 'lit-html' policy
-    const sanitizeMod = await import('@methane/sanitize');
-    const coreMod = await import('@methane/core');
-    const primitivesMod = await import('@methane/primitives');
-    const ssrMod = await import('@methane/ssr');
+    const sanitizeMod = await import('@methane-ui/sanitize');
+    const coreMod = await import('@methane-ui/core');
+    const primitivesMod = await import('@methane-ui/primitives');
+    const ssrMod = await import('@methane-ui/ssr');
 
-    // 3. Exercise @methane/sanitize under strict 'methane-sanitize' policy
+    // 3. Exercise @methane-ui/sanitize under strict 'methane-sanitize' policy
     const tt = (globalThis as unknown as {
       trustedTypes: { createPolicy: (n: string, r: TrustedTypePolicyRules) => EnforcingTrustedTypePolicy };
     }).trustedTypes;
@@ -486,7 +486,7 @@ export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
       { trustedTypesPolicy: sanitizePolicy },
     );
     if (sanitizeTarget.querySelector('script') !== null) {
-      throw new Error('@methane/sanitize failed to strip <script>');
+      throw new Error('@methane-ui/sanitize failed to strip <script>');
     }
     const trustedHtml = sanitizeMod.sanitizeToTrustedHTML('<em onclick="evil()">Trusted</em>', {
       trustedTypesPolicy: sanitizePolicy,
@@ -499,7 +499,7 @@ export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
     stream.push('Streaming **markdown** <img src=x onerror=alert(1)>');
     stream.flushTo(sanitizeTarget, { trustedTypesPolicy: sanitizePolicy });
 
-    // 4. Exercise @methane/core (UIElement + registerStyles)
+    // 4. Exercise @methane-ui/core (UIElement + registerStyles)
     const { UIElement, css, html, registerStyles } = coreMod;
     const customTag = 'mth-csp-canary';
     class CspCanaryElement extends UIElement {
@@ -522,7 +522,7 @@ export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
     await canaryEl.updateComplete;
     canaryEl.remove();
 
-    // 5. Exercise @methane/primitives utility elements
+    // 5. Exercise @methane-ui/primitives utility elements
     primitivesMod.registerUtilityElements('mth');
     const vh = document.createElement('mth-visually-hidden');
     vh.textContent = 'Hidden label';
@@ -544,7 +544,7 @@ export async function runStrictCspSuite(): Promise<StrictCspSuiteResult> {
     skip.remove();
     boundary.remove();
 
-    // 6. Exercise @methane/ssr in both 'linked' and 'inline' modes and audit DSD output
+    // 6. Exercise @methane-ui/ssr in both 'linked' and 'inline' modes and audit DSD output
     const ssrHtmlLinked = await ssrMod.renderToString(
       html`<mth-csp-canary></mth-csp-canary><mth-visually-hidden>SR</mth-visually-hidden>`,
       { styles: 'linked' },

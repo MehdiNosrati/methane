@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCommandPalette } from './command-palette.js';
 
 export { MthCommandPalette, type CommandPaletteItem } from './command-palette.js';

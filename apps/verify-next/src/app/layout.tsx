@@ -1,5 +1,5 @@
-import '@methane/tokens/tokens.css';
-import '@methane/css/index.css';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/css/index.css';
 import type { ReactNode } from 'react';
 import { MethaneClientHydration } from '../client/hydrate';
 import type {} from '../types/custom-elements';

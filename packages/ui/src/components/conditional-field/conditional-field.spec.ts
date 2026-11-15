@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { conditionalFieldMessages } from './conditional-field.messages.js';
 
 export const conditionalFieldSpec: ComponentBehaviorSpec = {
   tag: 'mth-conditional-field',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['ContextProtocol'],
   focusModel: 'none',

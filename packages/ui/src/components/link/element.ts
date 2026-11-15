@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthLink } from './link.js';
 
 export { MthLink, type MthLinkUnderline } from './link.js';

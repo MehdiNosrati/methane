@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthForm } from './form.js';
 
 export { MthForm, type FormValidationError, type FormValues } from './form.js';

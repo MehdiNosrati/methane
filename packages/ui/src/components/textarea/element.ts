@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTextarea } from './textarea.js';
 
 export { MthTextarea, type MthTextareaResize } from './textarea.js';

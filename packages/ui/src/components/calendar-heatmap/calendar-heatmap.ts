@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   RovingFocusController,
   addCalendarDays,
@@ -6,7 +6,7 @@ import {
   getDayOfWeek,
   getTodayCalendarDate,
   type CalendarDate,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { calendarHeatmapMessages } from './calendar-heatmap.messages.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthStopwatch } from './stopwatch.js';
 
 export { MthStopwatch, type StopwatchLap } from './stopwatch.js';

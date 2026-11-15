@@ -1,6 +1,6 @@
-import { defineComponents } from '@methane/core';
-import { registerMthIcon } from '@methane/ui/icon/element.js';
-import { registerMthSpinner } from '@methane/ui/spinner/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthIcon } from '@methane-ui/ui/icon/element.js';
+import { registerMthSpinner } from '@methane-ui/ui/spinner/element.js';
 import { MthThinkingIndicator } from './thinking-indicator.js';
 
 export { MthThinkingIndicator } from './thinking-indicator.js';

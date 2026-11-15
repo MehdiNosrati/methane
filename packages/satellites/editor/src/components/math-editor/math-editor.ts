@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, RovingFocusController } from '@methane/primitives';
-import { safeSetHTML } from '@methane/sanitize';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, RovingFocusController } from '@methane-ui/primitives';
+import { safeSetHTML } from '@methane-ui/sanitize';
 import type { KatexOptions } from 'katex';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
@@ -63,7 +63,7 @@ const QUICK_SYMBOLS: ReadonlyArray<QuickSymbol> = [
 
 /**
  * `<mth-math-editor>`: Form-associated LaTeX formula editor with quick-symbol
- * toolbar, KaTeX HTML rendering sanitized via `@methane/sanitize`, and token sync.
+ * toolbar, KaTeX HTML rendering sanitized via `@methane-ui/sanitize`, and token sync.
  */
 export class MthMathEditor extends UIElement {
   static formAssociated = true;

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { creatableSelectMessages } from './creatable-select.messages.js';
 
 export const creatableSelectSpec: ComponentBehaviorSpec = {
   tag: 'mth-creatable-select',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay', 'listbox'],
   controllers: [
     'FormControlController',

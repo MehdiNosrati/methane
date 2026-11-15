@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   DataController,
   RovingFocusController,
@@ -6,7 +6,7 @@ import {
   TableCore,
   type DataSource,
   type TableColumnDef,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import type { ColumnDef, Row, SortingState, Table } from '@tanstack/table-core';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';

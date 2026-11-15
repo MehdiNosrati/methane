@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   DataController,
   type DataSource,
   VirtualizerController,
-} from '@methane/primitives';
-import '@methane/ui/avatar';
-import '@methane/ui/badge';
+} from '@methane-ui/primitives';
+import '@methane-ui/ui/avatar';
+import '@methane-ui/ui/badge';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';
@@ -44,7 +44,7 @@ function formatDateLabel(dateKey: string, locale: string): string {
 /**
  * `<mth-chat-thread>`: virtualized message stream powered by `VirtualizerController` and
  * `DataController`, composing `<mth-avatar>` / `<mth-badge>`, date & unread dividers,
- * `@methane/sanitize` markdown bodies, and a scroll-to-bottom anchor.
+ * `@methane-ui/sanitize` markdown bodies, and a scroll-to-bottom anchor.
  */
 export class MthChatThread extends UIElement {
   static override messages = chatThreadMessages;

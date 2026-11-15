@@ -1,17 +1,17 @@
 # Framework Integration Patterns
 
-Always register each custom element you render (e.g. `import '@methane/ui/button'`) alongside your framework wrapper or type package.
+Always register each custom element you render (e.g. `import '@methane-ui/ui/button'`) alongside your framework wrapper or type package.
 
 ## React 19 (Native Custom Elements)
 
-Import `@methane/react` once for `JSX.IntrinsicElements` typing and `onmth-*` event props:
+Import `@methane-ui/react` once for `JSX.IntrinsicElements` typing and `onmth-*` event props:
 
 ```tsx
-import '@methane/tokens/tokens.css';
-import '@methane/css/index.css';
-import '@methane/ui/button';
-import '@methane/ui/input';
-import '@methane/react';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/css/index.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/input';
+import '@methane-ui/react';
 import { useState } from 'react';
 
 export function ProfileForm() {
@@ -32,24 +32,24 @@ export function ProfileForm() {
 }
 ```
 
-### React 18 Legacy (`@methane/react/legacy`)
+### React 18 Legacy (`@methane-ui/react/legacy`)
 
 Use `@lit/react` wrapper components with camelCase event props (`onMthInput`, `onMthPress`, `onMthClose`):
 
 ```tsx
-import '@methane/ui/button';
-import '@methane/ui/dialog';
-import { MthButton, MthDialog } from '@methane/react/legacy';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/dialog';
+import { MthButton, MthDialog } from '@methane-ui/react/legacy';
 ```
 
-## Vue 3 (`@methane/vue`)
+## Vue 3 (`@methane-ui/vue`)
 
 Configure `METHANE_VUE_COMPILER_OPTIONS` in `vite.config.ts` so Vue treats `mth-*` tags as custom elements, and use `v-model` / `v-model:open`:
 
 ```ts
 // vite.config.ts
 import vue from '@vitejs/plugin-vue';
-import { METHANE_VUE_COMPILER_OPTIONS } from '@methane/vue';
+import { METHANE_VUE_COMPILER_OPTIONS } from '@methane-ui/vue';
 
 export default {
   plugins: [vue({ template: { compilerOptions: METHANE_VUE_COMPILER_OPTIONS } })],
@@ -58,12 +58,12 @@ export default {
 
 ```vue
 <script setup lang="ts">
-import '@methane/tokens/tokens.css';
-import '@methane/ui/button';
-import '@methane/ui/dialog';
-import '@methane/ui/input';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/dialog';
+import '@methane-ui/ui/input';
 import { ref } from 'vue';
-import { MthButton, MthDialog, MthInput } from '@methane/vue';
+import { MthButton, MthDialog, MthInput } from '@methane-ui/vue';
 
 const query = ref('');
 const open = ref(false);
@@ -78,17 +78,17 @@ const open = ref(false);
 </template>
 ```
 
-## Angular 17+ (`@methane/angular`)
+## Angular 17+ (`@methane-ui/angular`)
 
 Include `CUSTOM_ELEMENTS_SCHEMA` on standalone components and import `Mth*Directive` (or `METHANE_ANGULAR_DIRECTIVES`) for typed `@Input()` / `@Output()` and `ControlValueAccessor` bindings:
 
 ```ts
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import '@methane/tokens/tokens.css';
-import '@methane/ui/button';
-import '@methane/ui/input';
-import { MthButtonDirective, MthInputDirective } from '@methane/angular';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/input';
+import { MthButtonDirective, MthInputDirective } from '@methane-ui/angular';
 
 @Component({
   standalone: true,
@@ -105,19 +105,19 @@ export class LoginComponent {
 }
 ```
 
-## Svelte 5 (`@methane/svelte`)
+## Svelte 5 (`@methane-ui/svelte`)
 
-Use runes wrapper components (`@methane/svelte/Mth*.svelte`) for `bind:value` / `bind:open`, or import `@methane/svelte` for native `<mth-*>` `HTMLElements` typing:
+Use runes wrapper components (`@methane-ui/svelte/Mth*.svelte`) for `bind:value` / `bind:open`, or import `@methane-ui/svelte` for native `<mth-*>` `HTMLElements` typing:
 
 ```svelte
 <script lang="ts">
-  import '@methane/tokens/tokens.css';
-  import '@methane/ui/button';
-  import '@methane/ui/dialog';
-  import '@methane/ui/input';
-  import MthButton from '@methane/svelte/MthButton.svelte';
-  import MthDialog from '@methane/svelte/MthDialog.svelte';
-  import MthInput from '@methane/svelte/MthInput.svelte';
+  import '@methane-ui/tokens/tokens.css';
+  import '@methane-ui/ui/button';
+  import '@methane-ui/ui/dialog';
+  import '@methane-ui/ui/input';
+  import MthButton from '@methane-ui/svelte/MthButton.svelte';
+  import MthDialog from '@methane-ui/svelte/MthDialog.svelte';
+  import MthInput from '@methane-ui/svelte/MthInput.svelte';
 
   let name = $state('');
   let open = $state(false);

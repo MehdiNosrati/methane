@@ -8,32 +8,32 @@ import { withBase } from '../lib/links.js';
     <h1>Methane Architecture</h1>
     <p>
       Methane separates pure-CSS layouts from interactive custom elements and enforces a strictly
-      layered dependency graph (verified statically by <code>@methane/lint-plugin</code>) so
+      layered dependency graph (verified statically by <code>@methane-ui/lint-plugin</code>) so
       packages stay modular and tree-shakeable.
     </p>
 
     <h2>Layered Package Graph</h2>
     <dl class="mth-dl" data-variant="bordered">
-      <dt>Layer 0a — @methane/tokens</dt>
+      <dt>Layer 0a — @methane-ui/tokens</dt>
       <dd>W3C DTCG JSON compiled into <code>--mth-*</code> CSS custom properties using <code>oklch()</code>, <code>light-dark()</code>, density scaling, and <code>forced-colors</code>.</dd>
 
-      <dt>Layer 0b — @methane/css</dt>
+      <dt>Layer 0b — @methane-ui/css</dt>
       <dd>Pure-CSS layout, prose, form, and marketing classes wrapped in <code>@layer mth.primitives</code> using CSS Logical Properties only.</dd>
 
-      <dt>Layer 0c — @methane/sanitize</dt>
+      <dt>Layer 0c — @methane-ui/sanitize</dt>
       <dd>Native <code>Element.prototype.setHTML()</code> with bundled DOMPurify parity fallback and Trusted Types support (ADR-012).</dd>
 
-      <dt>Layer 1a — @methane/core</dt>
-      <dd>Lit 3 + human-owned <code>UIElement</code> base class, versioned <code>globalThis[Symbol.for('@methane/runtime')]</code> singleton, i18n message catalog, and Community Context Protocol.</dd>
+      <dt>Layer 1a — @methane-ui/core</dt>
+      <dd>Lit 3 + human-owned <code>UIElement</code> base class, versioned <code>globalThis[Symbol.for('@methane-ui/runtime')]</code> singleton, i18n message catalog, and Community Context Protocol.</dd>
 
-      <dt>Layer 1b — @methane/primitives</dt>
+      <dt>Layer 1b — @methane-ui/primitives</dt>
       <dd>Shared behavioral controllers, headless cores (<code>TableCore</code>, <code>CalendarCore</code>), stores, and accessibility utilities.</dd>
 
-      <dt>Layer 2 — @methane/ui</dt>
+      <dt>Layer 2 — @methane-ui/ui</dt>
       <dd>Declarative-first core UI custom elements exported as per-tag subpaths and side-effect-free element classes.</dd>
 
       <dt>Layer 3a — Domain Kits</dt>
-      <dd>Composite domain elements across <code>@methane/ai</code>, <code>auth</code>, <code>admin</code>, <code>chat</code>, and <code>commerce</code>.</dd>
+      <dd>Composite domain elements across <code>@methane-ui/ai</code>, <code>auth</code>, <code>admin</code>, <code>chat</code>, and <code>commerce</code>.</dd>
 
       <dt>Layer 3b — Satellites</dt>
       <dd>Wrap-first heavy packages (TanStack Table/Virtual, Apache ECharts, ProseMirror, CodeMirror 6, MapLibre, pdf.js, Three.js) with lazy client engines.</dd>
@@ -43,7 +43,7 @@ import { withBase } from '../lib/links.js';
     <ul>
       <li>Machine-readable <code>&lt;tag&gt;.spec.ts</code> authored before implementation (ADR-014).</li>
       <li>5 Class Conformance Suites + <code>SatelliteEngineSuite</code> + <code>HydrationPuritySuite</code>.</li>
-      <li>Mechanical ESLint + Stylelint invariants via <code>@methane/lint-plugin</code>.</li>
+      <li>Mechanical ESLint + Stylelint invariants via <code>@methane-ui/lint-plugin</code>.</li>
     </ul>
 
     <p>

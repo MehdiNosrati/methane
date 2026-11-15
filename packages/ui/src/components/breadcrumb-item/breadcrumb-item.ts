@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane/core';
+import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

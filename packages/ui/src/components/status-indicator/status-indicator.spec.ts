@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { statusIndicatorMessages } from './status-indicator.messages.js';
 
 export const statusIndicatorSpec: ComponentBehaviorSpec = {
   tag: 'mth-status-indicator',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

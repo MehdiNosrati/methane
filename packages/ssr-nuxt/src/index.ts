@@ -3,7 +3,7 @@ import {
   transformHtmlDsd,
   type TransformHtmlDsdOptions,
   type TransformHtmlDsdResult,
-} from '@methane/ssr';
+} from '@methane-ui/ssr';
 
 export interface NuxtSsrOptions extends TransformHtmlDsdOptions {
   /** Optional client hydration module URL appended to `html.bodyAppend`. */
@@ -53,7 +53,7 @@ export function createMethaneNuxtConfig(): NuxtMethaneConfig {
     },
     nitro: {
       externals: {
-        inline: ['@methane/ssr', '@methane/ssr-nuxt'],
+        inline: ['@methane-ui/ssr', '@methane-ui/ssr-nuxt'],
       },
     },
   };

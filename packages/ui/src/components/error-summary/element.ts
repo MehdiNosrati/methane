@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthErrorSummary } from './error-summary.js';
 
 export { MthErrorSummary, type ErrorSummaryItem } from './error-summary.js';

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { sessionListMessages } from './session-list.messages.js';
 
 export const sessionListSpec: ComponentBehaviorSpec = {
   tag: 'mth-session-list',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: [],
   controllers: [],
   focusModel: 'host',

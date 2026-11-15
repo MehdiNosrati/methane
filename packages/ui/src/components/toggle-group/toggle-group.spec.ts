@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { toggleGroupMessages } from './toggle-group.messages.js';
 
 export const toggleGroupSpec: ComponentBehaviorSpec = {
   tag: 'mth-toggle-group',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'roving-focus'],
   controllers: [
     'FormControlController',

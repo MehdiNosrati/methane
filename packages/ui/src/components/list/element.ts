@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthList } from './list.js';
 
 export { MthList, type ListItemData, type MthListSelectionMode } from './list.js';

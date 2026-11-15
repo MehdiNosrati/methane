@@ -1,11 +1,11 @@
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import type { DataSource } from '@methane/primitives';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import type { DataSource } from '@methane-ui/primitives';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   DataConsumerSuite,
   HydrationPuritySuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import {

@@ -1,4 +1,4 @@
-import { css } from '@methane/core';
+import { css } from '@methane-ui/core';
 
 export const datePickerStyles = css`
   :host {

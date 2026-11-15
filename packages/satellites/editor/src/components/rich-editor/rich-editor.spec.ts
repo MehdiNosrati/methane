@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { richEditorMessages } from './rich-editor.messages.js';
 
 export const richEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-rich-editor',
-  package: '@methane/editor',
+  package: '@methane-ui/editor',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',
@@ -42,7 +42,7 @@ export const richEditorSpec: ComponentBehaviorSpec = {
 
 export const CEM_METADATA = {
   description:
-    'Form-associated ProseMirror rich-text editor with accessible formatting toolbar (`RovingFocusController`), `@methane/sanitize` HTML serialization, and `--mth-*` token sync.',
+    'Form-associated ProseMirror rich-text editor with accessible formatting toolbar (`RovingFocusController`), `@methane-ui/sanitize` HTML serialization, and `--mth-*` token sync.',
   propDescriptions: {
     name: 'Form submission field name.',
     label: 'Visible and accessible label for the editor.',

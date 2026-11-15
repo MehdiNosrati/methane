@@ -22,8 +22,8 @@ const MIME_TYPES = new Map([
 const methaneWorkspacePlugin = {
   name: 'methane-workspace-resolve',
   setup(build) {
-    build.onResolve({ filter: /^@methane\// }, (args) => {
-      const parts = args.path.replace(/^@methane\//, '').split('/');
+    build.onResolve({ filter: /^@methane-ui\// }, (args) => {
+      const parts = args.path.replace(/^@methane-ui\//, '').split('/');
       const pkgName = parts[0];
       const subpath = parts.slice(1).join('/');
       const target = subpath

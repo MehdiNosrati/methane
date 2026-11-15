@@ -1,7 +1,7 @@
 import { html, type PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
-import { UIElement } from '@methane/core';
-import { FormContextProviderController } from '@methane/primitives';
+import { UIElement } from '@methane-ui/core';
+import { FormContextProviderController } from '@methane-ui/primitives';
 import { formMessages } from './form.messages.js';
 import { formStyles } from './form.styles.js';
 

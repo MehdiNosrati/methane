@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { contextMenuMessages } from './context-menu.messages.js';
 
 export interface ContextMenuItem {
@@ -15,7 +15,7 @@ export const EMPTY_CONTEXT_MENU_ITEMS: ReadonlyArray<ContextMenuItem> = Object.f
 
 export const contextMenuSpec: ComponentBehaviorSpec = {
   tag: 'mth-context-menu',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController'],
   focusModel: 'delegates-focus',

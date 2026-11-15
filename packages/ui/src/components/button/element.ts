@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthButton } from './button.js';
 
 export { MthButton, type MthButtonSize, type MthButtonType, type MthButtonVariant } from './button.js';

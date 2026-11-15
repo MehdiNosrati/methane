@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
 import {
   FormControlController,
   OverlayController,
   PositioningController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { colorPickerMessages } from './color-picker.messages.js';
 import { colorPickerStyles } from './color-picker.styles.js';
 

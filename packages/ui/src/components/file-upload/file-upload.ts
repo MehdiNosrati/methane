@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
+import { FormControlController } from '@methane-ui/primitives';
 import { fileUploadMessages } from './file-upload.messages.js';
 import { fileUploadStyles } from './file-upload.styles.js';
 

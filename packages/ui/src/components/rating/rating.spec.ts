@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { ratingMessages } from './rating.messages.js';
 
 export const ratingSpec: ComponentBehaviorSpec = {
   tag: 'mth-rating',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'roving-focus'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

@@ -1,10 +1,10 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   HotkeyController,
   ListboxController,
   OverlayController,
   type OverlayCloseReason,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { commandPaletteMessages } from './command-palette.messages.js';

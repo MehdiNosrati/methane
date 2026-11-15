@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { audioRecorderMessages } from './audio-recorder.messages.js';
 
 export const audioRecorderSpec: ComponentBehaviorSpec = {
   tag: 'mth-audio-recorder',
-  package: '@methane/rtc',
+  package: '@methane-ui/rtc',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'delegates-focus',

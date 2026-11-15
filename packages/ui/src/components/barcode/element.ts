@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBarcode } from './barcode.js';
 
 export { encodeCode128B, MthBarcode, type BarcodeBar } from './barcode.js';

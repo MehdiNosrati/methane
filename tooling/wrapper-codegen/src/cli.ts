@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { generateAllWrappers } from './codegen.js';
 import { DEFAULT_BEHAVIOR_SPECS, DEFAULT_CEM_FIXTURE } from './fixture.js';
 import type { ExtendedCustomElementsManifest, GeneratedFile } from './types.js';

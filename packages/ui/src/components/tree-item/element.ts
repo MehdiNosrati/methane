@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTreeItem } from './tree-item.js';
 
 export { MthTreeItem } from './tree-item.js';

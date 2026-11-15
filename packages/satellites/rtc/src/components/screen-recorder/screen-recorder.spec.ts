@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { screenRecorderMessages } from './screen-recorder.messages.js';
 
 export const screenRecorderSpec: ComponentBehaviorSpec = {
   tag: 'mth-screen-recorder',
-  package: '@methane/rtc',
+  package: '@methane-ui/rtc',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'delegates-focus',

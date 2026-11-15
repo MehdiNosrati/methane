@@ -6,7 +6,7 @@ import type {
   RovingFocusAdapter,
   SatelliteEngineAdapter,
   SuiteReport,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 
 export type ConformanceSuiteName =
   | 'form-control'
@@ -49,7 +49,7 @@ export interface PartSpec {
 }
 
 /**
- * Locked Section 7 Contract: Machine-Readable Behavior Spec (@methane/spec-compiler).
+ * Locked Section 7 Contract: Machine-Readable Behavior Spec (@methane-ui/spec-compiler).
  */
 export interface ComponentBehaviorSpec {
   tag: `mth-${string}`;
