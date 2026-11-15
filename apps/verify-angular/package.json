@@ -1,0 +1,43 @@
+{
+  "name": "@methane/verify-angular",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Angular 19 SSR + Reactive Forms verification app for Methane UI",
+  "scripts": {
+    "dev": "NG_CLI_ANALYTICS=false ng serve",
+    "build": "NG_CLI_ANALYTICS=false ng build && tsc -p tsconfig.server.json",
+    "start": "PORT=3103 HOST=127.0.0.1 node dist/node-server/http-server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-server": "^19.2.0",
+    "@angular/ssr": "^19.2.0",
+    "@methane/angular": "workspace:*",
+    "@methane/css": "workspace:*",
+    "@methane/primitives": "workspace:*",
+    "@methane/ssr-angular": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "rxjs": "^7.8.0",
+    "zone.js": "^0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.0",
+    "@angular/build": "^19.2.0",
+    "@angular/cli": "^19.2.0",
+    "@angular/compiler-cli": "^19.2.0",
+    "@methane/test-conformance": "workspace:*",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.15.0",
+    "jsdom": "^31.0.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}
