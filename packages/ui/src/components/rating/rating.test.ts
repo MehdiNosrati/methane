@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthRating, registerMthRating, ratingSpec } from './index.js';
+import { ratingSpec } from './rating.spec.js';
+import { MthRating, registerMthRating } from './index.js';
 
 describe('<mth-rating>', () => {
   afterEach(() => {

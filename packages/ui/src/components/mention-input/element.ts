@@ -8,7 +8,6 @@ export {
   type MentionSelectDetail,
 } from './mention-input.js';
 export { mentionInputMessages, type MentionInputMessages } from './mention-input.messages.js';
-export { mentionInputSpec } from './mention-input.spec.js';
 export { mentionInputStyles } from './mention-input.styles.js';
 
 export function registerMthMentionInput(prefix?: string): ReadonlyArray<string> {

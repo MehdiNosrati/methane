@@ -3,7 +3,6 @@ import { MthCodeTabs } from './code-tabs.js';
 
 export { MthCodeTabs, type CodeTabItem } from './code-tabs.js';
 export { codeTabsMessages, type CodeTabsMessages } from './code-tabs.messages.js';
-export { codeTabsSpec } from './code-tabs.spec.js';
 export { codeTabsStyles } from './code-tabs.styles.js';
 
 export function registerMthCodeTabs(prefix?: string): ReadonlyArray<string> {

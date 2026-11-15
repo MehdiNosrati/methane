@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPriceDisplay, priceDisplaySpec, registerMthPriceDisplay } from './index.js';
+import { priceDisplaySpec } from './price-display.spec.js';
+import { MthPriceDisplay, registerMthPriceDisplay } from './index.js';
 
 describe('<mth-price-display>', () => {
   afterEach(() => {

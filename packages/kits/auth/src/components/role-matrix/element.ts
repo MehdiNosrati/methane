@@ -8,7 +8,6 @@ export {
   type RoleMatrixRole,
 } from './role-matrix.js';
 export { roleMatrixMessages } from './role-matrix.messages.js';
-export { roleMatrixSpec } from './role-matrix.spec.js';
 export { roleMatrixStyles } from './role-matrix.styles.js';
 
 export function registerMthRoleMatrix(prefix?: string): ReadonlyArray<string> {

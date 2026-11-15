@@ -37,7 +37,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "Optional custom pdf.js worker script URL."
+              "description": "Optional custom pdf.js worker script URL. Strongly recommended in production to keep pdf.js parsing off the main thread and prevent bundling pdf.worker.mjs (~several hundred KB) into app lazy chunks."
             },
             {
               "kind": "field",
@@ -169,7 +169,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "Optional custom pdf.js worker script URL."
+              "description": "Optional custom pdf.js worker script URL. Strongly recommended in production to keep pdf.js parsing off the main thread and prevent bundling pdf.worker.mjs (~several hundred KB) into app lazy chunks."
             },
             {
               "name": "document-title",

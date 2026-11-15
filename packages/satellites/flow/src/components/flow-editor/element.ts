@@ -11,6 +11,8 @@ export {
   type PositionedFlowNode,
   type RoutedFlowEdge,
 } from './flow-editor.js';
+export { flowEditorMessages } from './flow-editor.messages.js';
+export { flowEditorStyles } from './flow-editor.styles.js';
 
 export function registerMthFlowEditor(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -20,5 +22,3 @@ export function registerMthFlowEditor(prefix?: string): ReadonlyArray<string> {
     },
   });
 }
-
-registerMthFlowEditor();

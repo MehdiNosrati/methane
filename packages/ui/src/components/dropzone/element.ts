@@ -10,5 +10,4 @@ export function registerMthDropzone(prefix?: string): ReadonlyArray<string> {
 
 export { MthDropzone, type DropRejectReason, type DropRejectedFile } from './dropzone.js';
 export { dropzoneMessages } from './dropzone.messages.js';
-export { dropzoneSpec } from './dropzone.spec.js';
 export { dropzoneStyles } from './dropzone.styles.js';

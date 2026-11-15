@@ -8,7 +8,6 @@ export {
   type MthStatCardVariant,
 } from './stat-card.js';
 export { statCardMessages } from './stat-card.messages.js';
-export { statCardSpec } from './stat-card.spec.js';
 export { statCardStyles } from './stat-card.styles.js';
 
 export function registerMthStatCard(prefix?: string): ReadonlyArray<string> {

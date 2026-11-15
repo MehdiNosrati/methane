@@ -3,10 +3,12 @@ import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { bottomNavMessages } from './bottom-nav.messages.js';
-import { EMPTY_BOTTOM_NAV_ITEMS, type BottomNavItem } from './bottom-nav.spec.js';
+import type { BottomNavItem } from './bottom-nav.spec.js';
 import { bottomNavStyles } from './bottom-nav.styles.js';
 
 export type { BottomNavItem };
+
+const EMPTY_BOTTOM_NAV_ITEMS: ReadonlyArray<BottomNavItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

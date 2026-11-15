@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthPasswordInput, passwordInputSpec, registerMthPasswordInput } from './index.js';
+import { passwordInputSpec } from './password-input.spec.js';
+import { MthPasswordInput, registerMthPasswordInput } from './index.js';
 
 describe('<mth-password-input>', () => {
   afterEach(() => {

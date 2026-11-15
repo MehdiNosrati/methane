@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthSettingsShell,
-  registerMthSettingsShell,
-  settingsShellSpec,
-} from './index.js';
+import { settingsShellSpec } from './settings-shell.spec.js';
+import { MthSettingsShell, registerMthSettingsShell } from './index.js';
 
 describe('<mth-settings-shell>', () => {
   afterEach(() => {

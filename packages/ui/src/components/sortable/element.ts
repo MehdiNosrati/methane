@@ -7,7 +7,6 @@ export {
   type MthSortableOrientation,
 } from './sortable.js';
 export { sortableMessages } from './sortable.messages.js';
-export { sortableSpec } from './sortable.spec.js';
 export { sortableStyles } from './sortable.styles.js';
 
 export function registerMthSortable(prefix?: string): ReadonlyArray<string> {

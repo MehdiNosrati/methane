@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, SatelliteEngineSuite, scanSameR
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthLocationPicker, locationPickerSpec, registerMthLocationPicker } from './index.js';
+import { locationPickerSpec } from './location-picker.spec.js';
+import { MthLocationPicker, registerMthLocationPicker } from './index.js';
 
 describe('mth-location-picker', () => {
   afterEach(() => {

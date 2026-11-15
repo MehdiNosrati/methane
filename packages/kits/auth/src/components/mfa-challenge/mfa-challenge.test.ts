@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthMfaChallenge, mfaChallengeSpec, registerMthMfaChallenge } from './index.js';
+import { mfaChallengeSpec } from './mfa-challenge.spec.js';
+import { MthMfaChallenge, registerMthMfaChallenge } from './index.js';
 
 describe('<mth-mfa-challenge>', () => {
   afterEach(() => {

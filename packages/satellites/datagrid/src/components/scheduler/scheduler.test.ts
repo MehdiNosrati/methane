@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthScheduler, registerMthScheduler, schedulerSpec } from './index.js';
+import { schedulerSpec } from './scheduler.spec.js';
+import { MthScheduler, registerMthScheduler } from './index.js';
 
 describe('<mth-scheduler>', () => {
   afterEach(() => {

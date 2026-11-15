@@ -8,7 +8,6 @@ export {
   type EmojiSelectDetail,
 } from './emoji-picker.js';
 export { emojiPickerMessages, type EmojiPickerMessages } from './emoji-picker.messages.js';
-export { emojiPickerSpec } from './emoji-picker.spec.js';
 export { emojiPickerStyles } from './emoji-picker.styles.js';
 
 export function registerMthEmojiPicker(prefix?: string): ReadonlyArray<string> {

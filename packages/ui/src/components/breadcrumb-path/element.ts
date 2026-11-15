@@ -6,7 +6,6 @@ export {
   type MthBreadcrumbPathItem,
 } from './breadcrumb-path.js';
 export { breadcrumbPathMessages } from './breadcrumb-path.messages.js';
-export { breadcrumbPathSpec } from './breadcrumb-path.spec.js';
 export { breadcrumbPathStyles } from './breadcrumb-path.styles.js';
 
 export function registerMthBreadcrumbPath(prefix?: string): ReadonlyArray<string> {

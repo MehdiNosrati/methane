@@ -9,8 +9,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
+import { mentionInputSpec } from './mention-input.spec.js';
 import {
-  mentionInputSpec,
   MthMentionInput,
   registerMthMentionInput,
   type MentionChangeDetail,

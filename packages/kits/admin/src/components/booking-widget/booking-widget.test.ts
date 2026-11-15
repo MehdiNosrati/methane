@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthBookingWidget,
-  bookingWidgetSpec,
-  registerMthBookingWidget,
-} from './index.js';
+import { bookingWidgetSpec } from './booking-widget.spec.js';
+import { MthBookingWidget, registerMthBookingWidget } from './index.js';
 
 describe('<mth-booking-widget>', () => {
   afterEach(() => {

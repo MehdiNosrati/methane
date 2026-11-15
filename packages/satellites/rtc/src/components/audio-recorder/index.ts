@@ -1,4 +1,11 @@
+import { registerMthAudioRecorder } from './element.js';
+
 export * from './element.js';
-export { audioRecorderMessages } from './audio-recorder.messages.js';
-export { audioRecorderSpec } from './audio-recorder.spec.js';
-export { audioRecorderStyles } from './audio-recorder.styles.js';
+
+registerMthAudioRecorder();
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-audio-recorder': import('./audio-recorder.js').MthAudioRecorder;
+  }
+}

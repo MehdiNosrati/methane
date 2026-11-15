@@ -10,7 +10,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthAsyncSearch, asyncSearchSpec, registerMthAsyncSearch } from './index.js';
+import { asyncSearchSpec } from './async-search.spec.js';
+import { MthAsyncSearch, registerMthAsyncSearch } from './index.js';
 
 describe('<mth-async-search>', () => {
   afterEach(() => {

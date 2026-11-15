@@ -11,7 +11,6 @@ export {
   type MthArtifactTab,
 } from './artifact-pane.js';
 export { artifactPaneMessages } from './artifact-pane.messages.js';
-export { artifactPaneSpec } from './artifact-pane.spec.js';
 export { artifactPaneStyles } from './artifact-pane.styles.js';
 
 export function registerMthArtifactPane(prefix?: string): ReadonlyArray<string> {

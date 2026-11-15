@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthToolCall, registerMthToolCall, toolCallSpec } from './index.js';
+import { toolCallSpec } from './tool-call.spec.js';
+import { MthToolCall, registerMthToolCall } from './index.js';
 
 describe('<mth-tool-call>', () => {
   afterEach(() => {

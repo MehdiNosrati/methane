@@ -10,7 +10,6 @@ export {
   type MthPasskeyStatus,
 } from './passkey-prompt.js';
 export { passkeyPromptMessages } from './passkey-prompt.messages.js';
-export { passkeyPromptSpec } from './passkey-prompt.spec.js';
 export { passkeyPromptStyles } from './passkey-prompt.styles.js';
 
 export function registerMthPasskeyPrompt(prefix?: string): ReadonlyArray<string> {

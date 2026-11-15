@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCallout, calloutSpec, registerMthCallout } from './index.js';
+import { calloutSpec } from './callout.spec.js';
+import { MthCallout, registerMthCallout } from './index.js';
 
 describe('<mth-callout>', () => {
   afterEach(() => {

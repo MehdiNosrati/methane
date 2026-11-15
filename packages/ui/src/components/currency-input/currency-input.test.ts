@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCurrencyInput, currencyInputSpec, registerMthCurrencyInput } from './index.js';
+import { currencyInputSpec } from './currency-input.spec.js';
+import { MthCurrencyInput, registerMthCurrencyInput } from './index.js';
 
 describe('<mth-currency-input>', () => {
   afterEach(() => {

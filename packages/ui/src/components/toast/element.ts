@@ -8,7 +8,6 @@ export {
   type MthToastVariant,
 } from './toast.js';
 export { toastMessages } from './toast.messages.js';
-export { toastSpec } from './toast.spec.js';
 export { toastStyles } from './toast.styles.js';
 
 export function registerMthToast(prefix?: string): ReadonlyArray<string> {

@@ -12,15 +12,16 @@ pnpm add @methane-ui/3d @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/3d @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/3d` | Auto-registers `<mth-model-viewer>` and exports `MthModelViewer` & `registerAllComponents(prefix?)` |
+| `@methane-ui/3d` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/3d/define` | Side-effect entrypoint that auto-registers all 3d custom elements and exports `registerAllComponents` |
 | `@methane-ui/3d/model-viewer` | Per-component auto-registering entrypoint |
-| `@methane-ui/3d/model-viewer/element` | Unregistered `MthModelViewer`, spec, styles, messages, and `registerMthModelViewer(prefix?)` |
+| `@methane-ui/3d/model-viewer/element` | Unregistered `MthModelViewer`, styles, messages, and `registerMthModelViewer(prefix?)` |
 | `@methane-ui/3d/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Component API (`<mth-model-viewer>`)

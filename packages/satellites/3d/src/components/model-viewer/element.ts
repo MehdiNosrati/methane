@@ -7,7 +7,6 @@ export {
   type MthModelEngineHandle,
 } from './model-viewer.js';
 export { modelViewerMessages } from './model-viewer.messages.js';
-export { modelViewerSpec } from './model-viewer.spec.js';
 export { modelViewerStyles } from './model-viewer.styles.js';
 
 export function registerMthModelViewer(prefix?: string): ReadonlyArray<string> {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthSsoButtons, registerMthSsoButtons, ssoButtonsSpec } from './index.js';
+import { ssoButtonsSpec } from './sso-buttons.spec.js';
+import { MthSsoButtons, registerMthSsoButtons } from './index.js';
 
 describe('<mth-sso-buttons>', () => {
   afterEach(() => {

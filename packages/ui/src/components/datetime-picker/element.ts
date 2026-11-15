@@ -3,7 +3,6 @@ import { MthDatetimePicker } from './datetime-picker.js';
 
 export { MthDatetimePicker } from './datetime-picker.js';
 export { datetimePickerMessages } from './datetime-picker.messages.js';
-export { datetimePickerSpec } from './datetime-picker.spec.js';
 export { datetimePickerStyles } from './datetime-picker.styles.js';
 
 export function registerMthDatetimePicker(prefix?: string): ReadonlyArray<string> {

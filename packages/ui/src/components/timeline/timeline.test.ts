@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/timeline-item';
 import type { MthTimelineItem } from '@methane-ui/ui/timeline-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthTimeline, registerMthTimeline, timelineSpec } from './index.js';
+import { timelineSpec } from './timeline.spec.js';
+import { MthTimeline, registerMthTimeline } from './index.js';
 
 describe('<mth-timeline>', () => {
   afterEach(() => {

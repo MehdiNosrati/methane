@@ -7,7 +7,6 @@ export {
   type MthSparklineVariant,
 } from './sparkline.js';
 export { sparklineMessages } from './sparkline.messages.js';
-export { sparklineSpec } from './sparkline.spec.js';
 export { sparklineStyles } from './sparkline.styles.js';
 
 export function registerMthSparkline(prefix?: string): ReadonlyArray<string> {

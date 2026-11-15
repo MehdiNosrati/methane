@@ -8,7 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthVideoGrid, registerMthVideoGrid, videoGridSpec, type VideoParticipant } from './index.js';
+import { videoGridSpec } from './video-grid.spec.js';
+import { MthVideoGrid, registerMthVideoGrid, type VideoParticipant } from './index.js';
 
 const SAMPLE_PARTICIPANTS: VideoParticipant[] = [
   { id: 'p1', name: 'Ada', muted: false, videoOff: true, speaking: true },

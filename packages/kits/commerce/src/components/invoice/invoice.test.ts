@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { invoiceSpec, MthInvoice, registerMthInvoice } from './index.js';
+import { invoiceSpec } from './invoice.spec.js';
+import { MthInvoice, registerMthInvoice } from './index.js';
 
 describe('<mth-invoice>', () => {
   afterEach(() => {

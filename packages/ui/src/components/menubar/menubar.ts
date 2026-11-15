@@ -7,10 +7,12 @@ import {
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { menubarMessages } from './menubar.messages.js';
-import { EMPTY_MENUBAR_ITEMS, type MenubarItem, type MenubarSubItem } from './menubar.spec.js';
+import type { MenubarItem, MenubarSubItem } from './menubar.spec.js';
 import { menubarStyles } from './menubar.styles.js';
 
 export type { MenubarItem, MenubarSubItem };
+
+const EMPTY_MENUBAR_ITEMS: ReadonlyArray<MenubarItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

@@ -3,10 +3,12 @@ import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { sidebarNavMessages } from './sidebar-nav.messages.js';
-import { EMPTY_SIDEBAR_NAV_ITEMS, type SidebarNavItem } from './sidebar-nav.spec.js';
+import type { SidebarNavItem } from './sidebar-nav.spec.js';
 import { sidebarNavStyles } from './sidebar-nav.styles.js';
 
 export type { SidebarNavItem };
+
+const EMPTY_SIDEBAR_NAV_ITEMS: ReadonlyArray<SidebarNavItem> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

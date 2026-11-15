@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/accordion-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthAccordion, accordionSpec, registerMthAccordion } from './index.js';
+import { accordionSpec } from './accordion.spec.js';
+import { MthAccordion, registerMthAccordion } from './index.js';
 
 type ItemWithUpdate = HTMLElement & {
   value: string;

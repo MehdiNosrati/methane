@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthPhoneInput, phoneInputSpec, registerMthPhoneInput } from './index.js';
+import { phoneInputSpec } from './phone-input.spec.js';
+import { MthPhoneInput, registerMthPhoneInput } from './index.js';
 
 describe('<mth-phone-input>', () => {
   afterEach(() => {

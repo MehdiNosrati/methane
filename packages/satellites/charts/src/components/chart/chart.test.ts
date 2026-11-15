@@ -12,12 +12,8 @@ import {
   MthChartSeries,
   registerMthChartSeries,
 } from '@methane-ui/charts/chart-series';
-import {
-  MthChart,
-  chartSpec,
-  mapMthChartTypeToEChartsSeries,
-  registerMthChart,
-} from './index.js';
+import { chartSpec } from './chart.spec.js';
+import { MthChart, mapMthChartTypeToEChartsSeries, registerMthChart } from './index.js';
 
 describe('<mth-chart>', () => {
   afterEach(() => {

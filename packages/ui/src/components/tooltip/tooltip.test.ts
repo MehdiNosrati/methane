@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthTooltip, registerMthTooltip, tooltipSpec } from './index.js';
+import { tooltipSpec } from './tooltip.spec.js';
+import { MthTooltip, registerMthTooltip } from './index.js';
 
 describe('<mth-tooltip>', () => {
   afterEach(() => {

@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/avatar';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthAvatarGroup, avatarGroupSpec, registerMthAvatarGroup } from './index.js';
+import { avatarGroupSpec } from './avatar-group.spec.js';
+import { MthAvatarGroup, registerMthAvatarGroup } from './index.js';
 
 describe('<mth-avatar-group>', () => {
   afterEach(() => {

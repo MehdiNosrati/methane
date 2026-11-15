@@ -86,7 +86,7 @@ ${litReactImport}
 import type { ${model.elementInterfaceName} } from '../components/${model.tagName}.js';
 import { resolveElementClass } from '../legacy-runtime.js';
 
-export const ${model.className} = createComponent({
+export const ${model.className} = /* @__PURE__ */ createComponent({
   react: React,
   tagName: ${JSON.stringify(model.tagName)},
   elementClass: resolveElementClass<${model.elementInterfaceName}>(${JSON.stringify(model.tagName)}),

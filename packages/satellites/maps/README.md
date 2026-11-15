@@ -12,15 +12,16 @@ pnpm add @methane-ui/maps @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/maps @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/maps` | Auto-registers all 7 map/spatial elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/maps` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/maps/define` | Side-effect entrypoint that auto-registers all maps custom elements and exports `registerAllComponents` |
 | `@methane-ui/maps/<slug>` | Per-component tree-shakeable import (e.g. `@methane-ui/maps/map`, `@methane-ui/maps/seat-map`) |
-| `@methane-ui/maps/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/maps/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` |
 | `@methane-ui/maps/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

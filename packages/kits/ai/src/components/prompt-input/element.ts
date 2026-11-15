@@ -4,7 +4,6 @@ import { MthPromptInput } from './prompt-input.js';
 
 export { MthPromptInput } from './prompt-input.js';
 export { promptInputMessages } from './prompt-input.messages.js';
-export { promptInputSpec } from './prompt-input.spec.js';
 export { promptInputStyles } from './prompt-input.styles.js';
 
 export function registerMthPromptInput(prefix?: string): ReadonlyArray<string> {

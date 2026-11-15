@@ -12,15 +12,16 @@ pnpm add @methane-ui/code @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/code @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/code` | Auto-registers all 4 code elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/code` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/code/define` | Side-effect entrypoint that auto-registers all code custom elements and exports `registerAllComponents` |
 | `@methane-ui/code/<slug>` | Per-component entrypoint (`code-block`, `code-editor`, `diff-viewer`, `json-editor`) |
-| `@methane-ui/code/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
+| `@methane-ui/code/<slug>/element` | Unregistered classes, styles, messages, and `registerMth*()` |
 | `@methane-ui/code/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

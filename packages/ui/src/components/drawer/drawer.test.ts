@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthDrawer, drawerSpec, registerMthDrawer } from './index.js';
+import { drawerSpec } from './drawer.spec.js';
+import { MthDrawer, registerMthDrawer } from './index.js';
 
 describe('<mth-drawer>', () => {
   afterEach(() => {

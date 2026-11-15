@@ -3,7 +3,6 @@ import { MthDrawer } from './drawer.js';
 
 export { MthDrawer, type MthDrawerPlacement, type MthDrawerSize } from './drawer.js';
 export { drawerMessages } from './drawer.messages.js';
-export { drawerSpec } from './drawer.spec.js';
 export { drawerStyles } from './drawer.styles.js';
 
 export function registerMthDrawer(prefix?: string): ReadonlyArray<string> {

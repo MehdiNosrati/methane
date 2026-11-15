@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthFormWizard, formWizardSpec, registerMthFormWizard } from './index.js';
+import { formWizardSpec } from './form-wizard.spec.js';
+import { MthFormWizard, registerMthFormWizard } from './index.js';
 
 describe('<mth-form-wizard>', () => {
   afterEach(() => {

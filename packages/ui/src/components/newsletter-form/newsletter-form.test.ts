@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthNewsletterForm, newsletterFormSpec, registerMthNewsletterForm } from './index.js';
+import { newsletterFormSpec } from './newsletter-form.spec.js';
+import { MthNewsletterForm, registerMthNewsletterForm } from './index.js';
 
 describe('<mth-newsletter-form>', () => {
   afterEach(() => {

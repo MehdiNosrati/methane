@@ -3,7 +3,6 @@ import { MthBreadcrumbs } from './breadcrumbs.js';
 
 export { MthBreadcrumbs } from './breadcrumbs.js';
 export { breadcrumbsMessages } from './breadcrumbs.messages.js';
-export { breadcrumbsSpec } from './breadcrumbs.spec.js';
 export { breadcrumbsStyles } from './breadcrumbs.styles.js';
 
 export function registerMthBreadcrumbs(prefix?: string): ReadonlyArray<string> {

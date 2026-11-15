@@ -1,4 +1,4 @@
-import { UIElement, devWarn, html, nothing, property } from '@methane-ui/core';
+import { IS_DEV, UIElement, devWarn, html, nothing, property } from '@methane-ui/core';
 import { fabMessages } from './fab.messages.js';
 import { fabStyles } from './fab.styles.js';
 
@@ -56,10 +56,12 @@ export class MthFab extends UIElement {
       !this.getAttribute('aria-label')
     ) {
       this.warnedMissingLabel = true;
-      devWarn(
-        'mth-fab',
-        'Compact (non-extended) <mth-fab> requires a `label` (or `aria-label`) for accessibility.',
-      );
+      if (IS_DEV) {
+        devWarn(
+          'mth-fab',
+          'Compact (non-extended) <mth-fab> requires a `label` (or `aria-label`) for accessibility.',
+        );
+      }
     }
   }
 

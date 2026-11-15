@@ -12,15 +12,16 @@ pnpm add @methane-ui/ai @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/ai @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/ai` | Auto-registers all 8 AI kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/ai` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/ai/define` | Side-effect entrypoint that auto-registers all ai custom elements and exports `registerAllComponents` |
 | `@methane-ui/ai/<slug>` | Per-component tree-shakeable auto-registering import (e.g. `@methane-ui/ai/prompt-input`) |
-| `@methane-ui/ai/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` helper |
+| `@methane-ui/ai/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` helper |
 | `@methane-ui/ai/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
@@ -60,7 +61,10 @@ npm install @methane-ui/ai @methane-ui/core @methane-ui/tokens
 
 ```ts
 import '@methane-ui/tokens/tokens.css';
-import '@methane-ui/ai';
+import '@methane-ui/ai/ai-message';
+import '@methane-ui/ai/thinking-indicator';
+import '@methane-ui/ai/tool-call';
+import '@methane-ui/ai/prompt-input';
 
 const msg = document.querySelector('mth-ai-message')!;
 msg.content = 'Here is the refactored snippet:\n\n```ts\nexport const ok = true;\n```';

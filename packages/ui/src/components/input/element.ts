@@ -3,7 +3,6 @@ import { MthInput } from './input.js';
 
 export { MthInput, type MthInputType } from './input.js';
 export { inputMessages } from './input.messages.js';
-export { inputSpec } from './input.spec.js';
 export { inputStyles } from './input.styles.js';
 
 export function registerMthInput(prefix?: string): ReadonlyArray<string> {

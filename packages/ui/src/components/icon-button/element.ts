@@ -7,7 +7,6 @@ export {
   type MthIconButtonVariant,
 } from './icon-button.js';
 export { iconButtonMessages } from './icon-button.messages.js';
-export { iconButtonSpec } from './icon-button.spec.js';
 export { iconButtonStyles } from './icon-button.styles.js';
 
 export function registerMthIconButton(prefix?: string): ReadonlyArray<string> {

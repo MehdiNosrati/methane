@@ -8,15 +8,16 @@ import {
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { megaMenuMessages } from './mega-menu.messages.js';
-import {
-  EMPTY_MEGA_MENU_SECTIONS,
-  type MegaMenuColumn,
-  type MegaMenuLink,
-  type MegaMenuSection,
+import type {
+  MegaMenuColumn,
+  MegaMenuLink,
+  MegaMenuSection,
 } from './mega-menu.spec.js';
 import { megaMenuStyles } from './mega-menu.styles.js';
 
 export type { MegaMenuColumn, MegaMenuLink, MegaMenuSection };
+
+const EMPTY_MEGA_MENU_SECTIONS: ReadonlyArray<MegaMenuSection> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

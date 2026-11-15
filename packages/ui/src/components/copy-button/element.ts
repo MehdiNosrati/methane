@@ -7,7 +7,6 @@ export {
   type MthCopyButtonVariant,
 } from './copy-button.js';
 export { copyButtonMessages } from './copy-button.messages.js';
-export { copyButtonSpec } from './copy-button.spec.js';
 export { copyButtonStyles } from './copy-button.styles.js';
 
 export function registerMthCopyButton(prefix?: string): ReadonlyArray<string> {

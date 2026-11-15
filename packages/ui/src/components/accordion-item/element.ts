@@ -3,7 +3,6 @@ import { MthAccordionItem } from './accordion-item.js';
 
 export { MthAccordionItem } from './accordion-item.js';
 export { accordionItemMessages } from './accordion-item.messages.js';
-export { accordionItemSpec } from './accordion-item.spec.js';
 export { accordionItemStyles } from './accordion-item.styles.js';
 
 export function registerMthAccordionItem(prefix?: string): ReadonlyArray<string> {

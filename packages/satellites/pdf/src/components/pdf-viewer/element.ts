@@ -8,7 +8,6 @@ export {
   type PdfZoomPreset,
 } from './pdf-viewer.js';
 export { pdfViewerMessages } from './pdf-viewer.messages.js';
-export { pdfViewerSpec } from './pdf-viewer.spec.js';
 export { pdfViewerStyles } from './pdf-viewer.styles.js';
 
 export function registerMthPdfViewer(prefix?: string): ReadonlyArray<string> {

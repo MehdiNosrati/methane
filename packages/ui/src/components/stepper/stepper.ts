@@ -3,15 +3,16 @@ import { RovingFocusController, SlotCollectionController } from '@methane-ui/pri
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { stepperMessages } from './stepper.messages.js';
-import {
-  EMPTY_STEPPER_STEPS,
-  type StepperOrientation,
-  type StepperStatus,
-  type StepperStepItem,
+import type {
+  StepperOrientation,
+  StepperStatus,
+  StepperStepItem,
 } from './stepper.spec.js';
 import { stepperStyles } from './stepper.styles.js';
 
 export type { StepperOrientation, StepperStatus, StepperStepItem };
+
+const EMPTY_STEPPER_STEPS: ReadonlyArray<StepperStepItem> = Object.freeze([]);
 
 interface StepElementLike extends HTMLElement {
   value?: string;

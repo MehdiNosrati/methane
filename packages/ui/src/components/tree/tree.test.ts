@@ -10,7 +10,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/tree-item';
 import type { MthTreeItem } from '@methane-ui/ui/tree-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthTree, registerMthTree, treeSpec, type TreeNodeData } from './index.js';
+import { treeSpec } from './tree.spec.js';
+import { MthTree, registerMthTree, type TreeNodeData } from './index.js';
 
 function createSlottedTree(dir: 'ltr' | 'rtl' = 'ltr'): MthTree {
   const tree = document.createElement('mth-tree') as MthTree;

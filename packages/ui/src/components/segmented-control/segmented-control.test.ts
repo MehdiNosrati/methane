@@ -8,11 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthSegmentedControl,
-  registerMthSegmentedControl,
-  segmentedControlSpec,
-} from './index.js';
+import { segmentedControlSpec } from './segmented-control.spec.js';
+import { MthSegmentedControl, registerMthSegmentedControl } from './index.js';
 
 describe('<mth-segmented-control>', () => {
   afterEach(() => {

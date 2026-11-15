@@ -12,15 +12,16 @@ pnpm add @methane-ui/auth @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/auth @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/auth` | Auto-registers all 7 auth kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/auth` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/auth/define` | Side-effect entrypoint that auto-registers all auth custom elements and exports `registerAllComponents` |
 | `@methane-ui/auth/<slug>` | Per-component entrypoint (e.g. `@methane-ui/auth/auth-form`, `@methane-ui/auth/mfa-challenge`) |
-| `@methane-ui/auth/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/auth/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` |
 | `@methane-ui/auth/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {
-  MthModelViewer,
-  modelViewerSpec,
-  registerMthModelViewer,
-} from './index.js';
+import { modelViewerSpec } from './model-viewer.spec.js';
+import { MthModelViewer, registerMthModelViewer } from './index.js';
 
 async function mountModelViewer(
   props: Partial<

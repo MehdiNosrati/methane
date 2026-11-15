@@ -7,7 +7,6 @@ export {
   type MthToggleButtonVariant,
 } from './toggle-button.js';
 export { toggleButtonMessages } from './toggle-button.messages.js';
-export { toggleButtonSpec } from './toggle-button.spec.js';
 export { toggleButtonStyles } from './toggle-button.styles.js';
 
 export function registerMthToggleButton(prefix?: string): ReadonlyArray<string> {

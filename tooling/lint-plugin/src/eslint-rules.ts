@@ -641,7 +641,7 @@ export const eslintRules = {
 export const methaneEslintPlugin: ESLint.Plugin = {
   meta: {
     name: '@methane-ui/lint-plugin',
-    version: '0.1.1',
+    version: '0.1.2',
   },
   rules: eslintRules,
 };

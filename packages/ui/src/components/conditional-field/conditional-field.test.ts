@@ -4,11 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/input';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthConditionalField,
-  conditionalFieldSpec,
-  registerMthConditionalField,
-} from './index.js';
+import { conditionalFieldSpec } from './conditional-field.spec.js';
+import { MthConditionalField, registerMthConditionalField } from './index.js';
 
 interface TestInputElement extends HTMLElement {
   readonly effectivelyDisabled: boolean;

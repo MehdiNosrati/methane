@@ -1,33 +1,42 @@
 {
   "name": "@methane-ui/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lit 3 UIElement base class, single versioned global runtime, i18n catalog, and Community Context Protocol for Methane UI",
   "license": "MIT",
   "type": "module",
+  "sideEffects": [
+    "./dist/hydrate.js"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "development": "./dist/development/index.js",
       "default": "./dist/index.js"
     },
     "./hydrate": {
       "types": "./dist/hydrate.d.ts",
+      "development": "./dist/development/hydrate.js",
       "default": "./dist/hydrate.js"
     },
     "./runtime": {
       "types": "./dist/runtime.d.ts",
+      "development": "./dist/development/runtime.js",
       "default": "./dist/runtime.js"
     },
     "./i18n": {
       "types": "./dist/i18n.d.ts",
+      "development": "./dist/development/i18n.js",
       "default": "./dist/i18n.js"
     },
     "./context": {
       "types": "./dist/context.d.ts",
+      "development": "./dist/development/context.js",
       "default": "./dist/context.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "dependencies": {
     "@lit-labs/ssr-client": "^1.1.7",
@@ -41,9 +50,9 @@
     "fast-check": "^4.10.2"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/build.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint src scripts",
     "test": "vitest run"
   },
   "publishConfig": {

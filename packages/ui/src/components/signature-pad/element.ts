@@ -10,5 +10,4 @@ export function registerMthSignaturePad(prefix?: string): ReadonlyArray<string> 
 
 export { MthSignaturePad, type SignaturePoint } from './signature-pad.js';
 export { signaturePadMessages } from './signature-pad.messages.js';
-export { signaturePadSpec } from './signature-pad.spec.js';
 export { signaturePadStyles } from './signature-pad.styles.js';

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthFullscreenOverlay, fullscreenOverlaySpec, registerMthFullscreenOverlay } from './index.js';
+import { fullscreenOverlaySpec } from './fullscreen-overlay.spec.js';
+import { MthFullscreenOverlay, registerMthFullscreenOverlay } from './index.js';
 
 describe('<mth-fullscreen-overlay>', () => {
   afterEach(() => {

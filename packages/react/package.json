@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/react",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React 19+ zero-runtime JSX/event types and React 18 @lit/react legacy wrappers for Methane UI (ADR-009)",
   "license": "MIT",
   "sideEffects": false,
@@ -16,7 +16,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only react && tsc -p tsconfig.json",

@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthIbanInput, ibanInputSpec, registerMthIbanInput } from './index.js';
+import { ibanInputSpec } from './iban-input.spec.js';
+import { MthIbanInput, registerMthIbanInput } from './index.js';
 
 describe('<mth-iban-input>', () => {
   afterEach(() => {

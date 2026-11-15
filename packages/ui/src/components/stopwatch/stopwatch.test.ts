@@ -3,7 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthStopwatch, registerMthStopwatch, stopwatchSpec } from './index.js';
+import { stopwatchSpec } from './stopwatch.spec.js';
+import { MthStopwatch, registerMthStopwatch } from './index.js';
 
 describe('<mth-stopwatch>', () => {
   afterEach(() => {

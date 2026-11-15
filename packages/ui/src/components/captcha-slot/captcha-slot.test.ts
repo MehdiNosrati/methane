@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCaptchaSlot, captchaSlotSpec, registerMthCaptchaSlot } from './index.js';
+import { captchaSlotSpec } from './captcha-slot.spec.js';
+import { MthCaptchaSlot, registerMthCaptchaSlot } from './index.js';
 
 describe('<mth-captcha-slot>', () => {
   afterEach(() => {

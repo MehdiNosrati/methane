@@ -3,14 +3,13 @@ import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { treeNavMessages } from './tree-nav.messages.js';
-import {
-  EMPTY_TREE_EXPANDED,
-  EMPTY_TREE_NAV_ITEMS,
-  type TreeNavItem,
-} from './tree-nav.spec.js';
+import type { TreeNavItem } from './tree-nav.spec.js';
 import { treeNavStyles } from './tree-nav.styles.js';
 
 export type { TreeNavItem };
+
+const EMPTY_TREE_NAV_ITEMS: ReadonlyArray<TreeNavItem> = Object.freeze([]);
+const EMPTY_TREE_EXPANDED: ReadonlyArray<string> = Object.freeze([]);
 
 function isSafeHref(raw: string): boolean {
   const trimmed = raw.trim();

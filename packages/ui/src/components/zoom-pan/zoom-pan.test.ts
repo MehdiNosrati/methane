@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthZoomPan, registerMthZoomPan, zoomPanSpec, type ZoomPanChangeDetail } from './index.js';
+import { zoomPanSpec } from './zoom-pan.spec.js';
+import { MthZoomPan, registerMthZoomPan, type ZoomPanChangeDetail } from './index.js';
 
 describe('<mth-zoom-pan>', () => {
   afterEach(() => {

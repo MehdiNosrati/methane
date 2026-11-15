@@ -5,7 +5,7 @@ import {
   LOCALE_CONTEXT,
   type LocaleContextValue,
 } from './context.js';
-import { devWarn, isDevMode } from './env.js';
+import { IS_DEV, runElementDevDiagnostics } from './env.js';
 import {
   inferDirectionFromLocale,
   normalizeLocale,
@@ -13,31 +13,6 @@ import {
   type MessageCatalog,
 } from './i18n.js';
 import { getRuntime, type MethaneRuntime } from './runtime.js';
-
-const ARIA_IDREF_ATTRS: ReadonlyArray<string> = [
-  'aria-labelledby',
-  'aria-describedby',
-  'aria-errormessage',
-  'aria-controls',
-  'aria-activedescendant',
-  'aria-owns',
-  'aria-flowto',
-  'aria-details',
-];
-
-const INTERACTIVE_ROLES_REQUIRING_NAME: ReadonlySet<string> = new Set([
-  'button',
-  'textbox',
-  'combobox',
-  'listbox',
-  'checkbox',
-  'switch',
-  'slider',
-  'dialog',
-  'alertdialog',
-  'tab',
-  'menuitem',
-]);
 
 function findComposedAncestorAttr(start: Element, attrName: 'lang' | 'dir'): string | null {
   const docEl = typeof document !== 'undefined' ? document.documentElement : null;
@@ -327,59 +302,12 @@ export class UIElement extends LitElement {
 
   protected override updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-    if (isDevMode()) {
+    if (IS_DEV) {
       this.runDevDiagnostics();
     }
   }
 
   protected runDevDiagnostics(): void {
-    const ctor = this.constructor as typeof LitElement & {
-      shadowRootOptions?: { delegatesFocus?: boolean };
-    };
-    const delegatesFocus =
-      (this.shadowRoot && 'delegatesFocus' in this.shadowRoot
-        ? (this.shadowRoot as ShadowRoot & { delegatesFocus?: boolean }).delegatesFocus
-        : undefined) ?? ctor.shadowRootOptions?.delegatesFocus;
-
-    if (delegatesFocus && (this.hasAttribute('role') || this.internals?.role)) {
-      devWarn(
-        `<${this.localName}> combines delegatesFocus: true with host role ("${this.getAttribute('role') ?? this.internals?.role}"). Remove host role per ADR-014.`,
-      );
-    }
-
-    const root = this.shadowRoot;
-    if (!root) return;
-
-    const localIds = new Set<string>();
-    for (const el of root.querySelectorAll('[id]')) {
-      if (el.id) localIds.add(el.id);
-    }
-
-    for (const el of root.querySelectorAll('*')) {
-      for (const attr of ARIA_IDREF_ATTRS) {
-        const val = el.getAttribute(attr);
-        if (!val) continue;
-        for (const idRef of val.trim().split(/\s+/)) {
-          if (!localIds.has(idRef)) {
-            devWarn(
-              `<${this.localName}> has non-same-root ${attr}="${idRef}" inside shadowRoot (ADR-003).`,
-            );
-          }
-        }
-      }
-
-      const role = el.getAttribute('role');
-      if (role && INTERACTIVE_ROLES_REQUIRING_NAME.has(role)) {
-        const hasLabelAttr = el.hasAttribute('aria-label') || el.hasAttribute('aria-labelledby');
-        const hasTitle = el.hasAttribute('title');
-        const hasText = (el.textContent?.trim().length ?? 0) > 0;
-        const hasHostLabels = (this.labels?.length ?? 0) > 0;
-        if (!hasLabelAttr && !hasTitle && !hasText && !hasHostLabels) {
-          devWarn(
-            `<${this.localName}> inner [role="${role}"] is missing an accessible name (ADR-003).`,
-          );
-        }
-      }
-    }
+    runElementDevDiagnostics(this, this.internals, this.labels);
   }
 }

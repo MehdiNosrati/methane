@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/carousel';
 import '@methane-ui/ui/carousel-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { gallerySpec, MthGallery, registerMthGallery, type GalleryItem } from './index.js';
+import { gallerySpec } from './gallery.spec.js';
+import { MthGallery, registerMthGallery, type GalleryItem } from './index.js';
 
 const SAMPLE_GALLERY: ReadonlyArray<GalleryItem> = [
   { src: 'https://example.com/1.jpg', alt: 'Sunset ridge', caption: 'Dusk over the ridge' },

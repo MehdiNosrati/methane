@@ -8,7 +8,6 @@ export {
   type MthAvatarStatus,
 } from './avatar.js';
 export { avatarMessages } from './avatar.messages.js';
-export { avatarSpec } from './avatar.spec.js';
 export { avatarStyles } from './avatar.styles.js';
 
 export function registerMthAvatar(prefix?: string): ReadonlyArray<string> {

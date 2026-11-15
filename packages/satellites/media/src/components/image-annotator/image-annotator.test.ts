@@ -8,12 +8,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import {
-  imageAnnotatorSpec,
-  MthImageAnnotator,
-  registerMthImageAnnotator,
-  type ImageAnnotation,
-} from './index.js';
+import { imageAnnotatorSpec } from './image-annotator.spec.js';
+import { MthImageAnnotator, registerMthImageAnnotator, type ImageAnnotation } from './index.js';
 
 registerMthImageAnnotator();
 

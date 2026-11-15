@@ -4,7 +4,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthLoadMore, loadMoreSpec, registerMthLoadMore } from './index.js';
+import { loadMoreSpec } from './load-more.spec.js';
+import { MthLoadMore, registerMthLoadMore } from './index.js';
 
 describe('<mth-load-more>', () => {
   afterEach(() => {

@@ -8,7 +8,6 @@ export {
   type QueryLeafRule,
 } from './query-builder.js';
 export { queryBuilderMessages } from './query-builder.messages.js';
-export { queryBuilderSpec } from './query-builder.spec.js';
 export { queryBuilderStyles } from './query-builder.styles.js';
 
 export function registerMthQueryBuilder(prefix?: string): ReadonlyArray<string> {

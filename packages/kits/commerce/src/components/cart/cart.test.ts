@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { cartSpec, MthCart, registerMthCart } from './index.js';
+import { cartSpec } from './cart.spec.js';
+import { MthCart, registerMthCart } from './index.js';
 
 describe('<mth-cart>', () => {
   afterEach(() => {

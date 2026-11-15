@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthAiMessage, aiMessageSpec, registerMthAiMessage } from './index.js';
+import { aiMessageSpec } from './ai-message.spec.js';
+import { MthAiMessage, registerMthAiMessage } from './index.js';
 
 describe('<mth-ai-message>', () => {
   afterEach(() => {

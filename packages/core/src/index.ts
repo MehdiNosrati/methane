@@ -13,7 +13,8 @@ export {
   type ThemeContextValue,
   type ThemeMode,
 } from './context.js';
-export { devWarn, isDevMode } from './env.js';
+export { __decorate } from './decorate.js';
+export { IS_DEV, devWarn, isDevMode } from './env.js';
 export {
   formatI18nMessage,
   inferDirectionFromLocale,

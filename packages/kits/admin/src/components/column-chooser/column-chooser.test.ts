@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthColumnChooser,
-  columnChooserSpec,
-  registerMthColumnChooser,
-} from './index.js';
+import { columnChooserSpec } from './column-chooser.spec.js';
+import { MthColumnChooser, registerMthColumnChooser } from './index.js';
 
 describe('<mth-column-chooser>', () => {
   afterEach(() => {

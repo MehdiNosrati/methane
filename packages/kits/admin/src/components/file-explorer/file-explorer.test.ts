@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthFileExplorer,
-  fileExplorerSpec,
-  registerMthFileExplorer,
-} from './index.js';
+import { fileExplorerSpec } from './file-explorer.spec.js';
+import { MthFileExplorer, registerMthFileExplorer } from './index.js';
 
 describe('<mth-file-explorer>', () => {
   afterEach(() => {

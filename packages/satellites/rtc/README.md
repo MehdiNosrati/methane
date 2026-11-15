@@ -12,15 +12,16 @@ pnpm add @methane-ui/rtc @methane-ui/core @methane-ui/tokens
 npm install @methane-ui/rtc @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.2`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane-ui/rtc` | Auto-registers all 4 RTC elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/rtc` | Tree-shakeable barrel re-exporting component classes, styles, messages, `registerMth*` helpers, and `registerAllComponents(prefix?)` without side effects |
+| `@methane-ui/rtc/define` | Side-effect entrypoint that auto-registers all rtc custom elements and exports `registerAllComponents` |
 | `@methane-ui/rtc/<slug>` | Per-component tree-shakeable import (e.g. `@methane-ui/rtc/video-grid`) |
-| `@methane-ui/rtc/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/rtc/<slug>/element` | Unregistered component class, styles, messages, and `registerMth*()` |
 | `@methane-ui/rtc/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components

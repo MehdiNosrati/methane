@@ -1,10 +1,9 @@
 import { defineComponents } from '@methane-ui/core';
 import { MthMap } from './map.js';
 import { mapMessages } from './map.messages.js';
-import { mapSpec } from './map.spec.js';
 import { mapStyles } from './map.styles.js';
 
-export { MthMap, mapMessages, mapSpec, mapStyles };
+export { MthMap, mapMessages, mapStyles };
 export type { MapMarker } from './map.js';
 
 export function registerMthMap(prefix?: string): string {

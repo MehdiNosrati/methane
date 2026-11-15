@@ -9,7 +9,6 @@ export {
   type PivotMatrix,
 } from './pivot-table.js';
 export { pivotTableMessages } from './pivot-table.messages.js';
-export { pivotTableSpec } from './pivot-table.spec.js';
 export { pivotTableStyles } from './pivot-table.styles.js';
 
 export function registerMthPivotTable(prefix?: string): ReadonlyArray<string> {

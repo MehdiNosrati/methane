@@ -3,7 +3,8 @@ import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compile
 import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { MthClock, clockSpec, registerMthClock } from './index.js';
+import { clockSpec } from './clock.spec.js';
+import { MthClock, registerMthClock } from './index.js';
 
 describe('<mth-clock>', () => {
   afterEach(() => {

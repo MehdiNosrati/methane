@@ -174,6 +174,17 @@ export function compileSpecTests(
     .join('\n');
 }
 
+function isPropDefaultEqual(actual: unknown, expected: unknown): boolean {
+  if (actual === expected) return true;
+  if (Array.isArray(actual) && Array.isArray(expected)) {
+    return (
+      actual.length === expected.length &&
+      actual.every((item, index) => isPropDefaultEqual(item, expected[index]))
+    );
+  }
+  return false;
+}
+
 /**
  * Executes behavior spec assertions directly in-memory against a registered `<spec.tag>` element.
  */
@@ -221,7 +232,7 @@ export async function runBehaviorSpecAssertions(
 
     const record = el as unknown as Record<string, unknown>;
     for (const prop of spec.props) {
-      if (prop.default !== undefined && record[prop.name] !== prop.default) {
+      if (prop.default !== undefined && !isPropDefaultEqual(record[prop.name], prop.default)) {
         failures.push(
           `Prop "${prop.name}" default mismatch: expected ${JSON.stringify(prop.default)}, got ${JSON.stringify(record[prop.name])}.`,
         );

@@ -8,7 +8,6 @@ export {
   type FilterRule,
 } from './filter-builder.js';
 export { filterBuilderMessages } from './filter-builder.messages.js';
-export { filterBuilderSpec } from './filter-builder.spec.js';
 export { filterBuilderStyles } from './filter-builder.styles.js';
 
 export function registerMthFilterBuilder(prefix?: string): ReadonlyArray<string> {

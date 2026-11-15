@@ -3,7 +3,6 @@ import { MthInlineEdit } from './inline-edit.js';
 
 export { MthInlineEdit } from './inline-edit.js';
 export { inlineEditMessages } from './inline-edit.messages.js';
-export { inlineEditSpec } from './inline-edit.spec.js';
 export { inlineEditStyles } from './inline-edit.styles.js';
 
 export function registerMthInlineEdit(prefix?: string): ReadonlyArray<string> {

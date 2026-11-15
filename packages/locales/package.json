@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/locales",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lazy-loaded locale packs with Intl.PluralRules and RTL bidi support for Methane UI",
   "license": "MIT",
   "type": "module",
@@ -76,7 +76,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

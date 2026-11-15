@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthProgressRing, progressRingSpec, registerMthProgressRing } from './index.js';
+import { progressRingSpec } from './progress-ring.spec.js';
+import { MthProgressRing, registerMthProgressRing } from './index.js';
 
 describe('<mth-progress-ring>', () => {
   afterEach(() => {

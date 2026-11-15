@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/tour-step';
 import type { MthTourStep } from '@methane-ui/ui/tour-step';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthTour, registerMthTour, tourSpec } from './index.js';
+import { tourSpec } from './tour.spec.js';
+import { MthTour, registerMthTour } from './index.js';
 
 describe('<mth-tour>', () => {
   afterEach(() => {

@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthSavedViews,
-  registerMthSavedViews,
-  savedViewsSpec,
-} from './index.js';
+import { savedViewsSpec } from './saved-views.spec.js';
+import { MthSavedViews, registerMthSavedViews } from './index.js';
 
 describe('<mth-saved-views>', () => {
   afterEach(() => {

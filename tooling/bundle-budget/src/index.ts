@@ -12,13 +12,27 @@ export interface BundleMeasureOptions {
   readonly target?: string;
   readonly platform?: 'browser' | 'neutral' | 'node';
   readonly define?: Readonly<Record<string, string>>;
+  readonly stdin?: {
+    readonly contents: string;
+    readonly resolveDir: string;
+    readonly loader?: 'js' | 'ts';
+  };
 }
 
 export interface BundleBudgetTarget {
   readonly name: string;
   readonly entryPoint: string;
+  readonly stdin?: {
+    readonly contents: string;
+    readonly resolveDir: string;
+    readonly loader?: 'js' | 'ts';
+  };
   readonly sharedExternals?: ReadonlyArray<string>;
+  readonly maxColdRawBytes?: number;
+  readonly maxColdGzipBytes?: number;
   readonly maxColdBrotliBytes?: number;
+  readonly maxMarginalRawBytes?: number;
+  readonly maxMarginalGzipBytes?: number;
   readonly maxMarginalBrotliBytes?: number;
   readonly define?: Readonly<Record<string, string>>;
 }
@@ -69,7 +83,7 @@ export async function measureBundleBytes(
   options?: BundleMeasureOptions,
 ): Promise<BundleSizeMetrics> {
   const result = await esbuild.build({
-    entryPoints: [entryPoint],
+    ...(options?.stdin ? { stdin: options.stdin } : { entryPoints: [entryPoint] }),
     bundle: true,
     minify: true,
     treeShaking: true,
@@ -79,6 +93,7 @@ export async function measureBundleBytes(
     write: false,
     external: options?.external ? [...options.external] : [],
     define: {
+      'process.env.NODE_ENV': '"production"',
       __DEV__: 'false',
       ...(options?.define ?? {}),
     },
@@ -95,7 +110,10 @@ export async function measureComponentBudget(
   target: BundleBudgetTarget,
 ): Promise<ComponentBudgetResult> {
   const sharedExternals = target.sharedExternals ?? DEFAULT_SHARED_EXTERNALS;
-  const baseOptions = target.define !== undefined ? { define: target.define } : {};
+  const baseOptions: BundleMeasureOptions = {
+    ...(target.define !== undefined ? { define: target.define } : {}),
+    ...(target.stdin !== undefined ? { stdin: target.stdin } : {}),
+  };
 
   const [cold, marginal] = await Promise.all([
     measureBundleBytes(target.entryPoint, baseOptions),
@@ -104,11 +122,43 @@ export async function measureComponentBudget(
 
   const violations: string[] = [];
   if (
+    target.maxColdRawBytes !== undefined &&
+    cold.rawBytes > target.maxColdRawBytes
+  ) {
+    violations.push(
+      `Cold raw ${cold.rawBytes} B exceeds budget ${target.maxColdRawBytes} B`,
+    );
+  }
+  if (
+    target.maxColdGzipBytes !== undefined &&
+    cold.gzipBytes > target.maxColdGzipBytes
+  ) {
+    violations.push(
+      `Cold gzip ${cold.gzipBytes} B exceeds budget ${target.maxColdGzipBytes} B`,
+    );
+  }
+  if (
     target.maxColdBrotliBytes !== undefined &&
     cold.brotliBytes > target.maxColdBrotliBytes
   ) {
     violations.push(
       `Cold brotli ${cold.brotliBytes} B exceeds budget ${target.maxColdBrotliBytes} B`,
+    );
+  }
+  if (
+    target.maxMarginalRawBytes !== undefined &&
+    marginal.rawBytes > target.maxMarginalRawBytes
+  ) {
+    violations.push(
+      `Marginal raw ${marginal.rawBytes} B exceeds budget ${target.maxMarginalRawBytes} B`,
+    );
+  }
+  if (
+    target.maxMarginalGzipBytes !== undefined &&
+    marginal.gzipBytes > target.maxMarginalGzipBytes
+  ) {
+    violations.push(
+      `Marginal gzip ${marginal.gzipBytes} B exceeds budget ${target.maxMarginalGzipBytes} B`,
     );
   }
   if (

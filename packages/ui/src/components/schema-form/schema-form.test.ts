@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/field';
 import '@methane-ui/ui/input';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthSchemaForm, registerMthSchemaForm, schemaFormSpec } from './index.js';
+import { schemaFormSpec } from './schema-form.spec.js';
+import { MthSchemaForm, registerMthSchemaForm } from './index.js';
 
 describe('<mth-schema-form>', () => {
   afterEach(() => {

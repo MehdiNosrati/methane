@@ -1,9 +1,10 @@
 {
   "name": "@methane-ui/angular",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Angular standalone typed Directives and ControlValueAccessor wrappers for Methane UI (ADR-009)",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -11,7 +12,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only angular && tsc -p tsconfig.json",

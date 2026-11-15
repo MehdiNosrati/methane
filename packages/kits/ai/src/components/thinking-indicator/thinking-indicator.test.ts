@@ -3,11 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import {
-  MthThinkingIndicator,
-  registerMthThinkingIndicator,
-  thinkingIndicatorSpec,
-} from './index.js';
+import { thinkingIndicatorSpec } from './thinking-indicator.spec.js';
+import { MthThinkingIndicator, registerMthThinkingIndicator } from './index.js';
 
 describe('<mth-thinking-indicator>', () => {
   afterEach(() => {

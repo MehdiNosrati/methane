@@ -7,12 +7,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  type CodeTabItem,
-  codeTabsSpec,
-  MthCodeTabs,
-  registerMthCodeTabs,
-} from './index.js';
+import { codeTabsSpec } from './code-tabs.spec.js';
+import { type CodeTabItem, MthCodeTabs, registerMthCodeTabs } from './index.js';
 
 const SAMPLE_TABS: ReadonlyArray<CodeTabItem> = [
   { value: 'npm', label: 'npm', language: 'bash', code: 'npm install @methane-ui/ui' },

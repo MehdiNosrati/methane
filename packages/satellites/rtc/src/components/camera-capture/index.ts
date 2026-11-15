@@ -1,4 +1,11 @@
+import { registerMthCameraCapture } from './element.js';
+
 export * from './element.js';
-export { cameraCaptureMessages } from './camera-capture.messages.js';
-export { cameraCaptureSpec } from './camera-capture.spec.js';
-export { cameraCaptureStyles } from './camera-capture.styles.js';
+
+registerMthCameraCapture();
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-camera-capture': import('./camera-capture.js').MthCameraCapture;
+  }
+}

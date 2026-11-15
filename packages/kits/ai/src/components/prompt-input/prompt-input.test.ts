@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthPromptInput, promptInputSpec, registerMthPromptInput } from './index.js';
+import { promptInputSpec } from './prompt-input.spec.js';
+import { MthPromptInput, registerMthPromptInput } from './index.js';
 
 describe('<mth-prompt-input>', () => {
   afterEach(() => {

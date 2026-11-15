@@ -9,7 +9,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthDatagrid, datagridSpec, registerMthDatagrid } from './index.js';
+import { datagridSpec } from './datagrid.spec.js';
+import { MthDatagrid, registerMthDatagrid } from './index.js';
 
 describe('<mth-datagrid>', () => {
   afterEach(() => {

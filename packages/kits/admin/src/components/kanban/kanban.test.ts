@@ -9,12 +9,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthKanban,
-  kanbanSpec,
-  registerMthKanban,
-  type KanbanCard,
-} from './index.js';
+import { kanbanSpec } from './kanban.spec.js';
+import { MthKanban, registerMthKanban, type KanbanCard } from './index.js';
 
 describe('<mth-kanban>', () => {
   afterEach(() => {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCoachmark, coachmarkSpec, registerMthCoachmark } from './index.js';
+import { coachmarkSpec } from './coachmark.spec.js';
+import { MthCoachmark, registerMthCoachmark } from './index.js';
 
 describe('<mth-coachmark>', () => {
   afterEach(() => {

@@ -10,7 +10,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/column';
 import type { MthColumn } from '@methane-ui/ui/column';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthTable, registerMthTable, tableSpec } from './index.js';
+import { tableSpec } from './table.spec.js';
+import { MthTable, registerMthTable } from './index.js';
 
 function createTableFixture(dir: 'ltr' | 'rtl' = 'ltr'): MthTable {
   const table = document.createElement('mth-table') as MthTable;

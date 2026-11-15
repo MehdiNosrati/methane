@@ -8,7 +8,6 @@ export {
   type ConditionPredicate,
 } from './conditional-field.js';
 export { conditionalFieldMessages } from './conditional-field.messages.js';
-export { conditionalFieldSpec } from './conditional-field.spec.js';
 export { conditionalFieldStyles } from './conditional-field.styles.js';
 
 export function registerMthConditionalField(prefix?: string): ReadonlyArray<string> {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { encodeQrMatrix, MthQrCode, qrCodeSpec, registerMthQrCode } from './index.js';
+import { qrCodeSpec } from './qr-code.spec.js';
+import { encodeQrMatrix, MthQrCode, registerMthQrCode } from './index.js';
 
 describe('<mth-qr-code>', () => {
   afterEach(() => {

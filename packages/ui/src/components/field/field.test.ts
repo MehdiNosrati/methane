@@ -3,7 +3,8 @@ import { FIELD_CONTEXT, UIElement, html, type FieldContextValue } from '@methane
 import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import { scanSameRootAria } from '@methane-ui/test-conformance';
 import { afterEach, describe, expect, it } from 'vitest';
-import { MthField, fieldSpec } from './index.js';
+import { fieldSpec } from './field.spec.js';
+import { MthField } from './index.js';
 
 class TestFieldProbe extends UIElement {
   latestFieldContext: FieldContextValue | undefined;

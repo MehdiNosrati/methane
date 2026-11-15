@@ -1,4 +1,4 @@
-import { devWarn, isDevMode, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, isDevMode, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { iconButtonMessages } from './icon-button.messages.js';
@@ -56,7 +56,7 @@ export class MthIconButton extends UIElement {
     this.syncCustomStates();
     if (this.label.trim().length > 0) {
       this.warnedMissingLabel = false;
-    } else if (isDevMode() && !this.warnedMissingLabel) {
+    } else if (IS_DEV && isDevMode() && !this.warnedMissingLabel) {
       this.warnedMissingLabel = true;
       devWarn('<mth-icon-button> requires a non-empty `label` prop/attribute for accessible naming.');
     }

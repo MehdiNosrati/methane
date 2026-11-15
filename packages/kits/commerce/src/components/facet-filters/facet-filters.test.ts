@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { facetFiltersSpec, MthFacetFilters, registerMthFacetFilters } from './index.js';
+import { facetFiltersSpec } from './facet-filters.spec.js';
+import { MthFacetFilters, registerMthFacetFilters } from './index.js';
 
 describe('<mth-facet-filters>', () => {
   afterEach(() => {

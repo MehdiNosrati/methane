@@ -7,11 +7,8 @@ import {
 } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import {
-  MthBulkActionBar,
-  bulkActionBarSpec,
-  registerMthBulkActionBar,
-} from './index.js';
+import { bulkActionBarSpec } from './bulk-action-bar.spec.js';
+import { MthBulkActionBar, registerMthBulkActionBar } from './index.js';
 
 describe('<mth-bulk-action-bar>', () => {
   afterEach(() => {

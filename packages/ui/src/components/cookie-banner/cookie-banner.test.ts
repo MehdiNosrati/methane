@@ -3,7 +3,8 @@ import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane-u
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCookieBanner, cookieBannerSpec, registerMthCookieBanner } from './index.js';
+import { cookieBannerSpec } from './cookie-banner.spec.js';
+import { MthCookieBanner, registerMthCookieBanner } from './index.js';
 
 describe('<mth-cookie-banner>', () => {
   afterEach(() => {

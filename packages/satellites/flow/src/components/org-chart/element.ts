@@ -9,6 +9,8 @@ export {
   type OrgConnector,
   type PositionedOrgCard,
 } from './org-chart.js';
+export { orgChartMessages } from './org-chart.messages.js';
+export { orgChartStyles } from './org-chart.styles.js';
 
 export function registerMthOrgChart(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -18,5 +20,3 @@ export function registerMthOrgChart(prefix?: string): ReadonlyArray<string> {
     },
   });
 }
-
-registerMthOrgChart();

@@ -7,7 +7,6 @@ export {
   type MthShareButtonVariant,
 } from './share-button.js';
 export { shareButtonMessages } from './share-button.messages.js';
-export { shareButtonSpec } from './share-button.spec.js';
 export { shareButtonStyles } from './share-button.styles.js';
 
 export function registerMthShareButton(prefix?: string): ReadonlyArray<string> {

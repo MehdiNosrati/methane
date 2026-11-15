@@ -9,7 +9,6 @@ export {
   type MthEmptyStateVariant,
 } from './empty-state.js';
 export { emptyStateMessages } from './empty-state.messages.js';
-export { emptyStateSpec } from './empty-state.spec.js';
 export { emptyStateStyles } from './empty-state.styles.js';
 
 export function registerMthEmptyState(prefix?: string): ReadonlyArray<string> {

@@ -112,6 +112,52 @@ jobs:
             pnpm -r --filter "./packages/**" --filter "./tooling/*" --no-git-checks publish --provenance --access public
           fi
 
+      - name: Deprecate orphaned tooling packages via OIDC token exchange
+        if: ${{ inputs.dry_run != true }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for slug in bundle-budget figma-sync security-gate spec-compiler test-conformance wrapper-codegen; do
+            PKG="@methane-ui/${slug}"
+            ENCODED="@methane-ui%2f${slug}"
+            ALREADY_DEPRECATED="$(node --input-type=module -e "
+              const res = await fetch('https://registry.npmjs.org/' + process.argv[1]);
+              if (!res.ok) process.exit(0);
+              const meta = await res.json();
+              const dep = meta.versions?.['0.1.0']?.deprecated;
+              if (dep) process.stdout.write('yes');
+            " "$PKG")"
+            if [ "$ALREADY_DEPRECATED" = "yes" ]; then
+              echo "Skipping $PKG@0.1.0 (already deprecated)"
+              continue
+            fi
+
+            TOKEN="$NODE_AUTH_TOKEN"
+            if [ -z "$TOKEN" ] && [ -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" ] && [ -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}" ]; then
+              ID_TOKEN="$(curl -sfSL \
+                -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+                -H "Accept: application/json" \
+                "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=npm:registry.npmjs.org" \
+                | node -e "const d = JSON.parse(require('fs').readFileSync(0, 'utf8')); process.stdout.write(d.value || '');")"
+              if [ -n "$ID_TOKEN" ]; then
+                TOKEN="$(curl -sfSL -X POST \
+                  -H "Authorization: Bearer ${ID_TOKEN}" \
+                  -H "Accept: application/json" \
+                  "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/${ENCODED}" \
+                  | node -e "const d = JSON.parse(require('fs').readFileSync(0, 'utf8')); process.stdout.write(d.token || '');" || true)"
+              fi
+            fi
+
+            if [ -z "$TOKEN" ]; then
+              echo "::warning::No npm auth or OIDC exchange token available to deprecate ${PKG}@0.1.0; skipping."
+              continue
+            fi
+
+            npm deprecate "${PKG}@0.1.0" "internal tooling, not supported" \
+              --//registry.npmjs.org/:_authToken="$TOKEN" \
+              || echo "::warning::npm deprecate failed for ${PKG}@0.1.0 (OIDC token may be publish-only); continuing release."
+          done
+
       - name: Create GitHub Release
         if: ${{ startsWith(github.ref, 'refs/tags/v') && inputs.dry_run != true }}
         uses: softprops/action-gh-release@v2

@@ -7,7 +7,6 @@ export {
   type SuggestionChipItem,
 } from './suggestion-chips.js';
 export { suggestionChipsMessages } from './suggestion-chips.messages.js';
-export { suggestionChipsSpec } from './suggestion-chips.spec.js';
 export { suggestionChipsStyles } from './suggestion-chips.styles.js';
 
 export function registerMthSuggestionChips(prefix?: string): ReadonlyArray<string> {

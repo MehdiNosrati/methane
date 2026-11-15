@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthColumn, columnSpec, registerMthColumn } from './index.js';
+import { columnSpec } from './column.spec.js';
+import { MthColumn, registerMthColumn } from './index.js';
 
 describe('<mth-column>', () => {
   afterEach(() => {

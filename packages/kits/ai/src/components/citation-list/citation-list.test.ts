@@ -3,7 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthCitationList, citationListSpec, isSafeHttpUrl, registerMthCitationList } from './index.js';
+import { citationListSpec } from './citation-list.spec.js';
+import { MthCitationList, isSafeHttpUrl, registerMthCitationList } from './index.js';
 
 describe('<mth-citation-list>', () => {
   afterEach(() => {

@@ -1,4 +1,4 @@
-import { devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
+import { IS_DEV, devWarn, UIElement, type PropertyValues } from '@methane-ui/core';
 import { RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
@@ -132,7 +132,9 @@ export class MthGallery extends UIElement {
     const safe: GalleryItem[] = [];
     for (const item of raw) {
       if (!isSafeMediaUrl(item.src)) {
-        devWarn(`<mth-gallery> rejected unsafe src "${item.src}".`);
+        if (IS_DEV) {
+          devWarn(`<mth-gallery> rejected unsafe src "${item.src}".`);
+        }
         continue;
       }
       const thumb = item.thumbnail && isSafeMediaUrl(item.thumbnail) ? item.thumbnail.trim() : item.src.trim();

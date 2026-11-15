@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { barcodeSpec, encodeCode128B, MthBarcode, registerMthBarcode } from './index.js';
+import { barcodeSpec } from './barcode.spec.js';
+import { encodeCode128B, MthBarcode, registerMthBarcode } from './index.js';
 
 describe('<mth-barcode>', () => {
   afterEach(() => {

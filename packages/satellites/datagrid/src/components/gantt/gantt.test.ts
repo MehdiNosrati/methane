@@ -3,7 +3,8 @@ import { HydrationPuritySuite, SatelliteEngineSuite, scanSameRootAria } from '@m
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthGantt, ganttSpec, registerMthGantt } from './index.js';
+import { ganttSpec } from './gantt.spec.js';
+import { MthGantt, registerMthGantt } from './index.js';
 
 describe('<mth-gantt>', () => {
   afterEach(() => {

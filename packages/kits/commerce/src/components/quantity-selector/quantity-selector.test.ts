@@ -3,7 +3,8 @@ import { FormControlSuite, HydrationPuritySuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { MthQuantitySelector, quantitySelectorSpec, registerMthQuantitySelector } from './index.js';
+import { quantitySelectorSpec } from './quantity-selector.spec.js';
+import { MthQuantitySelector, registerMthQuantitySelector } from './index.js';
 
 describe('<mth-quantity-selector>', () => {
   afterEach(() => {

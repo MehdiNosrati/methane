@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthInlineStatus, inlineStatusSpec, registerMthInlineStatus } from './index.js';
+import { inlineStatusSpec } from './inline-status.spec.js';
+import { MthInlineStatus, registerMthInlineStatus } from './index.js';
 
 describe('<mth-inline-status>', () => {
   afterEach(() => {

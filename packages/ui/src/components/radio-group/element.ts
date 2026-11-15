@@ -3,7 +3,6 @@ import { MthRadioGroup } from './radio-group.js';
 
 export { MthRadioGroup } from './radio-group.js';
 export { radioGroupMessages } from './radio-group.messages.js';
-export { radioGroupSpec } from './radio-group.spec.js';
 export { radioGroupStyles } from './radio-group.styles.js';
 
 export function registerMthRadioGroup(prefix?: string): ReadonlyArray<string> {

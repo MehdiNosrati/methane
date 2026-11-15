@@ -3,11 +3,8 @@ import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@metha
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthCalendarHeatmap,
-  calendarHeatmapSpec,
-  registerMthCalendarHeatmap,
-} from './index.js';
+import { calendarHeatmapSpec } from './calendar-heatmap.spec.js';
+import { MthCalendarHeatmap, registerMthCalendarHeatmap } from './index.js';
 
 describe('<mth-calendar-heatmap>', () => {
   afterEach(() => {

@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthAccordionItem, accordionItemSpec, registerMthAccordionItem } from './index.js';
+import { accordionItemSpec } from './accordion-item.spec.js';
+import { MthAccordionItem, registerMthAccordionItem } from './index.js';
 
 describe('<mth-accordion-item>', () => {
   afterEach(() => {

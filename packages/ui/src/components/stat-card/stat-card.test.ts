@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthStatCard, registerMthStatCard, statCardSpec } from './index.js';
+import { statCardSpec } from './stat-card.spec.js';
+import { MthStatCard, registerMthStatCard } from './index.js';
 
 describe('<mth-stat-card>', () => {
   afterEach(() => {

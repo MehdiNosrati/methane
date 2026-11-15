@@ -4,7 +4,8 @@ import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import '@methane-ui/ui/field';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthCheckbox, checkboxSpec, registerMthCheckbox } from './index.js';
+import { checkboxSpec } from './checkbox.spec.js';
+import { MthCheckbox, registerMthCheckbox } from './index.js';
 
 describe('<mth-checkbox>', () => {
   afterEach(() => {

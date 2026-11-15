@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
-import { commentThreadSpec, MthCommentThread, registerMthCommentThread } from './index.js';
+import { commentThreadSpec } from './comment-thread.spec.js';
+import { MthCommentThread, registerMthCommentThread } from './index.js';
 
 describe('<mth-comment-thread>', () => {
   afterEach(() => {

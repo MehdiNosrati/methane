@@ -9,7 +9,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthMultiSelect, multiSelectSpec, registerMthMultiSelect } from './index.js';
+import { multiSelectSpec } from './multi-select.spec.js';
+import { MthMultiSelect, registerMthMultiSelect } from './index.js';
 
 describe('<mth-multi-select>', () => {
   afterEach(() => {

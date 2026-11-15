@@ -9,11 +9,8 @@ import {
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import {
-  MthCreatableSelect,
-  creatableSelectSpec,
-  registerMthCreatableSelect,
-} from './index.js';
+import { creatableSelectSpec } from './creatable-select.spec.js';
+import { MthCreatableSelect, registerMthCreatableSelect } from './index.js';
 
 describe('<mth-creatable-select>', () => {
   afterEach(() => {

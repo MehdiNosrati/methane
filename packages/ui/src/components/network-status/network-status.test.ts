@@ -3,7 +3,8 @@ import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conform
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
-import { MthNetworkStatus, networkStatusSpec, registerMthNetworkStatus } from './index.js';
+import { networkStatusSpec } from './network-status.spec.js';
+import { MthNetworkStatus, registerMthNetworkStatus } from './index.js';
 
 describe('<mth-network-status>', () => {
   afterEach(() => {

@@ -8,6 +8,11 @@ export {
   type AnnotationTool,
   type ImageAnnotation,
 } from './image-annotator.js';
+export {
+  ImageAnnotatorMessages,
+  type ImageAnnotatorMessageKey,
+} from './image-annotator.messages.js';
+export { imageAnnotatorStyles } from './image-annotator.styles.js';
 
 export function registerMthImageAnnotator(prefix?: string): ReadonlyArray<string> {
   return defineComponents({
@@ -17,5 +22,3 @@ export function registerMthImageAnnotator(prefix?: string): ReadonlyArray<string
     },
   });
 }
-
-registerMthImageAnnotator();
