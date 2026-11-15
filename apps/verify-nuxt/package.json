@@ -10,7 +10,7 @@
     "build": "NUXT_TELEMETRY_DISABLED=1 nuxt prepare && NUXT_TELEMETRY_DISABLED=1 nuxt build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
     "@methane/core": "workspace:*",

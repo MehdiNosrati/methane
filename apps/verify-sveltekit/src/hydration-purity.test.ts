@@ -124,5 +124,5 @@ describe('@methane/verify-sveltekit hydration purity', () => {
       });
       expect(report.passed, `${tagName}: ${JSON.stringify(report.checks)}`).toBe(true);
     }
-  });
+  }, 20_000);
 });

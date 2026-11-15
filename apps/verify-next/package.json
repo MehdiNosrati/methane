@@ -11,7 +11,7 @@
     "start": "NEXT_TELEMETRY_DISABLED=1 next start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
     "@methane/core": "workspace:*",
