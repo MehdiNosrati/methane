@@ -1,0 +1,1716 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/markdown/markdown.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMarkdown",
+          "tagName": "mth-markdown",
+          "customElement": true,
+          "description": "Read-only Markdown renderer using @methane/sanitize with safe URL validation and token synchronization.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "content",
+              "attribute": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "content property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "allowRawHtml property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "content",
+              "fieldName": "content",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "content property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "allowRawHtml property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-render",
+              "type": {
+                "text": "CustomEvent<{ length: number }>"
+              },
+              "description": "Emitted event mth-render."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional light-DOM Markdown text used when content prop is empty."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Rendered Markdown region container."
+            },
+            {
+              "name": "content",
+              "description": "Sanitized rendered HTML output."
+            },
+            {
+              "name": "source",
+              "description": "Hidden default slot collector."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Rendered region surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Code and blockquote background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted blockquote text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Blockquote and container border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Rendered link foreground color."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Rendered prose font family."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "Inline and block code font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "rendered",
+              "description": "Custom element state :state(rendered)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-markdown",
+            "package": "@methane/editor",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "rendered"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "content",
+                "attr": "content",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-render",
+                "cancelable": false,
+                "detailType": "{ length: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional light-DOM Markdown text used when content prop is empty."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Rendered Markdown region container."
+              },
+              {
+                "name": "content",
+                "description": "Sanitized rendered HTML output."
+              },
+              {
+                "name": "source",
+                "description": "Hidden default slot collector."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Markdown document",
+              "emptyLabel": "No content"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMarkdown",
+          "declaration": {
+            "name": "MthMarkdown",
+            "module": "src/components/markdown/markdown.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-markdown",
+          "declaration": {
+            "name": "MthMarkdown",
+            "module": "src/components/markdown/markdown.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/markdown-editor/markdown-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMarkdownEditor",
+          "tagName": "mth-markdown-editor",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated Markdown editor with roving formatting toolbar, write/preview/split modes, and sanitized preview rendering.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "placeholder property."
+            },
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'write' | 'preview' | 'split'"
+              },
+              "default": "\"write\"",
+              "description": "mode property."
+            },
+            {
+              "kind": "field",
+              "name": "allowRawHtml",
+              "attribute": "allow-raw-html",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "allowRawHtml property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "placeholder property."
+            },
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'write' | 'preview' | 'split'"
+              },
+              "default": "\"write\"",
+              "description": "mode property."
+            },
+            {
+              "name": "allow-raw-html",
+              "fieldName": "allowRawHtml",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "allowRawHtml property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-change."
+            },
+            {
+              "name": "mth-mode-change",
+              "type": {
+                "text": "CustomEvent<{ mode: MarkdownEditorMode }>"
+              },
+              "description": "Emitted event mth-mode-change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "toolbar",
+              "description": "Optional extra toolbar actions."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "Visible field label element."
+            },
+            {
+              "name": "base",
+              "description": "Outer editor frame."
+            },
+            {
+              "name": "header",
+              "description": "Toolbar and view-mode bar."
+            },
+            {
+              "name": "toolbar",
+              "description": "Formatting toolbar button group."
+            },
+            {
+              "name": "tool-button",
+              "description": "Formatting or mode button."
+            },
+            {
+              "name": "panes",
+              "description": "Container holding source textarea and/or preview pane."
+            },
+            {
+              "name": "textarea",
+              "description": "Markdown source textarea."
+            },
+            {
+              "name": "preview",
+              "description": "Sanitized live Markdown preview surface."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Editor background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Toolbar and code background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted control foreground color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Frame and pane divider border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active mode highlight and link color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Frame corner radius."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Toolbar and preview font family."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "Markdown source textarea font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "split",
+              "description": "Custom element state :state(split)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "focused",
+              "description": "Custom element state :state(focused)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-markdown-editor",
+            "package": "@methane/editor",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "split",
+              "dirty",
+              "touched",
+              "focused"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next toolbar action"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next toolbar action"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'write' | 'preview' | 'split'",
+                "default": "write"
+              },
+              {
+                "name": "allowRawHtml",
+                "attr": "allow-raw-html",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-mode-change",
+                "cancelable": false,
+                "detailType": "{ mode: MarkdownEditorMode }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "toolbar",
+                "description": "Optional extra toolbar actions."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "label",
+                "description": "Visible field label element."
+              },
+              {
+                "name": "base",
+                "description": "Outer editor frame."
+              },
+              {
+                "name": "header",
+                "description": "Toolbar and view-mode bar."
+              },
+              {
+                "name": "toolbar",
+                "description": "Formatting toolbar button group."
+              },
+              {
+                "name": "tool-button",
+                "description": "Formatting or mode button."
+              },
+              {
+                "name": "panes",
+                "description": "Container holding source textarea and/or preview pane."
+              },
+              {
+                "name": "textarea",
+                "description": "Markdown source textarea."
+              },
+              {
+                "name": "preview",
+                "description": "Sanitized live Markdown preview surface."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "editorLabel": "Markdown editor",
+              "toolbarLabel": "Markdown formatting",
+              "modeGroupLabel": "Editor view mode",
+              "writeModeLabel": "Write",
+              "previewModeLabel": "Preview",
+              "splitModeLabel": "Split",
+              "boldLabel": "Bold",
+              "italicLabel": "Italic",
+              "codeLabel": "Code",
+              "linkLabel": "Link",
+              "headingLabel": "Heading",
+              "placeholderFallback": "Write Markdown...",
+              "previewLabel": "Markdown preview"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMarkdownEditor",
+          "declaration": {
+            "name": "MthMarkdownEditor",
+            "module": "src/components/markdown-editor/markdown-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-markdown-editor",
+          "declaration": {
+            "name": "MthMarkdownEditor",
+            "module": "src/components/markdown-editor/markdown-editor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/math-editor/math-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMathEditor",
+          "tagName": "mth-math-editor",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated LaTeX formula editor with quick-symbol toolbar, KaTeX rendering, sanitized preview, and token synchronization.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "placeholder property."
+            },
+            {
+              "kind": "field",
+              "name": "displayMode",
+              "attribute": "display-mode",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "displayMode property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "placeholder property."
+            },
+            {
+              "name": "display-mode",
+              "fieldName": "displayMode",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "displayMode property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-change."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ message: string }>"
+              },
+              "description": "Emitted event mth-error."
+            }
+          ],
+          "slots": [
+            {
+              "name": "toolbar",
+              "description": "Optional extra quick-symbol buttons."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "Visible field label element."
+            },
+            {
+              "name": "base",
+              "description": "Outer math editor frame."
+            },
+            {
+              "name": "toolbar",
+              "description": "Quick-symbol toolbar button group."
+            },
+            {
+              "name": "tool-button",
+              "description": "Quick-symbol insertion button."
+            },
+            {
+              "name": "textarea",
+              "description": "LaTeX source input textarea."
+            },
+            {
+              "name": "preview",
+              "description": "Sanitized KaTeX formula preview surface."
+            },
+            {
+              "name": "error",
+              "description": "Parse or validation error banner."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Editor background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Toolbar and preview header background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary formula text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted secondary text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Frame and divider border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Interactive symbol highlight color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Frame corner radius."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Toolbar and error text font family."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "LaTeX source textarea font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "display-mode",
+              "description": "Custom element state :state(display-mode)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "focused",
+              "description": "Custom element state :state(focused)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-math-editor",
+            "package": "@methane/editor",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "display-mode",
+              "dirty",
+              "touched",
+              "focused"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "symbol button focused",
+                "expect": "moves focus to next symbol button"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "symbol button focused",
+                "expect": "moves focus to next symbol button"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "displayMode",
+                "attr": "display-mode",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ message: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "toolbar",
+                "description": "Optional extra quick-symbol buttons."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "label",
+                "description": "Visible field label element."
+              },
+              {
+                "name": "base",
+                "description": "Outer math editor frame."
+              },
+              {
+                "name": "toolbar",
+                "description": "Quick-symbol toolbar button group."
+              },
+              {
+                "name": "tool-button",
+                "description": "Quick-symbol insertion button."
+              },
+              {
+                "name": "textarea",
+                "description": "LaTeX source input textarea."
+              },
+              {
+                "name": "preview",
+                "description": "Sanitized KaTeX formula preview surface."
+              },
+              {
+                "name": "error",
+                "description": "Parse or validation error banner."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "editorLabel": "Math formula editor",
+              "toolbarLabel": "Math symbols",
+              "inputLabel": "LaTeX expression",
+              "previewLabel": "Rendered formula preview",
+              "placeholderFallback": "E = mc^2",
+              "invalidFormula": "Invalid LaTeX formula",
+              "symFraction": "Fraction",
+              "symSqrt": "Square root",
+              "symSum": "Sum",
+              "symIntegral": "Integral",
+              "symAlpha": "Alpha",
+              "symPi": "Pi",
+              "symInf": "Infinity"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMathEditor",
+          "declaration": {
+            "name": "MthMathEditor",
+            "module": "src/components/math-editor/math-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-math-editor",
+          "declaration": {
+            "name": "MthMathEditor",
+            "module": "src/components/math-editor/math-editor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/rich-editor/rich-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthRichEditor",
+          "tagName": "mth-rich-editor",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated ProseMirror rich-text editor with accessible formatting toolbar (`RovingFocusController`), `@methane/sanitize` HTML serialization, and `--mth-*` token sync.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form submission field name."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible label for the editor."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Sanitized HTML document content."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Hint text when document is empty."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks content required during form validation."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents editing and form submission."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays content without allowing mutations."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form submission field name."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Visible and accessible label for the editor."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Sanitized HTML document content."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Hint text when document is empty."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Marks content required during form validation."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents editing and form submission."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays content without allowing mutations."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string; html: string }>"
+              },
+              "description": "Fired synchronously on every ProseMirror document transaction."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; html: string }>"
+              },
+              "description": "Fired when edited content blurs or is committed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "toolbar",
+              "description": "Optional trailing toolbar actions."
+            },
+            {
+              "name": "fallback",
+              "description": "Static SSR or screen-reader fallback content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer editor frame."
+            },
+            {
+              "name": "label",
+              "description": "Visible editor label."
+            },
+            {
+              "name": "toolbar",
+              "description": "Formatting actions `role=\"toolbar\"`."
+            },
+            {
+              "name": "tool-button",
+              "description": "Individual formatting button."
+            },
+            {
+              "name": "surface",
+              "description": "Mounted ProseMirror editor surface."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Editor background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Toolbar background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary text foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted placeholder and icon color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Frame and toolbar border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active toolbar state highlight."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Frame corner radius."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Editor body font family."
+            },
+            {
+              "name": "--mth-font-size-md",
+              "description": "Editor body font size."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "focused",
+              "description": "Custom element state :state(focused)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-rich-editor",
+            "package": "@methane/editor",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched",
+              "focused"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next toolbar action"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next toolbar action"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string; html: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; html: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "toolbar",
+                "description": "Optional trailing toolbar actions."
+              },
+              {
+                "name": "fallback",
+                "description": "Static SSR or screen-reader fallback content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer editor frame."
+              },
+              {
+                "name": "label",
+                "description": "Visible editor label."
+              },
+              {
+                "name": "toolbar",
+                "description": "Formatting actions `role=\"toolbar\"`."
+              },
+              {
+                "name": "tool-button",
+                "description": "Individual formatting button."
+              },
+              {
+                "name": "surface",
+                "description": "Mounted ProseMirror editor surface."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot container."
+              }
+            ],
+            "messages": {
+              "editorLabel": "Rich text editor",
+              "toolbarLabel": "Formatting toolbar",
+              "boldLabel": "Bold",
+              "italicLabel": "Italic",
+              "headingLabel": "Heading",
+              "listLabel": "Bullet list",
+              "undoLabel": "Undo",
+              "redoLabel": "Redo",
+              "placeholderFallback": "Write formatted content...",
+              "requiredError": "Please enter content."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthRichEditor",
+          "declaration": {
+            "name": "MthRichEditor",
+            "module": "src/components/rich-editor/rich-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-rich-editor",
+          "declaration": {
+            "name": "MthRichEditor",
+            "module": "src/components/rich-editor/rich-editor.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+export const mathEditorMessages = {
+  editorLabel: 'Math formula editor',
+  toolbarLabel: 'Math symbols',
+  inputLabel: 'LaTeX expression',
+  previewLabel: 'Rendered formula preview',
+  placeholderFallback: 'E = mc^2',
+  invalidFormula: 'Invalid LaTeX formula',
+  symFraction: 'Fraction',
+  symSqrt: 'Square root',
+  symSum: 'Sum',
+  symIntegral: 'Integral',
+  symAlpha: 'Alpha',
+  symPi: 'Pi',
+  symInf: 'Infinity',
+} as const;

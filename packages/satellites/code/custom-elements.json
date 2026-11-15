@@ -1,0 +1,1682 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/code-block/code-block.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCodeBlock",
+          "tagName": "mth-code-block",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Read-only syntax-highlighted code block using the CSS Custom Highlight API (`CSS.highlights`) with accessible token span fallback, line highlighting, and clipboard copy.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "code",
+              "attribute": "code",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "code property."
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "attribute": "language",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"text\"",
+              "description": "language property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "lineNumbers",
+              "attribute": "line-numbers",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "lineNumbers property."
+            },
+            {
+              "kind": "field",
+              "name": "highlightLines",
+              "attribute": "highlight-lines",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "highlightLines property."
+            },
+            {
+              "kind": "field",
+              "name": "showCopy",
+              "attribute": "show-copy",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "showCopy property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "code",
+              "fieldName": "code",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "code property."
+            },
+            {
+              "name": "language",
+              "fieldName": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"text\"",
+              "description": "language property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "line-numbers",
+              "fieldName": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "lineNumbers property."
+            },
+            {
+              "name": "highlight-lines",
+              "fieldName": "highlightLines",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "highlightLines property."
+            },
+            {
+              "name": "show-copy",
+              "fieldName": "showCopy",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "showCopy property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-copy",
+              "type": {
+                "text": "CustomEvent<{ code: string }>"
+              },
+              "description": "Emitted event mth-copy."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional slotted source code when code prop is omitted."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer code block container."
+            },
+            {
+              "name": "header",
+              "description": "Language badge and copy action bar."
+            },
+            {
+              "name": "language",
+              "description": "Language identifier label."
+            },
+            {
+              "name": "copy-button",
+              "description": "Button to copy source code."
+            },
+            {
+              "name": "pre",
+              "description": "Scrollable preformatted code container."
+            },
+            {
+              "name": "code",
+              "description": "Tokenized code content element."
+            },
+            {
+              "name": "line",
+              "description": "Individual rendered code line."
+            },
+            {
+              "name": "line-number",
+              "description": "Line gutter number."
+            },
+            {
+              "name": "token",
+              "description": "Fallback syntax token span."
+            },
+            {
+              "name": "status",
+              "description": "Accessible live status region for copy feedback."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Code block container background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header bar background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary code foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Line numbers and muted label color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Container border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Keyword token and highlighted line accent."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Container corner radius."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "Source code font family."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Header and action control font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "copied",
+              "description": "Custom element state :state(copied)."
+            },
+            {
+              "name": "line-numbers",
+              "description": "Custom element state :state(line-numbers)."
+            },
+            {
+              "name": "custom-highlight",
+              "description": "Custom element state :state(custom-highlight)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-code-block",
+            "package": "@methane/code",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "delegates-focus",
+            "states": [
+              "copied",
+              "line-numbers",
+              "custom-highlight"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "code",
+                "attr": "code",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "language",
+                "attr": "language",
+                "type": "string",
+                "default": "text"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "lineNumbers",
+                "attr": "line-numbers",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "highlightLines",
+                "attr": "highlight-lines",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "showCopy",
+                "attr": "show-copy",
+                "type": "boolean",
+                "default": true
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-copy",
+                "cancelable": false,
+                "detailType": "{ code: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional slotted source code when code prop is omitted."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer code block container."
+              },
+              {
+                "name": "header",
+                "description": "Language badge and copy action bar."
+              },
+              {
+                "name": "language",
+                "description": "Language identifier label."
+              },
+              {
+                "name": "copy-button",
+                "description": "Button to copy source code."
+              },
+              {
+                "name": "pre",
+                "description": "Scrollable preformatted code container."
+              },
+              {
+                "name": "code",
+                "description": "Tokenized code content element."
+              },
+              {
+                "name": "line",
+                "description": "Individual rendered code line."
+              },
+              {
+                "name": "line-number",
+                "description": "Line gutter number."
+              },
+              {
+                "name": "token",
+                "description": "Fallback syntax token span."
+              },
+              {
+                "name": "status",
+                "description": "Accessible live status region for copy feedback."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Code snippet",
+              "copyLabel": "Copy",
+              "copiedLabel": "Copied",
+              "copySuccessStatus": "Code copied to clipboard",
+              "languageFallback": "text"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCodeBlock",
+          "declaration": {
+            "name": "MthCodeBlock",
+            "module": "src/components/code-block/code-block.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-code-block",
+          "declaration": {
+            "name": "MthCodeBlock",
+            "module": "src/components/code-block/code-block.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/code-editor/code-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthCodeEditor",
+          "tagName": "mth-code-editor",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated CodeMirror 6 code editor with non-trapping Tab escape toggle, `--mth-*` theme compartment sync, and hydration-pure lifecycle.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "attribute": "language",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"typescript\"",
+              "description": "language property."
+            },
+            {
+              "kind": "field",
+              "name": "tabTrapsFocus",
+              "attribute": "tab-traps-focus",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "tabTrapsFocus property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "language",
+              "fieldName": "language",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"typescript\"",
+              "description": "language property."
+            },
+            {
+              "name": "tab-traps-focus",
+              "fieldName": "tabTrapsFocus",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "tabTrapsFocus property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "Emitted event mth-change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "toolbar",
+              "description": "Optional extra editor actions."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "Visible editor field label."
+            },
+            {
+              "name": "base",
+              "description": "Outer editor frame."
+            },
+            {
+              "name": "header",
+              "description": "Language indicator and keyboard escape toggle bar."
+            },
+            {
+              "name": "tab-toggle",
+              "description": "Toggle button switching Tab between indentation and focus navigation."
+            },
+            {
+              "name": "surface",
+              "description": "CodeMirror 6 editor host surface."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "CodeMirror editor background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header bar background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary code foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Language badge and muted label color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Frame border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focused editor outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Caret and active toggle highlight color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Frame corner radius."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "CodeMirror editor font family."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Header and toggle control font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "focused",
+              "description": "Custom element state :state(focused)."
+            },
+            {
+              "name": "tab-trap",
+              "description": "Custom element state :state(tab-trap)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-code-editor",
+            "package": "@methane/code",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched",
+              "focused",
+              "tab-trap"
+            ],
+            "keyboard": [
+              {
+                "key": "Escape",
+                "dir": "ltr",
+                "when": "editor surface focused in indent mode",
+                "expect": "restores Tab focus navigation"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "language",
+                "attr": "language",
+                "type": "string",
+                "default": "typescript"
+              },
+              {
+                "name": "tabTrapsFocus",
+                "attr": "tab-traps-focus",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "toolbar",
+                "description": "Optional extra editor actions."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "label",
+                "description": "Visible editor field label."
+              },
+              {
+                "name": "base",
+                "description": "Outer editor frame."
+              },
+              {
+                "name": "header",
+                "description": "Language indicator and keyboard escape toggle bar."
+              },
+              {
+                "name": "tab-toggle",
+                "description": "Toggle button switching Tab between indentation and focus navigation."
+              },
+              {
+                "name": "surface",
+                "description": "CodeMirror 6 editor host surface."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "editorLabel": "Code editor",
+              "surfaceLabel": "Source code input",
+              "tabToggleIndent": "Tab indents code",
+              "tabToggleFocus": "Tab moves focus",
+              "escapeHint": "Press Escape to leave indentation mode",
+              "readonlyBadge": "Read only"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthCodeEditor",
+          "declaration": {
+            "name": "MthCodeEditor",
+            "module": "src/components/code-editor/code-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-code-editor",
+          "declaration": {
+            "name": "MthCodeEditor",
+            "module": "src/components/code-editor/code-editor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/diff-viewer/diff-viewer.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthDiffViewer",
+          "tagName": "mth-diff-viewer",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Unified and side-by-side line diff viewer with LCS diffing, keyboard hunk navigation, accessible semantics, and `--mth-*` token synchronization.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "original",
+              "attribute": "original",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "original property."
+            },
+            {
+              "kind": "field",
+              "name": "modified",
+              "attribute": "modified",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "modified property."
+            },
+            {
+              "kind": "field",
+              "name": "filename",
+              "attribute": "filename",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "filename property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "view",
+              "attribute": "view",
+              "reflect": true,
+              "type": {
+                "text": "'unified' | 'split'"
+              },
+              "default": "\"unified\"",
+              "description": "view property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "original",
+              "fieldName": "original",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "original property."
+            },
+            {
+              "name": "modified",
+              "fieldName": "modified",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "modified property."
+            },
+            {
+              "name": "filename",
+              "fieldName": "filename",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "filename property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "view",
+              "fieldName": "view",
+              "type": {
+                "text": "'unified' | 'split'"
+              },
+              "default": "\"unified\"",
+              "description": "view property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-view-change",
+              "type": {
+                "text": "CustomEvent<{ view: DiffViewMode }>"
+              },
+              "description": "Emitted event mth-view-change."
+            },
+            {
+              "name": "mth-hunk-change",
+              "type": {
+                "text": "CustomEvent<{ hunkIndex: number; total: number }>"
+              },
+              "description": "Emitted event mth-hunk-change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer diff viewer container."
+            },
+            {
+              "name": "header",
+              "description": "Filename, diff counts, view toggle, and hunk navigation bar."
+            },
+            {
+              "name": "tool-button",
+              "description": "Diff view or hunk navigation button."
+            },
+            {
+              "name": "surface",
+              "description": "Diff rows container."
+            },
+            {
+              "name": "row",
+              "description": "Individual diff line row."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Diff viewer background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Toolbar background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary diff line foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Line numbers and stats color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Container border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active hunk outline and mode accent color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Container corner radius."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "Diff content font family."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Toolbar font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "split",
+              "description": "Custom element state :state(split)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-diff-viewer",
+            "package": "@methane/code",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "split"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next control"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next control"
+              }
+            ],
+            "props": [
+              {
+                "name": "original",
+                "attr": "original",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "modified",
+                "attr": "modified",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "filename",
+                "attr": "filename",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "view",
+                "attr": "view",
+                "type": "'unified' | 'split'",
+                "default": "unified"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-view-change",
+                "cancelable": false,
+                "detailType": "{ view: DiffViewMode }"
+              },
+              {
+                "name": "mth-hunk-change",
+                "cancelable": false,
+                "detailType": "{ hunkIndex: number; total: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer diff viewer container."
+              },
+              {
+                "name": "header",
+                "description": "Filename, diff counts, view toggle, and hunk navigation bar."
+              },
+              {
+                "name": "tool-button",
+                "description": "Diff view or hunk navigation button."
+              },
+              {
+                "name": "surface",
+                "description": "Diff rows container."
+              },
+              {
+                "name": "row",
+                "description": "Individual diff line row."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Code diff viewer",
+              "toolbarLabel": "Diff controls",
+              "unifiedLabel": "Unified",
+              "splitLabel": "Split",
+              "prevHunkLabel": "Previous change",
+              "nextHunkLabel": "Next change",
+              "emptyDiff": "No differences"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthDiffViewer",
+          "declaration": {
+            "name": "MthDiffViewer",
+            "module": "src/components/diff-viewer/diff-viewer.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-diff-viewer",
+          "declaration": {
+            "name": "MthDiffViewer",
+            "module": "src/components/diff-viewer/diff-viewer.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/json-editor/json-editor.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthJsonEditor",
+          "tagName": "mth-json-editor",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Form-associated CodeMirror 6 JSON editor with live JSON syntax validation, prettify formatting, collapsible interactive tree view, and `--mth-*` token synchronization.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'code' | 'tree' | 'split'"
+              },
+              "default": "\"code\"",
+              "description": "mode property."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "name property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "value property."
+            },
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'code' | 'tree' | 'split'"
+              },
+              "default": "\"code\"",
+              "description": "mode property."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "required property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "readonly property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-input",
+              "type": {
+                "text": "CustomEvent<{ value: string; valid: boolean }>"
+              },
+              "description": "Emitted event mth-input."
+            },
+            {
+              "name": "mth-change",
+              "type": {
+                "text": "CustomEvent<{ value: string; valid: boolean }>"
+              },
+              "description": "Emitted event mth-change."
+            },
+            {
+              "name": "mth-mode-change",
+              "type": {
+                "text": "CustomEvent<{ mode: JsonEditorMode }>"
+              },
+              "description": "Emitted event mth-mode-change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "toolbar",
+              "description": "Optional extra toolbar actions."
+            },
+            {
+              "name": "fallback",
+              "description": "Progressive-enhancement fallback slot before upgrade."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "Visible field label."
+            },
+            {
+              "name": "base",
+              "description": "Outer JSON editor frame."
+            },
+            {
+              "name": "header",
+              "description": "Mode switcher and format toolbar."
+            },
+            {
+              "name": "tool-button",
+              "description": "Mode or format action button."
+            },
+            {
+              "name": "panes",
+              "description": "Container for CodeMirror editor and JSON tree pane."
+            },
+            {
+              "name": "surface",
+              "description": "CodeMirror 6 editor host surface."
+            },
+            {
+              "name": "tree",
+              "description": "Collapsible JSON tree inspection pane."
+            },
+            {
+              "name": "error",
+              "description": "Live JSON syntax validation error banner."
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback slot wrapper."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "JSON editor background surface."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Toolbar background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Primary foreground color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted label foreground color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Frame and pane divider border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring outline color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active mode and JSON key highlight color."
+            },
+            {
+              "name": "--mth-radius-md",
+              "description": "Frame corner radius."
+            },
+            {
+              "name": "--mth-font-mono",
+              "description": "JSON editor and tree font family."
+            },
+            {
+              "name": "--mth-font-sans",
+              "description": "Toolbar and error text font family."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "dirty",
+              "description": "Custom element state :state(dirty)."
+            },
+            {
+              "name": "touched",
+              "description": "Custom element state :state(touched)."
+            },
+            {
+              "name": "focused",
+              "description": "Custom element state :state(focused)."
+            },
+            {
+              "name": "split",
+              "description": "Custom element state :state(split)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-json-editor",
+            "package": "@methane/code",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "dirty",
+              "touched",
+              "focused",
+              "split"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next control"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "rtl",
+                "when": "toolbar button focused",
+                "expect": "moves focus to next control"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'code' | 'tree' | 'split'",
+                "default": "code"
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-input",
+                "cancelable": false,
+                "detailType": "{ value: string; valid: boolean }"
+              },
+              {
+                "name": "mth-change",
+                "cancelable": false,
+                "detailType": "{ value: string; valid: boolean }"
+              },
+              {
+                "name": "mth-mode-change",
+                "cancelable": false,
+                "detailType": "{ mode: JsonEditorMode }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "toolbar",
+                "description": "Optional extra toolbar actions."
+              },
+              {
+                "name": "fallback",
+                "description": "Progressive-enhancement fallback slot before upgrade."
+              }
+            ],
+            "parts": [
+              {
+                "name": "label",
+                "description": "Visible field label."
+              },
+              {
+                "name": "base",
+                "description": "Outer JSON editor frame."
+              },
+              {
+                "name": "header",
+                "description": "Mode switcher and format toolbar."
+              },
+              {
+                "name": "tool-button",
+                "description": "Mode or format action button."
+              },
+              {
+                "name": "panes",
+                "description": "Container for CodeMirror editor and JSON tree pane."
+              },
+              {
+                "name": "surface",
+                "description": "CodeMirror 6 editor host surface."
+              },
+              {
+                "name": "tree",
+                "description": "Collapsible JSON tree inspection pane."
+              },
+              {
+                "name": "error",
+                "description": "Live JSON syntax validation error banner."
+              },
+              {
+                "name": "fallback",
+                "description": "Fallback slot wrapper."
+              }
+            ],
+            "messages": {
+              "editorLabel": "JSON editor",
+              "toolbarLabel": "JSON editor controls",
+              "codeModeLabel": "Code",
+              "treeModeLabel": "Tree",
+              "splitModeLabel": "Split",
+              "formatLabel": "Format",
+              "validStatus": "Valid JSON",
+              "invalidJsonError": "Invalid JSON syntax",
+              "treeRegionLabel": "JSON tree view",
+              "surfaceLabel": "JSON source input"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthJsonEditor",
+          "declaration": {
+            "name": "MthJsonEditor",
+            "module": "src/components/json-editor/json-editor.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-json-editor",
+          "declaration": {
+            "name": "MthJsonEditor",
+            "module": "src/components/json-editor/json-editor.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
