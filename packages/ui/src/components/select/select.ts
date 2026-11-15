@@ -488,7 +488,7 @@ export class MthSelect extends UIElement {
       });
     };
 
-    for (const child of Array.from(this.children)) {
+    for (const child of Array.from(this.children ?? [])) {
       if (!(child instanceof HTMLElement)) continue;
       const tag = child.tagName.toLowerCase();
       if (tag === 'mth-option') {
@@ -499,7 +499,7 @@ export class MthSelect extends UIElement {
         const groupDisabled =
           child.hasAttribute('disabled') ||
           Boolean((child as unknown as { disabled?: boolean }).disabled);
-        for (const nested of Array.from(child.children)) {
+        for (const nested of Array.from(child.children ?? [])) {
           if (nested instanceof HTMLElement && nested.tagName.toLowerCase() === 'mth-option') {
             pushOptionEl(nested, groupLabel, groupDisabled);
           }

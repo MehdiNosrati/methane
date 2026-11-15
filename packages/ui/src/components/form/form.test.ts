@@ -112,6 +112,46 @@ describe('<mth-form>', () => {
     expect((input as unknown as { value: string }).value).toBe('initial');
   });
 
+  it('submits on Enter in single-line inputs (ignoring textarea) and preserves delegation across reconnect', async () => {
+    const form = document.createElement('mth-form') as MthForm;
+    const input = document.createElement('mth-input');
+    input.setAttribute('name', 'city');
+    input.setAttribute('value', 'Seattle');
+    const textarea = document.createElement('textarea');
+    textarea.name = 'notes';
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'submit';
+    form.append(input, textarea, submitBtn);
+    document.body.appendChild(form);
+
+    await form.updateComplete;
+    await (input as unknown as { updateComplete: Promise<boolean> }).updateComplete;
+
+    const onSubmit = vi.fn();
+    form.addEventListener('mth-submit', onSubmit);
+
+    // Textarea Enter must not submit
+    textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    expect(onSubmit).not.toHaveBeenCalled();
+
+    // Single-line mth-input Enter must submit
+    const innerInput = input.shadowRoot!.querySelector('input')!;
+    innerInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+
+    // Reconnect lifecycle preserves delegated click & Enter listeners
+    form.remove();
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(form);
+    document.body.appendChild(wrapper);
+    await form.updateComplete;
+
+    submitBtn.click();
+    expect(onSubmit).toHaveBeenCalledTimes(2);
+    innerInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    expect(onSubmit).toHaveBeenCalledTimes(3);
+  });
+
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {
     const rawSsr = await renderLitDsdHtml(litHtml`<mth-form novalidate></mth-form>`);
     expect(rawSsr).toContain('shadowrootmode="open"');

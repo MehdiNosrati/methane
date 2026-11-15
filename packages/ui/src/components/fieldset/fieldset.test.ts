@@ -69,6 +69,30 @@ describe('<mth-fieldset>', () => {
     expect(input.shadowRoot!.querySelector('input')?.disabled).toBe(true);
   });
 
+  it('re-subscribes to ancestor FormContext after disconnect/reconnect', async () => {
+    const parent = document.createElement('div');
+    const hostForm = document.createElement('mth-fieldset') as MthFieldset;
+    hostForm.disabled = true;
+    const childFs = document.createElement('mth-fieldset') as MthFieldset;
+    hostForm.appendChild(childFs);
+    parent.appendChild(hostForm);
+    document.body.appendChild(parent);
+
+    await hostForm.updateComplete;
+    await childFs.updateComplete;
+    expect(childFs.isEffectivelyDisabled).toBe(true);
+
+    childFs.remove();
+    await childFs.updateComplete;
+    expect(childFs.isEffectivelyDisabled).toBe(false);
+
+    hostForm.appendChild(childFs);
+    await childFs.updateComplete;
+    await Promise.resolve();
+    await childFs.updateComplete;
+    expect(childFs.isEffectivelyDisabled).toBe(true);
+  });
+
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {
     const rawSsr = await renderLitDsdHtml(
       litHtml`<mth-fieldset legend="Profile" hint="Public info"></mth-fieldset>`,

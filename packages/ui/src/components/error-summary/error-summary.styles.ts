@@ -12,7 +12,7 @@ export const errorSummaryStyles = css`
     --_es-space-4: var(--mth-space-4, 1rem);
     --_es-font: var(--mth-font-sans, system-ui, sans-serif);
     --_es-font-sm: var(--mth-font-size-sm, 0.875rem);
-    --_es-font-base: var(--mth-font-size-base, 1rem);
+    --_es-font-base: var(--mth-font-size-md, 1rem);
     --_es-weight-semibold: var(--mth-font-weight-semibold, 600);
 
     display: block;

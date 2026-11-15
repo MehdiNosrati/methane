@@ -83,14 +83,17 @@ export class MthForm extends UIElement {
     });
   }
 
-  protected override onFirstConnect(): void {
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.addEventListener('click', this.handleDelegatedClick);
+    this.addEventListener('keydown', this.handleDelegatedKeyDown);
     this.syncContextAndStates();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('click', this.handleDelegatedClick);
+    this.removeEventListener('keydown', this.handleDelegatedKeyDown);
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -228,7 +231,7 @@ export class MthForm extends UIElement {
   private getControls(): Array<FormControlCandidate> {
     const candidates: Array<FormControlCandidate> = [];
     const walk = (root: Element) => {
-      for (const child of Array.from(root.children)) {
+      for (const child of Array.from(root.children ?? [])) {
         if (isControlElement(child)) {
           candidates.push(child);
         }
@@ -264,6 +267,49 @@ export class MthForm extends UIElement {
       submitAttempted: this.submitAttempted,
     });
   }
+
+  private readonly handleDelegatedKeyDown = (event: KeyboardEvent): void => {
+    if (event.key !== 'Enter' || event.defaultPrevented || event.isComposing) return;
+
+    const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+    const origin = (path[0] instanceof Element ? path[0] : event.target) as Element | null;
+    if (!origin) return;
+
+    for (const node of path) {
+      if (!(node instanceof Element)) continue;
+      const tag = node.tagName.toLowerCase();
+      if (
+        tag === 'textarea' ||
+        tag === 'mth-textarea' ||
+        tag === 'button' ||
+        tag === 'mth-button' ||
+        tag === 'a' ||
+        tag === 'mth-link' ||
+        node.getAttribute('role') === 'option' ||
+        node.getAttribute('role') === 'listbox' ||
+        (node.getAttribute('role') === 'combobox' && node.getAttribute('aria-expanded') === 'true') ||
+        node.hasAttribute('open')
+      ) {
+        return;
+      }
+      if (node === this) break;
+    }
+
+    const isSingleLineInput =
+      (origin instanceof HTMLInputElement &&
+        origin.type !== 'button' &&
+        origin.type !== 'submit' &&
+        origin.type !== 'reset' &&
+        origin.type !== 'checkbox' &&
+        origin.type !== 'radio' &&
+        origin.type !== 'file') ||
+      path.some((node) => node instanceof Element && node.tagName.toLowerCase() === 'mth-input');
+
+    if (isSingleLineInput) {
+      event.preventDefault();
+      this.requestSubmit();
+    }
+  };
 
   private readonly handleDelegatedClick = (event: MouseEvent): void => {
     const target = event.target;

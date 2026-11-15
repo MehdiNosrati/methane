@@ -51,7 +51,8 @@ export class MthFieldset extends UIElement {
     return this.disabled || Boolean(this.ancestorFormContext?.disabled);
   }
 
-  protected override onFirstConnect(): void {
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.subscribeToAncestorFormContext();
     this.syncContextAndStates();
   }
@@ -60,6 +61,7 @@ export class MthFieldset extends UIElement {
     super.disconnectedCallback();
     this.ancestorUnsubscribe?.();
     this.ancestorUnsubscribe = undefined;
+    this.ancestorFormContext = undefined;
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -85,6 +87,7 @@ export class MthFieldset extends UIElement {
       new Event('context-request', { bubbles: true, composed: true }),
       {
         context: FORM_CONTEXT,
+        contextTarget: this,
         subscribe: true,
         callback: (value: FormContextValue, unsubscribe?: () => void) => {
           this.ancestorUnsubscribe = unsubscribe;

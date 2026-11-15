@@ -244,7 +244,7 @@ export class MthRadioGroup extends UIElement {
   private getRadioElements(): ReadonlyArray<RadioLikeElement> {
     return this.slotCtrl.slottedElements.length > 0
       ? this.slotCtrl.slottedElements
-      : Array.from(this.children).filter(isRadioElement);
+      : Array.from(this.children ?? []).filter(isRadioElement);
   }
 
   private syncSelectionFromValue(nextValue: string): void {
