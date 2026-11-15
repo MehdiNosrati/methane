@@ -20,3 +20,8 @@ export {
   type LicenseAuditOptions,
   type LicenseAuditResult,
 } from './license-audit.js';
+export {
+  auditWorkflowFiles,
+  type WorkflowAuditResult,
+  type WorkflowFinding,
+} from './workflow-audit.js';
