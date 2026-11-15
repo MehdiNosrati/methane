@@ -1,4 +1,3 @@
-import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 import { ContextConsumer } from '@lit/context';
 import { LitElement, type PropertyValues } from 'lit';
 import {
@@ -40,6 +39,52 @@ const INTERACTIVE_ROLES_REQUIRING_NAME: ReadonlySet<string> = new Set([
   'menuitem',
 ]);
 
+function findComposedAncestorAttr(start: Element, attrName: 'lang' | 'dir'): string | null {
+  const docEl = typeof document !== 'undefined' ? document.documentElement : null;
+  let current: Element | null = start;
+  const selector = `[${attrName}]`;
+
+  while (current) {
+    if (current !== docEl) {
+      const matched: Element | null =
+        typeof current.closest === 'function' ? current.closest(selector) : null;
+      if (matched && matched !== docEl) {
+        const raw = matched.getAttribute(attrName)?.trim() ?? '';
+        if (attrName === 'lang' && raw.length > 0) {
+          return raw;
+        }
+        if (attrName === 'dir') {
+          const normalized = raw.toLowerCase();
+          if (normalized === 'rtl' || normalized === 'ltr') {
+            return normalized;
+          }
+        }
+        if (matched.parentElement) {
+          current = matched.parentElement;
+          continue;
+        }
+        const matchedRoot: Node | null =
+          typeof matched.getRootNode === 'function' ? matched.getRootNode() : null;
+        if (typeof ShadowRoot !== 'undefined' && matchedRoot instanceof ShadowRoot && matchedRoot.host) {
+          current = matchedRoot.host;
+          continue;
+        }
+        break;
+      }
+    }
+
+    const root: Node | null =
+      typeof current.getRootNode === 'function' ? current.getRootNode() : null;
+    if (typeof ShadowRoot !== 'undefined' && root instanceof ShadowRoot && root.host) {
+      current = root.host;
+      continue;
+    }
+    break;
+  }
+
+  return null;
+}
+
 /**
  * Thin human-owned base class wrapping Lit 3 (ADR-001).
  * Adds exactly 5 capabilities:
@@ -64,6 +109,7 @@ export class UIElement extends LitElement {
   private _styleUnsubscribe: (() => void) | null = null;
   private _connectedInitialized = false;
   private _localeConsumer: ContextConsumer<typeof LOCALE_CONTEXT, this> | null = null;
+  private _hasLocaleContext = false;
   private _localeContext: LocaleContextValue = DEFAULT_LOCALE_CONTEXT;
 
   constructor() {
@@ -74,6 +120,7 @@ export class UIElement extends LitElement {
       context: LOCALE_CONTEXT,
       subscribe: true,
       callback: (value) => {
+        this._hasLocaleContext = value !== undefined;
         this._localeContext = value ?? DEFAULT_LOCALE_CONTEXT;
         this.requestUpdate();
       },
@@ -95,24 +142,33 @@ export class UIElement extends LitElement {
     }
   }
 
-  /** Current locale resolved via LocaleContext -> host/ancestor `[lang]` -> `'en'`. */
+  /** Current locale resolved via host/composed ancestor `[lang]` (excluding `<html>`) -> LocaleContext -> `<html lang>` -> `'en'`. */
   protected get resolvedLocale(): string {
-    const explicit = this.getAttribute('lang');
-    if (explicit) return normalizeLocale(explicit);
-    if (this._localeConsumer && this._localeContext.locale) {
+    const ancestorLang = findComposedAncestorAttr(this, 'lang');
+    if (ancestorLang) return normalizeLocale(ancestorLang);
+    if (this._localeConsumer && this._hasLocaleContext && this._localeContext.locale) {
       return normalizeLocale(this._localeContext.locale);
     }
     const docLang = typeof document !== 'undefined' ? document.documentElement?.lang : '';
     return normalizeLocale(docLang || 'en');
   }
 
-  /** Current writing direction resolved via host `[dir]` -> LocaleContext -> locale default. */
+  /** Current writing direction resolved via host/composed ancestor `[dir]` (excluding `<html>`) -> LocaleContext -> `<html dir>` -> locale default. */
   protected get resolvedDir(): 'ltr' | 'rtl' {
-    const explicitDir = this.getAttribute('dir');
-    if (explicitDir === 'rtl' || explicitDir === 'ltr') return explicitDir;
-    if (this._localeContext.dir === 'rtl' || this._localeContext.dir === 'ltr') {
+    const ancestorDir = findComposedAncestorAttr(this, 'dir');
+    if (ancestorDir === 'rtl' || ancestorDir === 'ltr') return ancestorDir;
+    if (
+      this._hasLocaleContext &&
+      (this._localeContext.dir === 'rtl' || this._localeContext.dir === 'ltr')
+    ) {
       return this._localeContext.dir;
     }
+    if (findComposedAncestorAttr(this, 'lang')) {
+      return inferDirectionFromLocale(this.resolvedLocale);
+    }
+    const docDir =
+      typeof document !== 'undefined' ? document.documentElement?.dir?.trim().toLowerCase() : '';
+    if (docDir === 'rtl' || docDir === 'ltr') return docDir;
     return inferDirectionFromLocale(this.resolvedLocale);
   }
 

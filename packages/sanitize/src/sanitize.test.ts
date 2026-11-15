@@ -248,4 +248,188 @@ describe('@methane/sanitize DOMPurify parity & XSS/mXSS defense', () => {
     expect(optInTarget.querySelector('b')?.textContent).toBe('allowed');
     expect(optInTarget.querySelector('script')).toBeNull();
   });
+
+  it('escapes & once in Markdown query-string links and preserves asterisks inside code and URLs', () => {
+    const md =
+      'Search [A & B](https://example.com/search?q=a&page=2) and `x & y * z` and [wild](https://example.com/a*b*c)';
+
+    for (const allowRawHtml of [false, true] as const) {
+      const rendered = renderMarkdownToSafeHTML(md, { allowRawHtml });
+      expect(rendered).not.toContain('&amp;amp;');
+      expect(rendered).toContain('https://example.com/search?q=a&amp;page=2');
+      expect(rendered).toContain('<code>x &amp; y * z</code>');
+      expect(rendered).toContain('https://example.com/a*b*c');
+
+      const host = document.createElement('div');
+      safeSetMarkdown(host, md, { allowRawHtml });
+      const links = host.querySelectorAll('a');
+      expect(links).toHaveLength(2);
+      expect(links[0]?.getAttribute('href')).toBe('https://example.com/search?q=a&page=2');
+      expect(links[0]?.textContent).toBe('A & B');
+      expect(links[1]?.getAttribute('href')).toBe('https://example.com/a*b*c');
+      expect(host.querySelector('code')?.textContent).toBe('x & y * z');
+      expect(host.querySelector('em')).toBeNull();
+    }
+  });
+
+  it('guarantees renderMarkdownToSafeHTML strips XSS payloads even when allowRawHtml is true', () => {
+    const xssPayload = [
+      '<b>ok</b>',
+      '<script>window.__pwn = 1;</script>',
+      '<img src="https://example.com/a.png" onerror="alert(1)">',
+      '<a href="javascript:alert(1)">bad-js</a>',
+      '<a href="data:text/html,<script>alert(1)</script>">bad-data</a>',
+      '<svg onload="alert(1)"></svg>',
+      '<iframe src="https://evil.example"></iframe>',
+      '<div data-secret="1" aria-label="hidden">visible</div>',
+      '<style>body{display:none}</style>',
+      '[md-bad](javascript:alert(1))',
+    ].join(' ');
+
+    const htmlTrue = renderMarkdownToSafeHTML(xssPayload, { allowRawHtml: true });
+    expect(typeof htmlTrue).toBe('string');
+    expect(htmlTrue).toContain('<b>ok</b>');
+    expect(htmlTrue).not.toContain('<script');
+    expect(htmlTrue).not.toContain('__pwn');
+    expect(htmlTrue).not.toContain('onerror');
+    expect(htmlTrue).not.toContain('javascript:');
+    expect(htmlTrue).not.toContain('data:text/html');
+    expect(htmlTrue).not.toContain('<svg');
+    expect(htmlTrue).not.toContain('<iframe');
+    expect(htmlTrue).not.toContain('data-secret');
+    expect(htmlTrue).not.toContain('aria-label');
+    expect(htmlTrue).not.toContain('<style');
+
+    const frag = parseSafeFragment(htmlTrue);
+    expect(frag.querySelector('script')).toBeNull();
+    expect(frag.querySelector('img')?.hasAttribute('onerror')).toBe(false);
+    expect(frag.querySelector('b')?.textContent).toBe('ok');
+
+    const htmlFalse = renderMarkdownToSafeHTML(xssPayload, { allowRawHtml: false });
+    expect(htmlFalse).toContain('&lt;script&gt;');
+    expect(htmlFalse).not.toContain('<script');
+    expect(htmlFalse).not.toContain('<img');
+    expect(htmlFalse).not.toContain('<a ');
+    expect(htmlFalse).not.toContain('md-bad)');
+    const fragFalse = parseSafeFragment(htmlFalse);
+    expect(fragFalse.querySelector('a')).toBeNull();
+    expect(fragFalse.querySelector('script')).toBeNull();
+    expect(fragFalse.querySelector('img')).toBeNull();
+  });
+
+  it('returns a plain string from renderMarkdownToSafeHTML even when Trusted Types are active', () => {
+    const dom = new JSDOM('<!doctype html><html><body></body></html>');
+    (dom.window as unknown as { trustedTypes: unknown }).trustedTypes = {
+      createPolicy(_name: string, rules: { createHTML?: (input: string) => string }) {
+        return {
+          createHTML(input: string) {
+            return { toString: () => (rules.createHTML ? rules.createHTML(input) : input) };
+          },
+        };
+      },
+    };
+
+    const out = renderMarkdownToSafeHTML('**hello** <script>evil()</script> [q](https://example.com/?a=1&b=2)', {
+      allowRawHtml: true,
+      ownerDocument: dom.window.document,
+    });
+    expect(typeof out).toBe('string');
+    expect(out).toContain('<strong>hello</strong>');
+    expect(out).not.toContain('script');
+    expect(out).toContain('https://example.com/?a=1&amp;b=2');
+  });
+
+  it('supports createStreamSanitizer reset(), toFragment(), and chunked query-string links', () => {
+    const stream = createStreamSanitizer();
+    stream.push('Look at [docs](');
+    stream.push('https://example.com/search?q=lit&v=3)');
+    stream.push(' **now**');
+
+    const frag = stream.toFragment();
+    const anchor = frag.querySelector('a');
+    expect(anchor?.getAttribute('href')).toBe('https://example.com/search?q=lit&v=3');
+    expect(frag.querySelector('strong')?.textContent).toBe('now');
+
+    stream.reset();
+    stream.push('Fresh <img src=x onerror=alert(1)>');
+    const target = document.createElement('div');
+    stream.flushTo(target);
+    expect(target.querySelector('img')).toBeNull();
+    expect(target.textContent).toBe('Fresh <img src=x onerror=alert(1)>');
+
+    const rawStream = createStreamSanitizer({ allowRawHtml: true });
+    rawStream.push('<em>hi</em><script>bad()</script>');
+    const rawFrag = rawStream.toFragment();
+    expect(rawFrag.querySelector('em')?.textContent).toBe('hi');
+    expect(rawFrag.querySelector('script')).toBeNull();
+  });
+
+  it('scrubs unsafe URLs even on native Document.parseHTML and Element.prototype.setHTML paths', () => {
+    Object.defineProperty(Element.prototype, 'setHTML', {
+      configurable: true,
+      writable: true,
+      value(this: Element, input: string) {
+        const a = this.ownerDocument.createElement('a');
+        a.setAttribute('href', 'javascript:alert(1)');
+        a.textContent = input;
+        const img = this.ownerDocument.createElement('img');
+        img.setAttribute('srcset', 'javascript:alert(1) 1x');
+        this.replaceChildren(a, img);
+      },
+    });
+    Object.defineProperty(Document, 'parseHTML', {
+      configurable: true,
+      writable: true,
+      value(input: string) {
+        const doc = document.implementation.createHTMLDocument('');
+        const a = doc.createElement('a');
+        a.setAttribute('href', 'javascript:evil()');
+        a.textContent = input;
+        doc.body.appendChild(a);
+        return doc;
+      },
+    });
+
+    const host = document.createElement('div');
+    safeSetHTML(host, 'probe');
+    expect(host.querySelector('a')?.hasAttribute('href')).toBe(false);
+    expect(host.querySelector('img')?.hasAttribute('srcset')).toBe(false);
+
+    const frag = parseSafeFragment('probe');
+    expect(frag.querySelector('a')?.hasAttribute('href')).toBe(false);
+  });
+
+  it('safely handles minimal SSR dom-shim stub ownerDocument without crashing in getPurifyInstance/sanitizeToTrustedHTML/renderMarkdownToSafeHTML', () => {
+    const unsupportedDoc = { defaultView: {} } as unknown as Document;
+    const payload = '<script>alert(1)</script><b>hi</b> [q](https://example.com/?a=1&b=2)';
+
+    const mdFalse = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: false,
+      ownerDocument: unsupportedDoc,
+    });
+    expect(mdFalse).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+    expect(mdFalse).toContain('href="https://example.com/?a=1&amp;b=2"');
+    expect(mdFalse).not.toContain('<script');
+
+    // Without DOMPurify support, allowRawHtml: true falls back to escaped HTML rather than returning unsanitized markup
+    const mdTrue = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: true,
+      ownerDocument: unsupportedDoc,
+    });
+    expect(mdTrue).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+    expect(mdTrue).not.toContain('<script');
+
+    const trustedFallback = sanitizeToTrustedHTML('<script>alert(1)</script><b>hi</b>', {
+      ownerDocument: unsupportedDoc,
+    });
+    expect(trustedFallback).toBe('&lt;script&gt;alert(1)&lt;/script&gt;&lt;b&gt;hi&lt;/b&gt;');
+
+    // Also verify a stub Document with no defaultView falls back safely in browser/jsdom environments
+    const viewlessDoc = {} as Document;
+    const mdViewless = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: true,
+      ownerDocument: viewlessDoc,
+    });
+    expect(mdViewless).toBe('<b>hi</b> <a href="https://example.com/?a=1&amp;b=2">q</a>');
+  });
 });

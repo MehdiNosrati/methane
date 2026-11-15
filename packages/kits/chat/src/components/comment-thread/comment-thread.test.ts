@@ -75,4 +75,40 @@ describe('<mth-comment-thread>', () => {
     });
     expect(purity.passed).toBe(true);
   });
+
+  it('keeps allowRawHtml false by default and sanitizes opt-in allowRawHtml safely', async () => {
+    const el = document.createElement('mth-comment-thread') as MthCommentThread;
+    expect(el.allowRawHtml).toBe(false);
+    el.comments = [
+      {
+        id: 'c1',
+        author: 'Ada',
+        body: '<em>text</em> [docs](https://example.com/search?q=a&page=2)',
+      },
+    ];
+    document.body.append(el);
+    await el.updateComplete;
+
+    let body = el.shadowRoot!.querySelector('[part="body"]')!;
+    expect(body.querySelector('em')).toBeNull();
+    expect(body.textContent).toContain('<em>text</em>');
+    expect(body.querySelector('a')?.getAttribute('href')).toBe(
+      'https://example.com/search?q=a&page=2',
+    );
+
+    el.allowRawHtml = true;
+    el.comments = [
+      {
+        id: 'c2',
+        author: 'Grace',
+        body: '<em>safe</em><script>alert(1)</script><a href="javascript:alert(1)">bad</a>',
+      },
+    ];
+    await el.updateComplete;
+
+    body = el.shadowRoot!.querySelector('[part="body"]')!;
+    expect(body.querySelector('em')?.textContent).toBe('safe');
+    expect(body.querySelector('script')).toBeNull();
+    expect(body.querySelector('a')?.hasAttribute('href')).toBe(false);
+  });
 });

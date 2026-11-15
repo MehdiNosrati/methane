@@ -1,9 +1,11 @@
-import { isSafeUrl, renderMarkdownToSafeHTML } from '@methane/sanitize';
+import { isSafeUrl, parseSafeFragment, renderMarkdownToSafeHTML } from '@methane/sanitize';
 import { html, type TemplateResult } from 'lit';
+
+export type SafeMarkdownPart = TemplateResult | DocumentFragment | string;
 
 function renderInlineEmphasis(text: string): ReadonlyArray<TemplateResult | string> {
   const parts: Array<TemplateResult | string> = [];
-  const emphasisRegex = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+  const emphasisRegex = /\*\*([^*\n]+)\*\*|\*([^*\n]+)\*/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
@@ -25,41 +27,19 @@ function renderInlineEmphasis(text: string): ReadonlyArray<TemplateResult | stri
   return parts;
 }
 
-function renderPlainChunk(
-  chunk: string,
-  allowRawHtml: boolean,
+function renderEscapedMarkdownTemplates(
+  safeInput: string,
 ): ReadonlyArray<TemplateResult | string> {
-  if (!allowRawHtml) {
-    return renderInlineEmphasis(chunk);
-  }
-  // When raw HTML is explicitly opted in, filter plain text segments through
-  // @methane/sanitize without exposing code/link tokens to emphasis corruption.
-  const sanitized = renderMarkdownToSafeHTML(chunk, { allowRawHtml: true });
-  return renderInlineEmphasis(sanitized.replace(/<[^>]*>/g, ''));
-}
-
-/**
- * Renders lightweight markdown/streaming content into deterministic, SSR-safe Lit
- * templates via `@methane/sanitize` (`isSafeUrl`, `renderMarkdownToSafeHTML`),
- * tokenizing inline code spans and links before emphasis so `*` inside `` `code` ``
- * or URLs is never corrupted. Never uses `innerHTML` or `unsafeHTML`.
- */
-export function renderSafeMarkdown(
-  source: string,
-  options?: { allowRawHtml?: boolean },
-): ReadonlyArray<TemplateResult | string> {
-  const safeInput = source ?? '';
-  const allowRawHtml = options?.allowRawHtml ?? false;
   const parts: Array<TemplateResult | string> = [];
 
   // Tokenize inline code and links before running emphasis rules.
-  const tokenRegex = /`([^`]+)`|\[([^\]]+)\]\(([^)\s]+)\)/g;
+  const tokenRegex = /`([^`\n]+)`|\[([^\]]+)\]\(((?:[^()\s]+|\([^()\s]*\))+)\)/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
 
   while ((match = tokenRegex.exec(safeInput)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(...renderPlainChunk(safeInput.slice(lastIndex, match.index), allowRawHtml));
+      parts.push(...renderInlineEmphasis(safeInput.slice(lastIndex, match.index)));
     }
     if (match[1] !== undefined) {
       parts.push(html`<code>${match[1]}</code>`);
@@ -76,8 +56,40 @@ export function renderSafeMarkdown(
   }
 
   if (lastIndex < safeInput.length) {
-    parts.push(...renderPlainChunk(safeInput.slice(lastIndex), allowRawHtml));
+    parts.push(...renderInlineEmphasis(safeInput.slice(lastIndex)));
   }
 
   return parts;
+}
+
+/**
+ * Renders lightweight markdown/streaming content safely via `@methane/sanitize`
+ * (`isSafeUrl`, `renderMarkdownToSafeHTML`, `parseSafeFragment`).
+ * `allowRawHtml` defaults to `false` (ADR-012): raw HTML is rendered as inert text via Lit
+ * text bindings; when `allowRawHtml: true` is opted in, markup is sanitized through
+ * DOMPurify (`renderMarkdownToSafeHTML` + `parseSafeFragment`) into a `DocumentFragment`.
+ * Never uses `innerHTML`, `unsafeHTML`, or regex tag stripping.
+ */
+export function renderSafeMarkdown(
+  source: string,
+  options?: { allowRawHtml?: boolean; ownerDocument?: Document },
+): ReadonlyArray<SafeMarkdownPart> {
+  const safeInput = source ?? '';
+  const allowRawHtml = options?.allowRawHtml ?? false;
+
+  if (!allowRawHtml) {
+    return renderEscapedMarkdownTemplates(safeInput);
+  }
+
+  const doc =
+    options?.ownerDocument ?? (typeof document !== 'undefined' ? document : undefined);
+  if (!doc || typeof doc.createDocumentFragment !== 'function') {
+    return renderEscapedMarkdownTemplates(safeInput);
+  }
+
+  const sanitizedHtml = renderMarkdownToSafeHTML(safeInput, {
+    allowRawHtml: true,
+    ownerDocument: doc,
+  });
+  return [parseSafeFragment(sanitizedHtml, { ownerDocument: doc })];
 }

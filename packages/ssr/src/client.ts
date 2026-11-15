@@ -1,6 +1,6 @@
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 import { digestForTemplateResult, hydrate } from '@lit-labs/ssr-client';
-import type { RenderOptions } from 'lit';
+import { LitElement, type RenderOptions } from 'lit';
 
 export { digestForTemplateResult };
 export const LIT_HYDRATE_SUPPORT_IMPORT = '@lit-labs/ssr-client/lit-element-hydrate-support.js';
@@ -22,7 +22,7 @@ export function isHydrationSupported(): boolean {
  * Idempotently ensures `litElementHydrateSupport` is attached to `LitElement`
  * even if a bundler evaluated `lit` before `@methane/ssr/client`.
  */
-export function enableHydrationSupport(litElementClass?: unknown): boolean {
+export function enableHydrationSupport(litElementClass: unknown = LitElement): boolean {
   const hook = (globalThis as { litElementHydrateSupport?: (arg: { LitElement: unknown }) => void })
     .litElementHydrateSupport;
   if (typeof hook !== 'function') {
@@ -42,6 +42,8 @@ export function enableHydrationSupport(litElementClass?: unknown): boolean {
   }
   return true;
 }
+
+enableHydrationSupport(LitElement);
 
 /**
  * Hydrates a server-rendered container (`DocumentFragment`, `Element`, or `ShadowRoot`)

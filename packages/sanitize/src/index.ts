@@ -132,6 +132,11 @@ function getPurifyInstance(doc: Document): DOMPurify {
   if (existing) return existing;
 
   const instance = createDOMPurify(win);
+  if (!instance.isSupported || typeof instance.addHook !== 'function') {
+    purifyCache.set(cacheKey, instance);
+    return instance;
+  }
+
   instance.addHook('uponSanitizeAttribute', (node, event) => {
     const attrName = event.attrName.toLowerCase();
     if (URL_ATTRIBUTES.has(attrName)) {
@@ -254,8 +259,14 @@ export function sanitizeToTrustedHTML(
   html: string,
   options?: SanitizeOptions,
 ): string | { toString(): string } {
-  const doc = options?.ownerDocument ?? document;
+  const doc = options?.ownerDocument ?? (typeof document !== 'undefined' ? document : undefined);
+  if (!doc) {
+    return escapeHtml(html);
+  }
   const purify = getPurifyInstance(doc);
+  if (!purify.isSupported) {
+    return escapeHtml(html);
+  }
   const config = createStrictPurifyConfig(doc, options);
   if (config.RETURN_TRUSTED_TYPE) {
     return purify.sanitize(html, {
@@ -303,32 +314,116 @@ export function safeSetHTML(
   target.replaceChildren(fragment);
 }
 
+function sanitizeHtmlToString(html: string, options?: SanitizeOptions): string | null {
+  const doc = options?.ownerDocument ?? (typeof document !== 'undefined' ? document : undefined);
+  if (!doc) return null;
+  const purify = getPurifyInstance(doc);
+  if (!purify.isSupported) return null;
+  const config = createStrictPurifyConfig(doc, options);
+  return purify.sanitize(html, {
+    ...config,
+    RETURN_DOM_FRAGMENT: false,
+    RETURN_TRUSTED_TYPE: false,
+  });
+}
+
+function renderPlainWithEmphasis(text: string, escapePlain: boolean): string {
+  const emphasisRegex = /\*\*([^*\n]+)\*\*|\*([^*\n]+)\*/g;
+  let out = '';
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = emphasisRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      const plain = text.slice(lastIndex, match.index);
+      out += escapePlain ? escapeHtml(plain) : plain;
+    }
+    if (match[1] !== undefined) {
+      const inner = escapePlain ? escapeHtml(match[1]) : match[1];
+      out += `<strong>${inner}</strong>`;
+    } else if (match[2] !== undefined) {
+      const inner = escapePlain ? escapeHtml(match[2]) : match[2];
+      out += `<em>${inner}</em>`;
+    }
+    lastIndex = emphasisRegex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    const tail = text.slice(lastIndex);
+    out += escapePlain ? escapeHtml(tail) : tail;
+  }
+  return out;
+}
+
+function renderTextSegment(text: string, allowRawHtml: boolean): string {
+  if (!allowRawHtml) {
+    return renderPlainWithEmphasis(text, true);
+  }
+  const tagSplitRegex = /(<[^>]+>)/g;
+  let out = '';
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tagSplitRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      out += renderPlainWithEmphasis(text.slice(lastIndex, match.index), false);
+    }
+    out += match[1];
+    lastIndex = tagSplitRegex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    out += renderPlainWithEmphasis(text.slice(lastIndex), false);
+  }
+  return out;
+}
+
+function buildMarkdownHtml(markdown: string, allowRawHtml: boolean): string {
+  const tokenRegex = /`([^`\n]+)`|\[([^\]]+)\]\(((?:[^()\s]+|\([^()\s]*\))+)\)/g;
+  let out = '';
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tokenRegex.exec(markdown)) !== null) {
+    if (match.index > lastIndex) {
+      out += renderTextSegment(markdown.slice(lastIndex, match.index), allowRawHtml);
+    }
+    if (match[1] !== undefined) {
+      out += `<code>${escapeHtml(match[1])}</code>`;
+    } else if (match[2] !== undefined && match[3] !== undefined) {
+      const label = match[2];
+      const rawUrl = match[3].trim();
+      if (!isSafeUrl(rawUrl)) {
+        out += renderTextSegment(label, allowRawHtml);
+      } else {
+        out += `<a href="${escapeHtml(rawUrl)}" rel="noopener noreferrer">${renderTextSegment(label, allowRawHtml)}</a>`;
+      }
+    }
+    lastIndex = tokenRegex.lastIndex;
+  }
+
+  if (lastIndex < markdown.length) {
+    out += renderTextSegment(markdown.slice(lastIndex), allowRawHtml);
+  }
+  return out;
+}
+
 /**
  * Renders lightweight markdown/streaming text safely.
  * Raw HTML defaults to OFF (`allowRawHtml: false`) per ADR-012: raw HTML tags are escaped
- * unless explicitly opted in, and all resulting HTML still passes through `parseSafeFragment`/`safeSetHTML`.
+ * unless explicitly opted in, and all resulting HTML is ALWAYS sanitized via DOMPurify strict config.
  */
 export function renderMarkdownToSafeHTML(
   markdown: string,
   options?: MarkdownSanitizeOptions,
 ): string {
   const allowRawHtml = options?.allowRawHtml ?? false;
-  const source = allowRawHtml ? markdown : escapeHtml(markdown);
-
-  // Convert basic safe markdown links `[text](url)` and inline code/emphasis without allowing raw HTML injection.
-  const withCode = source.replace(/`([^`\n]+)`/g, (_m, code: string) => `<code>${code}</code>`);
-  const withLinks = withCode.replace(
-    /\[([^\]]+)\]\(([^)\s]+)\)/g,
-    (_m, label: string, rawUrl: string) => {
-      if (!isSafeUrl(rawUrl)) {
-        return label;
-      }
-      return `<a href="${escapeHtml(rawUrl.trim())}" rel="noopener noreferrer">${label}</a>`;
-    },
-  );
-  const withStrong = withLinks.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
-  const withEm = withStrong.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-  return withEm;
+  const candidate = buildMarkdownHtml(markdown ?? '', allowRawHtml);
+  const sanitized = sanitizeHtmlToString(candidate, options);
+  if (sanitized !== null) {
+    return sanitized;
+  }
+  return allowRawHtml ? buildMarkdownHtml(markdown ?? '', false) : candidate;
 }
 
 export function safeSetMarkdown(
