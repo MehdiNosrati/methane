@@ -1,44 +1,12 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { MotionController, ObserverPoolController } from '@methane/primitives';
 import { escapeHtml } from '@methane/sanitize';
-import {
-  BarChart,
-  BoxplotChart,
-  CandlestickChart,
-  FunnelChart,
-  GaugeChart,
-  GraphChart,
-  HeatmapChart,
-  LineChart,
-  MapChart,
-  PieChart,
-  RadarChart,
-  SankeyChart,
-  ScatterChart,
-  SunburstChart,
-  TreemapChart,
-} from 'echarts/charts';
-import {
-  AriaComponent,
-  DataZoomComponent,
-  GeoComponent,
-  GridComponent,
-  LegendComponent,
-  ParallelComponent,
-  PolarComponent,
-  RadarComponent,
-  TitleComponent,
-  TooltipComponent,
-  VisualMapComponent,
-} from 'echarts/components';
-import {
-  init,
-  use,
-  type EChartsCoreOption,
-  type EChartsType,
-  type SetOptionOpts,
+import type {
+  EChartsCoreOption,
+  EChartsType,
+  init as echartsInit,
+  SetOptionOpts,
 } from 'echarts/core';
-import { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import {
@@ -49,41 +17,61 @@ import {
 import { chartMessages } from './chart.messages.js';
 import { chartStyles } from './chart.styles.js';
 
-let echartsModulesRegistered = false;
+type EChartsInitFn = typeof echartsInit;
 
-function ensureEchartsRegistered(): void {
-  if (echartsModulesRegistered) return;
-  use([
-    LineChart,
-    BarChart,
-    PieChart,
-    ScatterChart,
-    HeatmapChart,
-    TreemapChart,
-    SunburstChart,
-    SankeyChart,
-    RadarChart,
-    GaugeChart,
-    FunnelChart,
-    CandlestickChart,
-    BoxplotChart,
-    GraphChart,
-    MapChart,
-    GridComponent,
-    TooltipComponent,
-    LegendComponent,
-    TitleComponent,
-    AriaComponent,
-    DataZoomComponent,
-    GeoComponent,
-    ParallelComponent,
-    PolarComponent,
-    RadarComponent,
-    VisualMapComponent,
-    CanvasRenderer,
-    SVGRenderer,
-  ]);
-  echartsModulesRegistered = true;
+let echartsInitCache: EChartsInitFn | null = null;
+let echartsLoadPromise: Promise<EChartsInitFn> | null = null;
+
+function isBrowserDom(): boolean {
+  return typeof document !== 'undefined' && Boolean(document.documentElement?.style);
+}
+
+function loadEchartsInit(): Promise<EChartsInitFn> {
+  if (echartsInitCache) {
+    return Promise.resolve(echartsInitCache);
+  }
+  if (!echartsLoadPromise) {
+    echartsLoadPromise = Promise.all([
+      import('echarts/core'),
+      import('echarts/charts'),
+      import('echarts/components'),
+      import('echarts/renderers'),
+    ]).then(([core, charts, components, renderers]) => {
+      core.use([
+        charts.LineChart,
+        charts.BarChart,
+        charts.PieChart,
+        charts.ScatterChart,
+        charts.HeatmapChart,
+        charts.TreemapChart,
+        charts.SunburstChart,
+        charts.SankeyChart,
+        charts.RadarChart,
+        charts.GaugeChart,
+        charts.FunnelChart,
+        charts.CandlestickChart,
+        charts.BoxplotChart,
+        charts.GraphChart,
+        charts.MapChart,
+        components.GridComponent,
+        components.TooltipComponent,
+        components.LegendComponent,
+        components.TitleComponent,
+        components.AriaComponent,
+        components.DataZoomComponent,
+        components.GeoComponent,
+        components.ParallelComponent,
+        components.PolarComponent,
+        components.RadarComponent,
+        components.VisualMapComponent,
+        renderers.CanvasRenderer,
+        renderers.SVGRenderer,
+      ]);
+      echartsInitCache = core.init;
+      return core.init;
+    });
+  }
+  return echartsLoadPromise;
 }
 
 export type { MthChartSeriesInput } from '../shared/chart-types.js';
@@ -326,6 +314,7 @@ export class MthChart extends UIElement {
   private _tokenCache: Map<string, string> = new Map();
   private _readyEmitted = false;
   private _mountTimer: ReturnType<typeof setTimeout> | undefined;
+  private _mountGen = 0;
   private _observedCanvasEl: HTMLElement | null = null;
   private _lastSyncedDir: 'ltr' | 'rtl' | '' = '';
   private _lastSyncedLocale = '';
@@ -336,7 +325,6 @@ export class MthChart extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    ensureEchartsRegistered();
     this._syncTokens();
     this._initEngineHandle();
     if (this.hasUpdated) {
@@ -347,6 +335,7 @@ export class MthChart extends UIElement {
   }
 
   override disconnectedCallback(): void {
+    this._mountGen += 1;
     if (this._mountTimer !== undefined) {
       clearTimeout(this._mountTimer);
       this._mountTimer = undefined;
@@ -371,17 +360,20 @@ export class MthChart extends UIElement {
   }
 
   private _scheduleEngineMount(): void {
-    if (this._mountTimer !== undefined || !this.isConnected) return;
+    if (this._mountTimer !== undefined || !this.isConnected || !isBrowserDom()) return;
+    const gen = this._mountGen;
     this._mountTimer = setTimeout(() => {
       this._mountTimer = undefined;
-      this._attachCanvasOrSvgInstance();
-      if (this._lastOption && this._echartsInstance) {
-        try {
-          this._echartsInstance.setOption(this._lastOption, { notMerge: true });
-        } catch {
-          // Ignore headless canvas failures
+      void this._attachCanvasOrSvgInstance().then(() => {
+        if (gen !== this._mountGen || !this.isConnected) return;
+        if (this._lastOption && this._echartsInstance) {
+          try {
+            this._echartsInstance.setOption(this._lastOption, { notMerge: true });
+          } catch {
+            // Ignore headless canvas failures
+          }
         }
-      }
+      });
     }, 0);
   }
 
@@ -612,12 +604,17 @@ export class MthChart extends UIElement {
     };
   }
 
-  private _attachCanvasOrSvgInstance(): void {
-    if (!this.isConnected || !this.canvasEl || this._echartsInstance) return;
+  private async _attachCanvasOrSvgInstance(): Promise<void> {
+    if (!this.isConnected || !this.canvasEl || this._echartsInstance || !isBrowserDom()) return;
+    const gen = this._mountGen;
     try {
+      const initFn = await loadEchartsInit();
+      if (!this.isConnected || !this.canvasEl || this._echartsInstance || gen !== this._mountGen) {
+        return;
+      }
       const width = this.canvasEl.clientWidth > 0 ? this.canvasEl.clientWidth : 640;
       const height = this.canvasEl.clientHeight > 0 ? this.canvasEl.clientHeight : 320;
-      const instance = init(this.canvasEl, undefined, {
+      const instance = initFn(this.canvasEl, undefined, {
         renderer: this.renderer,
         width,
         height,
@@ -638,7 +635,7 @@ export class MthChart extends UIElement {
       this._echartsInstance = null;
     }
 
-    if (!this._readyEmitted && this.isConnected) {
+    if (!this._readyEmitted && this.isConnected && gen === this._mountGen) {
       this._readyEmitted = true;
       this.emitEvent('mth-chart-ready', {
         detail: {
@@ -650,6 +647,7 @@ export class MthChart extends UIElement {
   }
 
   private _recreateLiveInstance(): void {
+    this._mountGen += 1;
     if (this._echartsInstance) {
       try {
         this._echartsInstance.dispose();
@@ -658,8 +656,12 @@ export class MthChart extends UIElement {
       }
       this._echartsInstance = null;
     }
-    this._attachCanvasOrSvgInstance();
     this._syncChartOption();
+    const gen = this._mountGen;
+    void this._attachCanvasOrSvgInstance().then(() => {
+      if (gen !== this._mountGen || !this.isConnected) return;
+      this._syncChartOption();
+    });
   }
 
   private _disposeEngine(): void {
