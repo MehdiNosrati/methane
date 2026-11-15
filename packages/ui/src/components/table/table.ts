@@ -180,6 +180,7 @@ export class MthTable extends UIElement {
       clearTimeout(this.hydrationTimer);
       this.hydrationTimer = null;
     }
+    this.hydratingFirstPass = false;
   }
 
   protected override firstUpdated(changedProperties: PropertyValues): void {

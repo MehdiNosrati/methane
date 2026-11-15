@@ -175,4 +175,29 @@ describe('<mth-table>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('recovers column resolution if disconnected before DSD hydration timer fires', async () => {
+    const rawSsr = await renderLitDsdHtml(
+      litHtml`<mth-table label="Reconnect"><mth-column field="id" header="ID"></mth-column></mth-table>`,
+    );
+    const ssrHtml = rawSsr
+      .replaceAll('mth-table>', 'hyd2-table>')
+      .replaceAll('<mth-table', '<hyd2-table');
+    const parsed = new DOMParser().parseFromString(ssrHtml, 'text/html');
+    const host = document.adoptNode(parsed.body.firstElementChild!) as MthTable;
+    host.rows = [{ id: 'row-1' }];
+    document.body.appendChild(host);
+
+    registerMthTable('hyd2');
+    customElements.upgrade(host);
+    await host.updateComplete;
+
+    // Immediately disconnect and re-append before the 0ms hydrationTimer fires
+    host.remove();
+    document.body.appendChild(host);
+    await host.updateComplete;
+
+    expect(host.shadowRoot!.querySelectorAll('thead th').length).toBeGreaterThanOrEqual(1);
+    expect(host.shadowRoot!.querySelectorAll('tbody tr[part="row"]').length).toBe(1);
+  });
 });
