@@ -8,6 +8,13 @@ export {
   type DataSource,
 } from './data-controller.js';
 export {
+  FocusTrapController,
+  collectTabbableElements,
+  getDeepActiveElement,
+  getFirstTabbable,
+  type FocusTrapControllerOptions,
+} from './focus-trap-controller.js';
+export {
   FormControlController,
   type FormControlControllerOptions,
   type FormControlHost,
@@ -21,6 +28,12 @@ export {
   type TextInputElement,
 } from './input-controller.js';
 export {
+  ListboxController,
+  type ListboxControllerOptions,
+  type ListboxFocusMode,
+  type ListboxOptionItem,
+} from './listbox-controller.js';
+export {
   MaskAndFormatEngine,
   validateIbanMod97,
   validateLuhn,
@@ -32,6 +45,33 @@ export {
   type NumericMaskConfig,
   type PatternMaskConfig,
 } from './mask-and-format-engine.js';
+export {
+  MotionController,
+  type MotionControllerOptions,
+  type MotionPhase,
+} from './motion-controller.js';
+export {
+  OverlayController,
+  type OverlayCloseReason,
+  type OverlayControllerOptions,
+  type OverlayMode,
+} from './overlay-controller.js';
+export {
+  PositioningController,
+  type Placement,
+  type PlacementAlign,
+  type PlacementSide,
+  type PositioningAnchor,
+  type PositioningControllerOptions,
+  type PositioningResult,
+  type VirtualAnchor,
+} from './positioning-controller.js';
+export {
+  RovingFocusController,
+  type RovingDirection,
+  type RovingFocusControllerOptions,
+  type RovingOrientation,
+} from './roving-focus-controller.js';
 export {
   SelectionController,
   type CheckState,
