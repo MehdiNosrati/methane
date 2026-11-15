@@ -1,0 +1,15 @@
+export const queryBuilderMessages = {
+  regionLabel: 'Query builder',
+  groupCombinator: 'Group operator',
+  combinatorAnd: 'AND',
+  combinatorOr: 'OR',
+  addRule: 'Add rule',
+  addGroup: 'Add group',
+  removeGroup: 'Remove group',
+  removeRule: 'Remove rule',
+  fieldLabel: 'Field',
+  operatorLabel: 'Operator',
+  valueLabel: 'Value',
+  previewLabel: 'Serialized query preview',
+  requiredError: 'At least one query rule is required.',
+} as const;

@@ -1,0 +1,57 @@
+{
+  "name": "@methane/admin",
+  "version": "0.1.0",
+  "description": "Domain Kit Admin & Productivity custom elements (<mth-filter-builder>, <mth-query-builder>, <mth-kanban>, <mth-event-calendar>, etc.) for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./dist/index.js",
+    "./dist/components/*/index.js"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./custom-elements.json": "./custom-elements.json",
+    "./*/element.js": {
+      "types": "./dist/components/*/element.d.ts",
+      "default": "./dist/components/*/element.js"
+    },
+    "./*/element": {
+      "types": "./dist/components/*/element.d.ts",
+      "default": "./dist/components/*/element.js"
+    },
+    "./*": {
+      "types": "./dist/components/*/index.d.ts",
+      "default": "./dist/components/*/index.js"
+    }
+  },
+  "customElements": "custom-elements.json",
+  "files": [
+    "dist",
+    "custom-elements.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src scripts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@methane/core": "workspace:*",
+    "@methane/css": "workspace:*",
+    "@methane/primitives": "workspace:*",
+    "@methane/sanitize": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "@methane/ui": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@lit-labs/ssr": "^4.1.0",
+    "@lit-labs/ssr-client": "^1.1.8",
+    "@lit-labs/ssr-dom-shim": "^1.6.0",
+    "@methane/spec-compiler": "workspace:*",
+    "@methane/test-conformance": "workspace:*"
+  }
+}
