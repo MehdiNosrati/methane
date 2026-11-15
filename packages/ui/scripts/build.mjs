@@ -2,7 +2,6 @@ import '@lit-labs/ssr-dom-shim';
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { PHASE1_FALLBACK_MODULES } from './phase1-fallback-cem.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = resolve(__dirname, '..');
@@ -229,14 +228,6 @@ async function main() {
   writeFileSync(resolve(distDir, 'index.js'), barrelJs, 'utf8');
   writeFileSync(resolve(distDir, 'index.d.ts'), barrelDts, 'utf8');
   writeFileSync(resolve(distDir, 'specs.json'), JSON.stringify(specs, null, 2) + '\n', 'utf8');
-
-  const presentTags = new Set(specs.map((s) => s.tag));
-  for (const fallbackMod of PHASE1_FALLBACK_MODULES) {
-    const tag = fallbackMod.declarations?.[0]?.tagName;
-    if (tag && !presentTags.has(tag)) {
-      cemModules.push(fallbackMod);
-    }
-  }
 
   const cem = {
     schemaVersion: '1.0.0',
