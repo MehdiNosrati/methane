@@ -1,0 +1,33 @@
+{
+  "name": "@methane/primitives",
+  "version": "1.0.0",
+  "description": "Shared headless Lit ReactiveControllers, state engines, and runtime utilities for Methane UI",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@lit/context": "^1.1.4",
+    "@methane/core": "workspace:*",
+    "@methane/sanitize": "workspace:*",
+    "@methane/tokens": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@methane/test-conformance": "workspace:*",
+    "fast-check": "^4.10.2"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  }
+}

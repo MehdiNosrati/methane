@@ -76,6 +76,31 @@ importers:
         specifier: workspace:*
         version: link:../tokens
 
+  packages/primitives:
+    dependencies:
+      '@lit/context':
+        specifier: ^1.1.4
+        version: 1.1.6
+      '@methane/core':
+        specifier: workspace:*
+        version: link:../core
+      '@methane/sanitize':
+        specifier: workspace:*
+        version: link:../sanitize
+      '@methane/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      lit:
+        specifier: ^3.2.1
+        version: 3.3.3
+    devDependencies:
+      '@methane/test-conformance':
+        specifier: workspace:*
+        version: link:../../tooling/test-conformance
+      fast-check:
+        specifier: ^4.10.2
+        version: 4.10.2
+
   packages/sanitize:
     dependencies:
       dompurify:
