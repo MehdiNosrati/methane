@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { generateAngularFiles } from './generators/angular.js';
 import { generateIdeFiles } from './generators/ide.js';
@@ -19,6 +19,12 @@ function writeGeneratedGroup(
   writtenPaths: string[],
 ): void {
   if (!baseDir) return;
+  if (files.length > 0 && files.every((f) => f.path.startsWith('generated/'))) {
+    const generatedRoot = resolve(baseDir, 'generated');
+    if (existsSync(generatedRoot)) {
+      rmSync(generatedRoot, { recursive: true, force: true });
+    }
+  }
   for (const file of files) {
     const absPath = resolve(baseDir, file.path);
     mkdirSync(dirname(absPath), { recursive: true });

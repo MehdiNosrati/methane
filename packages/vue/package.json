@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only vue && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
@@ -23,6 +23,7 @@
     "vue": "^3.4.0"
   },
   "devDependencies": {
+    "@methane/wrapper-codegen": "workspace:^",
     "vue": "^3.5.45"
   }
 }

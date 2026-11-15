@@ -9,10 +9,19 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "pnpm -r --if-present run build",
+    "build": "pnpm --filter \"./packages/**\" --filter \"!@methane/react\" --filter \"!@methane/vue\" --filter \"!@methane/angular\" --filter \"!@methane/svelte\" --filter \"./tooling/**\" --if-present run build && pnpm run codegen && pnpm --filter @methane/react --filter @methane/vue --filter @methane/angular --filter @methane/svelte --filter \"./apps/**\" --if-present run build",
+    "codegen": "node tooling/wrapper-codegen/dist/cli.js --workspace && node tooling/figma-sync/dist/cli.js",
+    "codegen:check": "node tooling/wrapper-codegen/dist/cli.js --workspace --check",
     "typecheck": "pnpm -r --if-present run typecheck",
     "lint": "pnpm -r --if-present run lint",
     "test": "pnpm -r --if-present run test"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@methane/core": "*"
+      }
+    }
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

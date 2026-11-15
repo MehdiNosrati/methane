@@ -1,6 +1,6 @@
 {
   "name": "@methane/primitives",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Shared headless Lit ReactiveControllers, state engines, and runtime utilities for Methane UI",
   "license": "MIT",
   "type": "module",
@@ -15,12 +15,12 @@
   ],
   "dependencies": {
     "@lit/context": "^1.1.4",
-    "@methane/core": "workspace:^",
     "@methane/sanitize": "workspace:^",
     "@methane/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
+    "@methane/core": "workspace:^",
     "@methane/test-conformance": "workspace:^",
     "fast-check": "^4.10.2"
   },
@@ -31,6 +31,6 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@methane/core": "^0.1.0 || ^1.0.0"
+    "@methane/core": "^0.1.0"
   }
 }

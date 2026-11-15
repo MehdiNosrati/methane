@@ -19,7 +19,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only react && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
@@ -31,6 +31,7 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@methane/wrapper-codegen": "workspace:^",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }

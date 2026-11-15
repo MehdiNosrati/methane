@@ -8,6 +8,15 @@ build/
 out/
 *.tsbuildinfo
 
+# Generated manifests, wrappers, IDE metadata, and Figma sync outputs
+packages/ui/custom-elements.json
+packages/react/src/generated/
+packages/vue/src/generated/
+packages/angular/src/generated/
+packages/svelte/src/generated/
+tooling/wrapper-codegen/ide/
+tooling/figma-sync/generated/
+
 # Test & coverage outputs
 coverage/
 test-results/

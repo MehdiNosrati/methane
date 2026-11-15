@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@methane/bundle-budget": "workspace:^",
+    "@methane/core": "workspace:^",
     "@methane/css": "workspace:^",
     "@methane/primitives": "workspace:^",
     "@methane/spec-compiler": "workspace:^",

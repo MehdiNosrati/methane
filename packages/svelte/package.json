@@ -10,20 +10,20 @@
       "default": "./dist/index.js"
     },
     "./*.svelte": {
-      "svelte": "./src/components/*.svelte",
-      "default": "./src/components/*.svelte"
+      "svelte": "./src/generated/svelte/*.svelte",
+      "default": "./src/generated/svelte/*.svelte"
     },
     "./components/*.svelte": {
-      "svelte": "./src/components/*.svelte",
-      "default": "./src/components/*.svelte"
+      "svelte": "./src/generated/svelte/*.svelte",
+      "default": "./src/generated/svelte/*.svelte"
     }
   },
   "files": [
     "dist",
-    "src/components"
+    "src/generated/svelte"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only svelte && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
@@ -37,6 +37,7 @@
     }
   },
   "devDependencies": {
+    "@methane/wrapper-codegen": "workspace:^",
     "svelte": "^5.57.3"
   }
 }

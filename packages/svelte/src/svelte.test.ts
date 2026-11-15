@@ -16,21 +16,21 @@ describe('@methane/svelte', () => {
     expect(MthDialog.bindableProps).toEqual(['open']);
     expect(MthCombobox.bindableProps).toEqual(['value', 'open']);
 
-    const inputSvelte = readFileSync(resolve(__dirname, 'components/MthInput.svelte'), 'utf8');
+    const inputSvelte = readFileSync(resolve(__dirname, 'generated/svelte/MthInput.svelte'), 'utf8');
     expect(inputSvelte).toContain('value = $bindable("")');
     expect(inputSvelte).toContain('onmth-input=');
     expect(inputSvelte).toContain('<mth-input');
 
-    const comboboxSvelte = readFileSync(resolve(__dirname, 'components/MthCombobox.svelte'), 'utf8');
+    const comboboxSvelte = readFileSync(resolve(__dirname, 'generated/svelte/MthCombobox.svelte'), 'utf8');
     expect(comboboxSvelte).toContain('onmth-change=');
     expect(comboboxSvelte).toContain('onmth-open=');
 
-    const dialogSvelte = readFileSync(resolve(__dirname, 'components/MthDialog.svelte'), 'utf8');
+    const dialogSvelte = readFileSync(resolve(__dirname, 'generated/svelte/MthDialog.svelte'), 'utf8');
     expect(dialogSvelte).toContain('open = $bindable(false)');
   });
 
   it('compiles all generated Svelte 5 runes components cleanly via svelte/compiler', () => {
-    const componentsDir = resolve(__dirname, 'components');
+    const componentsDir = resolve(__dirname, 'generated/svelte');
     const files = readdirSync(componentsDir).filter((f) => f.endsWith('.svelte'));
     expect(files.length).toBeGreaterThanOrEqual(8);
 

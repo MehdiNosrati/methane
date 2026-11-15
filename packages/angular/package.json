@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node ../../tooling/wrapper-codegen/dist/cli.js --root ../.. --only angular && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
@@ -29,6 +29,7 @@
     "@angular/core": "^19.0.0",
     "@angular/forms": "^19.0.0",
     "@angular/platform-browser": "^19.0.0",
+    "@methane/wrapper-codegen": "workspace:^",
     "rxjs": "^7.8.0"
   }
 }
