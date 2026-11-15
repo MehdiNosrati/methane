@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthReactionBar } from './reaction-bar.js';
 
 export { MthReactionBar, type ReactionItem } from './reaction-bar.js';

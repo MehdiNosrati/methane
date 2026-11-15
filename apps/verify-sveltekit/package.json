@@ -1,5 +1,5 @@
 {
-  "name": "@methane/verify-sveltekit",
+  "name": "@methane-ui/verify-sveltekit",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,17 +12,17 @@
     "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
-    "@methane/core": "workspace:^",
-    "@methane/css": "workspace:^",
-    "@methane/primitives": "workspace:^",
-    "@methane/ssr-sveltekit": "workspace:^",
-    "@methane/svelte": "workspace:^",
-    "@methane/tokens": "workspace:^",
-    "@methane/ui": "workspace:^",
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/css": "workspace:^",
+    "@methane-ui/primitives": "workspace:^",
+    "@methane-ui/ssr-sveltekit": "workspace:^",
+    "@methane-ui/svelte": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
+    "@methane-ui/ui": "workspace:^",
     "svelte": "^5.57.3"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:^",
+    "@methane-ui/test-conformance": "workspace:^",
     "@sveltejs/adapter-node": "^5.0.0",
     "@sveltejs/kit": "^2.50.0",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",

@@ -1,5 +1,5 @@
 {
-  "name": "@methane/bundle-budget",
+  "name": "@methane-ui/bundle-budget",
   "version": "0.1.0",
   "description": "Cold standalone and marginal brotli bundle budget measurement via esbuild and zlib.brotliCompressSync",
   "license": "MIT",
@@ -21,5 +21,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { mapClusterMessages } from './map-cluster.messages.js';
 
 export const mapClusterSpec: ComponentBehaviorSpec = {
   tag: 'mth-map-cluster',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'host',

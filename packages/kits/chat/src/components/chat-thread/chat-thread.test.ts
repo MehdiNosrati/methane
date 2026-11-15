@@ -1,6 +1,6 @@
-import { createArrayDataSource } from '@methane/primitives';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { createArrayDataSource } from '@methane-ui/primitives';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';

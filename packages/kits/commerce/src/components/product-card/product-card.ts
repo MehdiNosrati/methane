@@ -1,7 +1,7 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { isSafeUrl } from '@methane/sanitize';
-import { registerMthBadge } from '@methane/ui/badge';
-import { registerMthButton } from '@methane/ui/button';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { isSafeUrl } from '@methane-ui/sanitize';
+import { registerMthBadge } from '@methane-ui/ui/badge';
+import { registerMthButton } from '@methane-ui/ui/button';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { productCardMessages } from './product-card.messages.js';

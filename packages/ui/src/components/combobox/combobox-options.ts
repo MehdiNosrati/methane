@@ -1,4 +1,4 @@
-import type { DataControllerStatus, DataSource } from '@methane/primitives';
+import type { DataControllerStatus, DataSource } from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 
 export interface ComboboxOption {

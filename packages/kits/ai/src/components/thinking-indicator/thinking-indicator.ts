@@ -1,5 +1,5 @@
-import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane/core';
-import { MotionController, type MotionPhase } from '@methane/primitives';
+import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane-ui/core';
+import { MotionController, type MotionPhase } from '@methane-ui/primitives';
 import { thinkingIndicatorMessages } from './thinking-indicator.messages.js';
 import { thinkingIndicatorStyles } from './thinking-indicator.styles.js';
 

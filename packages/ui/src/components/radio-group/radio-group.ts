@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   FormControlController,
   RovingFocusController,
   SelectionController,
   SlotCollectionController,
   type RovingOrientation,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { radioGroupMessages } from './radio-group.messages.js';

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { bottomSheetMessages } from './bottom-sheet.messages.js';
 
 export const bottomSheetSpec: ComponentBehaviorSpec = {
   tag: 'mth-bottom-sheet',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'FocusTrapController', 'MotionController', 'DragSortController'],
   focusModel: 'none',

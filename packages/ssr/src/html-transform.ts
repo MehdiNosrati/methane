@@ -65,7 +65,7 @@ function hasExistingShadowTemplate(afterOpenTag: string): boolean {
 /**
  * Expands registered custom-element tags inside framework-rendered HTML (Next.js RSC,
  * Nuxt Nitro, SvelteKit, Astro, Angular SSR) into full Declarative Shadow DOM
- * `<template shadowrootmode="open">` markup using `@methane/ssr`'s ADR-008 renderer,
+ * `<template shadowrootmode="open">` markup using `@methane-ui/ssr`'s ADR-008 renderer,
  * preserving Light DOM children and optionally hoisting stylesheet `<link>` preloads into `<head>`.
  */
 export async function transformHtmlDsd(

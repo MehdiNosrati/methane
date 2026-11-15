@@ -15,7 +15,7 @@ const srcDir = resolve(pkgRoot, 'src');
 const distDir = resolve(pkgRoot, 'dist');
 const stylelintConfigFile = resolve(repoRoot, 'stylelint.config.mjs');
 
-describe('@methane/css progressive HTML/CSS content and marketing primitives', () => {
+describe('@methane-ui/css progressive HTML/CSS content and marketing primitives', () => {
   const marketingCss = readFileSync(resolve(srcDir, 'marketing.css'), 'utf8');
 
   it('defines all 10 marketing and content primitives inside @layer mth.primitives', () => {
@@ -46,7 +46,7 @@ describe('@methane/css progressive HTML/CSS content and marketing primitives', (
     expect(marketingCss).toContain('Highlight');
   });
 
-  it('passes Stylelint (stylelint-config-standard + @methane/lint-plugin logical-properties-only) on marketing.css', async () => {
+  it('passes Stylelint (stylelint-config-standard + @methane-ui/lint-plugin logical-properties-only) on marketing.css', async () => {
     const result = await stylelint.lint({
       files: [resolve(srcDir, 'marketing.css')],
       configFile: stylelintConfigFile,

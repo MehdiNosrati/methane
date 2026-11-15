@@ -13,7 +13,7 @@ import {
 
 const validComboboxSpec: ComponentBehaviorSpec = {
   tag: 'mth-combobox',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'listbox', 'overlay'],
   controllers: ['FormControlController', 'ListboxController', 'OverlayController'],
   focusModel: 'delegates-focus',
@@ -46,7 +46,7 @@ const validComboboxSpec: ComponentBehaviorSpec = {
   },
 };
 
-describe('@methane/spec-compiler', () => {
+describe('@methane-ui/spec-compiler', () => {
   it('validates a compliant ComponentBehaviorSpec', () => {
     const result = validateBehaviorSpec(validComboboxSpec);
     expect(result.valid).toBe(true);
@@ -206,7 +206,7 @@ describe('@methane/spec-compiler', () => {
   it('emits warning when horizontal roving-focus spec omits dir="rtl" keyboard test', () => {
     const tabsSpec: ComponentBehaviorSpec = {
       tag: 'mth-tabs',
-      package: '@methane/ui',
+      package: '@methane-ui/ui',
       conformance: ['roving-focus'],
       controllers: ['RovingFocusController'],
       focusModel: 'host',

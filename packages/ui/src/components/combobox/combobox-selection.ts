@@ -1,4 +1,4 @@
-import type { DataSource, ListboxOptionItem } from '@methane/primitives';
+import type { DataSource, ListboxOptionItem } from '@methane-ui/primitives';
 import type { ComboboxControllersBundle } from './combobox-controllers.js';
 import {
   resolveComboboxOptions,

@@ -1,5 +1,5 @@
-import { html, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { ObserverPoolController, RovingFocusController } from '@methane/primitives';
+import { html, property, query, state, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { ObserverPoolController, RovingFocusController } from '@methane-ui/primitives';
 import { createMapEngine, type BoundsTuple, type LngLatTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapClusterMessages } from './map-cluster.messages.js';
 import { mapClusterStyles } from './map-cluster.styles.js';

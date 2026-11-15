@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { chatThreadMessages } from './chat-thread.messages.js';
 
 export const chatThreadSpec: ComponentBehaviorSpec = {
   tag: 'mth-chat-thread',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: [],
   controllers: ['VirtualizerController', 'DataController'],
   focusModel: 'none',
@@ -49,7 +49,7 @@ export const CEM_METADATA = {
     unreadMessageId: 'Message ID before which the unread divider is placed.',
     label: 'Accessible region label for the conversation log.',
     showScrollToBottom: 'Displays the scroll-to-bottom button.',
-    allowRawHtml: 'Opt-in flag forwarded to @methane/sanitize markdown renderer (defaults to false).',
+    allowRawHtml: 'Opt-in flag forwarded to @methane-ui/sanitize markdown renderer (defaults to false).',
   },
   eventDescriptions: {
     'mth-scroll-bottom': 'Fired when user activates the scroll-to-bottom anchor.',

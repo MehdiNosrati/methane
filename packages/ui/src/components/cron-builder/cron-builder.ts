@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property } from '@methane-ui/core';
+import { FormControlController } from '@methane-ui/primitives';
 import { cronBuilderMessages } from './cron-builder.messages.js';
 import { cronBuilderStyles } from './cron-builder.styles.js';
 

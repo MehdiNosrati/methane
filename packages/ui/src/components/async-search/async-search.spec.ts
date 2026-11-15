@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { asyncSearchMessages } from './async-search.messages.js';
 
 export const asyncSearchSpec: ComponentBehaviorSpec = {
   tag: 'mth-async-search',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay', 'listbox', 'data-consumer'],
   controllers: [
     'FormControlController',

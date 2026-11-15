@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { tocMessages } from './toc.messages.js';
 
 export interface TocItem {
@@ -12,7 +12,7 @@ export const EMPTY_TOC_ITEMS: ReadonlyArray<TocItem> = Object.freeze([]);
 
 export const tocSpec: ComponentBehaviorSpec = {
   tag: 'mth-toc',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['ObserverPoolController'],
   focusModel: 'delegates-focus',

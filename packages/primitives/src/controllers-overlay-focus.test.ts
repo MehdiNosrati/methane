@@ -1,9 +1,9 @@
-import { UIElement, html } from '@methane/core';
+import { UIElement, html } from '@methane-ui/core';
 import {
   ListboxSuite,
   OverlaySuite,
   RovingFocusSuite,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { describe, expect, it, vi } from 'vitest';
 import {
   FocusTrapController,

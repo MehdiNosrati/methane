@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSavedViews } from './saved-views.js';
 
 export { MthSavedViews, type SavedViewItem } from './saved-views.js';

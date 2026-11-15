@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthAudioPlayer } from './audio-player.js';
 
 export { MthAudioPlayer } from './audio-player.js';

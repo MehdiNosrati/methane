@@ -1,27 +1,27 @@
-# `@methane/editor`
+# `@methane-ui/editor`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Wrap-first rich text (**ProseMirror**), Markdown preview/editor, and LaTeX mathematical typesetting (**KaTeX**) Web Components for **Methane UI** — featuring `@methane/sanitize` XSS protection and native Form-Associated Custom Element (FACE) integration.
+Wrap-first rich text (**ProseMirror**), Markdown preview/editor, and LaTeX mathematical typesetting (**KaTeX**) Web Components for **Methane UI** — featuring `@methane-ui/sanitize` XSS protection and native Form-Associated Custom Element (FACE) integration.
 
 ## Installation
 
 ```bash
-pnpm add @methane/editor @methane/core @methane/tokens
+pnpm add @methane-ui/editor @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/editor @methane/core @methane/tokens
+npm install @methane-ui/editor @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/editor` | Auto-registers all 4 editor/document elements and exports `registerAllComponents(prefix?)` |
-| `@methane/editor/<slug>` | Per-component entrypoint (`markdown`, `markdown-editor`, `math-editor`, `rich-editor`) |
-| `@methane/editor/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
-| `@methane/editor/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/editor` | Auto-registers all 4 editor/document elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/editor/<slug>` | Per-component entrypoint (`markdown`, `markdown-editor`, `math-editor`, `rich-editor`) |
+| `@methane-ui/editor/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
+| `@methane-ui/editor/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -53,14 +53,14 @@ npm install @methane/editor @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/editor/rich-editor';
-import '@methane/editor/markdown';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/editor/rich-editor';
+import '@methane-ui/editor/markdown';
 ```
 
 ## Theming, A11y, Security & SSR Notes
 
-- **Security**: `<mth-markdown>` and `<mth-markdown-editor>` pass HTML output through `@methane/sanitize` (`allow-raw-html` defaults to `false`).
+- **Security**: `<mth-markdown>` and `<mth-markdown-editor>` pass HTML output through `@methane-ui/sanitize` (`allow-raw-html` defaults to `false`).
 - **Accessibility & Forms**: Editor toolbars implement roving keyboard focus (`ArrowLeft`/`ArrowRight`), and `<mth-rich-editor>`, `<mth-markdown-editor>`, and `<mth-math-editor>` submit values cleanly through native `<form>` via `ElementInternals`.
 - **SSR & Lazy Engine**: ProseMirror `EditorView` mounts lazily on client connect while `<mth-markdown>` and KaTeX preview render synchronously.
 

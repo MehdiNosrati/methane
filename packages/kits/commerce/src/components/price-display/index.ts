@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthPriceDisplay } from './element.js';
 
 export { MthPriceDisplay } from './element.js';

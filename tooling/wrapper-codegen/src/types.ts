@@ -2,7 +2,7 @@ import type {
   CemDeclaration,
   ComponentBehaviorSpec,
   CustomElementsManifest,
-} from '@methane/spec-compiler';
+} from '@methane-ui/spec-compiler';
 
 export interface CemCssProperty {
   readonly name: string;

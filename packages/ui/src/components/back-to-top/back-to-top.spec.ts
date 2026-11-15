@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { backToTopMessages } from './back-to-top.messages.js';
 
 export const backToTopSpec: ComponentBehaviorSpec = {
   tag: 'mth-back-to-top',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',

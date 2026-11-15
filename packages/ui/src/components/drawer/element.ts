@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDrawer } from './drawer.js';
 
 export { MthDrawer, type MthDrawerPlacement, type MthDrawerSize } from './drawer.js';

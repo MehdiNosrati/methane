@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   DataController,
   FormattingUtils,
   SlotCollectionController,
   type DataControllerStatus,
   type DataSource,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { activityFeedMessages } from './activity-feed.messages.js';

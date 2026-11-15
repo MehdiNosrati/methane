@@ -9,28 +9,28 @@ const REPO_ROOT = resolve(THIS_DIR, '../../..');
 
 const LAZY_SATELLITE_ENTRIES = [
   {
-    name: '@methane/editor/rich-editor',
+    name: '@methane-ui/editor/rich-editor',
     entryPath: resolve(
       REPO_ROOT,
       'packages/satellites/editor/dist/components/rich-editor/index.js',
     ),
   },
   {
-    name: '@methane/code/code-editor',
+    name: '@methane-ui/code/code-editor',
     entryPath: resolve(
       REPO_ROOT,
       'packages/satellites/code/dist/components/code-editor/index.js',
     ),
   },
   {
-    name: '@methane/code/json-editor',
+    name: '@methane-ui/code/json-editor',
     entryPath: resolve(
       REPO_ROOT,
       'packages/satellites/code/dist/components/json-editor/index.js',
     ),
   },
   {
-    name: '@methane/charts/chart',
+    name: '@methane-ui/charts/chart',
     entryPath: resolve(REPO_ROOT, 'packages/satellites/charts/dist/components/chart/index.js'),
   },
 ] as const;

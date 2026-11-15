@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   SatelliteEngineSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';
 import { mathEditorSpec } from './math-editor.spec.js';
 import { MthMathEditor, registerMthMathEditor } from './index.js';

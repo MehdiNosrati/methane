@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, property, query } from '@methane-ui/core';
 import { splitPaneMessages } from './split-pane.messages.js';
 import { splitPaneStyles } from './split-pane.styles.js';
 

@@ -1,10 +1,10 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
 import {
   FormControlController,
   ListboxController,
   OverlayController,
   PositioningController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { timezonePickerMessages } from './timezone-picker.messages.js';
 import { timezonePickerStyles } from './timezone-picker.styles.js';
 

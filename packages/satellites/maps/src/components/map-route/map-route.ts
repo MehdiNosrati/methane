@@ -1,5 +1,5 @@
-import { html, property, query, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { ObserverPoolController } from '@methane/primitives';
+import { html, property, query, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { ObserverPoolController } from '@methane-ui/primitives';
 import { createMapEngine, type BoundsTuple, type MapEngineHandle } from '../shared/map-engine.js';
 import { mapRouteMessages } from './map-route.messages.js';
 import { mapRouteStyles } from './map-route.styles.js';

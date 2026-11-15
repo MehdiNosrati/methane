@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { registerMthBadge } from '@methane/ui/badge';
-import { registerMthCheckbox } from '@methane/ui/checkbox';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { registerMthBadge } from '@methane-ui/ui/badge';
+import { registerMthCheckbox } from '@methane-ui/ui/checkbox';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { facetFiltersMessages } from './facet-filters.messages.js';
@@ -46,8 +46,8 @@ function sanitizeKey(raw: string): string {
 }
 
 /**
- * `<mth-facet-filters>`: collapsible attribute filter sidebar composing `@methane/ui/checkbox`
- * and `@methane/ui/badge`, with CSP-safe adopted-stylesheet color swatches and numeric ranges.
+ * `<mth-facet-filters>`: collapsible attribute filter sidebar composing `@methane-ui/ui/checkbox`
+ * and `@methane-ui/ui/badge`, with CSP-safe adopted-stylesheet color swatches and numeric ranges.
  */
 export class MthFacetFilters extends UIElement {
   static override messages = facetFiltersMessages;

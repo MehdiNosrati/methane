@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { DragSortController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { DragSortController } from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { beforeAfterMessages } from './before-after.messages.js';

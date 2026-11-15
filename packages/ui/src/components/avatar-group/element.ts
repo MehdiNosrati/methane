@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthAvatarGroup } from './avatar-group.js';
 
 export { MthAvatarGroup, type MthAvatarGroupSize } from './avatar-group.js';

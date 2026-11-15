@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, RovingFocusController } from '@methane/primitives';
-import { escapeHtml, parseSafeFragment, sanitizeToTrustedHTML } from '@methane/sanitize';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, RovingFocusController } from '@methane-ui/primitives';
+import { escapeHtml, parseSafeFragment, sanitizeToTrustedHTML } from '@methane-ui/sanitize';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import type { baseKeymap as pmBaseKeymap, setBlockType as pmSetBlockType, toggleMark as pmToggleMark } from 'prosemirror-commands';
@@ -125,7 +125,7 @@ function parseHtmlToPmDoc(pm: LoadedProseMirror, rawHtml: string): PmNode {
 
 /**
  * `<mth-rich-editor>`: Form-associated ProseMirror rich-text editor with accessible
- * formatting toolbar, `@methane/sanitize` HTML IO, and token synchronization.
+ * formatting toolbar, `@methane-ui/sanitize` HTML IO, and token synchronization.
  */
 export class MthRichEditor extends UIElement {
   static formAssociated = true;

@@ -1,7 +1,7 @@
-import { defineComponents } from '@methane/core';
-import { registerMthBadge } from '@methane/ui/badge/element.js';
-import { registerMthButton } from '@methane/ui/button/element.js';
-import { registerMthIcon } from '@methane/ui/icon/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthBadge } from '@methane-ui/ui/badge/element.js';
+import { registerMthButton } from '@methane-ui/ui/button/element.js';
+import { registerMthIcon } from '@methane-ui/ui/icon/element.js';
 import { MthArtifactPane } from './artifact-pane.js';
 
 export {

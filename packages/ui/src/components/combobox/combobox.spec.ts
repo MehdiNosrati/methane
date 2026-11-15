@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { comboboxMessages } from './combobox.messages.js';
 
 export const comboboxSpec: ComponentBehaviorSpec = {
   tag: 'mth-combobox',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'listbox', 'overlay', 'data-consumer'],
   controllers: [
     'FormControlController',

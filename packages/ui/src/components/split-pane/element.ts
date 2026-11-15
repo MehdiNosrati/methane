@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSplitPane } from './split-pane.js';
 
 export { MthSplitPane, type MthSplitPaneOrientation } from './split-pane.js';

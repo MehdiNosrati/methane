@@ -1,4 +1,4 @@
-# `@methane/auth`
+# `@methane-ui/auth`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Authentication, identity, MFA, WebAuthn passkeys, SSO, session management, and R
 ## Installation
 
 ```bash
-pnpm add @methane/auth @methane/core @methane/tokens
+pnpm add @methane-ui/auth @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/auth @methane/core @methane/tokens
+npm install @methane-ui/auth @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/auth` | Auto-registers all 7 auth kit elements and exports `registerAllComponents(prefix?)` |
-| `@methane/auth/<slug>` | Per-component entrypoint (e.g. `@methane/auth/auth-form`, `@methane/auth/mfa-challenge`) |
-| `@methane/auth/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/auth/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/auth` | Auto-registers all 7 auth kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/auth/<slug>` | Per-component entrypoint (e.g. `@methane-ui/auth/auth-form`, `@methane-ui/auth/mfa-challenge`) |
+| `@methane-ui/auth/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/auth/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -44,9 +44,9 @@ npm install @methane/auth @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/auth/auth-form';
-import '@methane/auth/mfa-challenge';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/auth/auth-form';
+import '@methane-ui/auth/mfa-challenge';
 
 document.getElementById('login')?.addEventListener('mth-submit', (ev) => {
   console.log('Credentials payload:', (ev as CustomEvent).detail);
@@ -61,7 +61,7 @@ document.getElementById('otp')?.addEventListener('mth-complete', (ev) => {
 
 - **Theming**: Customize via `--mth-*` semantic surface, border, and error tokens alongside `::part(base)`, `::part(submit-button)`, `::part(digits)`, and `::part(menu)`.
 - **Accessibility & Keyboard**: `<mth-auth-form>` and `<mth-mfa-challenge>` participate in native FACE validation, announce live error states, and support multi-digit paste and arrow navigation. `<mth-profile-menu>` manages top-layer focus and `Escape` dismissal.
-- **SSR**: Safe for server rendering via `@methane/ssr`; client-only WebAuthn calls (`navigator.credentials`) stay gated behind user actions.
+- **SSR**: Safe for server rendering via `@methane-ui/ssr`; client-only WebAuthn calls (`navigator.credentials`) stay gated behind user actions.
 
 ## License
 

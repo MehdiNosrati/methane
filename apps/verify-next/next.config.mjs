@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { withMethaneNextConfig } from '@methane/ssr-next';
+import { withMethaneNextConfig } from '@methane-ui/ssr-next';
 
 const g = globalThis;
 if (typeof g.window === 'object' && g.window !== null && !g.window.location) {

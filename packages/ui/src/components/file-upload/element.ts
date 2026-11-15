@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthFileUpload } from './file-upload.js';
 
 export function registerMthFileUpload(prefix?: string): ReadonlyArray<string> {

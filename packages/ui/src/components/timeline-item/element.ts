@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTimelineItem } from './timeline-item.js';
 
 export { MthTimelineItem, type MthTimelineItemVariant } from './timeline-item.js';

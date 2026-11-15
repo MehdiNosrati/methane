@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { networkStatusMessages } from './network-status.messages.js';
 
 export const networkStatusSpec: ComponentBehaviorSpec = {
   tag: 'mth-network-status',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

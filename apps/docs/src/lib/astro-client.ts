@@ -1,6 +1,6 @@
-import { registerUtilityElements } from '@methane/primitives';
-import { initAstroHydration } from '@methane/ssr-astro/client';
-import { registerAllComponents } from '@methane/ui';
+import { registerUtilityElements } from '@methane-ui/primitives';
+import { initAstroHydration } from '@methane-ui/ssr-astro/client';
+import { registerAllComponents } from '@methane-ui/ui';
 
 initAstroHydration();
 registerUtilityElements();

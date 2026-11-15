@@ -5,8 +5,8 @@ import {
   property,
   query,
   type PropertyValues,
-} from '@methane/core';
-import { FormControlController, RovingFocusController } from '@methane/primitives';
+} from '@methane-ui/core';
+import { FormControlController, RovingFocusController } from '@methane-ui/primitives';
 import { mfaChallengeMessages } from './mfa-challenge.messages.js';
 import { mfaChallengeStyles } from './mfa-challenge.styles.js';
 

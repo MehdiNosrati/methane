@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { chartMessages } from './chart.messages.js';
 
 export const chartSpec: ComponentBehaviorSpec = {
   tag: 'mth-chart',
-  package: '@methane/charts',
+  package: '@methane-ui/charts',
   conformance: ['satellite'],
   controllers: ['MotionController', 'ObserverPoolController'],
   focusModel: 'delegates-focus',

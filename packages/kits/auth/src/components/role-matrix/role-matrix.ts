@@ -1,5 +1,5 @@
-import { UIElement, html, nothing, property, type PropertyValues } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { UIElement, html, nothing, property, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
 import { roleMatrixMessages } from './role-matrix.messages.js';
 import { roleMatrixStyles } from './role-matrix.styles.js';
 

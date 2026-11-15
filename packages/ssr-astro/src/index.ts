@@ -3,11 +3,11 @@ import {
   transformHtmlDsd,
   type StylesheetLink,
   type TransformHtmlDsdOptions,
-} from '@methane/ssr';
+} from '@methane-ui/ssr';
 import { html as litHtml } from 'lit';
 
 export interface AstroSsrOptions extends TransformHtmlDsdOptions {
-  /** Whether to inject `@methane/ssr-astro/client` on Astro pages. Defaults to `true`. */
+  /** Whether to inject `@methane-ui/ssr-astro/client` on Astro pages. Defaults to `true`. */
   readonly injectClientHydration?: boolean;
 }
 
@@ -56,7 +56,7 @@ export function isMethaneAstroComponent(component: unknown): boolean {
 }
 
 /**
- * Renders a Lit / Methane component descriptor via `@methane/ssr` for Astro SSR islands.
+ * Renders a Lit / Methane component descriptor via `@methane-ui/ssr` for Astro SSR islands.
  */
 export async function renderAstroStaticMarkup(
   component: AstroRendererComponent | (new () => HTMLElement),
@@ -103,9 +103,9 @@ export async function renderAstroStaticMarkup(
 
 export function createMethaneAstroRenderer(options: AstroSsrOptions = {}) {
   return {
-    name: '@methane/ssr-astro',
-    clientEntrypoint: '@methane/ssr-astro/client',
-    serverEntrypoint: '@methane/ssr-astro',
+    name: '@methane-ui/ssr-astro',
+    clientEntrypoint: '@methane-ui/ssr-astro/client',
+    serverEntrypoint: '@methane-ui/ssr-astro',
     check: isMethaneAstroComponent,
     renderToStaticMarkup: (
       component: AstroRendererComponent | (new () => HTMLElement),
@@ -117,20 +117,20 @@ export function createMethaneAstroRenderer(options: AstroSsrOptions = {}) {
 }
 
 /**
- * Astro integration registering `@methane/ssr-astro` renderer and client hydration script.
+ * Astro integration registering `@methane-ui/ssr-astro` renderer and client hydration script.
  */
 export function createMethaneAstroIntegration(options: AstroSsrOptions = {}): AstroIntegration {
   return {
-    name: '@methane/ssr-astro',
+    name: '@methane-ui/ssr-astro',
     hooks: {
       'astro:config:setup': ({ addRenderer, injectScript }) => {
         addRenderer({
-          name: '@methane/ssr-astro',
-          clientEntrypoint: '@methane/ssr-astro/client',
-          serverEntrypoint: '@methane/ssr-astro',
+          name: '@methane-ui/ssr-astro',
+          clientEntrypoint: '@methane-ui/ssr-astro/client',
+          serverEntrypoint: '@methane-ui/ssr-astro',
         });
         if (options.injectClientHydration ?? true) {
-          injectScript?.('page', "import '@methane/ssr-astro/client';");
+          injectScript?.('page', "import '@methane-ui/ssr-astro/client';");
         }
       },
     },

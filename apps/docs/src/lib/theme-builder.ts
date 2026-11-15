@@ -1,4 +1,4 @@
-import { compileDtcgTokens, dtcgSource, type DtcgDocument } from '@methane/tokens';
+import { compileDtcgTokens, dtcgSource, type DtcgDocument } from '@methane-ui/tokens';
 
 export type RadiusPreset = 'none' | 'sharp' | 'default' | 'rounded' | 'pill';
 export type DensityPreset = 'compact' | 'default' | 'comfortable';

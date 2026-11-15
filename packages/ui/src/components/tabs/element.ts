@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTabs } from './tabs.js';
 
 export { MthTabs, type MthTabsActivation, type MthTabsOrientation } from './tabs.js';

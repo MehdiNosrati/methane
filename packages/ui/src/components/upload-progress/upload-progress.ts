@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { uploadProgressMessages } from './upload-progress.messages.js';

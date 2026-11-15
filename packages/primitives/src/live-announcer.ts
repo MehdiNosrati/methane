@@ -3,7 +3,7 @@ import {
   getRuntime,
   translateMessage,
   type MessageCatalog,
-} from '@methane/core';
+} from '@methane-ui/core';
 
 /**
  * Announces localized or literal status messages to assistive technology via

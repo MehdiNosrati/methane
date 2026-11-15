@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthResizablePanel } from './resizable-panel.js';
 
 export { MthResizablePanel } from './resizable-panel.js';

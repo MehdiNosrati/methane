@@ -14,7 +14,7 @@
           "description": "Enterprise virtualized data grid wrapping @tanstack/table-core and @tanstack/virtual-core with sorting, filtering, pinning, column resizing, selection, and DataSource<T> streaming.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -238,7 +238,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-datagrid",
-            "package": "@methane/datagrid",
+            "package": "@methane-ui/datagrid",
             "conformance": [
               "satellite",
               "data-consumer"
@@ -428,7 +428,7 @@
           "description": "Project Gantt timeline satellite wrapping CalendarCore and @tanstack/virtual-core with task progress bars, milestone markers, and SVG dependency lines.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -617,7 +617,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-gantt",
-            "package": "@methane/datagrid",
+            "package": "@methane-ui/datagrid",
             "conformance": [
               "satellite"
             ],
@@ -786,7 +786,7 @@
           "description": "Multi-dimensional pivot table satellite wrapping @tanstack/table-core with row/column dimension grouping, aggregations (sum, count, avg, min, max), expandable groups, and grand totals.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -969,7 +969,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-pivot-table",
-            "package": "@methane/datagrid",
+            "package": "@methane-ui/datagrid",
             "conformance": [
               "satellite"
             ],
@@ -1135,7 +1135,7 @@
           "description": "Resource timeline scheduler wrapping CalendarCore and @tanstack/virtual-core with RTL-aware keyboard date navigation and virtualized resource rows.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1315,7 +1315,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-scheduler",
-            "package": "@methane/datagrid",
+            "package": "@methane-ui/datagrid",
             "conformance": [
               "satellite"
             ],
@@ -1483,7 +1483,7 @@
           "description": "Hierarchical expandable tree table wrapping @tanstack/table-core getExpandedRowModel and @tanstack/virtual-core with treegrid keyboard navigation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1676,7 +1676,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-tree-table",
-            "package": "@methane/datagrid",
+            "package": "@methane-ui/datagrid",
             "conformance": [
               "satellite"
             ],

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { formRepeaterMessages } from './form-repeater.messages.js';
 
 export const formRepeaterSpec: ComponentBehaviorSpec = {
   tag: 'mth-form-repeater',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'DragSortController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

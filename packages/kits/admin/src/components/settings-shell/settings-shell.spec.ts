@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { settingsShellMessages } from './settings-shell.messages.js';
 
 export const settingsShellSpec: ComponentBehaviorSpec = {
   tag: 'mth-settings-shell',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

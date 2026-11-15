@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { suggestionChipsMessages } from './suggestion-chips.messages.js';
 
 export const suggestionChipsSpec: ComponentBehaviorSpec = {
   tag: 'mth-suggestion-chips',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'none',

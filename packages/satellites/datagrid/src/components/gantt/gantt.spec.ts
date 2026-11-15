@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { ganttMessages } from './gantt.messages.js';
 
 export const ganttSpec: ComponentBehaviorSpec = {
   tag: 'mth-gantt',
-  package: '@methane/datagrid',
+  package: '@methane-ui/datagrid',
   conformance: ['satellite'],
   controllers: ['CalendarCore', 'RovingFocusController', 'VirtualizerController'],
   focusModel: 'host',

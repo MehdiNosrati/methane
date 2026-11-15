@@ -51,7 +51,7 @@ const LOCALE_LOADERS: Readonly<Record<MethaneLocaleCode, () => Promise<MethaneLo
 const loadedPackCache = new Map<MethaneLocaleCode, Promise<MethaneLocalePack>>();
 
 /**
- * Lazy-load a `@methane/locales` pack via code-split dynamic import.
+ * Lazy-load a `@methane-ui/locales` pack via code-split dynamic import.
  * Resolves BCP-47 variants (e.g. `en-US`, `zh-Hans`, `iw`) and caches in-flight/loaded packs.
  */
 export function loadLocalePack(

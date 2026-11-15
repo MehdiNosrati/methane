@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { drawingPadSpec } from './drawing-pad.spec.js';
 import { MthDrawingPad, registerMthDrawingPad } from './index.js';

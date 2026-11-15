@@ -1,15 +1,15 @@
-# `@methane/vue`
+# `@methane-ui/vue`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Typed Vue 3 `defineComponent` wrappers, `v-model` / `v-model:open` bindings, global `ComponentCustomProperties` / `GlobalComponents` typing, and Vite compiler helper options for `@methane/*` custom elements.
+Typed Vue 3 `defineComponent` wrappers, `v-model` / `v-model:open` bindings, global `ComponentCustomProperties` / `GlobalComponents` typing, and Vite compiler helper options for `@methane-ui/*` custom elements.
 
 ## Installation
 
 ```bash
-pnpm add @methane/vue @methane/ui @methane/core
+pnpm add @methane-ui/vue @methane-ui/ui @methane-ui/core
 # or
-npm install @methane/vue @methane/ui @methane/core
+npm install @methane-ui/vue @methane-ui/ui @methane-ui/core
 ```
 
 > **Peer dependency:** `vue` (`^3.4.0`).
@@ -30,7 +30,7 @@ npm install @methane/vue @methane/ui @methane/core
 ```ts
 // vite.config.ts
 import vue from '@vitejs/plugin-vue';
-import { METHANE_VUE_COMPILER_OPTIONS } from '@methane/vue';
+import { METHANE_VUE_COMPILER_OPTIONS } from '@methane-ui/vue';
 
 export default {
   plugins: [
@@ -47,12 +47,12 @@ export default {
 
 ```vue
 <script setup lang="ts">
-import '@methane/tokens/tokens.css';
-import '@methane/ui/button';
-import '@methane/ui/dialog';
-import '@methane/ui/input';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/dialog';
+import '@methane-ui/ui/input';
 import { ref } from 'vue';
-import { MthButton, MthDialog, MthInput } from '@methane/vue';
+import { MthButton, MthDialog, MthInput } from '@methane-ui/vue';
 
 const query = ref('');
 const open = ref(false);
@@ -70,7 +70,7 @@ const open = ref(false);
 ## Theming, A11y & SSR Notes
 
 - **Two-Way Binding**: Value, checked, and open states map automatically (`v-model`, `v-model:checked`, `v-model:open`) from `mth-input` / `mth-change` / `mth-open` / `mth-close` events.
-- **Nuxt SSR**: Pair with `@methane/ssr-nuxt` for Declarative Shadow DOM SSR and hydration sequencing.
+- **Nuxt SSR**: Pair with `@methane-ui/ssr-nuxt` for Declarative Shadow DOM SSR and hydration sequencing.
 
 ## License
 

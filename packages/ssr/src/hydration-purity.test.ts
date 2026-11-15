@@ -6,7 +6,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { LitElement, css, html } from 'lit';
 import { describe, expect, it } from 'vitest';
-import { HydrationPuritySuite } from '@methane/test-conformance';
+import { HydrationPuritySuite } from '@methane-ui/test-conformance';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = resolve(__dirname, '..');
@@ -102,7 +102,7 @@ function renderOnServerProcess(tagName: string, styleMode: 'linked' | 'inline'):
   });
 }
 
-describe('HydrationPuritySuite round-trip (@methane/ssr -> @lit-labs/ssr-client)', () => {
+describe('HydrationPuritySuite round-trip (@methane-ui/ssr -> @lit-labs/ssr-client)', () => {
   it('verifies 0 shadow-DOM node mutations on client upgrade in linked mode', async () => {
     const tagName = 'mth-purity-linked';
     const ssrHtml = renderOnServerProcess(tagName, 'linked');

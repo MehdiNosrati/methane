@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { fileExplorerMessages } from './file-explorer.messages.js';
 
 export const fileExplorerSpec: ComponentBehaviorSpec = {
   tag: 'mth-file-explorer',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus'],
   controllers: ['SelectionController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

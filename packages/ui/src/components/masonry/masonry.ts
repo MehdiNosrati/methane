@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, property, query } from '@methane/core';
-import { ObserverPoolController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, property, query } from '@methane-ui/core';
+import { ObserverPoolController } from '@methane-ui/primitives';
 import { masonryMessages } from './masonry.messages.js';
 import { masonryStyles } from './masonry.styles.js';
 

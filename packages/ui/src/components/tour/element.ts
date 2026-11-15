@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTour } from './tour.js';
 
 export { MthTour } from './tour.js';

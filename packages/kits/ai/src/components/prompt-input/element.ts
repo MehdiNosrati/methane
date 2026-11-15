@@ -1,5 +1,5 @@
-import { defineComponents } from '@methane/core';
-import { registerMthButton } from '@methane/ui/button/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthButton } from '@methane-ui/ui/button/element.js';
 import { MthPromptInput } from './prompt-input.js';
 
 export { MthPromptInput } from './prompt-input.js';

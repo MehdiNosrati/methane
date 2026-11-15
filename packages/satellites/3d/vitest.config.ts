@@ -16,11 +16,11 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: /^@methane\/3d\/([^/]+)\/element(?:\.js)?$/,
+        find: /^@methane-ui\/3d\/([^/]+)\/element(?:\.js)?$/,
         replacement: resolve(__dirname, 'src/components/$1/element.ts'),
       },
       {
-        find: /^@methane\/3d\/([^/]+)$/,
+        find: /^@methane-ui\/3d\/([^/]+)$/,
         replacement: resolve(__dirname, 'src/components/$1/index.ts'),
       },
     ],

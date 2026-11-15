@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { bulkActionBarMessages } from './bulk-action-bar.messages.js';
 
 export const bulkActionBarSpec: ComponentBehaviorSpec = {
   tag: 'mth-bulk-action-bar',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

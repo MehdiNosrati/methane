@@ -28,7 +28,7 @@ afterEach(() => {
   }
 });
 
-describe('@methane/codemod diff, fixtures & CLI', () => {
+describe('@methane-ui/codemod diff, fixtures & CLI', () => {
   it('generates unified diffs and returns empty string when unchanged', () => {
     expect(createUnifiedDiff('a.html', '<mth-button></mth-button>', '<mth-button></mth-button>')).toBe('');
 

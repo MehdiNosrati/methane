@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { comparisonTableMessages } from './comparison-table.messages.js';

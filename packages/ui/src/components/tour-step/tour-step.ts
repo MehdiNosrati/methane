@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import type { Placement } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import type { Placement } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { tourStepMessages } from './tour-step.messages.js';

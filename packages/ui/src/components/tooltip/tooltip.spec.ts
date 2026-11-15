@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { tooltipMessages } from './tooltip.messages.js';
 
 export const tooltipSpec: ComponentBehaviorSpec = {
   tag: 'mth-tooltip',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController'],
   focusModel: 'none',

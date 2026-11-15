@@ -1,8 +1,8 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/accordion-item';
+import '@methane-ui/ui/accordion-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthAccordion, accordionSpec, registerMthAccordion } from './index.js';
 

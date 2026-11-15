@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { videoGridMessages } from './video-grid.messages.js';
 
 export const videoGridSpec: ComponentBehaviorSpec = {
   tag: 'mth-video-grid',
-  package: '@methane/rtc',
+  package: '@methane-ui/rtc',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

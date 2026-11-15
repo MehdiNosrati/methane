@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { citationListMessages } from './citation-list.messages.js';
 
 export const citationListSpec: ComponentBehaviorSpec = {
   tag: 'mth-citation-list',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'none',

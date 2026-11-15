@@ -3,7 +3,7 @@ import {
   type CompiledToken,
   type DtcgDocument,
   type DtcgTokenType,
-} from '@methane/tokens';
+} from '@methane-ui/tokens';
 import {
   figmaRgbaToOklchString,
   oklchToFigmaRgba,

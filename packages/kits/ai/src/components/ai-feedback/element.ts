@@ -1,6 +1,6 @@
-import { defineComponents } from '@methane/core';
-import { registerMthButton } from '@methane/ui/button/element.js';
-import { registerMthIcon } from '@methane/ui/icon/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthButton } from '@methane-ui/ui/button/element.js';
+import { registerMthIcon } from '@methane-ui/ui/icon/element.js';
 import { MthAiFeedback } from './ai-feedback.js';
 
 export { MthAiFeedback, type MthAiFeedbackRating } from './ai-feedback.js';

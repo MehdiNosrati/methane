@@ -7,7 +7,7 @@ import {
   validateMigrationManifest,
 } from '../manifest.js';
 
-describe('@methane/codemod manifest', () => {
+describe('@methane-ui/codemod manifest', () => {
   it('validates declarative migration manifests and rejects malformed fields', () => {
     expect(
       validateMigrationManifest({

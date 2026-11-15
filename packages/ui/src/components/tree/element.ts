@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTree } from './tree.js';
 
 export { MthTree, type MthTreeSelectionMode, type TreeNodeData } from './tree.js';

@@ -1,9 +1,9 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
@@ -15,9 +15,9 @@ import {
 } from './index.js';
 
 const SAMPLE_TABS: ReadonlyArray<CodeTabItem> = [
-  { value: 'npm', label: 'npm', language: 'bash', code: 'npm install @methane/ui' },
-  { value: 'pnpm', label: 'pnpm', language: 'bash', code: 'pnpm add @methane/ui' },
-  { value: 'bun', label: 'bun', language: 'bash', code: 'bun add @methane/ui' },
+  { value: 'npm', label: 'npm', language: 'bash', code: 'npm install @methane-ui/ui' },
+  { value: 'pnpm', label: 'pnpm', language: 'bash', code: 'pnpm add @methane-ui/ui' },
+  { value: 'bun', label: 'bun', language: 'bash', code: 'bun add @methane-ui/ui' },
 ];
 
 describe('<mth-code-tabs>', () => {
@@ -66,12 +66,12 @@ describe('<mth-code-tabs>', () => {
     const npmPre = document.createElement('pre');
     npmPre.setAttribute('label', 'npm');
     npmPre.setAttribute('value', 'npm');
-    npmPre.textContent = 'npm i @methane/ui';
+    npmPre.textContent = 'npm i @methane-ui/ui';
 
     const pnpmPre = document.createElement('pre');
     pnpmPre.setAttribute('label', 'pnpm');
     pnpmPre.setAttribute('value', 'pnpm');
-    pnpmPre.textContent = 'pnpm add @methane/ui';
+    pnpmPre.textContent = 'pnpm add @methane-ui/ui';
 
     el.append(npmPre, pnpmPre);
 
@@ -88,7 +88,7 @@ describe('<mth-code-tabs>', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    expect(el.shadowRoot!.querySelector('[part="code"]')?.textContent).toBe('npm i @methane/ui');
+    expect(el.shadowRoot!.querySelector('[part="code"]')?.textContent).toBe('npm i @methane-ui/ui');
 
     const tabs = el.getTabs();
     expect(tabs).toHaveLength(2);
@@ -97,7 +97,7 @@ describe('<mth-code-tabs>', () => {
 
     expect(el.value).toBe('pnpm');
     expect(changes).toEqual(['pnpm']);
-    expect(el.shadowRoot!.querySelector('[part="code"]')?.textContent).toBe('pnpm add @methane/ui');
+    expect(el.shadowRoot!.querySelector('[part="code"]')?.textContent).toBe('pnpm add @methane-ui/ui');
 
     const writeTextMock = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', {
@@ -111,8 +111,8 @@ describe('<mth-code-tabs>', () => {
       expect(copies).toHaveLength(1);
     });
 
-    expect(writeTextMock).toHaveBeenCalledWith('pnpm add @methane/ui');
-    expect(copies[0]).toEqual({ value: 'pnpm', code: 'pnpm add @methane/ui', ok: true });
+    expect(writeTextMock).toHaveBeenCalledWith('pnpm add @methane-ui/ui');
+    expect(copies[0]).toEqual({ value: 'pnpm', code: 'pnpm add @methane-ui/ui', ok: true });
   });
 
   it('passes HydrationPuritySuite without mutating SSR DOM', async () => {

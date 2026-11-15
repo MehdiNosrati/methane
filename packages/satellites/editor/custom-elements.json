@@ -11,10 +11,10 @@
           "name": "MthMarkdown",
           "tagName": "mth-markdown",
           "customElement": true,
-          "description": "Read-only Markdown renderer using @methane/sanitize with safe URL validation and token synchronization.",
+          "description": "Read-only Markdown renderer using @methane-ui/sanitize with safe URL validation and token synchronization.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -156,7 +156,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-markdown",
-            "package": "@methane/editor",
+            "package": "@methane-ui/editor",
             "conformance": [
               "satellite"
             ],
@@ -261,7 +261,7 @@
           "description": "Form-associated Markdown editor with roving formatting toolbar, write/preview/split modes, and sanitized preview rendering.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -587,7 +587,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-markdown-editor",
-            "package": "@methane/editor",
+            "package": "@methane-ui/editor",
             "conformance": [
               "satellite",
               "form-control"
@@ -792,7 +792,7 @@
           "description": "Form-associated LaTeX formula editor with quick-symbol toolbar, KaTeX rendering, sanitized preview, and token synchronization.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1095,7 +1095,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-math-editor",
-            "package": "@methane/editor",
+            "package": "@methane-ui/editor",
             "conformance": [
               "satellite",
               "form-control"
@@ -1287,10 +1287,10 @@
           "customElement": true,
           "formAssociated": true,
           "delegatesFocus": true,
-          "description": "Form-associated ProseMirror rich-text editor with accessible formatting toolbar (`RovingFocusController`), `@methane/sanitize` HTML serialization, and `--mth-*` token sync.",
+          "description": "Form-associated ProseMirror rich-text editor with accessible formatting toolbar (`RovingFocusController`), `@methane-ui/sanitize` HTML serialization, and `--mth-*` token sync.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1554,7 +1554,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-rich-editor",
-            "package": "@methane/editor",
+            "package": "@methane-ui/editor",
             "conformance": [
               "satellite",
               "form-control"

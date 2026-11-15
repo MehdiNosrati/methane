@@ -1,4 +1,4 @@
-# `@methane/test-conformance`
+# `@methane-ui/test-conformance`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Reusable Class Conformance Suites, `SatelliteEngineSuite`, `HydrationPuritySuite
 ## Installation
 
 ```bash
-pnpm add -D @methane/test-conformance
+pnpm add -D @methane-ui/test-conformance
 # or
-npm install -D @methane/test-conformance
+npm install -D @methane-ui/test-conformance
 ```
 
 ## Exported Suites & Scanners
@@ -31,7 +31,7 @@ npm install -D @methane/test-conformance
 
 ```ts
 import { describe, it, expect } from 'vitest';
-import { FormControlSuite, scanSameRootAria } from '@methane/test-conformance';
+import { FormControlSuite, scanSameRootAria } from '@methane-ui/test-conformance';
 
 describe('<mth-input> conformance', () => {
   it('passes FormControlSuite', async () => {
@@ -55,7 +55,7 @@ describe('<mth-input> conformance', () => {
 ### Testing Declarative Shadow DOM Hydration Purity
 
 ```ts
-import { HydrationPuritySuite } from '@methane/test-conformance';
+import { HydrationPuritySuite } from '@methane-ui/test-conformance';
 
 const report = await HydrationPuritySuite.run({
   ssrHtml,

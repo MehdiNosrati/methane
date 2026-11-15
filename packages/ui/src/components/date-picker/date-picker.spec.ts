@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const datePickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-date-picker',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay'],
   controllers: [
     'CalendarCore',

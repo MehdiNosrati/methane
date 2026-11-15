@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane-ui/core';
 import { imageCropperMessages } from './image-cropper.messages.js';
 import { imageCropperStyles } from './image-cropper.styles.js';
 

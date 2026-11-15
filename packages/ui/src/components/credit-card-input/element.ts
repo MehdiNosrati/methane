@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCreditCardInput } from './credit-card-input.js';
 
 export { MthCreditCardInput, detectCardBrand, type CardBrand } from './credit-card-input.js';

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthProgressRing } from './progress-ring.js';
 
 export { MthProgressRing } from './progress-ring.js';

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { skeletonMessages } from './skeleton.messages.js';
 
 export const skeletonSpec: ComponentBehaviorSpec = {
   tag: 'mth-skeleton',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { cardMessages } from './card.messages.js';
 
 export const cardSpec: ComponentBehaviorSpec = {
   tag: 'mth-card',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

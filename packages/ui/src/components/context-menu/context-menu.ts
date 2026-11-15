@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   OverlayController,
   PositioningController,
   type OverlayCloseReason,
   type PositioningResult,
   type VirtualAnchor,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { contextMenuMessages } from './context-menu.messages.js';

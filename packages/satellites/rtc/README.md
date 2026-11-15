@@ -1,4 +1,4 @@
-# `@methane/rtc`
+# `@methane-ui/rtc`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first WebRTC, `navigator.mediaDevices`, `getDisplayMedia`, and `MediaRecord
 ## Installation
 
 ```bash
-pnpm add @methane/rtc @methane/core @methane/tokens
+pnpm add @methane-ui/rtc @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/rtc @methane/core @methane/tokens
+npm install @methane-ui/rtc @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/rtc` | Auto-registers all 4 RTC elements and exports `registerAllComponents(prefix?)` |
-| `@methane/rtc/<slug>` | Per-component tree-shakeable import (e.g. `@methane/rtc/video-grid`) |
-| `@methane/rtc/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/rtc/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/rtc` | Auto-registers all 4 RTC elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/rtc/<slug>` | Per-component tree-shakeable import (e.g. `@methane-ui/rtc/video-grid`) |
+| `@methane-ui/rtc/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/rtc/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -40,9 +40,9 @@ npm install @methane/rtc @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/rtc/audio-recorder';
-import '@methane/rtc/video-grid';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/rtc/audio-recorder';
+import '@methane-ui/rtc/video-grid';
 
 document.getElementById('voice-note')?.addEventListener('mth-record-complete', (ev) => {
   const { blob, duration } = (ev as CustomEvent<{ blob: Blob; duration: number }>).detail;

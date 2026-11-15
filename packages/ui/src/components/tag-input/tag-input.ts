@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController, InputController, SelectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController, InputController, SelectionController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';

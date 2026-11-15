@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMarkdownEditor } from './markdown-editor.js';
 
 export { MthMarkdownEditor, type MarkdownEditorEngine } from './markdown-editor.js';

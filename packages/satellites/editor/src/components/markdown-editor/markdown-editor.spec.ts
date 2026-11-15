@@ -1,11 +1,11 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { markdownEditorMessages } from './markdown-editor.messages.js';
 
 export type MarkdownEditorMode = 'write' | 'preview' | 'split';
 
 export const markdownEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-markdown-editor',
-  package: '@methane/editor',
+  package: '@methane-ui/editor',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { aiFeedbackMessages } from './ai-feedback.messages.js';
 
 export const aiFeedbackSpec: ComponentBehaviorSpec = {
   tag: 'mth-ai-feedback',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: ['roving-focus'],
   controllers: ['SelectionController', 'RovingFocusController'],
   focusModel: 'none',

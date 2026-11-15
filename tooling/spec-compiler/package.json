@@ -1,11 +1,11 @@
 {
-  "name": "@methane/spec-compiler",
+  "name": "@methane-ui/spec-compiler",
   "version": "0.1.0",
   "description": "Validates ComponentBehaviorSpec and compiles spec tests, Markdown docs, CEM verification, and a11y checklists",
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@methane/test-conformance": "workspace:^"
+    "@methane-ui/test-conformance": "workspace:^"
   },
   "exports": {
     ".": {
@@ -21,5 +21,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

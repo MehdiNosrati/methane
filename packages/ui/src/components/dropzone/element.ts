@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDropzone } from './dropzone.js';
 
 export function registerMthDropzone(prefix?: string): ReadonlyArray<string> {

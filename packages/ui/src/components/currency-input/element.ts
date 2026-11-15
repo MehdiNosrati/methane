@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCurrencyInput } from './currency-input.js';
 
 export { MthCurrencyInput } from './currency-input.js';

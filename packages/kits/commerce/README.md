@@ -1,4 +1,4 @@
-# `@methane/commerce`
+# `@methane-ui/commerce`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ E-commerce, SaaS billing, checkout, pricing, and storefront Web Components for *
 ## Installation
 
 ```bash
-pnpm add @methane/commerce @methane/core @methane/tokens
+pnpm add @methane-ui/commerce @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/commerce @methane/core @methane/tokens
+npm install @methane-ui/commerce @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/commerce` | Auto-registers all 10 commerce kit elements and exports `registerAllComponents(prefix?)` |
-| `@methane/commerce/<slug>` | Per-component entrypoint (e.g. `@methane/commerce/cart`, `@methane/commerce/price-display`) |
-| `@methane/commerce/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/commerce/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/commerce` | Auto-registers all 10 commerce kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/commerce/<slug>` | Per-component entrypoint (e.g. `@methane-ui/commerce/cart`, `@methane-ui/commerce/price-display`) |
+| `@methane-ui/commerce/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/commerce/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -55,9 +55,9 @@ npm install @methane/commerce @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/commerce/product-card';
-import '@methane/commerce/price-display';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/commerce/product-card';
+import '@methane-ui/commerce/price-display';
 
 document.querySelector('mth-product-card')?.addEventListener('mth-add-to-cart', (ev) => {
   console.log('Added item:', (ev as CustomEvent).detail);
@@ -67,8 +67,8 @@ document.querySelector('mth-product-card')?.addEventListener('mth-add-to-cart', 
 ## Theming, A11y & SSR Notes
 
 - **Theming**: Exposes `::part(base)`, `::part(price)`, `::part(action)`, `::part(summary)`, `::part(checkout-button)`, and `--mth-*` semantic tokens.
-- **Accessibility & Forms**: `<mth-payment-form>`, `<mth-quantity-selector>`, and `<mth-plan-picker>` implement FACE form participation and constraint validation; URL attributes (`logo-url`, `image-src`, `href`) are protocol-validated via `@methane/sanitize`.
-- **SSR**: Zero browser-only dependencies on initial render, making product cards, price displays, and invoices straightforward to SSR with `@methane/ssr`.
+- **Accessibility & Forms**: `<mth-payment-form>`, `<mth-quantity-selector>`, and `<mth-plan-picker>` implement FACE form participation and constraint validation; URL attributes (`logo-url`, `image-src`, `href`) are protocol-validated via `@methane-ui/sanitize`.
+- **SSR**: Zero browser-only dependencies on initial render, making product cards, price displays, and invoices straightforward to SSR with `@methane-ui/ssr`.
 
 ## License
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import '@methane/ssr/dom-shim';
+import '@methane-ui/ssr/dom-shim';
 import { LitElement, css, html } from 'lit';
 import {
   createAngularSsrTransformStream,
@@ -38,7 +38,7 @@ if (!customElements.get('mth-angular-input')) {
   customElements.define('mth-angular-input', MthAngularInput);
 }
 
-describe('@methane/ssr-angular', () => {
+describe('@methane-ui/ssr-angular', () => {
   it('serializes Angular SSR HTML with DSD while preserving ngh/ng-version markers and hoisting links', async () => {
     const angularHtml =
       '<!doctype html><html><head><title>Ng</title></head><body>' +

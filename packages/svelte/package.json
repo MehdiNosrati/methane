@@ -1,5 +1,5 @@
 {
-  "name": "@methane/svelte",
+  "name": "@methane-ui/svelte",
   "version": "0.1.0",
   "description": "Svelte 5 typed wrappers supporting bind:value, bind:checked, and bind:open for Methane UI (ADR-009)",
   "license": "MIT",
@@ -37,7 +37,15 @@
     }
   },
   "devDependencies": {
-    "@methane/wrapper-codegen": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^",
     "svelte": "^5.57.3"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

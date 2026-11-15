@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const colorPickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-color-picker',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay'],
   controllers: ['FormControlController', 'OverlayController', 'PositioningController'],
   focusModel: 'delegates-focus',

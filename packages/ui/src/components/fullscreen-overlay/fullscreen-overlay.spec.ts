@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { fullscreenOverlayMessages } from './fullscreen-overlay.messages.js';
 
 export const fullscreenOverlaySpec: ComponentBehaviorSpec = {
   tag: 'mth-fullscreen-overlay',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'FocusTrapController', 'MotionController'],
   focusModel: 'none',

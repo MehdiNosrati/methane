@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthActivityFeed } from './activity-feed.js';
 
 export { MthActivityFeed, type ActivityFeedEntry } from './activity-feed.js';

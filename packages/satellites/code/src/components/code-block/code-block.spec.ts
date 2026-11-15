@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { codeBlockMessages } from './code-block.messages.js';
 
 export const codeBlockSpec: ComponentBehaviorSpec = {
   tag: 'mth-code-block',
-  package: '@methane/code',
+  package: '@methane-ui/code',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'delegates-focus',

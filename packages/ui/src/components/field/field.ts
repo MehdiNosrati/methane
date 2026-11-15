@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FieldContextProviderController, type DensityMode } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FieldContextProviderController, type DensityMode } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { fieldMessages } from './field.messages.js';

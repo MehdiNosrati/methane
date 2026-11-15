@@ -1,14 +1,14 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/field';
-import '@methane/ui/radio';
+import '@methane-ui/ui/field';
+import '@methane-ui/ui/radio';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthRadioGroup, radioGroupSpec, registerMthRadioGroup } from './index.js';
 

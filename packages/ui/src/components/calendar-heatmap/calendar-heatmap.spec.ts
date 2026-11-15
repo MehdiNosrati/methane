@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const calendarHeatmapSpec: ComponentBehaviorSpec = {
   tag: 'mth-calendar-heatmap',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'none',

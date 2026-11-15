@@ -1,4 +1,4 @@
-# `@methane/primitives`
+# `@methane-ui/primitives`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,19 +7,19 @@ Framework-agnostic Lit `ReactiveController` behaviors, headless state engines, l
 ## Installation
 
 ```bash
-pnpm add @methane/primitives @methane/core
+pnpm add @methane-ui/primitives @methane-ui/core
 # or
-npm install @methane/primitives @methane/core
+npm install @methane-ui/primitives @methane-ui/core
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Exported Primitives & Controllers
 
 | Symbol | Category | Description |
 | --- | --- | --- |
 | `AutoLoader`, `MthVisuallyHiddenElement`, `MthSkipLinkElement`, `MthErrorBoundaryElement`, `registerUtilityElements` | Utilities & Lazy Loading | `MutationObserver`-backed automatic element loader + essential a11y/resilience utility tags (`<mth-visually-hidden>`, `<mth-skip-link>`, `<mth-error-boundary>`) |
-| `OverlayController` | Overlay | Top-layer (`popover` / `<dialog>` / `modal`) coordinator integrating with `@methane/core` overlay stack, outside-click, and `Escape` dismissal |
+| `OverlayController` | Overlay | Top-layer (`popover` / `<dialog>` / `modal`) coordinator integrating with `@methane-ui/core` overlay stack, outside-click, and `Escape` dismissal |
 | `PositioningController` | Positioning | Viewport-aware anchor positioning with `flip`, `shift`, `offset`, virtual anchors, and RTL logical alignment |
 | `FocusTrapController`, `collectTabbableElements`, `getDeepActiveElement`, `getFirstTabbable` | Focus | Modal & composite-widget focus containment and Shadow DOM deep active element traversal |
 | `RovingFocusController` | Keyboard | Arrow-key / `Home` / `End` composite widget navigation with RTL awareness |
@@ -48,15 +48,15 @@ npm install @methane/primitives @methane/core
 ### Lazy Auto-Loading Custom Elements
 
 ```ts
-import { AutoLoader, registerUtilityElements } from '@methane/primitives';
+import { AutoLoader, registerUtilityElements } from '@methane-ui/primitives';
 
 registerUtilityElements();
 
 const loader = new AutoLoader({
   prefix: 'mth-',
   loaders: {
-    'mth-button': () => import('@methane/ui/button'),
-    'mth-dialog': () => import('@methane/ui/dialog'),
+    'mth-button': () => import('@methane-ui/ui/button'),
+    'mth-dialog': () => import('@methane-ui/ui/dialog'),
   },
 });
 
@@ -67,12 +67,12 @@ loader.observe(document.body);
 
 ```ts
 import { html } from 'lit';
-import { UIElement } from '@methane/core';
+import { UIElement } from '@methane-ui/core';
 import {
   FocusTrapController,
   OverlayController,
   RovingFocusController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 
 export class AcmeMenu extends UIElement {
   private overlay = new OverlayController(this, {

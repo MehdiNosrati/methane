@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { createMethaneNuxtConfig } from '@methane/ssr-nuxt';
+import { createMethaneNuxtConfig } from '@methane-ui/ssr-nuxt';
 import { describe, expect, it } from 'vitest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -136,12 +136,12 @@ function runNuxtSsrInNode(): {
   };
 }
 
-describe('@methane/verify-nuxt', () => {
+describe('@methane-ui/verify-nuxt', () => {
   it('provides Nuxt compilerOptions.isCustomElement and Nitro externals config', () => {
     const cfg = createMethaneNuxtConfig();
     expect(cfg.vue.compilerOptions.isCustomElement('mth-input')).toBe(true);
     expect(cfg.vue.compilerOptions.isCustomElement('div')).toBe(false);
-    expect(cfg.nitro.externals?.inline).toEqual(['@methane/ssr', '@methane/ssr-nuxt']);
+    expect(cfg.nitro.externals?.inline).toEqual(['@methane-ui/ssr', '@methane-ui/ssr-nuxt']);
   });
 
   it('renders Vue SSR custom elements with Nitro DSD expansion and <head> link hoisting', () => {

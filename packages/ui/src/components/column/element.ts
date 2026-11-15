@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthColumn } from './column.js';
 
 export { MthColumn, type MthColumnAlign, type MthColumnPin } from './column.js';

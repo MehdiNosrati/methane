@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { kanbanMessages } from './kanban.messages.js';
 
 export const kanbanSpec: ComponentBehaviorSpec = {
   tag: 'mth-kanban',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['roving-focus', 'data-consumer'],
   controllers: ['DataController', 'RovingFocusController', 'DragSortController'],
   focusModel: 'delegates-focus',

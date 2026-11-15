@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSidebarNav } from './sidebar-nav.js';
 
 export { MthSidebarNav, type SidebarNavItem } from './sidebar-nav.js';

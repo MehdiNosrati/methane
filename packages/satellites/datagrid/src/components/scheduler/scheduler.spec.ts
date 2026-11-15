@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { schedulerMessages } from './scheduler.messages.js';
 
 export const schedulerSpec: ComponentBehaviorSpec = {
   tag: 'mth-scheduler',
-  package: '@methane/datagrid',
+  package: '@methane-ui/datagrid',
   conformance: ['satellite'],
   controllers: ['CalendarCore', 'RovingFocusController', 'VirtualizerController'],
   focusModel: 'host',

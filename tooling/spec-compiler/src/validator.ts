@@ -43,11 +43,11 @@ export function validateBehaviorSpec(input: unknown): SpecValidationResult {
     });
   }
 
-  if (typeof input['package'] !== 'string' || !input['package'].startsWith('@methane/')) {
+  if (typeof input['package'] !== 'string' || !input['package'].startsWith('@methane-ui/')) {
     errors.push({
       level: 'error',
       path: 'package',
-      message: 'Spec `package` must be an `@methane/*` package name.',
+      message: 'Spec `package` must be an `@methane-ui/*` package name.',
     });
   }
 

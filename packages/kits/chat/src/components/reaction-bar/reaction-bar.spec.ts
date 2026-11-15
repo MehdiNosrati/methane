@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { reactionBarMessages } from './reaction-bar.messages.js';
 
 export const reactionBarSpec: ComponentBehaviorSpec = {
   tag: 'mth-reaction-bar',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: ['roving-focus'],
   controllers: ['SelectionController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

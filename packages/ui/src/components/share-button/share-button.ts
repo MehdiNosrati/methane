@@ -1,5 +1,5 @@
-import { UIElement, html, property, state } from '@methane/core';
-import { ClipboardAndShare, LiveAnnouncer } from '@methane/primitives';
+import { UIElement, html, property, state } from '@methane-ui/core';
+import { ClipboardAndShare, LiveAnnouncer } from '@methane-ui/primitives';
 import { shareButtonMessages } from './share-button.messages.js';
 import { shareButtonStyles } from './share-button.styles.js';
 

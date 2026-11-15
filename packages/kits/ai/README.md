@@ -1,27 +1,27 @@
-# `@methane/ai`
+# `@methane-ui/ai`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-AI assistant and LLM UX Web Components for **Methane UI** — streaming Markdown messages with `@methane/sanitize` XSS protection, prompt composer with stop control, reasoning/tool-call disclosures, citations, side-by-side artifact viewer, and feedback capture.
+AI assistant and LLM UX Web Components for **Methane UI** — streaming Markdown messages with `@methane-ui/sanitize` XSS protection, prompt composer with stop control, reasoning/tool-call disclosures, citations, side-by-side artifact viewer, and feedback capture.
 
 ## Installation
 
 ```bash
-pnpm add @methane/ai @methane/core @methane/tokens
+pnpm add @methane-ui/ai @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/ai @methane/core @methane/tokens
+npm install @methane-ui/ai @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/ai` | Auto-registers all 8 AI kit elements and exports `registerAllComponents(prefix?)` |
-| `@methane/ai/<slug>` | Per-component tree-shakeable auto-registering import (e.g. `@methane/ai/prompt-input`) |
-| `@methane/ai/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` helper |
-| `@methane/ai/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/ai` | Auto-registers all 8 AI kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/ai/<slug>` | Per-component tree-shakeable auto-registering import (e.g. `@methane-ui/ai/prompt-input`) |
+| `@methane-ui/ai/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` helper |
+| `@methane-ui/ai/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -59,8 +59,8 @@ npm install @methane/ai @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/ai';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/ai';
 
 const msg = document.querySelector('mth-ai-message')!;
 msg.content = 'Here is the refactored snippet:\n\n```ts\nexport const ok = true;\n```';
@@ -75,9 +75,9 @@ document.getElementById('composer')?.addEventListener('mth-submit', (ev) => {
 ## Theming, A11y & Security Notes
 
 - **Theming**: Expose `::part(base)`, `::part(content)`, `::part(composer)`, `::part(textarea)`, `::part(submit-button)`, `::part(stop-button)`, `::part(cursor)`, etc., styled with `--mth-color-surface`, `--mth-color-accent-subtle`, `--mth-color-border-focus`, and `--mth-radius-lg`.
-- **XSS Hardening**: `<mth-ai-message>` and `<mth-artifact-pane>` sanitize streaming Markdown with `@methane/sanitize` (`allow-raw-html` defaults to `false`).
+- **XSS Hardening**: `<mth-ai-message>` and `<mth-artifact-pane>` sanitize streaming Markdown with `@methane-ui/sanitize` (`allow-raw-html` defaults to `false`).
 - **Accessibility & Keyboard**: `<mth-suggestion-chips>` and `<mth-citation-list>` use roving tabindex arrow navigation; `<mth-prompt-input>` participates in native FACE form submission and supports `Enter` / `Shift+Enter`.
-- **SSR**: Renders initial message shells and controls cleanly with `@methane/ssr` Declarative Shadow DOM.
+- **SSR**: Renders initial message shells and controls cleanly with `@methane-ui/ssr` Declarative Shadow DOM.
 
 ## License
 

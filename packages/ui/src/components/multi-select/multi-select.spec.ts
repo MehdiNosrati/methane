@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { multiSelectMessages } from './multi-select.messages.js';
 
 export const multiSelectSpec: ComponentBehaviorSpec = {
   tag: 'mth-multi-select',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay', 'listbox'],
   controllers: [
     'FormControlController',

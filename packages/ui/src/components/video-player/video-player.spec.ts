@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { videoPlayerMessages } from './video-player.messages.js';
 
 export const videoPlayerSpec: ComponentBehaviorSpec = {
   tag: 'mth-video-player',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',

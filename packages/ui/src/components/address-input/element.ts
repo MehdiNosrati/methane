@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthAddressInput } from './address-input.js';
 
 export { MthAddressInput, type AddressValue } from './address-input.js';

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { audioPlayerMessages } from './audio-player.messages.js';
 
 export const audioPlayerSpec: ComponentBehaviorSpec = {
   tag: 'mth-audio-player',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'delegates-focus',

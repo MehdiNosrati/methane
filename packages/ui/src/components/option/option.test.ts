@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite } from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { optionSpec } from './option.spec.js';
 import { MthOption, registerMthOption } from './index.js';

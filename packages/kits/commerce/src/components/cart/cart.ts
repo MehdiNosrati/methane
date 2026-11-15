@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { isSafeUrl } from '@methane/sanitize';
-import { registerMthButton } from '@methane/ui/button';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { isSafeUrl } from '@methane-ui/sanitize';
+import { registerMthButton } from '@methane-ui/ui/button';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { cartMessages } from './cart.messages.js';
@@ -20,7 +20,7 @@ export interface CartItem {
 
 /**
  * `<mth-cart>`: accessible shopping cart composing `mth-quantity-selector`, `mth-price-display`,
- * and `@methane/ui/button` with sanitized thumbnails/links and locale-aware currency totals.
+ * and `@methane-ui/ui/button` with sanitized thumbnails/links and locale-aware currency totals.
  */
 export class MthCart extends UIElement {
   static override messages = cartMessages;

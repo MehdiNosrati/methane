@@ -1,9 +1,9 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/carousel';
-import '@methane/ui/carousel-item';
+import '@methane-ui/ui/carousel';
+import '@methane-ui/ui/carousel-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { gallerySpec, MthGallery, registerMthGallery, type GalleryItem } from './index.js';
 

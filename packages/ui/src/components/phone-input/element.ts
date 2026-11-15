@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthPhoneInput } from './phone-input.js';
 
 export { MthPhoneInput, PHONE_COUNTRIES, type PhoneCountryOption } from './phone-input.js';

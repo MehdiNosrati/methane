@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthProductCard } from './element.js';
 
 export { MthProductCard } from './element.js';

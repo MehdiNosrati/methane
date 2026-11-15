@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { queryBuilderMessages } from './query-builder.messages.js';
 
 export const queryBuilderSpec: ComponentBehaviorSpec = {
   tag: 'mth-query-builder',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['form-control'],
   controllers: ['FormControlController'],
   focusModel: 'delegates-focus',

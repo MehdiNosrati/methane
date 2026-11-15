@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { tagInputMessages } from './tag-input.messages.js';
 
 export const tagInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-tag-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'SelectionController'],
   focusModel: 'delegates-focus',

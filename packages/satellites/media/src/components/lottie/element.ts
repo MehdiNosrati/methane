@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthLottie } from './lottie.js';
 
 export { MthLottie, LottieEngine, type LottieEngineConfig } from './lottie.js';

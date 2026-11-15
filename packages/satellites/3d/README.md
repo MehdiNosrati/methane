@@ -1,4 +1,4 @@
-# `@methane/3d`
+# `@methane-ui/3d`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first **Three.js** lazy WebGL/WebGPU 3D model viewer (`<mth-model-viewer>`)
 ## Installation
 
 ```bash
-pnpm add @methane/3d @methane/core @methane/tokens
+pnpm add @methane-ui/3d @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/3d @methane/core @methane/tokens
+npm install @methane-ui/3d @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/3d` | Auto-registers `<mth-model-viewer>` and exports `MthModelViewer` & `registerAllComponents(prefix?)` |
-| `@methane/3d/model-viewer` | Per-component auto-registering entrypoint |
-| `@methane/3d/model-viewer/element` | Unregistered `MthModelViewer`, spec, styles, messages, and `registerMthModelViewer(prefix?)` |
-| `@methane/3d/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/3d` | Auto-registers `<mth-model-viewer>` and exports `MthModelViewer` & `registerAllComponents(prefix?)` |
+| `@methane-ui/3d/model-viewer` | Per-component auto-registering entrypoint |
+| `@methane-ui/3d/model-viewer/element` | Unregistered `MthModelViewer`, spec, styles, messages, and `registerMthModelViewer(prefix?)` |
+| `@methane-ui/3d/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Component API (`<mth-model-viewer>`)
 
@@ -55,8 +55,8 @@ npm install @methane/3d @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/3d/model-viewer';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/3d/model-viewer';
 
 const viewer = document.querySelector('mth-model-viewer')!;
 viewer.addEventListener('mth-camera-change', (ev) => {

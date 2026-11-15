@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import 'zone.js/node';
 import { renderApplication } from '@angular/platform-server';
-import { registerUtilityElements } from '@methane/primitives';
-import { serializeAngularSsrHtml, type AngularSsrOptions, type AngularSsrResult } from '@methane/ssr-angular';
-import { registerAllComponents } from '@methane/ui';
+import { registerUtilityElements } from '@methane-ui/primitives';
+import { serializeAngularSsrHtml, type AngularSsrOptions, type AngularSsrResult } from '@methane-ui/ssr-angular';
+import { registerAllComponents } from '@methane-ui/ui';
 import { bootstrap } from './main.server.js';
 
 const BASE_DOCUMENT = `<!doctype html>

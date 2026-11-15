@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const treeItemSpec: ComponentBehaviorSpec = {
   tag: 'mth-tree-item',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'host',

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthTab } from './tab.js';
 
 export { MthTab } from './tab.js';

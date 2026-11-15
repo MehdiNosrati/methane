@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthKanban } from './kanban.js';
 
 export { MthKanban, type KanbanCard, type KanbanLane } from './kanban.js';

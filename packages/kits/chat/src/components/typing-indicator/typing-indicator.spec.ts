@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { typingIndicatorMessages } from './typing-indicator.messages.js';
 
 export const typingIndicatorSpec: ComponentBehaviorSpec = {
   tag: 'mth-typing-indicator',
-  package: '@methane/chat',
+  package: '@methane-ui/chat',
   conformance: [],
   controllers: ['MotionController'],
   focusModel: 'none',

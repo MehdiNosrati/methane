@@ -1,23 +1,23 @@
-# `@methane/ssr-astro`
+# `@methane-ui/ssr-astro`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Astro integration, server renderer, middleware, and island client hydration adapter for **Methane UI** — built on `@methane/ssr`.
+Astro integration, server renderer, middleware, and island client hydration adapter for **Methane UI** — built on `@methane-ui/ssr`.
 
 ## Installation
 
 ```bash
-pnpm add @methane/ssr-astro @methane/ssr @methane/core
+pnpm add @methane-ui/ssr-astro @methane-ui/ssr @methane-ui/core
 # or
-npm install @methane/ssr-astro @methane/ssr @methane/core
+npm install @methane-ui/ssr-astro @methane-ui/ssr @methane-ui/core
 ```
 
 ## Package Exports
 
 | Entrypoint | Environment | Exports |
 | --- | --- | --- |
-| `@methane/ssr-astro` | Astro Config / SSR | `createMethaneAstroIntegration`, `createMethaneAstroRenderer`, `createMethaneAstroMiddleware`, `renderAstroStaticMarkup`, `isMethaneAstroComponent` |
-| `@methane/ssr-astro/client` | Astro Client Islands | `initAstroHydration`, `hydrateAstroIsland`, `isAstroHydrationReady` |
+| `@methane-ui/ssr-astro` | Astro Config / SSR | `createMethaneAstroIntegration`, `createMethaneAstroRenderer`, `createMethaneAstroMiddleware`, `renderAstroStaticMarkup`, `isMethaneAstroComponent` |
+| `@methane-ui/ssr-astro/client` | Astro Client Islands | `initAstroHydration`, `hydrateAstroIsland`, `isAstroHydrationReady` |
 
 ## Usage Examples
 
@@ -25,7 +25,7 @@ npm install @methane/ssr-astro @methane/ssr @methane/core
 
 ```ts
 import { defineConfig } from 'astro/config';
-import { createMethaneAstroIntegration } from '@methane/ssr-astro';
+import { createMethaneAstroIntegration } from '@methane-ui/ssr-astro';
 
 export default defineConfig({
   integrations: [
@@ -40,7 +40,7 @@ export default defineConfig({
 ### 2. Middleware or Static HTML Rendering
 
 ```ts
-import { createMethaneAstroMiddleware, renderAstroStaticMarkup } from '@methane/ssr-astro';
+import { createMethaneAstroMiddleware, renderAstroStaticMarkup } from '@methane-ui/ssr-astro';
 
 export const onRequest = createMethaneAstroMiddleware({ styles: 'linked' });
 
@@ -51,7 +51,7 @@ const { html } = await renderAstroStaticMarkup('<mth-badge>v1.0</mth-badge>');
 ### 3. Client Hydration
 
 ```ts
-import { initAstroHydration, hydrateAstroIsland } from '@methane/ssr-astro/client';
+import { initAstroHydration, hydrateAstroIsland } from '@methane-ui/ssr-astro/client';
 
 initAstroHydration();
 hydrateAstroIsland(document.body);
@@ -60,7 +60,7 @@ hydrateAstroIsland(document.body);
 ## Notes
 
 - Hoists deduplicated shadow stylesheet links into Astro `<head>` chunks automatically.
-- Static layout/prose/marketing tags from `@methane/css` render with zero Astro client island JavaScript.
+- Static layout/prose/marketing tags from `@methane-ui/css` render with zero Astro client island JavaScript.
 
 ## License
 

@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   NotificationStoreController,
   OverlayController,
@@ -6,8 +6,8 @@ import {
   type OverlayCloseReason,
   type Placement,
   type PositioningResult,
-} from '@methane/primitives';
-import { registerMthBadge } from '@methane/ui/badge';
+} from '@methane-ui/primitives';
+import { registerMthBadge } from '@methane-ui/ui/badge';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';
@@ -25,7 +25,7 @@ export interface NotificationBellItem {
 }
 
 /**
- * `<mth-notification-bell>`: notification bell trigger with `@methane/ui` badge,
+ * `<mth-notification-bell>`: notification bell trigger with `@methane-ui/ui` badge,
  * `NotificationStoreController`, `OverlayController`, and dual-path `PositioningController`.
  */
 export class MthNotificationBell extends UIElement {

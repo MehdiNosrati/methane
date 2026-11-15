@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { imageCropperSpec } from './image-cropper.spec.js';
 import { MthImageCropper, registerMthImageCropper } from './index.js';

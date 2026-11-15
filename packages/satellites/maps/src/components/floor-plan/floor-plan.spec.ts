@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { floorPlanMessages } from './floor-plan.messages.js';
 
 export const floorPlanSpec: ComponentBehaviorSpec = {
   tag: 'mth-floor-plan',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['roving-focus', 'satellite'],
   controllers: ['RovingFocusController', 'SelectionController'],
   focusModel: 'host',

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { mfaChallengeMessages } from './mfa-challenge.messages.js';
 
 export const mfaChallengeSpec: ComponentBehaviorSpec = {
   tag: 'mth-mfa-challenge',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: ['form-control', 'roving-focus'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

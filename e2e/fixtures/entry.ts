@@ -1,7 +1,7 @@
-import '@methane/core';
-import { registerUtilityElements } from '@methane/primitives';
-import '@methane/sanitize';
-import { registerAllComponents } from '@methane/ui';
+import '@methane-ui/core';
+import { registerUtilityElements } from '@methane-ui/primitives';
+import '@methane-ui/sanitize';
+import { registerAllComponents } from '@methane-ui/ui';
 
 registerUtilityElements();
 registerAllComponents();

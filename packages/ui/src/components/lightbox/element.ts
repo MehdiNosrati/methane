@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthLightbox } from './lightbox.js';
 
 export { MthLightbox, type MthLightboxItem } from './lightbox.js';

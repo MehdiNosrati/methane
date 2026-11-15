@@ -1,4 +1,4 @@
-import type { MessageCatalog } from '@methane/core';
+import type { MessageCatalog } from '@methane-ui/core';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { LiveAnnouncer } from './live-announcer.js';
 

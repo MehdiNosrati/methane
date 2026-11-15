@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import type { ExtendedCustomElementsManifest } from './types.js';
 
 export const DEFAULT_CEM_FIXTURE: ExtendedCustomElementsManifest = {
@@ -528,7 +528,7 @@ export const DEFAULT_CEM_FIXTURE: ExtendedCustomElementsManifest = {
 export const DEFAULT_BEHAVIOR_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   {
     tag: 'mth-input',
-    package: '@methane/ui',
+    package: '@methane-ui/ui',
     conformance: ['form-control'],
     controllers: ['FormControlController', 'InputController'],
     focusModel: 'delegates-focus',
@@ -559,7 +559,7 @@ export const DEFAULT_BEHAVIOR_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-combobox',
-    package: '@methane/ui',
+    package: '@methane-ui/ui',
     conformance: ['form-control', 'listbox', 'overlay', 'data-consumer'],
     controllers: [
       'FormControlController',
@@ -594,7 +594,7 @@ export const DEFAULT_BEHAVIOR_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-dialog',
-    package: '@methane/ui',
+    package: '@methane-ui/ui',
     conformance: ['overlay'],
     controllers: ['OverlayController', 'FocusTrapController', 'MotionController'],
     focusModel: 'host',

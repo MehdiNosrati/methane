@@ -16,7 +16,7 @@
           "description": "Spreadsheet formula bar satellite with FACE form integration, live Formula AST dependency inspection, and IME-safe InputController editing.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -265,7 +265,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-formula-bar",
-            "package": "@methane/spreadsheet",
+            "package": "@methane-ui/spreadsheet",
             "conformance": [
               "satellite",
               "form-control"
@@ -430,7 +430,7 @@
           "description": "Virtualized spreadsheet satellite with clean-room MIT Formula AST evaluator, A1/R1C1 addressing, cycle detection, keyboard navigation, and TSV clipboard support.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -662,7 +662,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-spreadsheet",
-            "package": "@methane/spreadsheet",
+            "package": "@methane-ui/spreadsheet",
             "conformance": [
               "satellite"
             ],

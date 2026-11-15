@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthChartSeries } from './chart-series.js';
 
 export { MTH_CHART_TYPES, MthChartSeries, type MthChartType } from './chart-series.js';

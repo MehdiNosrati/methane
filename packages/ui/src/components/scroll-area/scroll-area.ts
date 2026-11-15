@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
-import { ObserverPoolController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
+import { ObserverPoolController } from '@methane-ui/primitives';
 import { scrollAreaMessages } from './scroll-area.messages.js';
 import { scrollAreaStyles } from './scroll-area.styles.js';
 

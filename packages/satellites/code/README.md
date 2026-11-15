@@ -1,4 +1,4 @@
-# `@methane/code`
+# `@methane-ui/code`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first developer code display, **CodeMirror 6** interactive editor, unified/
 ## Installation
 
 ```bash
-pnpm add @methane/code @methane/core @methane/tokens
+pnpm add @methane-ui/code @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/code @methane/core @methane/tokens
+npm install @methane-ui/code @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/code` | Auto-registers all 4 code elements and exports `registerAllComponents(prefix?)` |
-| `@methane/code/<slug>` | Per-component entrypoint (`code-block`, `code-editor`, `diff-viewer`, `json-editor`) |
-| `@methane/code/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
-| `@methane/code/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/code` | Auto-registers all 4 code elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/code/<slug>` | Per-component entrypoint (`code-block`, `code-editor`, `diff-viewer`, `json-editor`) |
+| `@methane-ui/code/<slug>/element` | Unregistered classes, specs, styles, messages, and `registerMth*()` |
+| `@methane-ui/code/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -40,7 +40,7 @@ npm install @methane/code @methane/core @methane/tokens
   line-numbers
   highlight-lines="2-3"
   show-copy
-  code="import '@methane/ui/button';&#10;const ok = true;"
+  code="import '@methane-ui/ui/button';&#10;const ok = true;"
 ></mth-code-block>
 
 <mth-code-editor
@@ -52,9 +52,9 @@ npm install @methane/code @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/code/diff-viewer';
-import '@methane/code/json-editor';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/code/diff-viewer';
+import '@methane-ui/code/json-editor';
 ```
 
 ## Theming, A11y & Lazy-Engine Notes

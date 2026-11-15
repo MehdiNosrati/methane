@@ -4,13 +4,13 @@ import {
   MTH_MARKETING_PRIMITIVES,
   MTH_TYPOGRAPHY_PRIMITIVES,
   MTH_UNUPGRADED_TAG_PRIMITIVES,
-} from '@methane/css';
+} from '@methane-ui/css';
 
 export interface CssPrimitiveDocEntry {
   readonly id: (typeof MTH_CSS_PRIMITIVES)[number];
   readonly title: string;
   readonly category: 'Layout' | 'Typography & Surface' | 'Content & Marketing';
-  readonly subpath: '@methane/css/layout.css' | '@methane/css/prose.css' | '@methane/css/marketing.css';
+  readonly subpath: '@methane-ui/css/layout.css' | '@methane-ui/css/prose.css' | '@methane-ui/css/marketing.css';
   readonly selector: string;
   readonly hasCustomTag: boolean;
   readonly description: string;
@@ -77,7 +77,7 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
     title: 'Grid',
     description: 'Auto-fit responsive CSS Grid with explicit column presets and subgrid row alignment.',
     whenNotToUse:
-      'Do not use when you need drag-and-drop column resizing or virtualized scrolling; use <mth-table> or @methane/datagrid.',
+      'Do not use when you need drag-and-drop column resizing or virtualized scrolling; use <mth-table> or @methane-ui/datagrid.',
     previewHtml: `<mth-grid data-columns="3" data-gap="2">
   <div style="padding:0.5rem;background:var(--mth-color-bg-subtle);border-radius:var(--mth-radius-sm)">1</div>
   <div style="padding:0.5rem;background:var(--mth-color-bg-subtle);border-radius:var(--mth-radius-sm)">2</div>
@@ -184,7 +184,7 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
     title: 'Prose',
     description: 'Long-form editorial typography rhythm for headings, lists, blockquotes, code, and tables.',
     whenNotToUse:
-      'Do not inject untrusted HTML into .mth-prose without sanitizing first via @methane/sanitize.',
+      'Do not inject untrusted HTML into .mth-prose without sanitizing first via @methane-ui/sanitize.',
     previewHtml: `<div class="mth-prose" style="font-size:var(--mth-font-size-sm)">
   <p>Clean editorial rhythm with <code>inline code</code> and <strong>logical spacing</strong>.</p>
 </div>`,
@@ -195,7 +195,7 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
     title: 'Description List',
     description: 'Container-responsive key-value <dl> with stacked and bordered variants.',
     whenNotToUse:
-      'Do not use for sortable or selectable multi-column datasets; use <mth-table> or @methane/datagrid.',
+      'Do not use for sortable or selectable multi-column datasets; use <mth-table> or @methane-ui/datagrid.',
     previewHtml: `<dl class="mth-dl" data-variant="bordered">
   <dt>License</dt><dd>MIT</dd>
   <dt>JS Runtime</dt><dd>0 bytes</dd>
@@ -234,7 +234,7 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
     title: 'Testimonial',
     description: 'Accessible <figure> quote block with logical inline-start accent border and attribution.',
     whenNotToUse:
-      'Do not use for live interactive chat/comment threads; use @methane/chat <mth-chat-thread>.',
+      'Do not use for live interactive chat/comment threads; use @methane-ui/chat <mth-chat-thread>.',
     previewHtml: `<figure class="mth-testimonial" style="padding:0.75rem">
   <blockquote>“Zero hydration overhead on static content.”</blockquote>
   <figcaption class="mth-testimonial-author">— Platform Team</figcaption>
@@ -300,7 +300,7 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
     title: 'Pricing Table',
     description: 'Responsive pricing tier grid with featured tier highlight and forced-colors outline.',
     whenNotToUse:
-      'Do not use for interactive plan-selection forms or billing checkout steps; use @methane/commerce <mth-plan-picker>.',
+      'Do not use for interactive plan-selection forms or billing checkout steps; use @methane-ui/commerce <mth-plan-picker>.',
     previewHtml: `<div class="mth-pricing-table" style="--mth-pricing-min:10rem;gap:0.75rem">
   <div class="mth-pricing-tier" style="padding:0.75rem"><strong>Free</strong><div class="mth-pricing-price" style="font-size:var(--mth-font-size-xl)">$0</div></div>
   <div class="mth-pricing-tier mth-pricing-featured" style="padding:0.75rem"><strong>Pro</strong><div class="mth-pricing-price" style="font-size:var(--mth-font-size-xl)">$29</div></div>
@@ -341,10 +341,10 @@ export const CSS_PRIMITIVE_CATALOG: ReadonlyArray<CssPrimitiveDocEntry> = RAW_EN
 
   const subpath =
     category === 'Layout'
-      ? '@methane/css/layout.css'
+      ? '@methane-ui/css/layout.css'
       : category === 'Typography & Surface'
-        ? '@methane/css/prose.css'
-        : '@methane/css/marketing.css';
+        ? '@methane-ui/css/prose.css'
+        : '@methane-ui/css/marketing.css';
 
   const hasCustomTag = UNUPGRADED_SET.has(raw.id);
 

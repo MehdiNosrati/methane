@@ -1,9 +1,9 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   ObserverPoolController,
   RovingFocusController,
   type RovingOrientation,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { menubarMessages } from './menubar.messages.js';

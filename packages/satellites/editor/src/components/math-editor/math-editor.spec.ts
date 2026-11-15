@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { mathEditorMessages } from './math-editor.messages.js';
 
 export const mathEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-math-editor',
-  package: '@methane/editor',
+  package: '@methane-ui/editor',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

@@ -1,11 +1,11 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { jsonEditorMessages } from './json-editor.messages.js';
 
 export type JsonEditorMode = 'code' | 'tree' | 'split';
 
 export const jsonEditorSpec: ComponentBehaviorSpec = {
   tag: 'mth-json-editor',
-  package: '@methane/code',
+  package: '@methane-ui/code',
   conformance: ['satellite', 'form-control'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

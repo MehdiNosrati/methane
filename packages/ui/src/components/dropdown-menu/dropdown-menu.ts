@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   ListboxController,
   OverlayController,
@@ -9,7 +9,7 @@ import {
   type Placement,
   type PositioningAnchor,
   type PositioningResult,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { dropdownMenuMessages } from './dropdown-menu.messages.js';

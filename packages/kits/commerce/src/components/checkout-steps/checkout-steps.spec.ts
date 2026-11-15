@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { checkoutStepsMessages } from './checkout-steps.messages.js';
 
 export const checkoutStepsSpec: ComponentBehaviorSpec = {
   tag: 'mth-checkout-steps',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'host',

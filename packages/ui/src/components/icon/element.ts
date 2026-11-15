@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthIcon } from './icon.js';
 
 export { ICON_CATALOG, MthIcon, type MthIconName, type MthIconSize } from './icon.js';

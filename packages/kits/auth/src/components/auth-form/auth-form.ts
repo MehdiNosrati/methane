@@ -5,8 +5,8 @@ import {
   property,
   query,
   type PropertyValues,
-} from '@methane/core';
-import { FormControlController, InputController } from '@methane/primitives';
+} from '@methane-ui/core';
+import { FormControlController, InputController } from '@methane-ui/primitives';
 import { authFormMessages } from './auth-form.messages.js';
 import { authFormStyles } from './auth-form.styles.js';
 

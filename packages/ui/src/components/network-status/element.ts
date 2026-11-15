@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthNetworkStatus } from './network-status.js';
 
 export { MthNetworkStatus } from './network-status.js';

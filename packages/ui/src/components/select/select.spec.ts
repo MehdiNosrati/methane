@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { selectMessages } from './select.messages.js';
 
 export const selectSpec: ComponentBehaviorSpec = {
   tag: 'mth-select',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'listbox', 'overlay'],
   controllers: [
     'FormControlController',

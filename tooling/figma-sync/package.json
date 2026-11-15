@@ -1,5 +1,5 @@
 {
-  "name": "@methane/figma-sync",
+  "name": "@methane-ui/figma-sync",
   "version": "0.1.0",
   "description": "Two-way Figma Variables REST API <-> W3C DTCG token sync and multi-framework @figma/code-connect generator",
   "license": "MIT",
@@ -23,8 +23,16 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/spec-compiler": "workspace:^",
-    "@methane/tokens": "workspace:^",
-    "@methane/wrapper-codegen": "workspace:^"
-  }
+    "@methane-ui/spec-compiler": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

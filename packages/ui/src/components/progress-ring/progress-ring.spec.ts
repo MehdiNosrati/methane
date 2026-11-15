@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { progressRingMessages } from './progress-ring.messages.js';
 
 export const progressRingSpec: ComponentBehaviorSpec = {
   tag: 'mth-progress-ring',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

@@ -1,5 +1,5 @@
-import { html, property, query, state, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { ObserverPoolController, RovingFocusController } from '@methane/primitives';
+import { html, property, query, state, svg, UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { ObserverPoolController, RovingFocusController } from '@methane-ui/primitives';
 import {
   createMapEngine,
   normalizeLngLat,

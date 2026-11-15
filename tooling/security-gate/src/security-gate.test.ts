@@ -25,7 +25,7 @@ afterEach(() => {
   }
 });
 
-describe('@methane/security-gate', () => {
+describe('@methane-ui/security-gate', () => {
   it('passes end-to-end strict CSP & Trusted Types compliance across sanitize, core, primitives, and ssr', async () => {
     const result = await runStrictCspSuite();
 
@@ -141,10 +141,10 @@ describe('@methane/security-gate', () => {
     writeFileSync(
       join(fakeWs, 'packages/bad-pkg/package.json'),
       JSON.stringify({
-        name: '@methane/bad-pkg',
+        name: '@methane-ui/bad-pkg',
         version: '1.0.0',
-        dependencies: { '@methane/core': 'workspace:^' },
-        peerDependencies: { '@methane/core': '^0.1.0 || ^1.0.0' },
+        dependencies: { '@methane-ui/core': 'workspace:^' },
+        peerDependencies: { '@methane-ui/core': '^0.1.0 || ^1.0.0' },
       }),
       'utf8',
     );

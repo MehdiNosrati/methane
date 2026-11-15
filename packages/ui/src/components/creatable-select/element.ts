@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCreatableSelect } from './creatable-select.js';
 
 export { MthCreatableSelect, type CreatableSelectOption } from './creatable-select.js';

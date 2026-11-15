@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { carouselItemMessages } from './carousel-item.messages.js';
 
 export const carouselItemSpec: ComponentBehaviorSpec = {
   tag: 'mth-carousel-item',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { SelectionController, SlotCollectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { SelectionController, SlotCollectionController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { formWizardMessages } from './form-wizard.messages.js';

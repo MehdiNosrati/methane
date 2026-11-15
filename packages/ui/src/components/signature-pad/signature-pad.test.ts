@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { signaturePadSpec } from './signature-pad.spec.js';
 import { MthSignaturePad, registerMthSignaturePad } from './index.js';

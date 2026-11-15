@@ -1,4 +1,4 @@
-import { UIElement, devWarn, html, nothing, property } from '@methane/core';
+import { UIElement, devWarn, html, nothing, property } from '@methane-ui/core';
 import { fabMessages } from './fab.messages.js';
 import { fabStyles } from './fab.styles.js';
 

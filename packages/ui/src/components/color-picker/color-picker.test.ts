@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   OverlaySuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { colorPickerSpec } from './color-picker.spec.js';
 import { MthColorPicker, registerMthColorPicker } from './index.js';

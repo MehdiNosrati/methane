@@ -82,7 +82,7 @@ class MthSsrAsyncCard extends LitElement {
 
 customElements.define('mth-ssr-async-card', MthSsrAsyncCard);
 
-describe('@methane/ssr', () => {
+describe('@methane-ui/ssr', () => {
   it('renders linked mode by default with content-hashed <link> and < 1 KB critical <style> shell', async () => {
     const result = await renderWithMetadata(
       html`<mth-ssr-badge tone="success">Ready</mth-ssr-badge>`,
@@ -207,7 +207,7 @@ describe('@methane/ssr', () => {
     expect(second.html.split('<template shadowroot=').length - 1).toBe(1);
   });
 
-  it('retroactively patches LitElement when lit evaluates before @methane/ssr/client and enableHydrationSupport() is called with no args', () => {
+  it('retroactively patches LitElement when lit evaluates before @methane-ui/ssr/client and enableHydrationSupport() is called with no args', () => {
     const ssrPkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
     const clientUrl = pathToFileURL(resolve(ssrPkgRoot, 'dist/client.js')).href;
     const script = `

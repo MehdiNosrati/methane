@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDialog } from './dialog.js';
 
 export { MthDialog, type MthDialogVariant } from './dialog.js';

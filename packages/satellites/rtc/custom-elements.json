@@ -15,7 +15,7 @@
           "description": "Accessible MediaRecorder audio capture control with pause/resume, live input level meter, and duration limit.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -190,7 +190,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-audio-recorder",
-            "package": "@methane/rtc",
+            "package": "@methane-ui/rtc",
             "conformance": [
               "satellite"
             ],
@@ -336,7 +336,7 @@
           "description": "Accessible camera capture component wrapping MediaDevices.getUserMedia with graceful JSDOM/SSR fallback.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -541,7 +541,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-camera-capture",
-            "package": "@methane/rtc",
+            "package": "@methane-ui/rtc",
             "conformance": [
               "satellite"
             ],
@@ -696,7 +696,7 @@
           "description": "Accessible getDisplayMedia + MediaRecorder screen capture control with system audio toggle and SSR fallback.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -857,7 +857,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-screen-recorder",
-            "package": "@methane/rtc",
+            "package": "@methane-ui/rtc",
             "conformance": [
               "satellite"
             ],
@@ -994,7 +994,7 @@
           "description": "Accessible WebRTC participant video grid with speaker/gallery layouts and roving focus.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1178,7 +1178,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-video-grid",
-            "package": "@methane/rtc",
+            "package": "@methane-ui/rtc",
             "conformance": [
               "satellite",
               "roving-focus"

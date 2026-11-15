@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMathEditor } from './math-editor.js';
 
 export { MthMathEditor, type MathEditorEngine } from './math-editor.js';

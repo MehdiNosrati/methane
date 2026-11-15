@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthReviewSummary } from './element.js';
 
 export { MthReviewSummary } from './element.js';

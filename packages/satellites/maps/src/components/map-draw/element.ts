@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMapDraw } from './map-draw.js';
 import { mapDrawMessages } from './map-draw.messages.js';
 import { mapDrawSpec } from './map-draw.spec.js';

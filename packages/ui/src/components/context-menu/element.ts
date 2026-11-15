@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthContextMenu } from './context-menu.js';
 
 export { MthContextMenu, type ContextMenuItem } from './context-menu.js';

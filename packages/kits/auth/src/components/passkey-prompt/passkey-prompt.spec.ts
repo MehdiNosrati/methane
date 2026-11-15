@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { passkeyPromptMessages } from './passkey-prompt.messages.js';
 
 export const passkeyPromptSpec: ComponentBehaviorSpec = {
   tag: 'mth-passkey-prompt',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: [],
   controllers: [],
   focusModel: 'host',

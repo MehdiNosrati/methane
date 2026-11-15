@@ -1,5 +1,5 @@
 {
-  "name": "@methane/ssr",
+  "name": "@methane-ui/ssr",
   "version": "0.1.0",
   "description": "Streaming Declarative Shadow DOM (DSD) SSR engine for Methane UI wrapping @lit-labs/ssr with hybrid linked + critical inline style delivery (ADR-001, ADR-008)",
   "license": "MIT",
@@ -34,6 +34,14 @@
     "lit": "^3.3.3"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:^"
-  }
+    "@methane-ui/test-conformance": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

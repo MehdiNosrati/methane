@@ -10,7 +10,7 @@ import type {
 } from './index.js';
 import { MthCombobox, MthDialog, MthField, MthInput } from './legacy.js';
 
-describe('@methane/react', () => {
+describe('@methane-ui/react', () => {
   it('supports React 19 zero-runtime JSX intrinsic element types for Phase 0 & primitives', () => {
     const fieldElement = React.createElement('mth-field', {
       label: 'Email',

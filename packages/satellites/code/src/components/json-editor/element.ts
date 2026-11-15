@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthJsonEditor } from './json-editor.js';
 
 export { MthJsonEditor, type JsonEditorEngine } from './json-editor.js';

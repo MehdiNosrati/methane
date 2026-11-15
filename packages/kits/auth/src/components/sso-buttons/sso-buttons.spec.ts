@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { ssoButtonsMessages } from './sso-buttons.messages.js';
 
 export const ssoButtonsSpec: ComponentBehaviorSpec = {
   tag: 'mth-sso-buttons',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'none',

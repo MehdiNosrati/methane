@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSearchInput } from './search-input.js';
 
 export { MthSearchInput } from './search-input.js';

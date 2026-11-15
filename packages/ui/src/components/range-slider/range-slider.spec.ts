@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { rangeSliderMessages } from './range-slider.messages.js';
 
 export const rangeSliderSpec: ComponentBehaviorSpec = {
   tag: 'mth-range-slider',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController'],
   focusModel: 'delegates-focus',

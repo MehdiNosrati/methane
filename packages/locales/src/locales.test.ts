@@ -41,7 +41,7 @@ function extractPlaceholders(template: string): string[] {
   return [...found].sort();
 }
 
-describe('@methane/locales', () => {
+describe('@methane-ui/locales', () => {
   it('exports all 8 required locale packs with matching locale codes and RTL metadata', () => {
     expect(ALL_PACKS.map((p) => p.locale)).toEqual([...SUPPORTED_LOCALES]);
 

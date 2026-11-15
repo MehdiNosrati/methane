@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import type {
   DataControllerStatus,
   DataSource,
   OverlayCloseReason,
   Placement,
   PositioningResult,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { property, query, state } from 'lit/decorators.js';
 import { comboboxMessages } from './combobox.messages.js';
 import { comboboxStyles } from './combobox.styles.js';

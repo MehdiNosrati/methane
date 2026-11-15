@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { ImageAnnotatorMessages } from './image-annotator.messages.js';
 
 export const imageAnnotatorSpec: ComponentBehaviorSpec = {
   tag: 'mth-image-annotator',
-  package: '@methane/media',
+  package: '@methane-ui/media',
   conformance: ['satellite', 'roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

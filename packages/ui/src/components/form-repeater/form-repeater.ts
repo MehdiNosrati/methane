@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { DragSortController, FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { DragSortController, FormControlController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { formRepeaterMessages } from './form-repeater.messages.js';

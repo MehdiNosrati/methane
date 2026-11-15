@@ -1,4 +1,4 @@
-import { enableHydrationSupport, hydrateRoot, isHydrationSupported } from '@methane/ssr/client';
+import { enableHydrationSupport, hydrateRoot, isHydrationSupported } from '@methane-ui/ssr/client';
 import type { RenderOptions } from 'lit';
 
 /**

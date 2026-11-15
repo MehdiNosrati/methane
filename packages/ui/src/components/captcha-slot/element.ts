@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCaptchaSlot } from './captcha-slot.js';
 
 export { MthCaptchaSlot } from './captcha-slot.js';

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { dtcgSource } from '@methane/tokens';
+import { dtcgSource } from '@methane-ui/tokens';
 import {
   DEFAULT_BEHAVIOR_SPECS,
   DEFAULT_CEM_FIXTURE,
   hasWorkspaceManifests,
   loadWorkspaceManifestAndSpecs,
-} from '@methane/wrapper-codegen';
+} from '@methane-ui/wrapper-codegen';
 import { generateCodeConnectFiles } from './code-connect.js';
 import { dtcgToFigmaVariables } from './variables.js';
 

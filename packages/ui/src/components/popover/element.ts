@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthPopover } from './popover.js';
 
 export { MthPopover } from './popover.js';

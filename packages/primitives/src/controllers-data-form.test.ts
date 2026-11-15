@@ -8,8 +8,8 @@ import {
   registerLocaleMessages,
   type FieldContextValue,
   type FormContextValue,
-} from '@methane/core';
-import { DataConsumerSuite, FormControlSuite } from '@methane/test-conformance';
+} from '@methane-ui/core';
+import { DataConsumerSuite, FormControlSuite } from '@methane-ui/test-conformance';
 import { describe, expect, it, vi } from 'vitest';
 import {
   DataController,
@@ -183,7 +183,7 @@ describe('Deliverable 2: Form, Input, Selection, SlotCollection, Data, Mask cont
     // Hydration Purity: no data-mth-state-* Light-DOM attribute mutations on host
     expect(el.getAttributeNames().some((n) => n.startsWith('data-mth-state-'))).toBe(false);
 
-    // Localized validation message resolved via @methane/core i18n catalog
+    // Localized validation message resolved via @methane-ui/core i18n catalog
     registerLocaleMessages('fr', 'mth-form-control', { valueMissing: 'Champ requis.' });
     el.setAttribute('lang', 'fr');
     expect(el.formControl.validate()).toBe(false);

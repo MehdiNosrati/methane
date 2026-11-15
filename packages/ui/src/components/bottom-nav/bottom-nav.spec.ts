@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { bottomNavMessages } from './bottom-nav.messages.js';
 
 export interface BottomNavItem {
@@ -13,7 +13,7 @@ export const EMPTY_BOTTOM_NAV_ITEMS: ReadonlyArray<BottomNavItem> = Object.freez
 
 export const bottomNavSpec: ComponentBehaviorSpec = {
   tag: 'mth-bottom-nav',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

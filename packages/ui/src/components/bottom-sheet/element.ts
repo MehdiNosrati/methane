@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBottomSheet } from './bottom-sheet.js';
 
 export { MthBottomSheet, type BottomSheetDetent } from './bottom-sheet.js';

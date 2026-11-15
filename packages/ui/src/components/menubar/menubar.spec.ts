@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { menubarMessages } from './menubar.messages.js';
 
 export interface MenubarSubItem {
@@ -23,7 +23,7 @@ export const EMPTY_MENUBAR_ITEMS: ReadonlyArray<MenubarItem> = Object.freeze([])
 
 export const menubarSpec: ComponentBehaviorSpec = {
   tag: 'mth-menubar',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController', 'ObserverPoolController'],
   focusModel: 'delegates-focus',

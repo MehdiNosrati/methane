@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { treeNavMessages } from './tree-nav.messages.js';
 
 export interface TreeNavItem {
@@ -15,7 +15,7 @@ export const EMPTY_TREE_EXPANDED: ReadonlyArray<string> = Object.freeze([]);
 
 export const treeNavSpec: ComponentBehaviorSpec = {
   tag: 'mth-tree-nav',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

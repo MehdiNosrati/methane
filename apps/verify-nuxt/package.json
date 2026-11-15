@@ -1,5 +1,5 @@
 {
-  "name": "@methane/verify-nuxt",
+  "name": "@methane-ui/verify-nuxt",
   "version": "0.1.0",
   "private": true,
   "description": "Nuxt 3 SSR & Vue 3 wrapper verification app for Methane UI",
@@ -13,18 +13,18 @@
     "test": "vitest run --testTimeout=20000"
   },
   "dependencies": {
-    "@methane/core": "workspace:^",
-    "@methane/css": "workspace:^",
-    "@methane/primitives": "workspace:^",
-    "@methane/ssr": "workspace:^",
-    "@methane/ssr-nuxt": "workspace:^",
-    "@methane/tokens": "workspace:^",
-    "@methane/ui": "workspace:^",
-    "@methane/vue": "workspace:^",
+    "@methane-ui/core": "workspace:^",
+    "@methane-ui/css": "workspace:^",
+    "@methane-ui/primitives": "workspace:^",
+    "@methane-ui/ssr": "workspace:^",
+    "@methane-ui/ssr-nuxt": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
+    "@methane-ui/ui": "workspace:^",
+    "@methane-ui/vue": "workspace:^",
     "nuxt": "^3.16.0",
     "vue": "^3.5.45"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:^"
+    "@methane-ui/test-conformance": "workspace:^"
   }
 }

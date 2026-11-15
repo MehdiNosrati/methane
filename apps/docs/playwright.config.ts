@@ -20,7 +20,7 @@ export default defineConfig({
     : {
         webServer: {
           command:
-            'pnpm --filter @methane/docs exec astro preview --port 3105 --host 127.0.0.1 --ignore-lock',
+            'pnpm --filter @methane-ui/docs exec astro preview --port 3105 --host 127.0.0.1 --ignore-lock',
           url: 'http://127.0.0.1:3105/methane/',
           reuseExistingServer: !process.env['CI'],
         },

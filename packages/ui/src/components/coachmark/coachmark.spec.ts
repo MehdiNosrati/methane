@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { coachmarkMessages } from './coachmark.messages.js';
 
 export const coachmarkSpec: ComponentBehaviorSpec = {
   tag: 'mth-coachmark',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController'],
   focusModel: 'none',

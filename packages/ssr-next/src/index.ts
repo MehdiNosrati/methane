@@ -4,7 +4,7 @@ import {
   type StylesheetLink,
   type TransformHtmlDsdOptions,
   type TransformHtmlDsdResult,
-} from '@methane/ssr';
+} from '@methane-ui/ssr';
 
 export interface NextSsrOptions extends TransformHtmlDsdOptions {
   /** Optional client hydration script URL injected before `</body>`. */
@@ -111,8 +111,8 @@ export async function transformNextResponse(
   });
 }
 
-const METHANE_TRANSPILE_PACKAGES = ['@methane/ui', '@methane/core', '@methane/primitives'] as const;
-const METHANE_SERVER_EXTERNALS = ['@lit-labs/ssr', '@methane/ssr'] as const;
+const METHANE_TRANSPILE_PACKAGES = ['@methane-ui/ui', '@methane-ui/core', '@methane-ui/primitives'] as const;
+const METHANE_SERVER_EXTERNALS = ['@lit-labs/ssr', '@methane-ui/ssr'] as const;
 
 /**
  * Merges Methane SSR and React 19 custom-element settings into `next.config.*`.

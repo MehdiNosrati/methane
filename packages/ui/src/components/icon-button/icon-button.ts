@@ -1,4 +1,4 @@
-import { devWarn, isDevMode, UIElement, type PropertyValues } from '@methane/core';
+import { devWarn, isDevMode, UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { iconButtonMessages } from './icon-button.messages.js';

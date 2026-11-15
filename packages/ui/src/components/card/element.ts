@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCard } from './card.js';
 
 export { MthCard, type MthCardVariant } from './card.js';

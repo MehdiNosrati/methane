@@ -76,7 +76,7 @@ export default defineConfig({
             reuseExistingServer: !process.env['CI'],
           },
           {
-            command: 'pnpm --filter @methane/verify-next exec next start -p 3101 -H 127.0.0.1',
+            command: 'pnpm --filter @methane-ui/verify-next exec next start -p 3101 -H 127.0.0.1',
             env: { NEXT_TELEMETRY_DISABLED: '1' },
             port: 3101,
             reuseExistingServer: !process.env['CI'],
@@ -99,7 +99,7 @@ export default defineConfig({
           },
           {
             command:
-              'pnpm --filter @methane/docs exec astro preview --port 3105 --host 127.0.0.1 --ignore-lock',
+              'pnpm --filter @methane-ui/docs exec astro preview --port 3105 --host 127.0.0.1 --ignore-lock',
             port: 3105,
             reuseExistingServer: !process.env['CI'],
           },

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthSeatMap } from './seat-map.js';
 import { seatMapMessages } from './seat-map.messages.js';
 import { seatMapSpec } from './seat-map.spec.js';

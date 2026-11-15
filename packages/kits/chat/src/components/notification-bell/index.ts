@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthNotificationBell } from './element.js';
 
 export { MthNotificationBell, type NotificationBellItem } from './element.js';

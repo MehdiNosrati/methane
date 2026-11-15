@@ -1,7 +1,7 @@
 import type { Compartment, EditorState } from '@codemirror/state';
 import type { EditorView } from '@codemirror/view';
-import { UIElement, type PropertyValues, type TemplateResult } from '@methane/core';
-import { FormControlController, RovingFocusController } from '@methane/primitives';
+import { UIElement, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { FormControlController, RovingFocusController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import {

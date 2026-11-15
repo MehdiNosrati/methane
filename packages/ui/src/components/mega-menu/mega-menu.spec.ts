@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { megaMenuMessages } from './mega-menu.messages.js';
 
 export interface MegaMenuLink {
@@ -24,7 +24,7 @@ export const EMPTY_MEGA_MENU_SECTIONS: ReadonlyArray<MegaMenuSection> = Object.f
 
 export const megaMenuSpec: ComponentBehaviorSpec = {
   tag: 'mth-mega-menu',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay', 'roving-focus'],
   controllers: ['OverlayController', 'PositioningController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

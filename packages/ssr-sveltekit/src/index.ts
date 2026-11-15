@@ -3,7 +3,7 @@ import {
   transformHtmlDsd,
   type TransformHtmlDsdOptions,
   type TransformHtmlDsdResult,
-} from '@methane/ssr';
+} from '@methane-ui/ssr';
 
 export interface SvelteKitSsrOptions extends TransformHtmlDsdOptions {
   /** Optional client hydration module URL injected before `</body>`. */

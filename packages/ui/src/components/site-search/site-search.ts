@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   createArrayDataSource,
   DataController,
@@ -9,7 +9,7 @@ import {
   type DataControllerStatus,
   type DataSource,
   type OverlayCloseReason,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { siteSearchMessages } from './site-search.messages.js';

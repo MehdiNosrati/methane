@@ -1,5 +1,5 @@
 {
-  "name": "@methane/react",
+  "name": "@methane-ui/react",
   "version": "0.1.0",
   "description": "React 19+ zero-runtime JSX/event types and React 18 @lit/react legacy wrappers for Methane UI (ADR-009)",
   "license": "MIT",
@@ -31,8 +31,16 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@methane/wrapper-codegen": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

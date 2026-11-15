@@ -3,31 +3,31 @@ import CodeTabs from '../../components/CodeTabs.astro';
 import DocsLayout from '../../components/DocsLayout.astro';
 
 const ssrSnippets = {
-  html: `import { renderToString, transformHtmlDsd } from '@methane/ssr';
+  html: `import { renderToString, transformHtmlDsd } from '@methane-ui/ssr';
 
 const result = await transformHtmlDsd('<mth-button variant="solid">Save</mth-button>', {
   styles: 'linked',
   assetBase: '/assets/methane',
 });`,
-  react: `import { renderNextHtml, withMethaneNextConfig } from '@methane/ssr-next';
-import { initNextHydration } from '@methane/ssr-next/client';
+  react: `import { renderNextHtml, withMethaneNextConfig } from '@methane-ui/ssr-next';
+import { initNextHydration } from '@methane-ui/ssr-next/client';
 
 export default withMethaneNextConfig({ reactStrictMode: true });
 // Client ("use client"): initNextHydration();
 // Server: await renderNextHtml(html, { styles: 'linked', assetBase: '/assets/methane' });`,
-  vue: `import { createMethaneNitroPlugin, createMethaneNuxtConfig } from '@methane/ssr-nuxt';
-import { initNuxtHydration } from '@methane/ssr-nuxt/client';
+  vue: `import { createMethaneNitroPlugin, createMethaneNuxtConfig } from '@methane-ui/ssr-nuxt';
+import { initNuxtHydration } from '@methane-ui/ssr-nuxt/client';
 
 export default createMethaneNuxtConfig();
 // Nitro plugin: export default createMethaneNitroPlugin({ styles: 'linked' });
 // Client plugin: initNuxtHydration();`,
-  angular: `import { serializeAngularSsrHtml, transformAngularSsrResponse } from '@methane/ssr-angular';
-import { provideMethaneHydration } from '@methane/ssr-angular/client';
+  angular: `import { serializeAngularSsrHtml, transformAngularSsrResponse } from '@methane-ui/ssr-angular';
+import { provideMethaneHydration } from '@methane-ui/ssr-angular/client';
 
 // Server: const { html } = await serializeAngularSsrHtml(ssrHtml, { styles: 'inline' });
 // Client app.config.ts: provideMethaneHydration().initialize();`,
-  svelte: `import { createMethaneHandle, transformSvelteKitHtml } from '@methane/ssr-sveltekit';
-import { initSvelteKitHydration } from '@methane/ssr-sveltekit/client';
+  svelte: `import { createMethaneHandle, transformSvelteKitHtml } from '@methane-ui/ssr-sveltekit';
+import { initSvelteKitHydration } from '@methane-ui/ssr-sveltekit/client';
 
 // src/hooks.server.ts: export const handle = createMethaneHandle({ styles: 'inline' });
 // src/hooks.client.ts: initSvelteKitHydration();`,
@@ -39,7 +39,7 @@ import { initSvelteKitHydration } from '@methane/ssr-sveltekit/client';
     <div class="mth-prose">
       <h1>Server-Side Rendering &amp; Hydration</h1>
       <p>
-        Methane wraps <code>@lit-labs/ssr</code> behind <code>@methane/ssr</code> and ships
+        Methane wraps <code>@lit-labs/ssr</code> behind <code>@methane-ui/ssr</code> and ships
         adapters for Next.js, Nuxt, SvelteKit, Astro, and Angular so custom elements render on the
         server with Declarative Shadow DOM and hydrate cleanly on the client.
       </p>
@@ -57,7 +57,7 @@ import { initSvelteKitHydration } from '@methane/ssr-sveltekit/client';
           <code>&lt;style&gt;</code> for emails, single-file HTML exports, and edge responses.
         </li>
         <li>
-          <strong>Client-only fallback:</strong> <code>@methane/css/defined-guard.css</code> applies a
+          <strong>Client-only fallback:</strong> <code>@methane-ui/css/defined-guard.css</code> applies a
           fail-open <code>:not(:defined)</code> reveal animation (never <code>visibility: hidden</code>),
           while pure-CSS layout tags (<code>mth-stack</code>, <code>mth-grid</code>, <code>mth-flex</code>,
           <code>mth-container</code>, <code>mth-spacer</code>) stay immediately visible at <code>opacity: 1</code>.

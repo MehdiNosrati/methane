@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { datagridMessages } from './datagrid.messages.js';
 
 export const datagridSpec: ComponentBehaviorSpec = {
   tag: 'mth-datagrid',
-  package: '@methane/datagrid',
+  package: '@methane-ui/datagrid',
   conformance: ['satellite', 'data-consumer'],
   controllers: [
     'TableCore',

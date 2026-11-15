@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { markdownMessages } from './markdown.messages.js';
 
 export const markdownSpec: ComponentBehaviorSpec = {
   tag: 'mth-markdown',
-  package: '@methane/editor',
+  package: '@methane-ui/editor',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'none',
@@ -32,7 +32,7 @@ export const markdownSpec: ComponentBehaviorSpec = {
 
 export const CEM_METADATA = {
   description:
-    'Read-only Markdown renderer using @methane/sanitize with safe URL validation and token synchronization.',
+    'Read-only Markdown renderer using @methane-ui/sanitize with safe URL validation and token synchronization.',
   cssProperties: [
     { name: '--mth-color-surface', description: 'Rendered region surface background.' },
     { name: '--mth-color-bg-subtle', description: 'Code and blockquote background color.' },

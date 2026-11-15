@@ -1,4 +1,4 @@
-import { UIElement, html, nothing, property, state } from '@methane/core';
+import { UIElement, html, nothing, property, state } from '@methane-ui/core';
 import { passkeyPromptMessages } from './passkey-prompt.messages.js';
 import { passkeyPromptStyles } from './passkey-prompt.styles.js';
 

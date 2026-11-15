@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import '@methane/ssr-sveltekit/client';
+import '@methane-ui/ssr-sveltekit/client';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
@@ -8,15 +8,15 @@ import {
   MthErrorBoundaryElement,
   MthSkipLinkElement,
   MthVisuallyHiddenElement,
-} from '@methane/primitives';
-import { initSvelteKitHydration, isSvelteKitHydrationReady } from '@methane/ssr-sveltekit/client';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
-import { MthCombobox } from '@methane/ui/combobox/element';
-import { MthDialog } from '@methane/ui/dialog/element';
-import { MthField } from '@methane/ui/field/element';
-import { MthInput } from '@methane/ui/input/element';
-import { MthOption } from '@methane/ui/option/element';
-import { MthOptionGroup } from '@methane/ui/option-group/element';
+} from '@methane-ui/primitives';
+import { initSvelteKitHydration, isSvelteKitHydrationReady } from '@methane-ui/ssr-sveltekit/client';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
+import { MthCombobox } from '@methane-ui/ui/combobox/element';
+import { MthDialog } from '@methane-ui/ui/dialog/element';
+import { MthField } from '@methane-ui/ui/field/element';
+import { MthInput } from '@methane-ui/ui/input/element';
+import { MthOption } from '@methane-ui/ui/option/element';
+import { MthOptionGroup } from '@methane-ui/ui/option-group/element';
 import { describe, expect, it } from 'vitest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -89,7 +89,7 @@ function materializeDescendantDsd(root: Element): void {
   }
 }
 
-describe('@methane/verify-sveltekit hydration purity', () => {
+describe('@methane-ui/verify-sveltekit hydration purity', () => {
   it('passes HydrationPuritySuite with 0 shadow-DOM node replacements on SvelteKit client upgrade', async () => {
     const fullHtml = renderSvelteKitSsrHtmlInNode();
     expect(fullHtml).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);

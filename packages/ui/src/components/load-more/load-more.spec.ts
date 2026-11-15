@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const loadMoreSpec: ComponentBehaviorSpec = {
   tag: 'mth-load-more',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['data-consumer'],
   controllers: ['DataController'],
   focusModel: 'delegates-focus',

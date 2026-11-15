@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { commandPaletteMessages } from './command-palette.messages.js';
 
 export interface CommandPaletteItem {
@@ -16,7 +16,7 @@ export const EMPTY_COMMAND_PALETTE_ITEMS: ReadonlyArray<CommandPaletteItem> = Ob
 
 export const commandPaletteSpec: ComponentBehaviorSpec = {
   tag: 'mth-command-palette',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay', 'listbox'],
   controllers: ['OverlayController', 'ListboxController', 'HotkeyController'],
   focusModel: 'delegates-focus',

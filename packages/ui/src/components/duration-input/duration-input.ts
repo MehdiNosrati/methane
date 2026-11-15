@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property, state } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property, state } from '@methane-ui/core';
+import { FormControlController } from '@methane-ui/primitives';
 import { durationInputMessages } from './duration-input.messages.js';
 import { durationInputStyles } from './duration-input.styles.js';
 

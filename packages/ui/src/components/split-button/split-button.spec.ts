@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const splitButtonSpec: ComponentBehaviorSpec = {
   tag: 'mth-split-button',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

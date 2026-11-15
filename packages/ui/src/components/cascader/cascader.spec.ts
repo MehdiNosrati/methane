@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { cascaderMessages } from './cascader.messages.js';
 
 export const cascaderSpec: ComponentBehaviorSpec = {
   tag: 'mth-cascader',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control', 'overlay', 'listbox'],
   controllers: ['FormControlController', 'OverlayController', 'PositioningController', 'ListboxController'],
   focusModel: 'delegates-focus',

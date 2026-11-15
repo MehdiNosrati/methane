@@ -7,9 +7,9 @@ import {
   state,
   UIElement,
   type PropertyValues,
-} from '@methane/core';
+} from '@methane-ui/core';
 import type { DotLottie, Config as DotLottieConfig } from '@lottiefiles/dotlottie-web';
-import { MotionController } from '@methane/primitives';
+import { MotionController } from '@methane-ui/primitives';
 import {
   collectHostThemeTokens,
   isSafeMediaUrl,

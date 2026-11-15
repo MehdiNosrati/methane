@@ -43,19 +43,19 @@ export interface FormContextValue {
  * Symbol.for keys ensure interoperability across duplicate module loads.
  */
 export const THEME_CONTEXT = createContext<ThemeContextValue>(
-  Symbol.for('@methane/context/theme'),
+  Symbol.for('@methane-ui/context/theme'),
 );
 
 export const LOCALE_CONTEXT = createContext<LocaleContextValue>(
-  Symbol.for('@methane/context/locale'),
+  Symbol.for('@methane-ui/context/locale'),
 );
 
 export const FIELD_CONTEXT = createContext<FieldContextValue>(
-  Symbol.for('@methane/context/field'),
+  Symbol.for('@methane-ui/context/field'),
 );
 
 export const FORM_CONTEXT = createContext<FormContextValue>(
-  Symbol.for('@methane/context/form'),
+  Symbol.for('@methane-ui/context/form'),
 );
 
 export const DEFAULT_THEME_CONTEXT: ThemeContextValue = {

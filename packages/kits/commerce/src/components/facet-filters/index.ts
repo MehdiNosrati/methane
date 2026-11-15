@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthFacetFilters } from './element.js';
 
 export { MthFacetFilters, type FacetGroup, type FacetOption, type FacetRangeValue } from './element.js';

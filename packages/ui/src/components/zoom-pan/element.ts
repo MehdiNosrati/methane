@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthZoomPan } from './zoom-pan.js';
 
 export { MthZoomPan, type ZoomPanChangeDetail } from './zoom-pan.js';

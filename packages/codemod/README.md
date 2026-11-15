@@ -1,4 +1,4 @@
-# `@methane/codemod`
+# `@methane-ui/codemod`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Idempotent AST codemod CLI (`methane-codemod`) and programmatic migration runner
 ## Installation
 
 ```bash
-pnpm add -D @methane/codemod typescript
+pnpm add -D @methane-ui/codemod typescript
 # or
-npm install -D @methane/codemod typescript
+npm install -D @methane-ui/codemod typescript
 ```
 
 > **Peer dependency:** `typescript >= 5.0.0` is required for TypeScript/TSX/JSX AST transformations.
@@ -19,9 +19,9 @@ npm install -D @methane/codemod typescript
 | Export / Binary | Purpose |
 | --- | --- |
 | `methane-codemod` (CLI bin) | Interactive/CI codemod CLI (`npx methane-codemod ...`) |
-| `@methane/codemod` | Full runner, manifest compiler, unified diff generator, and per-language AST transforms (`runCodemod`, `transformCode`, `createPrefixManifest`, `createUnifiedDiff`, `transformHtml`, `transformTypeScript`, `transformCss`) |
-| `@methane/codemod/cli` | Programmatic CLI entry (`runCli`, `parseCliArgs`, `CLI_VERSION`) |
-| `@methane/codemod/manifest` | Manifest schema parser and validator (`parseMigrationManifest`, `compileManifest`, `validateMigrationManifest`, `createPrefixManifest`, `toReactEventPropName`) |
+| `@methane-ui/codemod` | Full runner, manifest compiler, unified diff generator, and per-language AST transforms (`runCodemod`, `transformCode`, `createPrefixManifest`, `createUnifiedDiff`, `transformHtml`, `transformTypeScript`, `transformCss`) |
+| `@methane-ui/codemod/cli` | Programmatic CLI entry (`runCli`, `parseCliArgs`, `CLI_VERSION`) |
+| `@methane-ui/codemod/manifest` | Manifest schema parser and validator (`parseMigrationManifest`, `compileManifest`, `validateMigrationManifest`, `createPrefixManifest`, `toReactEventPropName`) |
 
 ## CLI Reference
 
@@ -57,7 +57,7 @@ npx methane-codemod --manifest ./migrations/v2.json --check src/
 ### Applying a Version Migration Manifest Programmatically
 
 ```ts
-import { runCodemod, parseMigrationManifest } from '@methane/codemod';
+import { runCodemod, parseMigrationManifest } from '@methane-ui/codemod';
 
 const manifest = parseMigrationManifest(JSON.stringify({
   version: '2.0.0',

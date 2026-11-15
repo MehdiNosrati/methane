@@ -47,31 +47,31 @@ importers:
 
   apps/docs:
     dependencies:
-      '@methane/bundle-budget':
+      '@methane-ui/bundle-budget':
         specifier: workspace:^
         version: link:../../tooling/bundle-budget
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../tooling/spec-compiler
-      '@methane/ssr-astro':
+      '@methane-ui/ssr-astro':
         specifier: workspace:^
         version: link:../../packages/ssr-astro
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       astro:
@@ -101,25 +101,25 @@ importers:
       '@angular/ssr':
         specifier: ^19.2.0
         version: 19.2.27(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-server@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@19.2.25)(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))(@angular/router@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2))
-      '@methane/angular':
+      '@methane-ui/angular':
         specifier: workspace:^
         version: link:../../packages/angular
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/ssr-angular':
+      '@methane-ui/ssr-angular':
         specifier: workspace:^
         version: link:../../packages/ssr-angular
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../packages/ui
       rxjs:
@@ -141,7 +141,7 @@ importers:
       '@angular/compiler-cli':
         specifier: ^19.2.0
         version: 19.2.25(@angular/compiler@19.2.25)(typescript@5.9.3)
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@types/node':
@@ -162,28 +162,28 @@ importers:
 
   apps/verify-next:
     dependencies:
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/react':
+      '@methane-ui/react':
         specifier: workspace:^
         version: link:../../packages/react
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../../packages/ssr
-      '@methane/ssr-next':
+      '@methane-ui/ssr-next':
         specifier: workspace:^
         version: link:../../packages/ssr-next
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../packages/ui
       next:
@@ -196,7 +196,7 @@ importers:
         specifier: ^19.0.0
         version: 19.3.1(react@19.3.1)
     devDependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@types/react':
@@ -208,28 +208,28 @@ importers:
 
   apps/verify-nuxt:
     dependencies:
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../../packages/ssr
-      '@methane/ssr-nuxt':
+      '@methane-ui/ssr-nuxt':
         specifier: workspace:^
         version: link:../../packages/ssr-nuxt
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      '@methane/vue':
+      '@methane-ui/vue':
         specifier: workspace:^
         version: link:../../packages/vue
       nuxt:
@@ -239,38 +239,38 @@ importers:
         specifier: ^3.5.45
         version: 3.5.45(typescript@5.9.3)
     devDependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
 
   apps/verify-sveltekit:
     dependencies:
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/ssr-sveltekit':
+      '@methane-ui/ssr-sveltekit':
         specifier: workspace:^
         version: link:../../packages/ssr-sveltekit
-      '@methane/svelte':
+      '@methane-ui/svelte':
         specifier: workspace:^
         version: link:../../packages/svelte
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../packages/ui
       svelte:
         specifier: ^5.57.3
         version: 5.57.3(@typescript-eslint/types@8.72.2)
     devDependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
       '@sveltejs/adapter-node':
@@ -318,7 +318,7 @@ importers:
       '@angular/platform-browser':
         specifier: ^19.0.0
         version: 19.2.25(@angular/common@19.2.25(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@19.2.25(rxjs@7.8.2)(zone.js@0.15.1))
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       rxjs:
@@ -339,17 +339,17 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../tokens
       lit:
         specifier: ^3.2.1
         version: 3.3.3
     devDependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
       fast-check:
@@ -358,25 +358,25 @@ importers:
 
   packages/css:
     dependencies:
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../tokens
 
   packages/kits/admin:
     dependencies:
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../ui
       lit:
@@ -392,28 +392,28 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/ai:
     dependencies:
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../ui
       lit:
@@ -429,25 +429,25 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/auth:
     dependencies:
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../ui
       lit:
@@ -463,28 +463,28 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/chat:
     dependencies:
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../ui
       lit:
@@ -500,28 +500,28 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/kits/commerce:
     dependencies:
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
-      '@methane/ui':
+      '@methane-ui/ui':
         specifier: workspace:^
         version: link:../../ui
       lit:
@@ -537,13 +537,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -554,20 +554,20 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../tokens
       lit:
         specifier: ^3.2.1
         version: 3.3.3
     devDependencies:
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../core
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
       fast-check:
@@ -580,7 +580,7 @@ importers:
         specifier: ^1.0.8
         version: 1.0.8(@types/react@19.3.0)
     devDependencies:
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       '@types/react':
@@ -598,16 +598,16 @@ importers:
 
   packages/satellites/3d:
     dependencies:
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -626,13 +626,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
       '@types/three':
@@ -641,16 +641,16 @@ importers:
 
   packages/satellites/charts:
     dependencies:
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       echarts:
@@ -669,13 +669,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -690,13 +690,13 @@ importers:
       '@codemirror/view':
         specifier: ^6.34.0
         version: 6.43.15
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -712,13 +712,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -727,10 +727,10 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       '@tanstack/table-core':
@@ -752,25 +752,25 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/editor:
     dependencies:
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       katex:
@@ -813,13 +813,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -828,16 +828,16 @@ importers:
       '@dagrejs/dagre':
         specifier: ^3.1.3
         version: 3.1.3
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -853,13 +853,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -868,16 +868,16 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -896,13 +896,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -911,16 +911,16 @@ importers:
       '@lottiefiles/dotlottie-web':
         specifier: ~0.83.2
         version: 0.83.2
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -936,28 +936,28 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/pdf:
     dependencies:
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -976,28 +976,28 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
   packages/satellites/rtc:
     dependencies:
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../sanitize
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -1013,13 +1013,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -1028,10 +1028,10 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../primitives
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../tokens
       lit:
@@ -1047,13 +1047,13 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../../tooling/test-conformance
 
@@ -1072,13 +1072,13 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
     devDependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
 
   packages/ssr-angular:
     dependencies:
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../ssr
       lit:
@@ -1087,7 +1087,7 @@ importers:
 
   packages/ssr-astro:
     dependencies:
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../ssr
       lit:
@@ -1096,7 +1096,7 @@ importers:
 
   packages/ssr-next:
     dependencies:
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../ssr
       lit:
@@ -1105,7 +1105,7 @@ importers:
 
   packages/ssr-nuxt:
     dependencies:
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../ssr
       lit:
@@ -1114,7 +1114,7 @@ importers:
 
   packages/ssr-sveltekit:
     dependencies:
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../ssr
       lit:
@@ -1123,7 +1123,7 @@ importers:
 
   packages/svelte:
     devDependencies:
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       svelte:
@@ -1137,13 +1137,13 @@ importers:
       '@lit/context':
         specifier: ^1.1.4
         version: 1.1.6
-      '@methane/css':
+      '@methane-ui/css':
         specifier: workspace:^
         version: link:../css
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../primitives
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../tokens
       lit:
@@ -1159,22 +1159,22 @@ importers:
       '@lit-labs/ssr-dom-shim':
         specifier: ^1.6.0
         version: 1.6.0
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../core
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../../tooling/spec-compiler
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../../tooling/test-conformance
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
 
   packages/vue:
     devDependencies:
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../../tooling/wrapper-codegen
       vue:
@@ -1189,13 +1189,13 @@ importers:
 
   tooling/figma-sync:
     dependencies:
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../spec-compiler
-      '@methane/tokens':
+      '@methane-ui/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@methane/wrapper-codegen':
+      '@methane-ui/wrapper-codegen':
         specifier: workspace:^
         version: link:../wrapper-codegen
 
@@ -1213,16 +1213,16 @@ importers:
 
   tooling/security-gate:
     dependencies:
-      '@methane/core':
+      '@methane-ui/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@methane/primitives':
+      '@methane-ui/primitives':
         specifier: workspace:^
         version: link:../../packages/primitives
-      '@methane/sanitize':
+      '@methane-ui/sanitize':
         specifier: workspace:^
         version: link:../../packages/sanitize
-      '@methane/ssr':
+      '@methane-ui/ssr':
         specifier: workspace:^
         version: link:../../packages/ssr
       lit:
@@ -1231,7 +1231,7 @@ importers:
 
   tooling/spec-compiler:
     dependencies:
-      '@methane/test-conformance':
+      '@methane-ui/test-conformance':
         specifier: workspace:^
         version: link:../test-conformance
 
@@ -1239,7 +1239,7 @@ importers:
 
   tooling/wrapper-codegen:
     dependencies:
-      '@methane/spec-compiler':
+      '@methane-ui/spec-compiler':
         specifier: workspace:^
         version: link:../spec-compiler
 

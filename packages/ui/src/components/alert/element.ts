@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthAlert } from './alert.js';
 
 export { MthAlert, type MthAlertVariant } from './alert.js';

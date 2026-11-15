@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthDrawingPad } from './drawing-pad.js';
 
 export function registerMthDrawingPad(prefix?: string): ReadonlyArray<string> {

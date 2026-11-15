@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthWaveform } from './waveform.js';
 
 export { MthWaveform, WaveformEngine, type AudioBufferLike } from './waveform.js';

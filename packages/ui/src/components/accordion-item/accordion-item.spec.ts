@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { accordionItemMessages } from './accordion-item.messages.js';
 
 export const accordionItemSpec: ComponentBehaviorSpec = {
   tag: 'mth-accordion-item',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['MotionController'],
   focusModel: 'delegates-focus',

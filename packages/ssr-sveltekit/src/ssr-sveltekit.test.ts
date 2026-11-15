@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import '@methane/ssr/dom-shim';
+import '@methane-ui/ssr/dom-shim';
 import { LitElement, css, html } from 'lit';
 import { createMethaneHandle, transformSvelteKitHtml } from './index.js';
 
@@ -33,7 +33,7 @@ if (!customElements.get('mth-svelte-switch')) {
   customElements.define('mth-svelte-switch', MthSvelteSwitch);
 }
 
-describe('@methane/ssr-sveltekit', () => {
+describe('@methane-ui/ssr-sveltekit', () => {
   it('transforms streamed SvelteKit page chunks via handle() and hoists <link> preloads', async () => {
     const handle = createMethaneHandle({
       hydrationModuleUrl: '/_app/methane-hydrate.js',

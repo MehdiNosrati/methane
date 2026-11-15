@@ -1,9 +1,9 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane/test-conformance';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, RovingFocusSuite, scanSameRootAria } from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/list-item';
-import type { MthListItem } from '@methane/ui/list-item';
+import '@methane-ui/ui/list-item';
+import type { MthListItem } from '@methane-ui/ui/list-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthList, listSpec, registerMthList } from './index.js';
 

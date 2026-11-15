@@ -1,5 +1,5 @@
-import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane/core';
-import { MotionController } from '@methane/primitives';
+import { UIElement, html, nothing, property, query, type PropertyValues } from '@methane-ui/core';
+import { MotionController } from '@methane-ui/primitives';
 import { toolCallMessages } from './tool-call.messages.js';
 import { toolCallStyles } from './tool-call.styles.js';
 

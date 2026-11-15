@@ -16,7 +16,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '../../..');
 
-describe('@methane/wrapper-codegen', () => {
+describe('@methane-ui/wrapper-codegen', () => {
   it('normalizes CEM declarations enriched with ComponentBehaviorSpec', () => {
     const models = normalizeManifest(DEFAULT_CEM_FIXTURE, DEFAULT_BEHAVIOR_SPECS);
     expect(models.map((m) => m.tagName)).toEqual([

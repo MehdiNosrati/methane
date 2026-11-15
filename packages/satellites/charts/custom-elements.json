@@ -15,7 +15,7 @@
           "description": "Wrap-first Apache ECharts `<mth-chart>` visualization element supporting 19 chart types, declarative `<mth-chart-series>` children, `--mth-*` token palette sync, SSR `<table slot=\"fallback\">`, and RTL/reduced-motion support.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -404,7 +404,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-chart",
-            "package": "@methane/charts",
+            "package": "@methane-ui/charts",
             "conformance": [
               "satellite"
             ],
@@ -625,7 +625,7 @@
           "description": "Declarative chart data series child element for `<mth-chart>`, supporting all 19 ECharts visualization types (`line`, `bar`, `area`, `pie`, `donut`, `scatter`, `bubble`, `heatmap`, `treemap`, `sunburst`, `sankey`, `radar`, `gauge`, `funnel`, `candlestick`, `histogram`, `boxplot`, `graph`, `choropleth`).",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -844,7 +844,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-chart-series",
-            "package": "@methane/charts",
+            "package": "@methane-ui/charts",
             "conformance": [],
             "controllers": [],
             "focusModel": "none",

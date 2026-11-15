@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { MotionController, type MotionPhase } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { MotionController, type MotionPhase } from '@methane-ui/primitives';
 import { html, nothing, svg } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { accordionItemMessages } from './accordion-item.messages.js';

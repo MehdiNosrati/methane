@@ -1,4 +1,4 @@
-import { isSafeUrl } from '@methane/sanitize';
+import { isSafeUrl } from '@methane-ui/sanitize';
 import type { Map as MapLibreMap, StyleSpecification } from 'maplibre-gl';
 
 export type LngLatTuple = readonly [number, number];

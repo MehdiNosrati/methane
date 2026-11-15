@@ -14,7 +14,7 @@ import {
   sanitizeUrl,
 } from './index.js';
 
-describe('@methane/sanitize URL allowlist (ADR-012)', () => {
+describe('@methane-ui/sanitize URL allowlist (ADR-012)', () => {
   it('allows https, http, mailto, tel, and relative / or # paths', () => {
     expect(isSafeUrl('https://methane.dev/docs')).toBe(true);
     expect(isSafeUrl('http://localhost:3000/test?a=1#b')).toBe(true);
@@ -46,7 +46,7 @@ describe('@methane/sanitize URL allowlist (ADR-012)', () => {
   });
 });
 
-describe('@methane/sanitize DOMPurify parity & XSS/mXSS defense', () => {
+describe('@methane-ui/sanitize DOMPurify parity & XSS/mXSS defense', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     delete (Element.prototype as { setHTML?: unknown }).setHTML;

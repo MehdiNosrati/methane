@@ -1,4 +1,4 @@
-import { UIElement, html, nothing, property } from '@methane/core';
+import { UIElement, html, nothing, property } from '@methane-ui/core';
 import { toggleButtonMessages } from './toggle-button.messages.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 

@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { WaveformMessages } from './waveform.messages.js';
 
 export const waveformSpec: ComponentBehaviorSpec = {
   tag: 'mth-waveform',
-  package: '@methane/media',
+  package: '@methane-ui/media',
   conformance: ['satellite'],
   controllers: ['MotionController'],
   focusModel: 'delegates-focus',

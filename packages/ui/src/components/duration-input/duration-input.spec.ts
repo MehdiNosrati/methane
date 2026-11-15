@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const durationInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-duration-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController'],
   focusModel: 'delegates-focus',

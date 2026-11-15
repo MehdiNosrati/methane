@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { notificationCenterMessages } from './notification-center.messages.js';
 
 export const notificationCenterSpec: ComponentBehaviorSpec = {
   tag: 'mth-notification-center',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'NotificationStoreController'],
   focusModel: 'none',

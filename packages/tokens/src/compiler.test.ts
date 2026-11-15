@@ -28,7 +28,7 @@ function flattenVars(obj: unknown, out: string[] = []): string[] {
   return out;
 }
 
-describe('@methane/tokens W3C DTCG compiler', () => {
+describe('@methane-ui/tokens W3C DTCG compiler', () => {
   it('compiles source DTCG tokens into @layer mth.tokens CSS with light-dark and oklch relative ramps', () => {
     expect(tokensCss).toContain('@layer mth.tokens');
     expect(tokensCss).toContain('color-scheme: light dark;');

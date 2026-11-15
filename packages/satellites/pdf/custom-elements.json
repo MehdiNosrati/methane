@@ -15,7 +15,7 @@
           "description": "Wrap-first Mozilla pdf.js `<mth-pdf-viewer>` component supporting page navigation, zoom presets, text search, document outline, URL sanitization, keyboard/RTL navigation, and `<slot name=\"fallback\">`.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -27,7 +27,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "URL to PDF document (validated with @methane/sanitize isSafeUrl)."
+              "description": "URL to PDF document (validated with @methane-ui/sanitize isSafeUrl)."
             },
             {
               "kind": "field",
@@ -160,7 +160,7 @@
                 "text": "string"
               },
               "default": "\"\"",
-              "description": "URL to PDF document (validated with @methane/sanitize isSafeUrl)."
+              "description": "URL to PDF document (validated with @methane-ui/sanitize isSafeUrl)."
             },
             {
               "name": "worker-src",
@@ -425,7 +425,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-pdf-viewer",
-            "package": "@methane/pdf",
+            "package": "@methane-ui/pdf",
             "conformance": [
               "satellite"
             ],

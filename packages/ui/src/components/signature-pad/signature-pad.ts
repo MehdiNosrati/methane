@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
+import { FormControlController } from '@methane-ui/primitives';
 import { signaturePadMessages } from './signature-pad.messages.js';
 import { signaturePadStyles } from './signature-pad.styles.js';
 

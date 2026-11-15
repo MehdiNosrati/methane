@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { numberInputMessages } from './number-input.messages.js';
 
 export const numberInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-number-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

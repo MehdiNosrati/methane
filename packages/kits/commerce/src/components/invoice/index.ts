@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import { MthInvoice } from './element.js';
 
 export { MthInvoice, type InvoiceItem, type InvoiceParty } from './element.js';

@@ -1,10 +1,10 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   InputController,
   RovingFocusController,
   SelectionController,
   VirtualizerController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import {
@@ -40,7 +40,7 @@ export interface MthSpreadsheetEngine extends BaseSatelliteEngine {
 }
 
 /**
- * `<mth-spreadsheet>`: virtualized worksheet wrapping `@methane/primitives` and a
+ * `<mth-spreadsheet>`: virtualized worksheet wrapping `@methane-ui/primitives` and a
  * clean-room MIT Formula AST evaluator supporting A1/R1C1 addressing and cycle detection.
  */
 export class MthSpreadsheet extends UIElement {

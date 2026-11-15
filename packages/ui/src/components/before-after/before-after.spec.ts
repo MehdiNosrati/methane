@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { beforeAfterMessages } from './before-after.messages.js';
 
 export const beforeAfterSpec: ComponentBehaviorSpec = {
   tag: 'mth-before-after',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['DragSortController'],
   focusModel: 'delegates-focus',

@@ -130,7 +130,7 @@ async function main() {
       description: meta.description ?? `Methane ${className} custom element (<${spec.tag}>).`,
       superclass: {
         name: 'UIElement',
-        package: '@methane/core',
+        package: '@methane-ui/core',
       },
       members,
       attributes,
@@ -198,7 +198,7 @@ async function main() {
     .join('\n');
 
   const barrelJs = [
-    "import { getRuntime } from '@methane/core';",
+    "import { getRuntime } from '@methane-ui/core';",
     runtimeImports,
     '',
     ...jsExports,

@@ -1,5 +1,5 @@
 import type {} from 'react';
-import type {} from '@methane/react';
+import type {} from '@methane-ui/react';
 
 export interface MethaneUtilityElementProps {
   readonly children?: React.ReactNode;

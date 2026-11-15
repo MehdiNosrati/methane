@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { pdfViewerMessages } from './pdf-viewer.messages.js';
 
 export const pdfViewerSpec: ComponentBehaviorSpec = {
   tag: 'mth-pdf-viewer',
-  package: '@methane/pdf',
+  package: '@methane-ui/pdf',
   conformance: ['satellite'],
   controllers: ['MotionController', 'ObserverPoolController'],
   focusModel: 'delegates-focus',
@@ -66,7 +66,7 @@ export const CEM_METADATA = {
   description:
     'Wrap-first Mozilla pdf.js `<mth-pdf-viewer>` component supporting page navigation, zoom presets, text search, document outline, URL sanitization, keyboard/RTL navigation, and `<slot name="fallback">`.',
   propDescriptions: {
-    src: 'URL to PDF document (validated with @methane/sanitize isSafeUrl).',
+    src: 'URL to PDF document (validated with @methane-ui/sanitize isSafeUrl).',
     workerSrc: 'Optional custom pdf.js worker script URL.',
     documentTitle: 'Accessible PDF title shown in viewer label.',
     page: '1-based active page number.',

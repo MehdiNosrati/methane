@@ -1,15 +1,15 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   HydrationPuritySuite,
   ListboxSuite,
   OverlaySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/menu-item';
-import type { MthMenuItem } from '@methane/ui/menu-item';
+import '@methane-ui/ui/menu-item';
+import type { MthMenuItem } from '@methane-ui/ui/menu-item';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthDropdownMenu, dropdownMenuSpec, registerMthDropdownMenu } from './index.js';
 

@@ -1,6 +1,6 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { MotionController, ObserverPoolController } from '@methane/primitives';
-import { escapeHtml } from '@methane/sanitize';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { MotionController, ObserverPoolController } from '@methane-ui/primitives';
+import { escapeHtml } from '@methane-ui/sanitize';
 import type {
   EChartsCoreOption,
   EChartsType,

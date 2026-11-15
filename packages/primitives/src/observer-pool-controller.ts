@@ -1,4 +1,4 @@
-import { getRuntime } from '@methane/core';
+import { getRuntime } from '@methane-ui/core';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
 export interface ObserverPoolControllerOptions {

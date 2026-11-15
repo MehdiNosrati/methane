@@ -1,4 +1,4 @@
-import { getRuntime, type HotkeyBinding } from '@methane/core';
+import { getRuntime, type HotkeyBinding } from '@methane-ui/core';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
 export interface HotkeyControllerBinding {

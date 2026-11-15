@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { emojiPickerMessages } from './emoji-picker.messages.js';
 
 export const emojiPickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-emoji-picker',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus', 'overlay'],
   controllers: ['RovingFocusController', 'OverlayController', 'PositioningController', 'InputController'],
   focusModel: 'delegates-focus',

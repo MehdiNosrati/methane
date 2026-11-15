@@ -6,7 +6,7 @@ import {
   type FieldContextValue,
   type FormContextValue,
   type MessageCatalog,
-} from '@methane/core';
+} from '@methane-ui/core';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
 export type FormControlHost = ReactiveControllerHost & HTMLElement;

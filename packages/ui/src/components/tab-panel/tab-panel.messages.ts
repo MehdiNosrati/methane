@@ -1,3 +1,3 @@
-import type { MessageCatalog } from '@methane/core';
+import type { MessageCatalog } from '@methane-ui/core';
 
 export const tabPanelMessages: MessageCatalog = {};

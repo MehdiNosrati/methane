@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { mapMessages } from './map.messages.js';
 
 export const mapSpec: ComponentBehaviorSpec = {
   tag: 'mth-map',
-  package: '@methane/maps',
+  package: '@methane-ui/maps',
   conformance: ['satellite'],
   controllers: [],
   focusModel: 'host',

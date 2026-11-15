@@ -1,4 +1,4 @@
-import { getRuntime, UIElement, type NotificationItem, type PropertyValues } from '@methane/core';
+import { getRuntime, UIElement, type NotificationItem, type PropertyValues } from '@methane-ui/core';
 import {
   LiveAnnouncer,
   NotificationStoreController,
@@ -7,7 +7,7 @@ import {
   type MotionPhase,
   type NotifyOptions,
   type OverlayCloseReason,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { toastMessages } from './toast.messages.js';
@@ -27,7 +27,7 @@ export interface MthToastNotifyOptions extends Omit<NotifyOptions, 'tone' | 'dur
   readonly duration?: number;
 }
 
-const TOAST_CONTROLLER_SYMBOL = Symbol.for('@methane/ui/toast-controller');
+const TOAST_CONTROLLER_SYMBOL = Symbol.for('@methane-ui/ui/toast-controller');
 
 function getSharedStoreController(): NotificationStoreController {
   const runtime = getRuntime() as unknown as Record<symbol, NotificationStoreController | undefined>;

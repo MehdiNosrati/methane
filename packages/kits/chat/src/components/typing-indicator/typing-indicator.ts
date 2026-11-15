@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { MotionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { MotionController } from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../../shared/dir.js';

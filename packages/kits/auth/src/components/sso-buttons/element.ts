@@ -1,5 +1,5 @@
-import { defineComponents } from '@methane/core';
-import { registerMthSpinner } from '@methane/ui/spinner/element.js';
+import { defineComponents } from '@methane-ui/core';
+import { registerMthSpinner } from '@methane-ui/ui/spinner/element.js';
 import { MthSsoButtons } from './sso-buttons.js';
 
 export {

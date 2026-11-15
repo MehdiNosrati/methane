@@ -1,4 +1,4 @@
-# `@methane/chat`
+# `@methane-ui/chat`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Real-time messaging, threaded discussions, notification bell, typing/presence in
 ## Installation
 
 ```bash
-pnpm add @methane/chat @methane/core @methane/tokens
+pnpm add @methane-ui/chat @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/chat @methane/core @methane/tokens
+npm install @methane-ui/chat @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/chat` | Auto-registers all 8 chat kit elements and exports `registerAllComponents(prefix?)` |
-| `@methane/chat/<slug>` | Per-component entrypoint (e.g. `@methane/chat/chat-thread`, `@methane/chat/message-composer`) |
-| `@methane/chat/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/chat/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/chat` | Auto-registers all 8 chat kit elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/chat/<slug>` | Per-component entrypoint (e.g. `@methane-ui/chat/chat-thread`, `@methane-ui/chat/message-composer`) |
+| `@methane-ui/chat/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/chat/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -45,10 +45,10 @@ npm install @methane/chat @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/chat/chat-thread';
-import '@methane/chat/message-composer';
-import '@methane/chat/typing-indicator';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/chat/chat-thread';
+import '@methane-ui/chat/message-composer';
+import '@methane-ui/chat/typing-indicator';
 
 const thread = document.getElementById('thread') as any;
 thread.messages = [
@@ -58,10 +58,10 @@ thread.messages = [
 
 ## Theming, A11y, Security & SSR Notes
 
-- **Security**: Message bodies inside `<mth-chat-thread>` and `<mth-comment-thread>` are sanitized with `@methane/sanitize` (`allow-raw-html` defaults to `false`).
+- **Security**: Message bodies inside `<mth-chat-thread>` and `<mth-comment-thread>` are sanitized with `@methane-ui/sanitize` (`allow-raw-html` defaults to `false`).
 - **Performance**: `<mth-chat-thread>` uses `VirtualizerController` for smooth scrolling across thousands of messages.
 - **Accessibility**: Screen-reader announcements via `LiveAnnouncer`, keyboard-accessible notification center popover, and reduced-motion-safe typing indicator animation.
-- **SSR**: Server-renders initial message markup and notification badge state with `@methane/ssr`.
+- **SSR**: Server-renders initial message markup and notification badge state with `@methane-ui/ssr`.
 
 ## License
 

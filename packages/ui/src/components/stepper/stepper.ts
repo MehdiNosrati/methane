@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { RovingFocusController, SlotCollectionController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController, SlotCollectionController } from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { stepperMessages } from './stepper.messages.js';

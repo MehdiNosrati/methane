@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { renderVerifySvelteKitSsr } from './lib/ssr-harness.js';
 
-describe('@methane/verify-sveltekit', () => {
+describe('@methane-ui/verify-sveltekit', () => {
   it('renders SvelteKit SSR page with Svelte 5 bind:* props, DSD shadow roots, and <head> link hoisting', async () => {
     const result = await renderVerifySvelteKitSsr();
 

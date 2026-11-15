@@ -1,4 +1,4 @@
-# `@methane/maps`
+# `@methane-ui/maps`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Spatial mapping, route visualization, GeoJSON drawing, clustering, indoor floor 
 ## Installation
 
 ```bash
-pnpm add @methane/maps @methane/core @methane/tokens
+pnpm add @methane-ui/maps @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/maps @methane/core @methane/tokens
+npm install @methane-ui/maps @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/maps` | Auto-registers all 7 map/spatial elements and exports `registerAllComponents(prefix?)` |
-| `@methane/maps/<slug>` | Per-component tree-shakeable import (e.g. `@methane/maps/map`, `@methane/maps/seat-map`) |
-| `@methane/maps/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
-| `@methane/maps/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/maps` | Auto-registers all 7 map/spatial elements and exports `registerAllComponents(prefix?)` |
+| `@methane-ui/maps/<slug>` | Per-component tree-shakeable import (e.g. `@methane-ui/maps/map`, `@methane-ui/maps/seat-map`) |
+| `@methane-ui/maps/<slug>/element` | Unregistered component class, spec, styles, messages, and `registerMth*()` |
+| `@methane-ui/maps/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Exported Components
 
@@ -43,9 +43,9 @@ npm install @methane/maps @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/maps/map';
-import '@methane/maps/location-picker';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/maps/map';
+import '@methane-ui/maps/location-picker';
 
 const map = document.getElementById('city-map') as any;
 map.markers = [{ id: 'hq', lat: 37.7749, lng: -122.4194, label: 'Headquarters' }];

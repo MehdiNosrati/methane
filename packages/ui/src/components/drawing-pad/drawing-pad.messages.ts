@@ -1,4 +1,4 @@
-import type { MessageCatalog } from '@methane/core';
+import type { MessageCatalog } from '@methane-ui/core';
 
 export const drawingPadMessages: MessageCatalog = {
   canvasLabel: 'Freehand drawing canvas. Press Space to toggle keyboard pen and arrows to draw.',

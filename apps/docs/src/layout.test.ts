@@ -20,7 +20,7 @@ function collectCssFiles(dir: string): string[] {
   return out;
 }
 
-describe('@methane/docs desktop app-shell layout (>= 960px / 60rem)', () => {
+describe('@methane-ui/docs desktop app-shell layout (>= 960px / 60rem)', () => {
   it('places .docs-sidebar beside .docs-main in a 2-column grid with sticky header and sidebar', () => {
     const indexHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
     const doc = new DOMParser().parseFromString(indexHtml, 'text/html');

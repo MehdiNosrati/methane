@@ -1,10 +1,10 @@
-import { UIElement, type NotificationItem, type PropertyValues } from '@methane/core';
+import { UIElement, type NotificationItem, type PropertyValues } from '@methane-ui/core';
 import {
   NotificationStoreController,
   OverlayController,
   type NotifyOptions,
   type OverlayCloseReason,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { notificationCenterMessages } from './notification-center.messages.js';

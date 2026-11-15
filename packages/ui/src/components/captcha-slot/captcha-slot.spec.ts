@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { captchaSlotMessages } from './captcha-slot.messages.js';
 
 export const captchaSlotSpec: ComponentBehaviorSpec = {
   tag: 'mth-captcha-slot',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'ContextProtocol'],
   focusModel: 'delegates-focus',

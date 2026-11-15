@@ -1,6 +1,6 @@
 <script lang="ts">
-  import '@methane/tokens/tokens.css';
-  import '@methane/css/index.css';
+  import '@methane-ui/tokens/tokens.css';
+  import '@methane-ui/css/index.css';
   import type { Snippet } from 'svelte';
 
   let { children }: { children?: Snippet } = $props();

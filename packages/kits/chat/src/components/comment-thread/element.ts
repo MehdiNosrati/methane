@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCommentThread } from './comment-thread.js';
 
 export { MthCommentThread, type CommentItem } from './comment-thread.js';

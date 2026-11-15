@@ -1,7 +1,7 @@
 import { ContextConsumer } from '@lit/context';
-import { FIELD_CONTEXT, UIElement, html, type FieldContextValue } from '@methane/core';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { scanSameRootAria } from '@methane/test-conformance';
+import { FIELD_CONTEXT, UIElement, html, type FieldContextValue } from '@methane-ui/core';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { scanSameRootAria } from '@methane-ui/test-conformance';
 import { afterEach, describe, expect, it } from 'vitest';
 import { MthField, fieldSpec } from './index.js';
 

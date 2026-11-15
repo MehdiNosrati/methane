@@ -1,14 +1,14 @@
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   DataConsumerSuite,
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@methane/ui/column';
-import type { MthColumn } from '@methane/ui/column';
+import '@methane-ui/ui/column';
+import type { MthColumn } from '@methane-ui/ui/column';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthTable, registerMthTable, tableSpec } from './index.js';
 

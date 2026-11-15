@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { popoverMessages } from './popover.messages.js';
 
 export const popoverSpec: ComponentBehaviorSpec = {
   tag: 'mth-popover',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController', 'FocusTrapController'],
   focusModel: 'none',

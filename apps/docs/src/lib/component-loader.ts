@@ -7,14 +7,14 @@ import {
   validateBehaviorSpec,
   type A11yChecklist,
   type ComponentBehaviorSpec,
-} from '@methane/spec-compiler';
+} from '@methane-ui/spec-compiler';
 import {
   DEFAULT_BEHAVIOR_SPECS,
   DEFAULT_CEM_FIXTURE,
   normalizeManifest,
   type ExtendedCustomElementsManifest,
   type NormalizedComponentModel,
-} from '@methane/wrapper-codegen';
+} from '@methane-ui/wrapper-codegen';
 
 export type PackageGroup = 'ui' | 'kits' | 'satellites' | 'primitives';
 
@@ -48,7 +48,7 @@ export interface LoadComponentDocsOptions {
 
 const WHEN_NOT_TO_USE_MAP: Readonly<Record<string, string>> = {
   'mth-button': 'Do not use <mth-button> for navigation links that change the URL; use <mth-link> or a native <a>.',
-  'mth-input': 'Do not use <mth-input> for multi-line editorial copy; use <mth-textarea> or @methane/editor.',
+  'mth-input': 'Do not use <mth-input> for multi-line editorial copy; use <mth-textarea> or @methane-ui/editor.',
   'mth-checkbox': 'Do not use <mth-checkbox> for immediate live-toggling settings without form submit; use <mth-switch>.',
   'mth-dialog': 'Do not use <mth-dialog> for non-modal contextual hints; use <mth-popover> or <mth-tooltip>.',
   'mth-combobox': 'Do not use <mth-combobox> for 2–4 static choices without search; use <mth-radio-group> or native <select>.',
@@ -63,7 +63,7 @@ const WHEN_NOT_TO_USE_MAP: Readonly<Record<string, string>> = {
 const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   {
     tag: 'mth-visually-hidden',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'none',
@@ -77,7 +77,7 @@ const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-skip-link',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'delegates-focus',
@@ -93,7 +93,7 @@ const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
   },
   {
     tag: 'mth-error-boundary',
-    package: '@methane/primitives',
+    package: '@methane-ui/primitives',
     conformance: [],
     controllers: [],
     focusModel: 'none',
@@ -306,7 +306,7 @@ interface PackageRegistryInfo {
 }
 
 function classifyPackageGroup(packageName: string, pkgDir: string): PackageGroup {
-  if (packageName === '@methane/primitives') return 'primitives';
+  if (packageName === '@methane-ui/primitives') return 'primitives';
   if (pkgDir.includes('/packages/kits/') || pkgDir.endsWith('\\packages\\kits\\' + pkgDir.split(/[/\\]/).pop())) {
     return 'kits';
   }
@@ -348,8 +348,8 @@ function resolveSnippetImportPath(
   tagName: string,
   packageRegistry: ReadonlyMap<string, PackageRegistryInfo>,
 ): string {
-  if (packageName === '@methane/primitives') {
-    return '@methane/primitives';
+  if (packageName === '@methane-ui/primitives') {
+    return '@methane-ui/primitives';
   }
 
   const slug = tagName.replace(/^mth-/, '');
@@ -438,10 +438,10 @@ function buildComponentSnippets(
 
   return {
     html: `<script type="module" src="${importPath}"></script>\n<${model.tagName}${attrStr}>${body}</${model.tagName}>`,
-    react: `import '${importPath}';\nimport '@methane/react';\n\nexport function Example() {\n  return <${model.tagName}${attrStr}>${body}</${model.tagName}>;\n}`,
+    react: `import '${importPath}';\nimport '@methane-ui/react';\n\nexport function Example() {\n  return <${model.tagName}${attrStr}>${body}</${model.tagName}>;\n}`,
     vue: `<script setup lang="ts">\nimport '${importPath}';\n</script>\n\n<template>\n  <${model.tagName}${attrStr}>${body}</${model.tagName}>\n</template>`,
-    angular: `import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\nimport '${importPath}';\nimport { ${model.className}Directive } from '@methane/angular';\n\n@Component({\n  standalone: true,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n  imports: [${model.className}Directive],\n  template: \`<${model.tagName}${attrStr}>${body}</${model.tagName}>\`,\n})\nexport class ExampleComponent {}`,
-    svelte: `<script lang="ts">\n  import '${importPath}';\n  import ${model.className} from '@methane/svelte/${model.className}.svelte';\n</script>\n\n<${model.className}${attrStr}>${body}</${model.className}>`,
+    angular: `import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\nimport '${importPath}';\nimport { ${model.className}Directive } from '@methane-ui/angular';\n\n@Component({\n  standalone: true,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n  imports: [${model.className}Directive],\n  template: \`<${model.tagName}${attrStr}>${body}</${model.tagName}>\`,\n})\nexport class ExampleComponent {}`,
+    svelte: `<script lang="ts">\n  import '${importPath}';\n  import ${model.className} from '@methane-ui/svelte/${model.className}.svelte';\n</script>\n\n<${model.className}${attrStr}>${body}</${model.className}>`,
   };
 }
 
@@ -586,13 +586,13 @@ export async function loadComponentDocs(
     .sort((a, b) => a.model.tagName.localeCompare(b.model.tagName))
     .map(({ model: rawModel, modulePath }) => {
       const spec = specByTag.get(rawModel.tagName) ?? null;
-      const packageName = spec?.package ?? '@methane/ui';
+      const packageName = spec?.package ?? '@methane-ui/ui';
       const pkgInfo = packageRegistry.get(packageName);
       const model = enrichModelPropTypes(rawModel, spec, pkgInfo?.dir, modulePath);
       const isSatelliteConformance = Boolean(spec?.conformance.includes('satellite'));
       const packageGroup =
         packageRegistry.get(packageName)?.group ??
-        (packageName === '@methane/primitives'
+        (packageName === '@methane-ui/primitives'
           ? 'primitives'
           : isSatelliteConformance
             ? 'satellites'
@@ -613,7 +613,7 @@ export async function loadComponentDocs(
         a11yChecklist,
         whenNotToUse:
           WHEN_NOT_TO_USE_MAP[model.tagName] ??
-          'Use a lightweight @methane/css layout class instead of a custom element when static CSS suffices.',
+          'Use a lightweight @methane-ui/css layout class instead of a custom element when static CSS suffices.',
         bundleBadge: buildBundleBadge(packageGroup, controllerCount, isSatelliteConformance),
         snippets: buildComponentSnippets(model, packageName, packageRegistry),
       };

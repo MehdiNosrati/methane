@@ -1,6 +1,6 @@
-import { UIElement, html, nothing, property, type PropertyValues } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
-import { isSafeUrl } from '@methane/sanitize';
+import { UIElement, html, nothing, property, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
+import { isSafeUrl } from '@methane-ui/sanitize';
 import { citationListMessages } from './citation-list.messages.js';
 import { citationListStyles } from './citation-list.styles.js';
 

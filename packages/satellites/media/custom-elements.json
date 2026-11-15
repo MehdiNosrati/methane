@@ -15,7 +15,7 @@
           "description": "Accessible SVG image annotator supporting rectangle, arrow, text, and freehand vector annotations with undo/redo.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -242,7 +242,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-image-annotator",
-            "package": "@methane/media",
+            "package": "@methane-ui/media",
             "conformance": [
               "satellite",
               "roving-focus"
@@ -422,7 +422,7 @@
           "description": "Accessible DotLottie animation player wrapping @lottiefiles/dotlottie-web with reduced-motion support.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -681,7 +681,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-lottie",
-            "package": "@methane/media",
+            "package": "@methane-ui/media",
             "conformance": [
               "satellite"
             ],
@@ -841,7 +841,7 @@
           "description": "Accessible audio waveform visualizer and keyboard-scrubbable seekbar.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1090,7 +1090,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-waveform",
-            "package": "@methane/media",
+            "package": "@methane-ui/media",
             "conformance": [
               "satellite"
             ],

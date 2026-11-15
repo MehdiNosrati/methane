@@ -1,4 +1,4 @@
-# `@methane/security-gate`
+# `@methane-ui/security-gate`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Strict Content Security Policy (CSP) + Trusted Types runtime compliance suite, D
 ## Installation
 
 ```bash
-pnpm add -D @methane/security-gate
+pnpm add -D @methane-ui/security-gate
 # or
-npm install -D @methane/security-gate
+npm install -D @methane-ui/security-gate
 ```
 
 ## Exported API
@@ -17,7 +17,7 @@ npm install -D @methane/security-gate
 | Symbol | Category | Description |
 | --- | --- | --- |
 | `installTrustedTypesAndCspGuards(options?)` | CSP / Trusted Types | Installs enforcing Trusted Types (`createHTML`, `createScript`, `createScriptURL`) and DOM sink monitors for `innerHTML` / inline script violations |
-| `runStrictCspSuite(options?)` | CSP / Trusted Types | Executes runtime CSP & Trusted Types compliance checks against `@methane/core`, `@methane/primitives`, `@methane/sanitize`, and `@methane/ssr` |
+| `runStrictCspSuite(options?)` | CSP / Trusted Types | Executes runtime CSP & Trusted Types compliance checks against `@methane-ui/core`, `@methane-ui/primitives`, `@methane-ui/sanitize`, and `@methane-ui/ssr` |
 | `auditDsdHtmlForCsp(html)` | SSR Audit | Scans server-rendered DSD HTML for inline event handlers (`on*`), `javascript:` URLs, or unguarded `<script>` tags |
 | `auditWorkspaceLicenses(options)` | Supply Chain | Audits workspace/lockfile dependencies against `ALLOWED_PERMISSIVE_LICENSES` and `BANNED_LICENSE_PATTERNS` |
 | `evaluateLicenseExpression(expr)` | Supply Chain | Parses SPDX license expressions (e.g. `MIT OR Apache-2.0`) |
@@ -28,7 +28,7 @@ npm install -D @methane/security-gate
 ### Auditing SSR Declarative Shadow DOM & Strict Trusted Types
 
 ```ts
-import { auditDsdHtmlForCsp, runStrictCspSuite } from '@methane/security-gate';
+import { auditDsdHtmlForCsp, runStrictCspSuite } from '@methane-ui/security-gate';
 
 const cspSuite = await runStrictCspSuite();
 if (!cspSuite.passed) {
@@ -42,7 +42,7 @@ console.log('DSD CSP safe:', dsdReport.passed);
 ### Checking Workspace Dependency Licenses in CI
 
 ```ts
-import { auditWorkspaceLicenses } from '@methane/security-gate';
+import { auditWorkspaceLicenses } from '@methane-ui/security-gate';
 
 const licenseAudit = await auditWorkspaceLicenses({ rootDir: process.cwd() });
 if (!licenseAudit.passed) {

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthRangeSlider } from './range-slider.js';
 
 export { MthRangeSlider, type RangeSliderSize } from './range-slider.js';

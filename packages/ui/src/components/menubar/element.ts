@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthMenubar } from './menubar.js';
 
 export { MthMenubar, type MenubarItem, type MenubarSubItem } from './menubar.js';

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import '@methane/ssr/dom-shim';
+import '@methane-ui/ssr/dom-shim';
 import { LitElement, css, html } from 'lit';
 import {
   createNextSsrTransformStream,
@@ -41,7 +41,7 @@ if (!customElements.get('mth-next-button')) {
   customElements.define('mth-next-button', MthNextButton);
 }
 
-describe('@methane/ssr-next', () => {
+describe('@methane-ui/ssr-next', () => {
   it('expands RSC-serialized custom elements into DSD and hoists preload links + Link headers', async () => {
     const rscHtml =
       '<!doctype html><html><head><title>Next App</title></head>' +
@@ -89,7 +89,7 @@ describe('@methane/ssr-next', () => {
     });
     expect(cfg.reactStrictMode).toBe(true);
     expect(cfg.transpilePackages).toContain('custom-pkg');
-    expect(cfg.transpilePackages).toContain('@methane/ui');
+    expect(cfg.transpilePackages).toContain('@methane-ui/ui');
     expect(cfg.serverExternalPackages).toContain('@lit-labs/ssr');
   });
 });

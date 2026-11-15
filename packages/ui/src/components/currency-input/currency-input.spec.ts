@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { currencyInputMessages } from './currency-input.messages.js';
 
 export const currencyInputSpec: ComponentBehaviorSpec = {
   tag: 'mth-currency-input',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['form-control'],
   controllers: ['FormControlController', 'InputController', 'MaskAndFormatEngine', 'ContextProtocol'],
   focusModel: 'delegates-focus',

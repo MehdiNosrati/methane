@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { LottieMessages } from './lottie.messages.js';
 
 export const lottieSpec: ComponentBehaviorSpec = {
   tag: 'mth-lottie',
-  package: '@methane/media',
+  package: '@methane-ui/media',
   conformance: ['satellite'],
   controllers: ['MotionController'],
   focusModel: 'delegates-focus',

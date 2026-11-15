@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { spreadsheetMessages } from './spreadsheet.messages.js';
 
 export const spreadsheetSpec: ComponentBehaviorSpec = {
   tag: 'mth-spreadsheet',
-  package: '@methane/spreadsheet',
+  package: '@methane-ui/spreadsheet',
   conformance: ['satellite'],
   controllers: [
     'VirtualizerController',

@@ -1,10 +1,10 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   CalendarCore,
   FormControlController,
   FormattingUtils,
   type CalendarDate,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../shared/style-sheet.js';

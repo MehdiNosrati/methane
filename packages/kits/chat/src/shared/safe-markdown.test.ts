@@ -2,7 +2,7 @@ import { html, render } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderSafeMarkdown } from './safe-markdown.js';
 
-describe('@methane/chat renderSafeMarkdown', () => {
+describe('@methane-ui/chat renderSafeMarkdown', () => {
   afterEach(() => {
     document.body.replaceChildren();
   });
@@ -26,7 +26,7 @@ describe('@methane/chat renderSafeMarkdown', () => {
     expect(host.textContent).not.toContain('bad)');
   });
 
-  it('sanitizes opt-in allowRawHtml via @methane/sanitize parseSafeFragment without regex stripping', () => {
+  it('sanitizes opt-in allowRawHtml via @methane-ui/sanitize parseSafeFragment without regex stripping', () => {
     const host = document.createElement('div');
     const payload =
       '<b>Safe</b> <img src="https://example.com/pic.png" onerror="alert(1)"><script>window.__xss=1</script><a href="javascript:alert(1)">bad</a> [q](https://example.com/?a=1&b=2)';

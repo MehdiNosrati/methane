@@ -42,11 +42,11 @@ export const DEFAULT_SHARED_EXTERNALS: ReadonlyArray<string> = [
   'lit',
   'lit/*',
   '@lit/*',
-  '@methane/core',
-  '@methane/core/*',
-  '@methane/primitives',
-  '@methane/primitives/*',
-  '@methane/sanitize',
+  '@methane-ui/core',
+  '@methane-ui/core/*',
+  '@methane-ui/primitives',
+  '@methane-ui/primitives/*',
+  '@methane-ui/sanitize',
 ];
 
 export function compressSizes(buffer: Uint8Array): BundleSizeMetrics {

@@ -1,6 +1,6 @@
-import { registerUtilityElements } from '@methane/primitives';
-import { createMethaneHandle } from '@methane/ssr-sveltekit';
-import { registerAllComponents } from '@methane/ui';
+import { registerUtilityElements } from '@methane-ui/primitives';
+import { createMethaneHandle } from '@methane-ui/ssr-sveltekit';
+import { registerAllComponents } from '@methane-ui/ui';
 import type { Handle } from '@sveltejs/kit';
 
 registerUtilityElements();

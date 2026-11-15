@@ -87,7 +87,7 @@ function walkPackageManifests(dir: string, out: string[]): void {
 /**
  * Audits workspace `package.json` manifests for ADR-007 invariants:
  * 1. No package lists the same dependency in both `dependencies` and `peerDependencies`.
- * 2. All `@methane/*` `peerDependencies` ranges equal `"^0.1.0"` (never `||` or `*`).
+ * 2. All `@methane-ui/*` `peerDependencies` ranges equal `"^0.1.0"` (never `||` or `*`).
  * 3. Every publishable (`private !== true`) package has uniform `"0.1.0"` version.
  * 4. Every publishable (`private !== true`) package includes a non-empty `README.md` (>= 300 bytes).
  */
@@ -120,7 +120,7 @@ export function auditWorkspacePackages(options: PackageAuditOptions = {}): Packa
     }
 
     for (const [peerName, range] of Object.entries(peers)) {
-      if (peerName.startsWith('@methane/') && range !== expectedPeerRange) {
+      if (peerName.startsWith('@methane-ui/') && range !== expectedPeerRange) {
         violations.push({
           packageName: pkgName,
           location,

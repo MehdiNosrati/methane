@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { toolCallMessages } from './tool-call.messages.js';
 
 export const toolCallSpec: ComponentBehaviorSpec = {
   tag: 'mth-tool-call',
-  package: '@methane/ai',
+  package: '@methane-ui/ai',
   conformance: [],
   controllers: ['MotionController'],
   focusModel: 'none',

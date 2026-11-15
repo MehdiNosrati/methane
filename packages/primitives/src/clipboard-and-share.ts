@@ -1,4 +1,4 @@
-import { parseSafeFragment } from '@methane/sanitize';
+import { parseSafeFragment } from '@methane-ui/sanitize';
 
 export interface SharePayload {
   readonly title?: string;

@@ -1,4 +1,4 @@
-# `@methane/wrapper-codegen`
+# `@methane-ui/wrapper-codegen`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Custom Elements Manifest (`custom-elements.json`) + `ComponentBehaviorSpec` mult
 ## Installation
 
 ```bash
-pnpm add -D @methane/wrapper-codegen
+pnpm add -D @methane-ui/wrapper-codegen
 # or
-npm install -D @methane/wrapper-codegen
+npm install -D @methane-ui/wrapper-codegen
 ```
 
 ## Package Exports & CLI Binary
@@ -39,7 +39,7 @@ methane-wrapper-codegen [options]
 ## Usage Examples
 
 ```bash
-# Regenerate @methane/react, @methane/vue, @methane/angular, @methane/svelte, and IDE files across the monorepo
+# Regenerate @methane-ui/react, @methane-ui/vue, @methane-ui/angular, @methane-ui/svelte, and IDE files across the monorepo
 npx methane-wrapper-codegen --workspace
 
 # Dry-run verification in CI
@@ -47,7 +47,7 @@ npx methane-wrapper-codegen --workspace --dry-run
 ```
 
 ```ts
-import { generateAllWrappers, loadWorkspaceManifestAndSpecs } from '@methane/wrapper-codegen';
+import { generateAllWrappers, loadWorkspaceManifestAndSpecs } from '@methane-ui/wrapper-codegen';
 
 const { manifest, specs } = loadWorkspaceManifestAndSpecs(process.cwd());
 const output = generateAllWrappers({ manifest, specs }, { write: false });
@@ -56,7 +56,7 @@ console.log(`Normalized ${output.models.length} components`);
 
 ## Notes
 
-- Generates `@methane/react` (`.`, `./legacy`), `@methane/vue`, `@methane/angular`, `@methane/svelte`, and VS Code / JetBrains HTML custom-data files (`tooling/wrapper-codegen/ide`).
+- Generates `@methane-ui/react` (`.`, `./legacy`), `@methane-ui/vue`, `@methane-ui/angular`, `@methane-ui/svelte`, and VS Code / JetBrains HTML custom-data files (`tooling/wrapper-codegen/ide`).
 
 ## License
 

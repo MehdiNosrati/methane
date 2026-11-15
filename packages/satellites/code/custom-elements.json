@@ -15,7 +15,7 @@
           "description": "Read-only syntax-highlighted code block using the CSS Custom Highlight API (`CSS.highlights`) with accessible token span fallback, line highlighting, and clipboard copy.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -256,7 +256,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-code-block",
-            "package": "@methane/code",
+            "package": "@methane-ui/code",
             "conformance": [
               "satellite"
             ],
@@ -412,7 +412,7 @@
           "description": "Form-associated CodeMirror 6 code editor with non-trapping Tab escape toggle, `--mth-*` theme compartment sync, and hydration-pure lifecycle.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -701,7 +701,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-code-editor",
-            "package": "@methane/code",
+            "package": "@methane-ui/code",
             "conformance": [
               "satellite",
               "form-control"
@@ -868,7 +868,7 @@
           "description": "Unified and side-by-side line diff viewer with LCS diffing, keyboard hunk navigation, accessible semantics, and `--mth-*` token synchronization.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1068,7 +1068,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-diff-viewer",
-            "package": "@methane/code",
+            "package": "@methane-ui/code",
             "conformance": [
               "satellite"
             ],
@@ -1214,7 +1214,7 @@
           "description": "Form-associated CodeMirror 6 JSON editor with live JSON syntax validation, prettify formatting, collapsible interactive tree view, and `--mth-*` token synchronization.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1502,7 +1502,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-json-editor",
-            "package": "@methane/code",
+            "package": "@methane-ui/code",
             "conformance": [
               "satellite",
               "form-control"

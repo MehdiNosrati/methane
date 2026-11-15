@@ -1,5 +1,5 @@
 {
-  "name": "@methane/angular",
+  "name": "@methane-ui/angular",
   "version": "0.1.0",
   "description": "Angular standalone typed Directives and ControlValueAccessor wrappers for Methane UI (ADR-009)",
   "license": "MIT",
@@ -29,7 +29,15 @@
     "@angular/core": "^19.0.0",
     "@angular/forms": "^19.0.0",
     "@angular/platform-browser": "^19.0.0",
-    "@methane/wrapper-codegen": "workspace:^",
+    "@methane-ui/wrapper-codegen": "workspace:^",
     "rxjs": "^7.8.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

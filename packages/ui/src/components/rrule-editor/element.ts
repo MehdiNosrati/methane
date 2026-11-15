@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthRruleEditor } from './rrule-editor.js';
 
 export { MthRruleEditor, type RRuleEndMode, type RRuleFrequency, type RRuleWeekday } from './rrule-editor.js';

@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { sidebarNavMessages } from './sidebar-nav.messages.js';
 
 export interface SidebarNavItem {
@@ -15,7 +15,7 @@ export const EMPTY_SIDEBAR_NAV_ITEMS: ReadonlyArray<SidebarNavItem> = Object.fre
 
 export const sidebarNavSpec: ComponentBehaviorSpec = {
   tag: 'mth-sidebar-nav',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['roving-focus'],
   controllers: ['RovingFocusController'],
   focusModel: 'delegates-focus',

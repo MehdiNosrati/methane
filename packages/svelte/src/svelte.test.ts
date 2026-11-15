@@ -7,7 +7,7 @@ import { MthCombobox, MthDialog, MthField, MthInput, MthOption, MthSkipLink } fr
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-describe('@methane/svelte', () => {
+describe('@methane-ui/svelte', () => {
   it('exposes Svelte 5 typed wrappers supporting bind:value and bind:open', () => {
     expect(MthField.bindableProps).toEqual([]);
     expect(MthSkipLink.bindableProps).toEqual([]);

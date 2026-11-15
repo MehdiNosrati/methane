@@ -1,5 +1,5 @@
-import { UIElement, html, property, type PropertyValues } from '@methane/core';
-import { RovingFocusController } from '@methane/primitives';
+import { UIElement, html, property, type PropertyValues } from '@methane-ui/core';
+import { RovingFocusController } from '@methane-ui/primitives';
 import { suggestionChipsMessages } from './suggestion-chips.messages.js';
 import { suggestionChipsStyles } from './suggestion-chips.styles.js';
 

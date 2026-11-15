@@ -1,40 +1,40 @@
 ---
 name: methane-ui
-description: Guides building UIs with Methane Web Components, pure CSS layout classes, domain kits, satellites, and framework wrappers across HTML, React, Vue, Angular, and Svelte. Use when selecting, importing, or wiring @methane/* components or forms.
+description: Guides building UIs with Methane Web Components, pure CSS layout classes, domain kits, satellites, and framework wrappers across HTML, React, Vue, Angular, and Svelte. Use when selecting, importing, or wiring @methane-ui/* components or forms.
 ---
 
 # Methane UI
 
-Build accessible interfaces with pure CSS layouts (`@methane/css`) and custom elements (`@methane/ui`, domain kits, and satellites).
+Build accessible interfaces with pure CSS layouts (`@methane-ui/css`) and custom elements (`@methane-ui/ui`, domain kits, and satellites).
 
 ## Choose the Right Layer
 
 | Need | Use | Example |
 | --- | --- | --- |
-| Spacing, grid, flex, app shell, prose, marketing | `@methane/css` pure CSS classes / layout tags | `.mth-stack`, `.mth-grid`, `.mth-app-shell`, `<mth-stack>` |
-| Native form controls with zero JS | `@methane/css` form classes | `.mth-btn`, `.mth-input`, `.mth-select` |
-| Interactive controls, overlays, validation | `@methane/ui/<slug>` custom elements | `<mth-button>`, `<mth-dialog>`, `<mth-combobox>` |
-| Domain workflows (AI, Auth, Admin, Chat, Commerce) | `@methane/{ai,auth,admin,chat,commerce}` | `<mth-prompt-input>`, `<mth-auth-form>`, `<mth-kanban>` |
-| Heavy engines (charts, datagrid, editor, maps, PDF, 3D) | `@methane/{charts,datagrid,editor,code,maps,pdf,3d,rtc,flow,media,spreadsheet}` | `<mth-chart>`, `<mth-datagrid>`, `<mth-code-editor>` |
+| Spacing, grid, flex, app shell, prose, marketing | `@methane-ui/css` pure CSS classes / layout tags | `.mth-stack`, `.mth-grid`, `.mth-app-shell`, `<mth-stack>` |
+| Native form controls with zero JS | `@methane-ui/css` form classes | `.mth-btn`, `.mth-input`, `.mth-select` |
+| Interactive controls, overlays, validation | `@methane-ui/ui/<slug>` custom elements | `<mth-button>`, `<mth-dialog>`, `<mth-combobox>` |
+| Domain workflows (AI, Auth, Admin, Chat, Commerce) | `@methane-ui/{ai,auth,admin,chat,commerce}` | `<mth-prompt-input>`, `<mth-auth-form>`, `<mth-kanban>` |
+| Heavy engines (charts, datagrid, editor, maps, PDF, 3D) | `@methane-ui/{charts,datagrid,editor,code,maps,pdf,3d,rtc,flow,media,spreadsheet}` | `<mth-chart>`, `<mth-datagrid>`, `<mth-code-editor>` |
 
-Prefer `@methane/css` layout classes or `.mth-btn` / `.mth-select` over Shadow DOM custom elements when static styling or native `<button>` / `<select>` suffices.
+Prefer `@methane-ui/css` layout classes or `.mth-btn` / `.mth-select` over Shadow DOM custom elements when static styling or native `<button>` / `<select>` suffices.
 
 ## Base Setup & Per-Component Imports
 
 Load tokens and base CSS once at your app root, then import individual component entrypoints for tree-shaking:
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/css/index.css';
-import '@methane/ui/button';
-import '@methane/ui/input';
-import '@methane/ui/select';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/css/index.css';
+import '@methane-ui/ui/button';
+import '@methane-ui/ui/input';
+import '@methane-ui/ui/select';
 ```
 
 For custom tag prefixes (white-labeling), import from `/element`:
 
 ```ts
-import { registerMthButton } from '@methane/ui/button/element';
+import { registerMthButton } from '@methane-ui/ui/button/element';
 registerMthButton('acme'); // registers <acme-button>
 ```
 

@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCarousel } from './carousel.js';
 
 export { MthCarousel } from './carousel.js';

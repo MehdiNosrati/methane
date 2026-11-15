@@ -1,11 +1,11 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { stepMessages } from './step.messages.js';
 
 export type StepStatus = 'upcoming' | 'current' | 'complete' | 'error';
 
 export const stepSpec: ComponentBehaviorSpec = {
   tag: 'mth-step',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

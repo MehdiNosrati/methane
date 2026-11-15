@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { html as litHtml } from 'lit';
-import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
-import '@methane/ui/resizable-panel';
-import '@methane/ui/resizable-handle';
+import { compileSpec, runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
+import { HydrationPuritySuite, scanSameRootAria } from '@methane-ui/test-conformance';
+import '@methane-ui/ui/resizable-panel';
+import '@methane-ui/ui/resizable-handle';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { resizableGroupSpec } from './resizable-group.spec.js';
 import { MthResizableGroup, registerMthResizableGroup } from './index.js';

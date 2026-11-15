@@ -1,5 +1,5 @@
 {
-  "name": "@methane/core",
+  "name": "@methane-ui/core",
   "version": "0.1.0",
   "description": "Lit 3 UIElement base class, single versioned global runtime, i18n catalog, and Community Context Protocol for Methane UI",
   "license": "MIT",
@@ -32,12 +32,12 @@
   "dependencies": {
     "@lit-labs/ssr-client": "^1.1.7",
     "@lit/context": "^1.1.4",
-    "@methane/sanitize": "workspace:^",
-    "@methane/tokens": "workspace:^",
+    "@methane-ui/sanitize": "workspace:^",
+    "@methane-ui/tokens": "workspace:^",
     "lit": "^3.2.1"
   },
   "devDependencies": {
-    "@methane/test-conformance": "workspace:^",
+    "@methane-ui/test-conformance": "workspace:^",
     "fast-check": "^4.10.2"
   },
   "scripts": {
@@ -45,5 +45,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

@@ -1,11 +1,11 @@
-import { registerUtilityElements } from '@methane/primitives';
+import { registerUtilityElements } from '@methane-ui/primitives';
 import {
   createMethaneNitroPlugin,
   type NitroAppLike,
   type NitroRenderHtmlContext,
   type NuxtSsrOptions,
-} from '@methane/ssr-nuxt';
-import { registerAllComponents } from '@methane/ui';
+} from '@methane-ui/ssr-nuxt';
+import { registerAllComponents } from '@methane-ui/ui';
 import {
   MthButton,
   MthCombobox,
@@ -14,7 +14,7 @@ import {
   MthInput,
   MthOption,
   MthOptionGroup,
-} from '@methane/vue';
+} from '@methane-ui/vue';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 

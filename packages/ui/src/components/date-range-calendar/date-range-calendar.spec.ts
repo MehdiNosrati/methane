@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const dateRangeCalendarSpec: ComponentBehaviorSpec = {
   tag: 'mth-date-range-calendar',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['CalendarCore'],
   focusModel: 'delegates-focus',

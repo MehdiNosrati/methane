@@ -1,4 +1,4 @@
-# `@methane/locales`
+# `@methane-ui/locales`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,25 +7,25 @@ Code-split, lazy-loaded internationalization (i18n) locale packs with `Intl.Plur
 ## Installation
 
 ```bash
-pnpm add @methane/locales
+pnpm add @methane-ui/locales
 # or
-npm install @methane/locales
+npm install @methane-ui/locales
 ```
 
 ## Supported Locales & Subpath Exports
 
 | Subpath | Locale | Script Direction |
 | --- | --- | --- |
-| `@methane/locales/en` | English (`en`) | `ltr` |
-| `@methane/locales/es` | Spanish (`es`) | `ltr` |
-| `@methane/locales/fr` | French (`fr`) | `ltr` |
-| `@methane/locales/de` | German (`de`) | `ltr` |
-| `@methane/locales/ja` | Japanese (`ja`) | `ltr` |
-| `@methane/locales/zh-CN` | Simplified Chinese (`zh-CN`) | `ltr` |
-| `@methane/locales/ar` | Arabic (`ar`) | `rtl` |
-| `@methane/locales/he` | Hebrew (`he`) | `rtl` |
+| `@methane-ui/locales/en` | English (`en`) | `ltr` |
+| `@methane-ui/locales/es` | Spanish (`es`) | `ltr` |
+| `@methane-ui/locales/fr` | French (`fr`) | `ltr` |
+| `@methane-ui/locales/de` | German (`de`) | `ltr` |
+| `@methane-ui/locales/ja` | Japanese (`ja`) | `ltr` |
+| `@methane-ui/locales/zh-CN` | Simplified Chinese (`zh-CN`) | `ltr` |
+| `@methane-ui/locales/ar` | Arabic (`ar`) | `rtl` |
+| `@methane-ui/locales/he` | Hebrew (`he`) | `rtl` |
 
-> Each subpath accepts both `@methane/locales/<code>` and `@methane/locales/<code>.js`.
+> Each subpath accepts both `@methane-ui/locales/<code>` and `@methane-ui/locales/<code>.js`.
 
 ## Exported API
 
@@ -42,11 +42,11 @@ npm install @methane/locales
 
 ## Usage Examples
 
-### Lazy Loading & Registering with `@methane/core`
+### Lazy Loading & Registering with `@methane-ui/core`
 
 ```ts
-import { loadLocalePack, flattenMessages, getLocaleDirection } from '@methane/locales';
-import { registerLocalePack } from '@methane/core/i18n';
+import { loadLocalePack, flattenMessages, getLocaleDirection } from '@methane-ui/locales';
+import { registerLocalePack } from '@methane-ui/core/i18n';
 
 const pack = await loadLocalePack(navigator.language);
 registerLocalePack(pack.locale, flattenMessages(pack));
@@ -56,8 +56,8 @@ document.documentElement.dir = getLocaleDirection(pack.locale);
 ### Static Bundle Import & `Intl.PluralRules` Formatting
 
 ```ts
-import arPack from '@methane/locales/ar';
-import { formatMessage } from '@methane/locales';
+import arPack from '@methane-ui/locales/ar';
+import { formatMessage } from '@methane-ui/locales';
 
 const label = formatMessage(arPack.common.selectedCount, 'ar', { count: 3 });
 ```
@@ -65,7 +65,7 @@ const label = formatMessage(arPack.common.selectedCount, 'ar', { count: 3 });
 ## RTL, Accessibility & SSR Notes
 
 - **RTL & Bidi**: `getLocaleDirection()` automatically maps Arabic/Hebrew language subtags (`ar`, `he`, `iw`, etc.) to `'rtl'`.
-- **Screen-Reader Labels**: Includes dedicated `announcer`, `overlay`, `pagination`, `table`, `calendar`, `combobox`, and `upload` namespaces used by `@methane/ui` ARIA live regions and controls.
+- **Screen-Reader Labels**: Includes dedicated `announcer`, `overlay`, `pagination`, `table`, `calendar`, `combobox`, and `upload` namespaces used by `@methane-ui/ui` ARIA live regions and controls.
 - **SSR Compatibility**: All exports rely solely on standard ECMAScript `Intl.PluralRules` and dynamic ESM `import()`, working identically in Node/Edge SSR and browsers.
 
 ## License

@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query, state } from '@methane-ui/core';
 import {
   CalendarCore,
   type CalendarDate,
@@ -7,7 +7,7 @@ import {
   OverlayController,
   PositioningController,
   formatIsoDate,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { datetimePickerMessages } from './datetime-picker.messages.js';
 import { datetimePickerStyles } from './datetime-picker.styles.js';
 

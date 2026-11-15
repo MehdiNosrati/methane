@@ -14,7 +14,7 @@
           "description": "Interactive indoor vector floor plan with zoom/pan controls and roving accessible room directory.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -221,7 +221,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-floor-plan",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "roving-focus",
               "satellite"
@@ -387,7 +387,7 @@
           "description": "Form-associated geographic coordinate picker (`lat,lng`) with keyboard nudging and validation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -649,7 +649,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-location-picker",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "form-control",
               "satellite"
@@ -844,7 +844,7 @@
           "description": "Interactive MapLibre GL JS map canvas with RTL-aware panning, zoom controls, markers, and SSR fallback.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1115,7 +1115,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-map",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "satellite"
             ],
@@ -1317,7 +1317,7 @@
           "description": "Spatial point clustering layer over MapLibre with accessible cluster controls and zoom expansion.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1472,7 +1472,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-map-cluster",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "satellite",
               "roving-focus"
@@ -1613,7 +1613,7 @@
           "description": "Interactive GeoJSON drawing surface supporting points, lines, polygons, keyboard drawing, and undo/redo.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -1756,7 +1756,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-map-draw",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "satellite",
               "roving-focus"
@@ -1900,7 +1900,7 @@
           "description": "Route path visualizer computing Haversine distance and interactive bounds fitting across ordered stops.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2035,7 +2035,7 @@
           "cssStates": [],
           "x-methane-spec": {
             "tag": "mth-map-route",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "satellite"
             ],
@@ -2167,7 +2167,7 @@
           "description": "Form-associated 2D ARIA grid seat picker supporting multi-select, seat tiers, and validation.",
           "superclass": {
             "name": "UIElement",
-            "package": "@methane/core"
+            "package": "@methane-ui/core"
           },
           "members": [
             {
@@ -2461,7 +2461,7 @@
           ],
           "x-methane-spec": {
             "tag": "mth-seat-map",
-            "package": "@methane/maps",
+            "package": "@methane-ui/maps",
             "conformance": [
               "form-control",
               "roving-focus",

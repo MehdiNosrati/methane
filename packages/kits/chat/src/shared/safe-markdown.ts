@@ -1,4 +1,4 @@
-import { isSafeUrl, parseSafeFragment, renderMarkdownToSafeHTML } from '@methane/sanitize';
+import { isSafeUrl, parseSafeFragment, renderMarkdownToSafeHTML } from '@methane-ui/sanitize';
 import { html, type TemplateResult } from 'lit';
 
 export type SafeMarkdownPart = TemplateResult | DocumentFragment | string;
@@ -63,7 +63,7 @@ function renderEscapedMarkdownTemplates(
 }
 
 /**
- * Renders lightweight markdown/streaming content safely via `@methane/sanitize`
+ * Renders lightweight markdown/streaming content safely via `@methane-ui/sanitize`
  * (`isSafeUrl`, `renderMarkdownToSafeHTML`, `parseSafeFragment`).
  * `allowRawHtml` defaults to `false` (ADR-012): raw HTML is rendered as inert text via Lit
  * text bindings; when `allowRawHtml: true` is opted in, markup is sanitized through

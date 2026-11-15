@@ -13,7 +13,7 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Maintaining a bespoke micro-kernel across 200+ custom elements creates subtle edge-case risk around reactive batching, Trusted Types, and streaming SSR.',
     decision:
-      'Adopt Lit 3 wrapped in a thin human-owned UIElement base class (tested with fast-check) adding DSD hydration, FACE wiring, :state() helpers, i18n lookup, and dev warnings; wrap @lit-labs/ssr behind @methane/ssr.',
+      'Adopt Lit 3 wrapped in a thin human-owned UIElement base class (tested with fast-check) adding DSD hydration, FACE wiring, :state() helpers, i18n lookup, and dev warnings; wrap @lit-labs/ssr behind @methane-ui/ssr.',
     consequence:
       'Cold first-component cost includes lit, while template security, reactive ergonomics, and SSR maturity improve dramatically.',
   },
@@ -23,7 +23,7 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Subclassing components or importing sibling internals creates brittle coupling across ~250 deliverables.',
     decision:
-      'Share behavior exclusively via @methane/primitives controllers/cores. Nest <mth-*> elements strictly via public tags, props, slots, events, and ::part(), enforcing tokens/sanitize -> core -> primitives -> ui -> kits -> satellites.',
+      'Share behavior exclusively via @methane-ui/primitives controllers/cores. Nest <mth-*> elements strictly via public tags, props, slots, events, and ::part(), enforcing tokens/sanitize -> core -> primitives -> ui -> kits -> satellites.',
     consequence:
       'Components and shards can be built and refactored in parallel without breaking siblings.',
   },
@@ -73,7 +73,7 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Micro-frontends and bundlers can load duplicate copies of core modules, breaking modal Escape stacks, toasts, and registries.',
     decision:
-      "Store shared coordinators at globalThis[Symbol.for('@methane/runtime')] with semver negotiation (highest compatible version wins) and duplicate-core guard.",
+      "Store shared coordinators at globalThis[Symbol.for('@methane-ui/runtime')] with semver negotiation (highest compatible version wins) and duplicate-core guard.",
     consequence:
       'Shared browser resources coordinate cleanly across separately bundled slices.',
   },
@@ -93,7 +93,7 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Meta-frameworks have distinct streaming SSR pipelines, and React 19 natively supports custom elements without runtime wrappers.',
     decision:
-      'Deliver 6 tested SSR packages (@methane/ssr + Next, Nuxt, SvelteKit, Astro, Angular), generate @methane/react as zero-runtime React 19 types, and isolate React 18 shims in @methane/react/legacy.',
+      'Deliver 6 tested SSR packages (@methane-ui/ssr + Next, Nuxt, SvelteKit, Astro, Angular), generate @methane-ui/react as zero-runtime React 19 types, and isolate React 18 shims in @methane-ui/react/legacy.',
     consequence:
       'Near-zero wrapper cost on React 19 and turnkey hydration purity across SSR frameworks.',
   },
@@ -113,17 +113,17 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Hardcoded English strings block international apps, while external i18n frameworks bloat bundles.',
     decision:
-      'Inline tree-shakable English defaults per component in @methane/core, overridable via Locale Context, props/slots, and lazy @methane/locales packs with Intl.PluralRules and RTL bidi isolation.',
+      'Inline tree-shakable English defaults per component in @methane-ui/core, overridable via Locale Context, props/slots, and lazy @methane-ui/locales packs with Intl.PluralRules and RTL bidi isolation.',
     consequence:
       'Zero-config English DX plus complete enterprise i18n/RTL support.',
   },
   {
     id: 'ADR-012',
-    title: 'Mandatory @methane/sanitize & Defense-in-Depth Content Rules',
+    title: 'Mandatory @methane-ui/sanitize & Defense-in-Depth Content Rules',
     context:
       'Rich text, Markdown, and streaming AI outputs are primary XSS/mXSS vectors, especially under Trusted Types CSP.',
     decision:
-      'Ship @methane/sanitize using native setHTML/parseHTML with a parity-configured bundled DOMPurify fallback (RETURN_TRUSTED_TYPE: true), disable raw HTML by default, allowlist http/https/mailto/tel URLs, and render SVGs via <img>.',
+      'Ship @methane-ui/sanitize using native setHTML/parseHTML with a parity-configured bundled DOMPurify fallback (RETURN_TRUSTED_TYPE: true), disable raw HTML by default, allowlist http/https/mailto/tel URLs, and render SVGs via <img>.',
     consequence:
       "Eliminates DOM XSS sinks and works cleanly under require-trusted-types-for 'script'.",
   },
@@ -143,17 +143,17 @@ export const ADRS: ReadonlyArray<AdrEntry> = [
     context:
       'Scaling to 275 deliverables risks subtle APG, ARIA, and lifecycle regressions.',
     decision:
-      'Require machine-readable <tag>.spec.ts files to generate tests, docs, CEM checks, and checklists; enforce 5 Class Conformance Suites, @methane/lint-plugin static/runtime invariants, ariaSnapshot() matrices, and Hydration Purity.',
+      'Require machine-readable <tag>.spec.ts files to generate tests, docs, CEM checks, and checklists; enforce 5 Class Conformance Suites, @methane-ui/lint-plugin static/runtime invariants, ariaSnapshot() matrices, and Hydration Purity.',
     consequence:
       'Turns parallel AI component authoring into a deterministic, mechanically verified factory.',
   },
   {
     id: 'ADR-015',
-    title: 'Methane Naming, @methane/* Scope & mth- Prefix Convention',
+    title: 'Methane Naming, @methane-ui/* Scope & mth- Prefix Convention',
     context:
       'Every package, custom element tag, token, custom event, and runtime symbol needs a terse, collision-free namespace.',
     decision:
-      "Standardize on @methane/* packages, mth-* tags (configurable via defineComponents({ prefix })), --mth-* tokens, mth-* custom events, .mth-* CSS primitives, and Symbol.for('@methane/runtime').",
+      "Standardize on @methane-ui/* packages, mth-* tags (configurable via defineComponents({ prefix })), --mth-* tokens, mth-* custom events, .mth-* CSS primitives, and Symbol.for('@methane-ui/runtime').",
     consequence:
       'Terse 3-letter prefix minimizes HTML/SSR byte overhead and keeps every layer immediately recognizable.',
   },

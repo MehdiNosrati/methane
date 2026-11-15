@@ -1,7 +1,7 @@
 ---
 import DocsLayout from '../components/DocsLayout.astro';
 import { withBase } from '../lib/links.js';
-import { compiledTokens } from '@methane/tokens';
+import { compiledTokens } from '@methane-ui/tokens';
 
 const colorTokens = compiledTokens.filter((t) => t.type === 'color');
 const scaleTokens = compiledTokens.filter((t) => t.type !== 'color');
@@ -10,7 +10,7 @@ const scaleTokens = compiledTokens.filter((t) => t.type !== 'color');
 <DocsLayout title="Design Tokens">
   <mth-stack data-gap="6">
     <div class="mth-prose">
-      <h1>Design Tokens (<code>@methane/tokens</code>)</h1>
+      <h1>Design Tokens (<code>@methane-ui/tokens</code>)</h1>
       <p>
         W3C DTCG design tokens compiled into <code>--mth-*</code> CSS custom properties using
         <code>oklch()</code> relative color syntax, <code>light-dark()</code>,

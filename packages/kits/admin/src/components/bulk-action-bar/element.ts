@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthBulkActionBar } from './bulk-action-bar.js';
 
 export { MthBulkActionBar, type BulkActionItem } from './bulk-action-bar.js';

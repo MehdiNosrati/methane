@@ -1,11 +1,11 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import {
   OverlayController,
   PositioningController,
   type OverlayCloseReason,
   type Placement,
   type PositioningAnchor,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { coachmarkMessages } from './coachmark.messages.js';

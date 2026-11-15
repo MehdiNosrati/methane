@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { pivotTableMessages } from './pivot-table.messages.js';
 
 export const pivotTableSpec: ComponentBehaviorSpec = {
   tag: 'mth-pivot-table',
-  package: '@methane/datagrid',
+  package: '@methane-ui/datagrid',
   conformance: ['satellite'],
   controllers: ['TableCore', 'SelectionController', 'RovingFocusController'],
   focusModel: 'host',

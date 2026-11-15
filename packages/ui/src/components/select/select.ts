@@ -1,6 +1,6 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import { UIElement } from '@methane/core';
+import { UIElement } from '@methane-ui/core';
 import {
   FormControlController,
   ListboxController,
@@ -11,7 +11,7 @@ import {
   type OverlayCloseReason,
   type Placement,
   type PositioningResult,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { selectMessages } from './select.messages.js';
 import { selectStyles } from './select.styles.js';
 

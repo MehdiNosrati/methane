@@ -1,4 +1,4 @@
-# `@methane/bundle-budget`
+# `@methane-ui/bundle-budget`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,9 +7,9 @@ Cold standalone and marginal gzip/brotli bundle budget analyzer for **Methane UI
 ## Installation
 
 ```bash
-pnpm add -D @methane/bundle-budget
+pnpm add -D @methane-ui/bundle-budget
 # or
-npm install -D @methane/bundle-budget
+npm install -D @methane-ui/bundle-budget
 ```
 
 ## Exported API
@@ -21,22 +21,22 @@ npm install -D @methane/bundle-budget
 | `checkBundleBudgets(targets)` | Runs `measureComponentBudget` across all targets and produces `{ passed, results, markdown }` |
 | `formatBundleBudgetMarkdown(results)` | Formats a GitHub-flavored Markdown comparison table suitable for PR comments |
 | `compressSizes(buffer)` | Computes raw, gzip, and brotli sizes for any `Uint8Array` |
-| `DEFAULT_SHARED_EXTERNALS` | Shared core externals (`lit`, `@methane/core`, `@methane/primitives`, `@methane/tokens`, `@methane/sanitize`, `@lit/context`) |
+| `DEFAULT_SHARED_EXTERNALS` | Shared core externals (`lit`, `@methane-ui/core`, `@methane-ui/primitives`, `@methane-ui/tokens`, `@methane-ui/sanitize`, `@lit/context`) |
 
 ## Usage Examples
 
 ```ts
-import { checkBundleBudgets, DEFAULT_SHARED_EXTERNALS } from '@methane/bundle-budget';
+import { checkBundleBudgets, DEFAULT_SHARED_EXTERNALS } from '@methane-ui/bundle-budget';
 
 const report = await checkBundleBudgets([
   {
-    name: '@methane/ui/button',
+    name: '@methane-ui/ui/button',
     entryPoint: 'packages/ui/dist/components/button/index.js',
     sharedExternals: DEFAULT_SHARED_EXTERNALS,
     maxMarginalBrotliBytes: 4096,
   },
   {
-    name: '@methane/ui/dialog',
+    name: '@methane-ui/ui/dialog',
     entryPoint: 'packages/ui/dist/components/dialog/index.js',
     sharedExternals: DEFAULT_SHARED_EXTERNALS,
     maxMarginalBrotliBytes: 8192,

@@ -1,4 +1,4 @@
-import { UIElement, inferDirectionFromLocale, type PropertyValues } from '@methane/core';
+import { UIElement, inferDirectionFromLocale, type PropertyValues } from '@methane-ui/core';
 import {
   CalendarCore,
   FormattingUtils,
@@ -8,7 +8,7 @@ import {
   getFirstDayOfWeek,
   getTodayCalendarDate,
   type CalendarDate,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { dateRangeCalendarMessages } from './date-range-calendar.messages.js';

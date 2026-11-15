@@ -1,5 +1,5 @@
-import { UIElement, type PropertyValues } from '@methane/core';
-import { FormControlController } from '@methane/primitives';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
+import { FormControlController } from '@methane-ui/primitives';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { resolveEffectiveDir } from '../shared/style-sheet.js';

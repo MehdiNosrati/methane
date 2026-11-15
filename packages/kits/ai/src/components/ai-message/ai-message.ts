@@ -1,11 +1,11 @@
-import { UIElement, html, nothing, property, query, state, type PropertyValues, type TemplateResult } from '@methane/core';
-import { ClipboardAndShare } from '@methane/primitives';
+import { UIElement, html, nothing, property, query, state, type PropertyValues, type TemplateResult } from '@methane-ui/core';
+import { ClipboardAndShare } from '@methane-ui/primitives';
 import {
   createStreamSanitizer,
   isSafeUrl,
   safeSetMarkdown,
   type StreamSanitizer,
-} from '@methane/sanitize';
+} from '@methane-ui/sanitize';
 import { aiMessageMessages } from './ai-message.messages.js';
 import { aiMessageStyles } from './ai-message.styles.js';
 
@@ -68,7 +68,7 @@ function renderSafeMarkdownParagraphs(markdown: string): Array<TemplateResult> {
 
 /**
  * `<mth-ai-message>`: streaming-ready AI message component enforcing ADR-012
- * `@methane/sanitize` content safety with `allowRawHtml: false` by default.
+ * `@methane-ui/sanitize` content safety with `allowRawHtml: false` by default.
  */
 export class MthAiMessage extends UIElement {
   static override messages = aiMessageMessages;

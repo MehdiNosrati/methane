@@ -1,4 +1,4 @@
-# `@methane/pdf`
+# `@methane-ui/pdf`
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -7,21 +7,21 @@ Wrap-first Mozilla `pdfjs-dist` accessible document viewer (`<mth-pdf-viewer>`) 
 ## Installation
 
 ```bash
-pnpm add @methane/pdf @methane/core @methane/tokens
+pnpm add @methane-ui/pdf @methane-ui/core @methane-ui/tokens
 # or
-npm install @methane/pdf @methane/core @methane/tokens
+npm install @methane-ui/pdf @methane-ui/core @methane-ui/tokens
 ```
 
-> **Peer dependency:** `@methane/core` (`^0.1.0`) is required.
+> **Peer dependency:** `@methane-ui/core` (`^0.1.0`) is required.
 
 ## Package Exports
 
 | Entrypoint | Description |
 | --- | --- |
-| `@methane/pdf` | Auto-registers `<mth-pdf-viewer>` and exports `MthPdfViewer` & `registerAllComponents(prefix?)` |
-| `@methane/pdf/pdf-viewer` | Per-component auto-registering entrypoint |
-| `@methane/pdf/pdf-viewer/element` | Unregistered `MthPdfViewer`, spec, styles, messages, and `registerMthPdfViewer(prefix?)` |
-| `@methane/pdf/custom-elements.json` | Custom Elements Manifest (CEM) |
+| `@methane-ui/pdf` | Auto-registers `<mth-pdf-viewer>` and exports `MthPdfViewer` & `registerAllComponents(prefix?)` |
+| `@methane-ui/pdf/pdf-viewer` | Per-component auto-registering entrypoint |
+| `@methane-ui/pdf/pdf-viewer/element` | Unregistered `MthPdfViewer`, spec, styles, messages, and `registerMthPdfViewer(prefix?)` |
+| `@methane-ui/pdf/custom-elements.json` | Custom Elements Manifest (CEM) |
 
 ## Component API (`<mth-pdf-viewer>`)
 
@@ -54,8 +54,8 @@ npm install @methane/pdf @methane/core @methane/tokens
 ```
 
 ```ts
-import '@methane/tokens/tokens.css';
-import '@methane/pdf/pdf-viewer';
+import '@methane-ui/tokens/tokens.css';
+import '@methane-ui/pdf/pdf-viewer';
 
 const viewer = document.getElementById('viewer')!;
 viewer.addEventListener('mth-page-change', (ev) => {

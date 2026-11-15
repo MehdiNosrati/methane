@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { toastMessages } from './toast.messages.js';
 
 export const toastSpec: ComponentBehaviorSpec = {
   tag: 'mth-toast',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: ['NotificationStoreController', 'OverlayController', 'MotionController'],
   focusModel: 'none',

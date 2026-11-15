@@ -1,10 +1,10 @@
-import { UIElement } from '@methane/core';
+import { UIElement } from '@methane-ui/core';
 import {
   ClipboardAndShare,
   LiveAnnouncer,
   RovingFocusController,
   SlotCollectionController,
-} from '@methane/primitives';
+} from '@methane-ui/primitives';
 import { html, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { codeTabsMessages } from './code-tabs.messages.js';

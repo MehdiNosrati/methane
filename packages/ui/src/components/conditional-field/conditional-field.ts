@@ -1,6 +1,6 @@
 import { ContextConsumer } from '@lit/context';
-import { UIElement, type FormContextValue, type PropertyValues } from '@methane/core';
-import { FORM_CONTEXT, FormContextProviderController } from '@methane/primitives';
+import { UIElement, type FormContextValue, type PropertyValues } from '@methane-ui/core';
+import { FORM_CONTEXT, FormContextProviderController } from '@methane-ui/primitives';
 import { html } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { conditionalFieldMessages } from './conditional-field.messages.js';

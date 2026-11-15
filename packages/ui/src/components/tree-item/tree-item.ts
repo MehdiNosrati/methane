@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, type PropertyValues } from '@methane-ui/core';
 import { html, svg } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { treeItemMessages } from './tree-item.messages.js';

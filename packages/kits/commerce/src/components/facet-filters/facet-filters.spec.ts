@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { facetFiltersMessages } from './facet-filters.messages.js';
 
 export const facetFiltersSpec: ComponentBehaviorSpec = {
   tag: 'mth-facet-filters',
-  package: '@methane/commerce',
+  package: '@methane-ui/commerce',
   conformance: [],
   controllers: [],
   focusModel: 'none',

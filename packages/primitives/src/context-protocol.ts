@@ -11,7 +11,7 @@ import {
   type LocaleContextValue,
   type ThemeContextValue,
   type ThemeMode,
-} from '@methane/core';
+} from '@methane-ui/core';
 import type { ReactiveControllerHost } from 'lit';
 
 export {

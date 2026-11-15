@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane/core';
+import { UIElement, type PropertyValues, html, nothing, property, query } from '@methane-ui/core';
 import { dropzoneMessages } from './dropzone.messages.js';
 import { dropzoneStyles } from './dropzone.styles.js';
 

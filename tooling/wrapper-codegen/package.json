@@ -1,5 +1,5 @@
 {
-  "name": "@methane/wrapper-codegen",
+  "name": "@methane-ui/wrapper-codegen",
   "version": "0.1.0",
   "description": "CEM + ComponentBehaviorSpec code generator for React 19/18, Vue, Angular, Svelte 5, and IDE metadata (ADR-009)",
   "license": "MIT",
@@ -23,6 +23,14 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@methane/spec-compiler": "workspace:^"
-  }
+    "@methane-ui/spec-compiler": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MehdiNosrati/methane.git"
+  },
+  "homepage": "https://mahdins.dev/methane/"
 }

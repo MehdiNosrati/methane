@@ -1,4 +1,4 @@
-import { defineComponents } from '@methane/core';
+import { defineComponents } from '@methane-ui/core';
 import { MthCascader } from './cascader.js';
 
 export { MthCascader, type CascaderChangeDetail, type CascaderOption } from './cascader.js';

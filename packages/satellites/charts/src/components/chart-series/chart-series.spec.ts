@@ -1,8 +1,8 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 
 export const chartSeriesSpec: ComponentBehaviorSpec = {
   tag: 'mth-chart-series',
-  package: '@methane/charts',
+  package: '@methane-ui/charts',
   conformance: [],
   controllers: [],
   focusModel: 'none',

@@ -1,3 +1,3 @@
-import { createMethaneAstroRenderer } from '@methane/ssr-astro';
+import { createMethaneAstroRenderer } from '@methane-ui/ssr-astro';
 
 export default createMethaneAstroRenderer();

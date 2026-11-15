@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { availabilityPickerMessages } from './availability-picker.messages.js';
 
 export const availabilityPickerSpec: ComponentBehaviorSpec = {
   tag: 'mth-availability-picker',
-  package: '@methane/admin',
+  package: '@methane-ui/admin',
   conformance: ['form-control', 'roving-focus'],
   controllers: ['FormControlController', 'RovingFocusController'],
   focusModel: 'delegates-focus',

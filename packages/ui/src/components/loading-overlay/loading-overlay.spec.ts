@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { loadingOverlayMessages } from './loading-overlay.messages.js';
 
 export const loadingOverlaySpec: ComponentBehaviorSpec = {
   tag: 'mth-loading-overlay',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: [],
   controllers: [],
   focusModel: 'none',

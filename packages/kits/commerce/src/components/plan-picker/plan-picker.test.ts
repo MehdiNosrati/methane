@@ -1,10 +1,10 @@
-import { runBehaviorSpecAssertions } from '@methane/spec-compiler';
+import { runBehaviorSpecAssertions } from '@methane-ui/spec-compiler';
 import {
   FormControlSuite,
   HydrationPuritySuite,
   RovingFocusSuite,
   scanSameRootAria,
-} from '@methane/test-conformance';
+} from '@methane-ui/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderLitDsdHtml } from '../../shared/ssr-hydrate-test.js';

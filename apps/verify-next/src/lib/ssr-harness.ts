@@ -1,11 +1,11 @@
-import { registerUtilityElements } from '@methane/primitives';
+import { registerUtilityElements } from '@methane-ui/primitives';
 import {
   renderNextHtml,
   transformNextResponse,
   type NextSsrOptions,
   type NextSsrResult,
-} from '@methane/ssr-next';
-import { registerAllComponents } from '@methane/ui';
+} from '@methane-ui/ssr-next';
+import { registerAllComponents } from '@methane-ui/ui';
 
 function ensureServerWindowLocation(): void {
   const g = globalThis as unknown as { window?: { location?: unknown } };

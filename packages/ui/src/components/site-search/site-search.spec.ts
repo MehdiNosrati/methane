@@ -1,4 +1,4 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { siteSearchMessages } from './site-search.messages.js';
 
 export interface SiteSearchItem {
@@ -13,7 +13,7 @@ export const EMPTY_SITE_SEARCH_ITEMS: ReadonlyArray<SiteSearchItem> = Object.fre
 
 export const siteSearchSpec: ComponentBehaviorSpec = {
   tag: 'mth-site-search',
-  package: '@methane/ui',
+  package: '@methane-ui/ui',
   conformance: ['data-consumer', 'overlay', 'listbox'],
   controllers: ['DataController', 'ListboxController', 'OverlayController', 'PositioningController', 'HotkeyController'],
   focusModel: 'delegates-focus',

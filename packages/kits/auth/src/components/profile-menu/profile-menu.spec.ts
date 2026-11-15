@@ -1,9 +1,9 @@
-import type { ComponentBehaviorSpec } from '@methane/spec-compiler';
+import type { ComponentBehaviorSpec } from '@methane-ui/spec-compiler';
 import { profileMenuMessages } from './profile-menu.messages.js';
 
 export const profileMenuSpec: ComponentBehaviorSpec = {
   tag: 'mth-profile-menu',
-  package: '@methane/auth',
+  package: '@methane-ui/auth',
   conformance: ['overlay'],
   controllers: ['OverlayController', 'PositioningController', 'RovingFocusController'],
   focusModel: 'host',
