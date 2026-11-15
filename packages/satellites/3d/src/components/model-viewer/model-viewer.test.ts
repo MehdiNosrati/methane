@@ -81,6 +81,14 @@ describe('<mth-model-viewer>', () => {
       const aria = scanSameRootAria(viewer.shadowRoot!);
       expect(aria.valid).toBe(true);
       expect(aria.issues).toEqual([]);
+
+      // Same-instance remove() -> appendChild() reconnect lifecycle
+      viewer.remove();
+      expect(viewer.engine).toBeNull();
+      document.body.appendChild(viewer);
+      await viewer.updateComplete;
+      expect(viewer.engine).not.toBeNull();
+      expect(viewer.engine?.disposed).toBe(false);
     } finally {
       window.matchMedia = originalMatchMedia;
     }

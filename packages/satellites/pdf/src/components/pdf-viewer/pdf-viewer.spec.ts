@@ -7,7 +7,7 @@ export const pdfViewerSpec: ComponentBehaviorSpec = {
   conformance: ['satellite'],
   controllers: ['MotionController', 'ObserverPoolController'],
   focusModel: 'delegates-focus',
-  states: ['loading', 'error', 'has-document', 'outline-open'],
+  states: ['loading', 'error', 'has-document', 'outline-open', 'reduced-motion'],
   keyboard: [
     { key: 'PageDown', when: 'viewer viewport is focused', expect: 'advances to the next PDF page' },
     { key: 'PageUp', when: 'viewer viewport is focused', expect: 'returns to the previous PDF page' },
@@ -87,4 +87,13 @@ export const CEM_METADATA = {
     'mth-search-change': 'Emitted when search query runs against extracted text.',
     'mth-pdf-error': 'Emitted on unsafe URL or pdf.js load failure.',
   },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Viewer background color.' },
+    { name: '--mth-color-surface-raised', description: 'Toolbar background color.' },
+    { name: '--mth-color-bg-subtle', description: 'Viewport and outline background color.' },
+    { name: '--mth-color-fg', description: 'Foreground text color.' },
+    { name: '--mth-color-fg-muted', description: 'Muted status/fallback text color.' },
+    { name: '--mth-color-border', description: 'Border color.' },
+    { name: '--mth-color-border-focus', description: 'Focus ring color.' },
+  ],
 };

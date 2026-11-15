@@ -23,7 +23,7 @@ export const modelViewerStyles = css`
   .viewport {
     position: relative;
     inline-size: 100%;
-    min-block-size: var(--mth-model-height, var(--_model-min-height));
+    min-block-size: var(--_model-height, var(--_model-min-height));
     background-color: var(--mth-color-bg-subtle, oklch(0.95 0.01 260));
     overflow: hidden;
   }
@@ -37,7 +37,7 @@ export const modelViewerStyles = css`
     display: block;
     inline-size: 100%;
     block-size: 100%;
-    min-block-size: var(--mth-model-height, var(--_model-min-height));
+    min-block-size: var(--_model-height, var(--_model-min-height));
   }
 
   .poster {
@@ -83,6 +83,12 @@ export const modelViewerStyles = css`
     outline-offset: 2px;
   }
 
+  button[aria-pressed='true'] {
+    background-color: var(--mth-color-accent, oklch(0.6 0.2 250));
+    color: var(--mth-color-accent-fg, oklch(0.99 0 0));
+    border-color: var(--mth-color-accent, oklch(0.6 0.2 250));
+  }
+
   .status {
     position: absolute;
     inset-block-end: var(--mth-space-3, 0.75rem);
@@ -120,6 +126,13 @@ export const modelViewerStyles = css`
       border-color: ButtonText;
       background-color: ButtonFace;
       color: ButtonText;
+    }
+
+    button[aria-pressed='true'] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
     }
   }
 `;

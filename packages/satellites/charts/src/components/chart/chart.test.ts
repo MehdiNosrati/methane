@@ -101,6 +101,20 @@ describe('<mth-chart>', () => {
     const rootAria = scanSameRootAria(chart.shadowRoot!);
     expect(rootAria.valid).toBe(true);
     expect(rootAria.issues).toEqual([]);
+
+    // Live <mth-chart-series> updates trigger mth-series-change -> option refresh
+    series.data = [99, 101];
+    await series.updateComplete;
+    const updatedSeries = (chart.engine?.getOption()?.series ?? []) as Array<{ data?: unknown }>;
+    expect(updatedSeries[0]?.data).toEqual([99, 101]);
+
+    // Same-instance remove() -> appendChild() reconnect lifecycle
+    chart.remove();
+    expect(chart.engine).toBeNull();
+    document.body.appendChild(chart);
+    await chart.updateComplete;
+    expect(chart.engine).not.toBeNull();
+    expect(chart.engine?.disposed).toBe(false);
   });
 
   it('passes SatelliteEngineSuite 50x mount/unmount disposal and token sync checks', async () => {

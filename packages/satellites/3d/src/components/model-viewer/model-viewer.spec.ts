@@ -75,4 +75,15 @@ export const CEM_METADATA = {
     'mth-camera-change': 'Emitted when camera orbit or zoom updates.',
     'mth-model-error': 'Emitted when model URL validation or glTF load fails.',
   },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Surface background color.' },
+    { name: '--mth-color-surface-raised', description: 'Controls bar background color.' },
+    { name: '--mth-color-bg-subtle', description: 'Viewport background color.' },
+    { name: '--mth-color-fg', description: 'Foreground text color.' },
+    { name: '--mth-color-fg-muted', description: 'Muted status/fallback text color.' },
+    { name: '--mth-color-border', description: 'Border color.' },
+    { name: '--mth-color-border-focus', description: 'Focus ring color.' },
+    { name: '--mth-color-accent', description: 'Active toggle button background color.' },
+    { name: '--mth-color-accent-fg', description: 'Active toggle button text color.' },
+  ],
 };

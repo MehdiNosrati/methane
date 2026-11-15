@@ -120,6 +120,7 @@ export class MthPdfViewer extends UIElement {
   private _renderTask: RenderTask | null = null;
   private _tokenCache: Map<string, string> = new Map();
   private _loadTimer: ReturnType<typeof setTimeout> | undefined;
+  private _observedViewportEl: HTMLElement | null = null;
   private _disposed = false;
 
   get engine(): MthPdfEngineHandle | null {
@@ -131,6 +132,12 @@ export class MthPdfViewer extends UIElement {
     this._disposed = false;
     this._syncTokens();
     this._initEngineHandle();
+    if (this.hasUpdated) {
+      this._bindViewportResizeObserver();
+      if (this.src || this.data) {
+        this._scheduleDocumentLoad();
+      }
+    }
   }
 
   override disconnectedCallback(): void {
@@ -139,19 +146,24 @@ export class MthPdfViewer extends UIElement {
       clearTimeout(this._loadTimer);
       this._loadTimer = undefined;
     }
+    this._observedViewportEl = null;
     this._disposeEngine();
     super.disconnectedCallback();
   }
 
   protected override firstUpdated(): void {
-    if (this.viewportEl) {
-      this.observerPool.observeResize(this.viewportEl, () => {
-        void this._renderActivePage();
-      });
-    }
+    this._bindViewportResizeObserver();
     if (this.src || this.data) {
       this._scheduleDocumentLoad();
     }
+  }
+
+  private _bindViewportResizeObserver(): void {
+    if (!this.viewportEl || this._observedViewportEl === this.viewportEl) return;
+    this._observedViewportEl = this.viewportEl;
+    this.observerPool.observeResize(this.viewportEl, () => {
+      void this._renderActivePage();
+    });
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -207,13 +219,15 @@ export class MthPdfViewer extends UIElement {
   }
 
   zoomIn(): void {
-    const numeric = typeof this.zoom === 'number' ? this.zoom : 1;
+    const parsed = Number(this.zoom);
+    const numeric = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     const higher = ZOOM_STEPS.find((step) => step > numeric + 0.01);
     this.setZoom(higher ?? ZOOM_STEPS[ZOOM_STEPS.length - 1] ?? 2);
   }
 
   zoomOut(): void {
-    const numeric = typeof this.zoom === 'number' ? this.zoom : 1;
+    const parsed = Number(this.zoom);
+    const numeric = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     const lower = [...ZOOM_STEPS].reverse().find((step) => step < numeric - 0.01);
     this.setZoom(lower ?? ZOOM_STEPS[0] ?? 0.5);
   }

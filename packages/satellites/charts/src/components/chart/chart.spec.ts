@@ -82,4 +82,13 @@ export const CEM_METADATA = {
     'mth-chart-render': 'Emitted after chart options are applied to the engine.',
     'mth-point-select': 'Emitted when a data point is clicked in the chart.',
   },
+  cssProperties: [
+    { name: '--mth-color-surface', description: 'Surface background color.' },
+    { name: '--mth-color-surface-raised', description: 'Raised control background color.' },
+    { name: '--mth-color-fg', description: 'Primary text and label color.' },
+    { name: '--mth-color-fg-muted', description: 'Muted subtitle and legend color.' },
+    { name: '--mth-color-border', description: 'Container and button border color.' },
+    { name: '--mth-color-border-focus', description: 'Keyboard focus ring color.' },
+    { name: '--mth-color-accent', description: 'Primary series palette accent color.' },
+  ],
 };

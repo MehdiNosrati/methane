@@ -371,7 +371,36 @@
               "description": "Slotted fallback container."
             }
           ],
-          "cssProperties": [],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Viewer background color."
+            },
+            {
+              "name": "--mth-color-surface-raised",
+              "description": "Toolbar background color."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Viewport and outline background color."
+            },
+            {
+              "name": "--mth-color-fg",
+              "description": "Foreground text color."
+            },
+            {
+              "name": "--mth-color-fg-muted",
+              "description": "Muted status/fallback text color."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Border color."
+            },
+            {
+              "name": "--mth-color-border-focus",
+              "description": "Focus ring color."
+            }
+          ],
           "cssStates": [
             {
               "name": "loading",
@@ -388,6 +417,10 @@
             {
               "name": "outline-open",
               "description": "Custom element state :state(outline-open)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
             }
           ],
           "x-methane-spec": {
@@ -405,7 +438,8 @@
               "loading",
               "error",
               "has-document",
-              "outline-open"
+              "outline-open",
+              "reduced-motion"
             ],
             "keyboard": [
               {

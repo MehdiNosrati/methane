@@ -17,7 +17,7 @@ export const pdfViewerStyles = css`
     display: flex;
     flex-direction: column;
     inline-size: 100%;
-    min-block-size: var(--mth-pdf-height, var(--_pdf-min-height));
+    min-block-size: var(--_pdf-height, var(--_pdf-min-height));
   }
 
   .toolbar {

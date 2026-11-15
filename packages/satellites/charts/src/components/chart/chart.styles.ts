@@ -90,12 +90,12 @@ export const chartStyles = css`
   .viewport {
     position: relative;
     inline-size: 100%;
-    min-block-size: var(--mth-chart-height, var(--_chart-min-height));
+    min-block-size: var(--_chart-height, var(--_chart-min-height));
   }
 
   .canvas {
     inline-size: 100%;
-    min-block-size: var(--mth-chart-height, var(--_chart-min-height));
+    min-block-size: var(--_chart-height, var(--_chart-min-height));
   }
 
   .status {

@@ -326,6 +326,9 @@ export class MthChart extends UIElement {
   private _tokenCache: Map<string, string> = new Map();
   private _readyEmitted = false;
   private _mountTimer: ReturnType<typeof setTimeout> | undefined;
+  private _observedCanvasEl: HTMLElement | null = null;
+  private _lastSyncedDir: 'ltr' | 'rtl' | '' = '';
+  private _lastSyncedLocale = '';
 
   get engine(): MthChartEngineHandle | null {
     return this._engine;
@@ -336,6 +339,11 @@ export class MthChart extends UIElement {
     ensureEchartsRegistered();
     this._syncTokens();
     this._initEngineHandle();
+    if (this.hasUpdated) {
+      this._bindCanvasResizeObserver();
+      this._syncChartOption();
+      this._scheduleEngineMount();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -343,18 +351,23 @@ export class MthChart extends UIElement {
       clearTimeout(this._mountTimer);
       this._mountTimer = undefined;
     }
+    this._observedCanvasEl = null;
     this._disposeEngine();
     super.disconnectedCallback();
   }
 
   protected override firstUpdated(): void {
-    if (this.canvasEl) {
-      this.observerPool.observeResize(this.canvasEl, () => {
-        this.resize();
-      });
-    }
+    this._bindCanvasResizeObserver();
     this._syncChartOption();
     this._scheduleEngineMount();
+  }
+
+  private _bindCanvasResizeObserver(): void {
+    if (!this.canvasEl || this._observedCanvasEl === this.canvasEl) return;
+    this._observedCanvasEl = this.canvasEl;
+    this.observerPool.observeResize(this.canvasEl, () => {
+      this.resize();
+    });
   }
 
   private _scheduleEngineMount(): void {
@@ -388,6 +401,9 @@ export class MthChart extends UIElement {
     if (changed.has('renderer') && changed.get('renderer') !== undefined) {
       this._recreateLiveInstance();
     }
+    const localeOrDirChanged =
+      this.resolvedDir !== this._lastSyncedDir ||
+      this.resolvedLocale !== this._lastSyncedLocale;
     if (
       changed.has('type') ||
       changed.has('chartTitle') ||
@@ -400,9 +416,10 @@ export class MthChart extends UIElement {
       changed.has('dataJson') ||
       changed.has('series') ||
       changed.has('option') ||
-      changed.has('locale') ||
-      changed.has('dir')
+      localeOrDirChanged
     ) {
+      this._lastSyncedDir = this.resolvedDir;
+      this._lastSyncedLocale = this.resolvedLocale;
       this._syncTokens();
       this._syncChartOption();
     }
@@ -509,7 +526,7 @@ export class MthChart extends UIElement {
     }
 
     const childSeries: MthChartSeriesInput[] = [];
-    for (const node of Array.from(this.children)) {
+    for (const node of Array.from(this.children ?? [])) {
       const extracted = extractChartSeriesInput(node);
       if (extracted) childSeries.push(extracted);
     }
@@ -722,7 +739,7 @@ export class MthChart extends UIElement {
           <slot name="fallback" @slotchange=${this._onFallbackSlotChange}></slot>
         </div>
 
-        <div class="series-slot" aria-hidden="true">
+        <div class="series-slot" aria-hidden="true" @mth-series-change=${this._onSeriesSlotChange}>
           <slot @slotchange=${this._onSeriesSlotChange}></slot>
         </div>
       </div>

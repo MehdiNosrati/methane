@@ -66,9 +66,23 @@ describe('<mth-pdf-viewer>', () => {
     viewer.setZoom('page-width');
     expect(viewer.zoom).toBe('page-width');
 
+    // String zoom attribute numeric increment
+    viewer.setAttribute('zoom', '1.5');
+    await viewer.updateComplete;
+    viewer.zoomIn();
+    expect(viewer.zoom).toBe(2);
+
     const aria = scanSameRootAria(viewer.shadowRoot!);
     expect(aria.valid).toBe(true);
     expect(aria.issues).toEqual([]);
+
+    // Same-instance remove() -> appendChild() reconnect lifecycle
+    viewer.remove();
+    expect(viewer.engine).toBeNull();
+    document.body.appendChild(viewer);
+    await viewer.updateComplete;
+    expect(viewer.engine).not.toBeNull();
+    expect(viewer.engine?.disposed).toBe(false);
   });
 
   it('passes SatelliteEngineSuite 50x mount/unmount disposal and token sync checks', async () => {

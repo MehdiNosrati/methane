@@ -3,29 +3,21 @@ import { MotionController, ObserverPoolController } from '@methane/primitives';
 import { isSafeUrl, sanitizeUrl } from '@methane/sanitize';
 import { html } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import {
-  ACESFilmicToneMapping,
-  AmbientLight,
-  Box3,
-  Color,
-  DirectionalLight,
-  Group,
-  PerspectiveCamera,
-  Scene,
-  Vector3,
-  WebGLRenderer,
-} from 'three';
+import type * as THREE from 'three';
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import type { WebGPURenderer } from 'three/webgpu';
 import { modelViewerMessages } from './model-viewer.messages.js';
 import { modelViewerStyles } from './model-viewer.styles.js';
 
 export type ModelRendererBackend = 'auto' | 'webgl' | 'webgpu';
 
+export type MthModelRenderer = THREE.WebGLRenderer | WebGPURenderer;
+
 export interface MthModelEngineHandle {
   readonly backend: 'webgpu' | 'webgl' | 'headless';
-  readonly scene: Scene;
-  readonly camera: PerspectiveCamera;
-  readonly renderer: WebGLRenderer | null;
+  readonly scene: THREE.Scene | null;
+  readonly camera: THREE.PerspectiveCamera | null;
+  readonly renderer: MthModelRenderer | null;
   readonly controls: OrbitControls | null;
   readonly effectiveAutoRotate: boolean;
   orbitBy(deltaThetaDeg: number, deltaPhiDeg: number): void;
@@ -108,14 +100,16 @@ export class MthModelViewer extends UIElement {
   private modelLoaded = false;
 
   private _engine: MthModelEngineHandle | null = null;
-  private _scene: Scene | null = null;
-  private _camera: PerspectiveCamera | null = null;
-  private _renderer: WebGLRenderer | null = null;
+  private _threeMod: typeof THREE | null = null;
+  private _scene: THREE.Scene | null = null;
+  private _camera: THREE.PerspectiveCamera | null = null;
+  private _renderer: MthModelRenderer | null = null;
   private _controls: OrbitControls | null = null;
-  private _modelGroup: Group | null = null;
+  private _modelGroup: THREE.Group | null = null;
   private _activeBackend: 'webgpu' | 'webgl' | 'headless' = 'headless';
   private _rafId = 0;
   private _attachTimer: ReturnType<typeof setTimeout> | undefined;
+  private _observedViewportEl: HTMLElement | null = null;
   private _tokenCache: Map<string, string> = new Map();
   private _disposed = false;
 
@@ -132,6 +126,10 @@ export class MthModelViewer extends UIElement {
     this._disposed = false;
     this._syncTokens();
     this._initEngineHandle();
+    if (this.hasUpdated) {
+      this._bindViewportResizeObserver();
+      this._scheduleLazyAttach();
+    }
   }
 
   override disconnectedCallback(): void {
@@ -140,17 +138,22 @@ export class MthModelViewer extends UIElement {
       clearTimeout(this._attachTimer);
       this._attachTimer = undefined;
     }
+    this._observedViewportEl = null;
     this._disposeEngine();
     super.disconnectedCallback();
   }
 
   protected override firstUpdated(): void {
-    if (this.viewportEl) {
-      this.observerPool.observeResize(this.viewportEl, () => {
-        this._resizeRenderer();
-      });
-    }
+    this._bindViewportResizeObserver();
     this._scheduleLazyAttach();
+  }
+
+  private _bindViewportResizeObserver(): void {
+    if (!this.viewportEl || this._observedViewportEl === this.viewportEl) return;
+    this._observedViewportEl = this.viewportEl;
+    this.observerPool.observeResize(this.viewportEl, () => {
+      this._resizeRenderer();
+    });
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -232,7 +235,7 @@ export class MthModelViewer extends UIElement {
   }
 
   async loadModel(): Promise<void> {
-    if (!this.isConnected || this._disposed || !this._scene) return;
+    if (!this.isConnected || this._disposed) return;
     if (!this.src) return;
 
     if (!isSafeUrl(this.src)) {
@@ -246,6 +249,9 @@ export class MthModelViewer extends UIElement {
     this.error = '';
 
     try {
+      const three = await this._ensureSceneGraph();
+      if (this._disposed || !this.isConnected || !this._scene) return;
+
       const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader.js');
       if (this._disposed || !this.isConnected || !this._scene) return;
 
@@ -257,8 +263,8 @@ export class MthModelViewer extends UIElement {
         this._scene.remove(this._modelGroup);
       }
       this._modelGroup = gltf.scene;
-      const box = new Box3().setFromObject(gltf.scene);
-      const center = box.getCenter(new Vector3());
+      const box = new three.Box3().setFromObject(gltf.scene);
+      const center = box.getCenter(new three.Vector3());
       gltf.scene.position.sub(center);
       this._scene.add(gltf.scene);
 
@@ -276,6 +282,39 @@ export class MthModelViewer extends UIElement {
     }
   }
 
+  private async _ensureSceneGraph(): Promise<typeof THREE> {
+    if (!this._threeMod) {
+      this._threeMod = await import('three');
+    }
+    const three = this._threeMod;
+    if (!this._scene) {
+      const scene = new three.Scene();
+      const ambient = new three.AmbientLight(0xffffff, 0.7);
+      const directional = new three.DirectionalLight(0xffffff, 1.1);
+      directional.position.set(5, 8, 5);
+      scene.add(ambient, directional);
+      this._scene = scene;
+      this._applySceneBackground();
+    }
+    if (!this._camera) {
+      this._camera = new three.PerspectiveCamera(45, 16 / 9, 0.1, 100);
+      this._applyCameraSpherical();
+    }
+    return three;
+  }
+
+  private _applySceneBackground(): void {
+    if (!this._scene || !this._threeMod) return;
+    const bg = this._tokenCache.get('--mth-color-bg-subtle');
+    if (bg && !bg.startsWith('oklch')) {
+      try {
+        this._scene.background = new this._threeMod.Color(bg);
+      } catch {
+        // Keep default scene background when custom CSS color syntax is unsupported by Three.Color
+      }
+    }
+  }
+
   private _syncTokens(): void {
     if (typeof window === 'undefined' || !this.isConnected) return;
     const computed = window.getComputedStyle(this);
@@ -287,35 +326,17 @@ export class MthModelViewer extends UIElement {
         this._tokenCache.set(tokenName, value);
       }
     }
-    if (this._scene) {
-      const bg = this._tokenCache.get('--mth-color-bg-subtle');
-      if (bg && !bg.startsWith('oklch')) {
-        try {
-          this._scene.background = new Color(bg);
-        } catch {
-          // Keep default scene background when custom CSS color syntax is unsupported by Three.Color
-        }
-      }
-    }
+    this._applySceneBackground();
   }
 
   private _initEngineHandle(): void {
     if (this._engine && !this._engine.disposed) return;
 
-    const scene = new Scene();
-    const ambient = new AmbientLight(0xffffff, 0.7);
-    const directional = new DirectionalLight(0xffffff, 1.1);
-    directional.position.set(5, 8, 5);
-    scene.add(ambient, directional);
-
-    const camera = new PerspectiveCamera(45, 16 / 9, 0.1, 100);
-    this._scene = scene;
-    this._camera = camera;
-    this._applyCameraSpherical();
-
     let disposed = false;
     const getBackend = (): 'webgpu' | 'webgl' | 'headless' => this._activeBackend;
-    const getRenderer = (): WebGLRenderer | null => this._renderer;
+    const getScene = (): THREE.Scene | null => this._scene;
+    const getCamera = (): THREE.PerspectiveCamera | null => this._camera;
+    const getRenderer = (): MthModelRenderer | null => this._renderer;
     const getControls = (): OrbitControls | null => this._controls;
     const getEffectiveRotate = (): boolean => this.effectiveAutoRotate;
     const cleanup = (): void => this._teardownThreeResources();
@@ -324,8 +345,12 @@ export class MthModelViewer extends UIElement {
       get backend() {
         return getBackend();
       },
-      scene,
-      camera,
+      get scene() {
+        return getScene();
+      },
+      get camera() {
+        return getCamera();
+      },
       get renderer() {
         return getRenderer();
       },
@@ -359,6 +384,11 @@ export class MthModelViewer extends UIElement {
   }
 
   private async _attachRendererAndControls(): Promise<void> {
+    if (this._disposed || !this.isConnected || !this.canvasEl) {
+      return;
+    }
+
+    const three = await this._ensureSceneGraph();
     if (this._disposed || !this.isConnected || !this.canvasEl || !this._scene || !this._camera) {
       return;
     }
@@ -368,34 +398,61 @@ export class MthModelViewer extends UIElement {
       typeof navigator !== 'undefined' &&
       'gpu' in navigator;
 
-    if (canTryWebGpu && this.rendererBackend === 'webgpu') {
-      this._activeBackend = 'webgpu';
+    let attachedRenderer: MthModelRenderer | null = null;
+    if (canTryWebGpu) {
+      try {
+        const { WebGPURenderer } = await import('three/webgpu');
+        const gpuRenderer = new WebGPURenderer({
+          canvas: this.canvasEl,
+          antialias: true,
+          alpha: true,
+        });
+        await gpuRenderer.init();
+        if (this._disposed || !this.isConnected) {
+          gpuRenderer.dispose();
+          return;
+        }
+        attachedRenderer = gpuRenderer;
+        this._activeBackend = 'webgpu';
+      } catch {
+        attachedRenderer = null;
+      }
     }
 
-    try {
-      const gl = this.canvasEl.getContext('webgl2') || this.canvasEl.getContext('webgl');
-      if (!gl) {
-        this._activeBackend = 'headless';
-        if (this.src) await this.loadModel();
-        return;
+    if (!attachedRenderer) {
+      try {
+        const gl = this.canvasEl.getContext('webgl2') || this.canvasEl.getContext('webgl');
+        if (gl) {
+          const webglRenderer = new three.WebGLRenderer({
+            canvas: this.canvasEl,
+            context: gl,
+            antialias: true,
+            alpha: true,
+          });
+          webglRenderer.toneMapping = three.ACESFilmicToneMapping;
+          webglRenderer.toneMappingExposure = this.exposure;
+          attachedRenderer = webglRenderer;
+          this._activeBackend = 'webgl';
+        }
+      } catch {
+        attachedRenderer = null;
       }
+    }
 
-      const renderer = new WebGLRenderer({
-        canvas: this.canvasEl,
-        context: gl,
-        antialias: true,
-        alpha: true,
-      });
-      renderer.toneMapping = ACESFilmicToneMapping;
-      renderer.toneMappingExposure = this.exposure;
-      this._renderer = renderer;
-      this._activeBackend = 'webgl';
+    if (!attachedRenderer) {
+      this._activeBackend = 'headless';
+      if (this.src) await this.loadModel();
+      return;
+    }
 
+    this._renderer = attachedRenderer;
+
+    try {
       const { OrbitControls: OrbitControlsCtor } = await import(
         'three/examples/jsm/controls/OrbitControls.js'
       );
       if (this._disposed || !this.isConnected) {
-        renderer.dispose();
+        attachedRenderer.dispose();
         return;
       }
 
