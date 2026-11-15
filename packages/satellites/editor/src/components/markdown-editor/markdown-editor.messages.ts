@@ -1,0 +1,15 @@
+export const markdownEditorMessages = {
+  editorLabel: 'Markdown editor',
+  toolbarLabel: 'Markdown formatting',
+  modeGroupLabel: 'Editor view mode',
+  writeModeLabel: 'Write',
+  previewModeLabel: 'Preview',
+  splitModeLabel: 'Split',
+  boldLabel: 'Bold',
+  italicLabel: 'Italic',
+  codeLabel: 'Code',
+  linkLabel: 'Link',
+  headingLabel: 'Heading',
+  placeholderFallback: 'Write Markdown...',
+  previewLabel: 'Markdown preview',
+} as const;
