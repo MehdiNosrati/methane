@@ -474,6 +474,76 @@ function buildBundleBadge(
   };
 }
 
+function resolveTypeAliasFromSource(
+  aliasName: string,
+  pkgDir: string,
+  modulePath?: string,
+): string | null {
+  const candidates: string[] = [];
+  if (modulePath) {
+    candidates.push(resolve(pkgDir, modulePath));
+    const tsPath = modulePath.replace(/\.js$/, '.ts');
+    candidates.push(resolve(pkgDir, tsPath));
+    candidates.push(resolve(pkgDir, 'src', tsPath.replace(/^dist\//, '')));
+  }
+
+  const pattern = new RegExp(`export\\s+type\\s+${aliasName}\\s*=\\s*([^;]+);`);
+  for (const file of candidates) {
+    if (!existsSync(file)) continue;
+    try {
+      const content = readFileSync(file, 'utf8');
+      const match = pattern.exec(content);
+      if (match?.[1]) {
+        return match[1].replace(/\s+/g, ' ').trim();
+      }
+    } catch {
+      // Ignore unreadable source files
+    }
+  }
+  return null;
+}
+
+function enrichModelPropTypes(
+  model: NormalizedComponentModel,
+  spec: ComponentBehaviorSpec | null,
+  pkgDir: string | undefined,
+  modulePath: string | undefined,
+): NormalizedComponentModel {
+  const specPropByName = new Map((spec?.props ?? []).map((p) => [p.name, p]));
+  let changed = false;
+
+  const props = model.props.map((prop) => {
+    const rawType = prop.type.trim();
+    if (
+      rawType === 'boolean' ||
+      rawType === 'string' ||
+      rawType === 'number' ||
+      rawType.includes('|') ||
+      !/^[A-Z][A-Za-z0-9_]*$/.test(rawType)
+    ) {
+      return prop;
+    }
+
+    const fromSpec = specPropByName.get(prop.name)?.type.trim();
+    if (fromSpec && fromSpec.includes('|')) {
+      changed = true;
+      return { ...prop, type: fromSpec };
+    }
+
+    if (pkgDir) {
+      const fromSource = resolveTypeAliasFromSource(rawType, pkgDir, modulePath);
+      if (fromSource && fromSource.includes('|')) {
+        changed = true;
+        return { ...prop, type: fromSource };
+      }
+    }
+
+    return prop;
+  });
+
+  return changed ? { ...model, props } : model;
+}
+
 export async function loadComponentDocs(
   options: LoadComponentDocsOptions = {},
 ): Promise<ReadonlyArray<ComponentDocEntry>> {
@@ -497,18 +567,28 @@ export async function loadComponentDocs(
   }
   const allSpecs = [...specByTag.values()];
 
-  const byTag = new Map<string, NormalizedComponentModel>();
+  const byTag = new Map<string, { model: NormalizedComponentModel; modulePath: string | undefined }>();
   for (const manifest of manifests) {
+    const modulePathByTag = new Map<string, string>();
+    for (const mod of manifest.modules) {
+      for (const decl of mod.declarations ?? []) {
+        if (decl.tagName && mod.path) {
+          modulePathByTag.set(decl.tagName, mod.path);
+        }
+      }
+    }
     for (const model of normalizeManifest(manifest, allSpecs)) {
-      byTag.set(model.tagName, model);
+      byTag.set(model.tagName, { model, modulePath: modulePathByTag.get(model.tagName) });
     }
   }
 
   return [...byTag.values()]
-    .sort((a, b) => a.tagName.localeCompare(b.tagName))
-    .map((model) => {
-      const spec = specByTag.get(model.tagName) ?? null;
+    .sort((a, b) => a.model.tagName.localeCompare(b.model.tagName))
+    .map(({ model: rawModel, modulePath }) => {
+      const spec = specByTag.get(rawModel.tagName) ?? null;
       const packageName = spec?.package ?? '@methane/ui';
+      const pkgInfo = packageRegistry.get(packageName);
+      const model = enrichModelPropTypes(rawModel, spec, pkgInfo?.dir, modulePath);
       const isSatelliteConformance = Boolean(spec?.conformance.includes('satellite'));
       const packageGroup =
         packageRegistry.get(packageName)?.group ??

@@ -1,6 +1,7 @@
 ---
 import CodeTabs from '../../components/CodeTabs.astro';
 import ComponentPreview from '../../components/ComponentPreview.astro';
+import ComponentShowcase from '../../components/ComponentShowcase.astro';
 import DocsLayout from '../../components/DocsLayout.astro';
 import { loadComponentDocs, type ComponentDocEntry } from '../../lib/component-loader.js';
 import { withBase } from '../../lib/links.js';
@@ -48,6 +49,8 @@ const { entry } = Astro.props;
       <h2>Live Interactive Preview</h2>
       <ComponentPreview entry={entry} />
     </section>
+
+    <ComponentShowcase entry={entry} />
 
     <section class="mth-stack" data-gap="3">
       <h2>Multi-Framework Playground &amp; Snippets</h2>

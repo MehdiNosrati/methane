@@ -369,5 +369,16 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     const tbHtml = readFileSync(resolve(distDir, 'theme-builder/index.html'), 'utf8');
     expect(tbHtml).toContain('Interactive OKLCH Theme Builder');
     expect(tbHtml).toContain('--mth-color-seed-brand');
+    expect(tbHtml).toContain('id="tb-radius" class="mth-select docs-select"');
+
+    const indexHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
+    expect(indexHtml).toContain('docs-hero-studio');
+    expect(indexHtml).toContain('variant="outline"');
+    expect(indexHtml).toContain('<mth-select');
+    expect(indexHtml).toContain('id="docs-theme-select" class="mth-select docs-select"');
+
+    expect(buttonHtml).toContain('data-variants-showcase');
+    expect(buttonHtml).toContain('data-preview-prop="loading"');
+    expect(buttonHtml).toContain('data-preview-prop-name="variant"');
   });
 });

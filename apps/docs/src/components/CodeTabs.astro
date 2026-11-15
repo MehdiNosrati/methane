@@ -39,9 +39,17 @@ const frameworks = [
       ))
     }
     <mth-spacer></mth-spacer>
-    <button type="button" class="docs-tab" data-copy-active={id}>
-      Copy
-    </button>
+    <span class="docs-copy-wrap">
+      <button
+        type="button"
+        class="docs-tab docs-copy-btn"
+        data-copy-active={id}
+        aria-label="Copy active code snippet"
+      >
+        Copy
+      </button>
+      <span class="docs-copy-status" role="status" data-copy-status></span>
+    </span>
   </div>
   {
     frameworks.map((fw, index) => (
@@ -60,10 +68,61 @@ const frameworks = [
 </div>
 
 <script>
+  const copyTimers = new WeakMap<HTMLButtonElement, number>();
+  let lastCopyAnnouncement = '';
+
+  function legacyCopy(text: string): boolean {
+    const field = Object.assign(document.createElement('textarea'), { value: text });
+    field.setAttribute('readonly', '');
+    field.style.cssText = 'position:fixed;inset-block-start:0;opacity:0';
+    document.body.append(field);
+    field.select();
+    try {
+      return document.execCommand('copy');
+    } finally {
+      field.remove();
+    }
+  }
+
+  function reportCopyStatus(btn: HTMLButtonElement, statusEl: HTMLElement | null, ok: boolean) {
+    const prevTimer = copyTimers.get(btn);
+    if (prevTimer !== undefined) {
+      window.clearTimeout(prevTimer);
+    }
+    btn.removeAttribute('data-copied');
+    btn.removeAttribute('data-failed');
+
+    let message = ok ? 'Copied' : 'Copy failed';
+    btn.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+    btn.textContent = message;
+
+    if (statusEl) {
+      if (message === lastCopyAnnouncement) message += '\u00A0';
+      lastCopyAnnouncement = message;
+      statusEl.textContent = '';
+      statusEl.classList.add('is-visible');
+      requestAnimationFrame(() => {
+        statusEl.textContent = message;
+      });
+    }
+
+    const timer = window.setTimeout(() => {
+      btn.removeAttribute('data-copied');
+      btn.removeAttribute('data-failed');
+      btn.textContent = 'Copy';
+      if (statusEl) {
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-visible');
+      }
+    }, 1600);
+    copyTimers.set(btn, timer);
+  }
+
   for (const container of document.querySelectorAll('[data-code-tabs]')) {
     const tabs = [...container.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const panels = [...container.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
     const copyBtn = container.querySelector<HTMLButtonElement>('[data-copy-active]');
+    const copyStatus = container.querySelector<HTMLElement>('[data-copy-status]');
 
     const activate = (nextTab: HTMLButtonElement) => {
       const targetKey = nextTab.dataset.tabTarget;
@@ -95,14 +154,20 @@ const frameworks = [
 
     copyBtn?.addEventListener('click', async () => {
       const visiblePanel = panels.find((p) => !p.hidden);
-      const text = visiblePanel?.textContent ?? '';
-      if (text && navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-        const orig = copyBtn.textContent;
-        copyBtn.textContent = 'Copied';
-        setTimeout(() => {
-          copyBtn.textContent = orig;
-        }, 1200);
+      const text = visiblePanel?.textContent?.trim() ?? '';
+      if (!text) return;
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+          reportCopyStatus(copyBtn, copyStatus, true);
+        } else if (legacyCopy(text)) {
+          reportCopyStatus(copyBtn, copyStatus, true);
+        } else {
+          reportCopyStatus(copyBtn, copyStatus, false);
+        }
+      } catch {
+        const fallbackOk = legacyCopy(text);
+        reportCopyStatus(copyBtn, copyStatus, fallbackOk);
       }
     });
   }

@@ -1,0 +1,458 @@
+---
+import type { ComponentDocEntry } from '../lib/component-loader.js';
+
+interface Props {
+  entry: ComponentDocEntry;
+}
+
+const { entry } = Astro.props;
+const SHOWCASE_TAGS = new Set([
+  'mth-button',
+  'mth-icon-button',
+  'mth-toggle-button',
+  'mth-split-button',
+  'mth-badge',
+  'mth-tag',
+  'mth-alert',
+  'mth-input',
+  'mth-select',
+  'mth-tabs',
+  'mth-switch',
+  'mth-checkbox',
+  'mth-card',
+]);
+const hasShowcase = SHOWCASE_TAGS.has(entry.tagName);
+---
+
+{
+  hasShowcase && (
+    <section class="mth-stack" data-gap="3" data-variants-showcase>
+      <h2>Live Variants &amp; States Showcase</h2>
+      <div class="docs-variants-grid">
+        {
+          entry.tagName === 'mth-button' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="solid"</span>
+                <mth-button variant="solid">Solid Action</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="soft"</span>
+                <mth-button variant="soft">Soft Action</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="outline"</span>
+                <mth-button variant="outline">Outline Action</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="ghost"</span>
+                <mth-button variant="ghost">Ghost Action</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="danger"</span>
+                <mth-button variant="danger">Danger Action</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">sizes (sm / md / lg)</span>
+                <mth-flex data-gap="2" data-align="center" data-wrap="wrap">
+                  <mth-button variant="solid" size="sm">Small</mth-button>
+                  <mth-button variant="solid" size="md">Medium</mth-button>
+                  <mth-button variant="solid" size="lg">Large</mth-button>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">loading</span>
+                <mth-button variant="solid" loading>Saving...</mth-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-button variant="solid" disabled>Disabled Solid</mth-button>
+                  <mth-button variant="outline" disabled>Disabled Outline</mth-button>
+                </mth-flex>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-icon-button' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="solid"</span>
+                <mth-icon-button variant="solid" label="Star solid">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M8 2.5 9.7 6l3.8.5-2.75 2.7.65 3.8L8 11.2 4.6 13l.65-3.8L2.5 6.5 6.3 6 8 2.5Z" />
+                  </svg>
+                </mth-icon-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="outline"</span>
+                <mth-icon-button variant="outline" label="Star outline">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M8 2.5 9.7 6l3.8.5-2.75 2.7.65 3.8L8 11.2 4.6 13l.65-3.8L2.5 6.5 6.3 6 8 2.5Z" />
+                  </svg>
+                </mth-icon-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="ghost"</span>
+                <mth-icon-button variant="ghost" label="Star ghost">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M8 2.5 9.7 6l3.8.5-2.75 2.7.65 3.8L8 11.2 4.6 13l.65-3.8L2.5 6.5 6.3 6 8 2.5Z" />
+                  </svg>
+                </mth-icon-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="danger"</span>
+                <mth-icon-button variant="danger" label="Delete item">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="M3 4.5h10M6 4.5V3h4v1.5M5 4.5l.5 8.5h5l.5-8.5" />
+                  </svg>
+                </mth-icon-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">sizes (sm / md / lg)</span>
+                <mth-flex data-gap="2" data-align="center">
+                  <mth-icon-button variant="outline" size="sm" label="Small">★</mth-icon-button>
+                  <mth-icon-button variant="outline" size="md" label="Medium">★</mth-icon-button>
+                  <mth-icon-button variant="outline" size="lg" label="Large">★</mth-icon-button>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">loading &amp; disabled</span>
+                <mth-flex data-gap="2">
+                  <mth-icon-button variant="solid" loading label="Loading">★</mth-icon-button>
+                  <mth-icon-button variant="outline" disabled label="Disabled">★</mth-icon-button>
+                </mth-flex>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-toggle-button' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="outline"</span>
+                <mth-toggle-button variant="outline">Outline</mth-toggle-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="soft"</span>
+                <mth-toggle-button variant="soft">Soft</mth-toggle-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="solid"</span>
+                <mth-toggle-button variant="solid">Solid</mth-toggle-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="ghost"</span>
+                <mth-toggle-button variant="ghost">Ghost</mth-toggle-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">pressed</span>
+                <mth-toggle-button variant="outline" pressed>Active Toggle</mth-toggle-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled</span>
+                <mth-toggle-button variant="outline" disabled>Disabled</mth-toggle-button>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-split-button' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="solid"</span>
+                <mth-split-button variant="solid" label="Deploy">
+                  <div slot="menu">
+                    <button type="button">Deploy to Staging</button>
+                    <button type="button">Deploy to Production</button>
+                  </div>
+                </mth-split-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="outline"</span>
+                <mth-split-button variant="outline" label="Export">
+                  <div slot="menu">
+                    <button type="button">Export JSON</button>
+                    <button type="button">Export CSS</button>
+                  </div>
+                </mth-split-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="ghost"</span>
+                <mth-split-button variant="ghost" label="More">
+                  <div slot="menu">
+                    <button type="button">Duplicate</button>
+                    <button type="button">Archive</button>
+                  </div>
+                </mth-split-button>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled</span>
+                <mth-split-button variant="solid" label="Disabled" disabled></mth-split-button>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-badge' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">neutral / accent / success</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-badge variant="neutral">Neutral</mth-badge>
+                  <mth-badge variant="accent">Accent</mth-badge>
+                  <mth-badge variant="success">Success</mth-badge>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">warning / danger</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-badge variant="warning">Warning</mth-badge>
+                  <mth-badge variant="danger">Danger</mth-badge>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">pill &amp; dot</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-badge variant="accent" pill>v2.0</mth-badge>
+                  <mth-badge variant="success" pill dot>Online</mth-badge>
+                  <mth-badge variant="danger" pill dot>Alert</mth-badge>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">sizes (sm / md / lg)</span>
+                <mth-flex data-gap="2" data-align="center">
+                  <mth-badge variant="accent" size="sm">SM</mth-badge>
+                  <mth-badge variant="accent" size="md">MD</mth-badge>
+                  <mth-badge variant="accent" size="lg">LG</mth-badge>
+                </mth-flex>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-tag' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">semantic variants</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-tag variant="neutral">Neutral</mth-tag>
+                  <mth-tag variant="accent">Accent</mth-tag>
+                  <mth-tag variant="success">Success</mth-tag>
+                  <mth-tag variant="warning">Warning</mth-tag>
+                  <mth-tag variant="danger">Danger</mth-tag>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">interactive &amp; selected</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-tag variant="accent" interactive>Filter</mth-tag>
+                  <mth-tag variant="accent" interactive selected>Selected</mth-tag>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">removable &amp; pill</span>
+                <mth-flex data-gap="2" data-wrap="wrap">
+                  <mth-tag variant="neutral" pill removable label="Remove CSS">CSS</mth-tag>
+                  <mth-tag variant="accent" pill removable label="Remove OKLCH">OKLCH</mth-tag>
+                </mth-flex>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled</span>
+                <mth-tag variant="neutral" disabled>Disabled Tag</mth-tag>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-alert' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="info"</span>
+                <mth-alert variant="info" title="Release Note">OKLCH tokens adapt automatically.</mth-alert>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="success"</span>
+                <mth-alert variant="success" title="Published">Package provenance verified.</mth-alert>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="warning"</span>
+                <mth-alert variant="warning" title="Quota Notice">Approaching workspace rate threshold.</mth-alert>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="danger" closable</span>
+                <mth-alert variant="danger" title="Validation Failed" closable>Missing required token key.</mth-alert>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-input' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">default + hint</span>
+                <mth-input label="Domain" placeholder="app.methane.dev" hint="Lowercase DNS slug"></mth-input>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">error state</span>
+                <mth-input label="Token Key" value="invalid key" error="Spaces are not allowed"></mth-input>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">readonly &amp; disabled</span>
+                <mth-stack data-gap="2" style="inline-size:100%">
+                  <mth-input label="Readonly" value="oklch(0.55 0.23 264)" readonly></mth-input>
+                  <mth-input label="Disabled" value="Locked" disabled></mth-input>
+                </mth-stack>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-select' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">default + placeholder</span>
+                <mth-select label="Runtime" placeholder="Select runtime...">
+                  <mth-option value="node" label="Node.js 22">Node.js 22</mth-option>
+                  <mth-option value="deno" label="Deno 2">Deno 2</mth-option>
+                  <mth-option value="bun" label="Bun 1.2">Bun 1.2</mth-option>
+                </mth-select>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">clearable + selected</span>
+                <mth-select label="Framework" value="astro" clearable>
+                  <mth-option value="astro" label="Astro">Astro</mth-option>
+                  <mth-option value="next" label="Next.js">Next.js</mth-option>
+                  <mth-option value="nuxt" label="Nuxt">Nuxt</mth-option>
+                </mth-select>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">error &amp; disabled</span>
+                <mth-stack data-gap="2" style="inline-size:100%">
+                  <mth-select label="Region" error="Select a deployment region">
+                    <mth-option value="us-east" label="US East">US East</mth-option>
+                  </mth-select>
+                  <mth-select label="Disabled" value="locked" disabled>
+                    <mth-option value="locked" label="Locked Plan">Locked Plan</mth-option>
+                  </mth-select>
+                </mth-stack>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-tabs' && (
+            <>
+              <div class="docs-variant-cell" style="grid-column:span 2">
+                <span class="docs-variant-label">horizontal tabs</span>
+                <mth-tabs value="tokens" label="Architecture sections">
+                  <mth-tab slot="tab" value="tokens">Tokens</mth-tab>
+                  <mth-tab slot="tab" value="primitives">Primitives</mth-tab>
+                  <mth-tab slot="tab" value="ssr">SSR</mth-tab>
+                  <mth-tab-panel value="tokens">W3C DTCG JSON compiled into adaptive OKLCH variables.</mth-tab-panel>
+                  <mth-tab-panel value="primitives">23 Light-DOM CSS primitives + shared controllers.</mth-tab-panel>
+                  <mth-tab-panel value="ssr">Declarative Shadow DOM streaming across 6 frameworks.</mth-tab-panel>
+                </mth-tabs>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">vertical + disabled tab</span>
+                <mth-tabs value="a" orientation="vertical" label="Vertical sections">
+                  <mth-tab slot="tab" value="a">Active</mth-tab>
+                  <mth-tab slot="tab" value="b" disabled>Disabled</mth-tab>
+                  <mth-tab-panel value="a">Vertical keyboard navigation with ArrowUp / ArrowDown.</mth-tab-panel>
+                  <mth-tab-panel value="b">Disabled panel</mth-tab-panel>
+                </mth-tabs>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-switch' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">unchecked</span>
+                <mth-switch>Email notifications</mth-switch>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">checked</span>
+                <mth-switch checked>High-contrast mode</mth-switch>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled (off / on)</span>
+                <mth-stack data-gap="2">
+                  <mth-switch disabled>Disabled off</mth-switch>
+                  <mth-switch checked disabled>Disabled on</mth-switch>
+                </mth-stack>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-checkbox' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">unchecked</span>
+                <mth-checkbox>Unchecked option</mth-checkbox>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">checked</span>
+                <mth-checkbox checked>Checked option</mth-checkbox>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">indeterminate</span>
+                <mth-checkbox indeterminate>Mixed selection</mth-checkbox>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">disabled</span>
+                <mth-stack data-gap="2">
+                  <mth-checkbox disabled>Disabled off</mth-checkbox>
+                  <mth-checkbox checked disabled>Disabled checked</mth-checkbox>
+                </mth-stack>
+              </div>
+            </>
+          )
+        }
+
+        {
+          entry.tagName === 'mth-card' && (
+            <>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="elevated"</span>
+                <mth-card variant="elevated">
+                  <strong slot="header">Elevated Card</strong>
+                  <p style="margin-block:0">Multi-stop ambient shadow surface.</p>
+                </mth-card>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="outlined"</span>
+                <mth-card variant="outlined">
+                  <strong slot="header">Outlined Card</strong>
+                  <p style="margin-block:0">Crisp architectural hairline border.</p>
+                </mth-card>
+              </div>
+              <div class="docs-variant-cell">
+                <span class="docs-variant-label">variant="subtle" interactive</span>
+                <mth-card variant="subtle" interactive>
+                  <strong slot="header">Subtle Interactive</strong>
+                  <p style="margin-block:0">Recessed card with hover elevation.</p>
+                </mth-card>
+              </div>
+            </>
+          )
+        }
+      </div>
+    </section>
+  )
+}
