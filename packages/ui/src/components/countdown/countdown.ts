@@ -127,13 +127,9 @@ export class MthCountdown extends UIElement {
     this.remainingMs = next;
     const parts = this.breakdown(next);
 
-    this.dispatchEvent(
-      new CustomEvent('mth-tick', {
-        bubbles: true,
-        composed: true,
-        detail: { remainingMs: next, ...parts },
-      }),
-    );
+    this.emitEvent('mth-tick', {
+      detail: { remainingMs: next, ...parts },
+    });
 
     const totalSec = Math.ceil(next / 1000);
     if (
@@ -154,13 +150,9 @@ export class MthCountdown extends UIElement {
       this.statusAnnouncement = this.t('completed');
       if (!this.completeEmitted) {
         this.completeEmitted = true;
-        this.dispatchEvent(
-          new CustomEvent('mth-complete', {
-            bubbles: true,
-            composed: true,
-            detail: { target: this.target },
-          }),
-        );
+        this.emitEvent('mth-complete', {
+          detail: { target: this.target },
+        });
       }
     }
   }

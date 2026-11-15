@@ -103,8 +103,7 @@ export class MthLoadMore<T = Record<string, unknown>> extends UIElement {
   }
 
   async query(q = ''): Promise<DataResult<T> | null> {
-    this.dataCtrl.setFilter(q as never);
-    const result = await this.dataCtrl.load({ bypassCache: true });
+    const result = await this.dataCtrl.setFilter(q as never);
     this.syncCompletionFromController();
     return result;
   }
@@ -121,13 +120,7 @@ export class MthLoadMore<T = Record<string, unknown>> extends UIElement {
     }
 
     const detail = { cursor: this.dataCtrl.nextCursor ?? null };
-    const event = new CustomEvent('mth-load-more', {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
-      detail,
-    });
-    if (!this.dispatchEvent(event)) {
+    if (!this.emitEvent('mth-load-more', { cancelable: true, detail })) {
       return null;
     }
 
@@ -194,8 +187,8 @@ export class MthLoadMore<T = Record<string, unknown>> extends UIElement {
     const progressText =
       effectiveTotal > 0
         ? this.t('progress', {
-            loaded: FormattingUtils.formatNumber(effectiveLoaded, this.lang || 'en'),
-            total: FormattingUtils.formatNumber(effectiveTotal, this.lang || 'en'),
+            loaded: FormattingUtils.formatNumber(effectiveLoaded, this.resolvedLocale),
+            total: FormattingUtils.formatNumber(effectiveTotal, this.resolvedLocale),
           })
         : '';
 
@@ -272,11 +265,5 @@ export class MthLoadMore<T = Record<string, unknown>> extends UIElement {
         </div>
       </section>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'mth-load-more': MthLoadMore;
   }
 }

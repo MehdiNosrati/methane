@@ -130,7 +130,7 @@ export class MthRruleEditor extends UIElement {
   name = '';
 
   @property({ type: String })
-  label = 'Recurrence rule';
+  label = '';
 
   @property({ type: String })
   hint = '';
@@ -281,21 +281,9 @@ export class MthRruleEditor extends UIElement {
     this.value = serialized;
     this.formCtrl.setValue(serialized, { markDirty: true });
     this.formCtrl.markTouched();
-    this.dispatchEvent(
-      new CustomEvent('mth-input', {
-        bubbles: true,
-        composed: true,
-        detail: { value: serialized },
-      }),
-    );
+    this.emitEvent('mth-input', { detail: { value: serialized } });
     if (emitChange) {
-      this.dispatchEvent(
-        new CustomEvent('mth-change', {
-          bubbles: true,
-          composed: true,
-          detail: { value: serialized },
-        }),
-      );
+      this.emitEvent('mth-change', { detail: { value: serialized } });
     }
   }
 
@@ -335,6 +323,7 @@ export class MthRruleEditor extends UIElement {
             .value=${this.ruleState.freq}
             ?disabled=${isDisabled || isReadonly}
             aria-describedby=${ifDefined(describedBy)}
+            aria-errormessage=${errId ? errId : nothing}
             aria-invalid=${showError ? 'true' : 'false'}
             @change=${(e: Event) => {
               const freq = (e.target as HTMLSelectElement).value as RRuleFrequency;

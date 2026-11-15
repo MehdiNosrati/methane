@@ -55,8 +55,16 @@ export class MthClock extends UIElement {
   private timerId: ReturnType<typeof setInterval> | null = null;
 
   override connectedCallback(): void {
+    const isDsdHydration = Boolean(this.shadowRoot?.childNodes.length) && !this.hasUpdated;
+    if (!this.value && isDsdHydration) {
+      const ssrDatetime = this.shadowRoot?.querySelector('time')?.getAttribute('datetime');
+      const parsed = ssrDatetime ? Date.parse(ssrDatetime) : Number.NaN;
+      if (!Number.isNaN(parsed)) {
+        this.nowMs = parsed;
+      }
+    }
     super.connectedCallback();
-    if (!this.value) {
+    if (!this.value && !isDsdHydration) {
       this.nowMs = Date.now();
     }
     this.syncTimer();
@@ -122,7 +130,7 @@ export class MthClock extends UIElement {
 
   override render() {
     const date = this.resolveDate();
-    const effectiveLocale = this.locale || this.lang || 'en';
+    const effectiveLocale = this.locale || this.resolvedLocale;
     const tz = this.resolveEffectiveTimeZone();
     const formatted = FormattingUtils.formatDate(date, effectiveLocale, {
       hour: '2-digit',

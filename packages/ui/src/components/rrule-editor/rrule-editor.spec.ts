@@ -17,7 +17,7 @@ export const rruleEditorSpec: ComponentBehaviorSpec = {
   props: [
     { name: 'value', attr: 'value', type: 'string', default: '' },
     { name: 'name', attr: 'name', type: 'string', default: '' },
-    { name: 'label', attr: 'label', type: 'string', default: 'Recurrence rule' },
+    { name: 'label', attr: 'label', type: 'string', default: '' },
     { name: 'hint', attr: 'hint', type: 'string', default: '' },
     { name: 'error', attr: 'error', type: 'string', default: '' },
     { name: 'dtstart', attr: 'dtstart', type: 'string', default: '' },

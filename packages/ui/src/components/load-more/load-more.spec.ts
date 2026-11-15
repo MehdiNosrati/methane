@@ -25,8 +25,8 @@ export const loadMoreSpec: ComponentBehaviorSpec = {
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
     { name: 'loadedCount', attr: 'loaded-count', type: 'number', default: 0 },
     { name: 'totalCount', attr: 'total-count', type: 'number', default: 0 },
-    { name: 'dataSource', attr: '', type: 'DataSource<T> | null', default: null },
-    { name: 'renderItem', attr: '', type: '(item: T, index: number) => unknown', default: undefined },
+    { name: 'dataSource', attr: false, type: 'DataSource<T> | null', default: null },
+    { name: 'renderItem', attr: false, type: '(item: T, index: number) => unknown', default: undefined },
   ],
   events: [
     {

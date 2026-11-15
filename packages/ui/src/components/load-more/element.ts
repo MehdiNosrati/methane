@@ -12,3 +12,9 @@ export function registerMthLoadMore(prefix?: string): ReadonlyArray<string> {
     components: { 'mth-load-more': MthLoadMore },
   });
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mth-load-more': MthLoadMore;
+  }
+}

@@ -6,7 +6,7 @@ export const emptyStateSpec: ComponentBehaviorSpec = {
   conformance: [],
   controllers: [],
   focusModel: 'none',
-  states: ['variant', 'tone'],
+  states: ['compact', 'tone'],
   keyboard: [],
   props: [
     { name: 'heading', attr: 'heading', type: 'string', default: '' },

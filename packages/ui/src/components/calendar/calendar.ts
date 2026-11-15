@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, inferDirectionFromLocale, type PropertyValues } from '@methane/core';
 import {
   CalendarCore,
   FormattingUtils,
@@ -71,7 +71,7 @@ export class MthCalendar extends UIElement {
   }
 
   private get effectiveLocale(): string {
-    return this.locale || this.lang || 'en';
+    return this.locale || this.resolvedLocale;
   }
 
   private createCore(initialFocusDate: CalendarDate): CalendarCore {
@@ -112,6 +112,8 @@ export class MthCalendar extends UIElement {
       changed.has('isDateDisabled')
     ) {
       this.rebuildCore(true);
+    } else {
+      this.core.setLocale(this.effectiveLocale);
     }
     if (changed.has('value')) {
       const parsed = parseIsoDate(this.value);
@@ -139,7 +141,13 @@ export class MthCalendar extends UIElement {
     if (this.dir === 'ltr' || this.getAttribute('dir') === 'ltr') {
       return false;
     }
-    return this.closest('[dir]')?.getAttribute('dir') === 'rtl';
+    const ancestorDir = this.closest('[dir]')?.getAttribute('dir');
+    if (ancestorDir === 'rtl') return true;
+    if (ancestorDir === 'ltr') return false;
+    if (this.locale) {
+      return inferDirectionFromLocale(this.locale) === 'rtl';
+    }
+    return this.resolvedDir === 'rtl';
   }
 
   private formatMonthYear(year: number, month: number): string {
@@ -169,13 +177,9 @@ export class MthCalendar extends UIElement {
         month: this.formatMonthYear(focused.year, focused.month),
       });
     }
-    this.dispatchEvent(
-      new CustomEvent('mth-focus-date', {
-        bubbles: true,
-        composed: true,
-        detail: { value: formatIsoDate(focused) },
-      }),
-    );
+    this.emitEvent('mth-focus-date', {
+      detail: { value: formatIsoDate(focused) },
+    });
   }
 
   private async focusDayButton(iso: string): Promise<void> {
@@ -204,13 +208,9 @@ export class MthCalendar extends UIElement {
     this.statusAnnouncement = this.t('dateSelected', {
       date: this.formatFullDate(date),
     });
-    this.dispatchEvent(
-      new CustomEvent('mth-change', {
-        bubbles: true,
-        composed: true,
-        detail: { value: iso },
-      }),
-    );
+    this.emitEvent('mth-change', {
+      detail: { value: iso },
+    });
     this.requestUpdate();
     return true;
   }

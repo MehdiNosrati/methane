@@ -20,8 +20,8 @@ export const infiniteScrollSpec: ComponentBehaviorSpec = {
     { name: 'autoLoad', attr: 'auto-load', type: 'boolean', default: true },
     { name: 'threshold', attr: 'threshold', type: 'number', default: 0.1 },
     { name: 'rootMargin', attr: 'root-margin', type: 'string', default: '100px' },
-    { name: 'dataSource', attr: '', type: 'DataSource<T> | null', default: null },
-    { name: 'renderItem', attr: '', type: '(item: T, index: number) => unknown', default: undefined },
+    { name: 'dataSource', attr: false, type: 'DataSource<T> | null', default: null },
+    { name: 'renderItem', attr: false, type: '(item: T, index: number) => unknown', default: undefined },
   ],
   events: [
     {

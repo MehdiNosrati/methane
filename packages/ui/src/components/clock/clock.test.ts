@@ -50,7 +50,7 @@ describe('<mth-clock>', () => {
     expect(clearSpy).toHaveBeenCalled();
   });
 
-  it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {
+  it('passes HydrationPuritySuite on fixed and live Declarative Shadow DOM payloads across clock skew', async () => {
     const rawSsr = await renderLitDsdHtml(
       litHtml`<mth-clock value="2026-08-01T09:15:30Z" time-zone="UTC"></mth-clock>`,
     );
@@ -69,5 +69,28 @@ describe('<mth-clock>', () => {
     });
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
+
+    // Live <mth-clock> without value="..." preserves SSR timestamp on upgrade across clock advance
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-08-01T14:30:00Z'));
+    const liveRawSsr = await renderLitDsdHtml(litHtml`<mth-clock time-zone="UTC"></mth-clock>`);
+    vi.setSystemTime(new Date('2026-08-01T14:30:05Z'));
+
+    const liveSsrHtml = liveRawSsr
+      .replaceAll('mth-clock>', 'hydlive-clock>')
+      .replaceAll('<mth-clock', '<hydlive-clock');
+    const liveReport = await HydrationPuritySuite.run({
+      ssrHtml: liveSsrHtml,
+      upgradeElement: async (host) => {
+        registerMthClock('hydlive');
+        customElements.upgrade(host);
+        await (host as MthClock).updateComplete;
+        expect(host.shadowRoot!.querySelector('time')?.getAttribute('datetime')).toBe(
+          '2026-08-01T14:30:00.000Z',
+        );
+      },
+    });
+    expect(liveReport.failures).toEqual([]);
+    expect(liveReport.passed).toBe(true);
   });
 });

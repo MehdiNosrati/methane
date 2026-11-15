@@ -1,4 +1,4 @@
-import { UIElement, type PropertyValues } from '@methane/core';
+import { UIElement, inferDirectionFromLocale, type PropertyValues } from '@methane/core';
 import {
   CalendarCore,
   FormattingUtils,
@@ -82,7 +82,7 @@ export class MthDateRangeCalendar extends UIElement {
   }
 
   private get effectiveLocale(): string {
-    return this.locale || this.lang || 'en';
+    return this.locale || this.resolvedLocale;
   }
 
   private createCore(initialFocusDate: CalendarDate): CalendarCore {
@@ -126,6 +126,8 @@ export class MthDateRangeCalendar extends UIElement {
       changed.has('isDateDisabled')
     ) {
       this.rebuildCore();
+    } else {
+      this.core.setLocale(this.effectiveLocale);
     }
     if (changed.has('start') || changed.has('end')) {
       const s = parseIsoDate(this.start);
@@ -151,7 +153,13 @@ export class MthDateRangeCalendar extends UIElement {
     if (this.dir === 'ltr' || this.getAttribute('dir') === 'ltr') {
       return false;
     }
-    return this.closest('[dir]')?.getAttribute('dir') === 'rtl';
+    const ancestorDir = this.closest('[dir]')?.getAttribute('dir');
+    if (ancestorDir === 'rtl') return true;
+    if (ancestorDir === 'ltr') return false;
+    if (this.locale) {
+      return inferDirectionFromLocale(this.locale) === 'rtl';
+    }
+    return this.resolvedDir === 'rtl';
   }
 
   private formatMonthYear(year: number, month: number): string {
@@ -233,13 +241,9 @@ export class MthDateRangeCalendar extends UIElement {
       });
     }
 
-    this.dispatchEvent(
-      new CustomEvent('mth-change', {
-        bubbles: true,
-        composed: true,
-        detail: { start: nextStart, end: nextEnd },
-      }),
-    );
+    this.emitEvent('mth-change', {
+      detail: { start: nextStart, end: nextEnd },
+    });
     this.requestUpdate();
     return true;
   }

@@ -91,13 +91,9 @@ export class MthStopwatch extends UIElement {
     this.running = true;
     this.startTimer();
     this.statusAnnouncement = this.t('startedAnnouncement');
-    this.dispatchEvent(
-      new CustomEvent('mth-start', {
-        bubbles: true,
-        composed: true,
-        detail: { elapsedMs: this.elapsedMs },
-      }),
-    );
+    this.emitEvent('mth-start', {
+      detail: { elapsedMs: this.elapsedMs },
+    });
   }
 
   pause(): void {
@@ -106,13 +102,9 @@ export class MthStopwatch extends UIElement {
     this.running = false;
     this.clearTimer();
     this.statusAnnouncement = this.t('pausedAnnouncement');
-    this.dispatchEvent(
-      new CustomEvent('mth-pause', {
-        bubbles: true,
-        composed: true,
-        detail: { elapsedMs: this.currentElapsedMs },
-      }),
-    );
+    this.emitEvent('mth-pause', {
+      detail: { elapsedMs: this.currentElapsedMs },
+    });
   }
 
   reset(): void {
@@ -125,13 +117,9 @@ export class MthStopwatch extends UIElement {
     this.currentElapsedMs = 0;
     this.recordedLaps = [];
     this.statusAnnouncement = this.t('resetAnnouncement');
-    this.dispatchEvent(
-      new CustomEvent('mth-reset', {
-        bubbles: true,
-        composed: true,
-        detail: { elapsedMs: 0 },
-      }),
-    );
+    this.emitEvent('mth-reset', {
+      detail: { elapsedMs: 0 },
+    });
   }
 
   lap(): StopwatchLap | null {
@@ -149,13 +137,9 @@ export class MthStopwatch extends UIElement {
       index: entry.index,
       time: this.formatDuration(lapMs),
     });
-    this.dispatchEvent(
-      new CustomEvent('mth-lap', {
-        bubbles: true,
-        composed: true,
-        detail: entry,
-      }),
-    );
+    this.emitEvent('mth-lap', {
+      detail: entry,
+    });
     return entry;
   }
 
