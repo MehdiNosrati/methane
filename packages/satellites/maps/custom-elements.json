@@ -1,0 +1,1242 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map/map.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMap",
+          "tagName": "mth-map",
+          "customElement": true,
+          "description": "Methane MthMap custom element (<mth-map>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "centerLat",
+              "attribute": "center-lat",
+              "type": {
+                "text": "number"
+              },
+              "default": "37.7749",
+              "description": "centerLat property."
+            },
+            {
+              "kind": "field",
+              "name": "centerLng",
+              "attribute": "center-lng",
+              "type": {
+                "text": "number"
+              },
+              "default": "-122.4194",
+              "description": "centerLng property."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "11",
+              "description": "zoom property."
+            },
+            {
+              "kind": "field",
+              "name": "minZoom",
+              "attribute": "min-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "minZoom property."
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "attribute": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "22",
+              "description": "maxZoom property."
+            },
+            {
+              "kind": "field",
+              "name": "bearing",
+              "attribute": "bearing",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "bearing property."
+            },
+            {
+              "kind": "field",
+              "name": "pitch",
+              "attribute": "pitch",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "pitch property."
+            },
+            {
+              "kind": "field",
+              "name": "interactive",
+              "attribute": "interactive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "interactive property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "markers",
+              "type": {
+                "text": "ReadonlyArray<MapMarker>"
+              },
+              "description": "markers property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "center-lat",
+              "fieldName": "centerLat",
+              "type": {
+                "text": "number"
+              },
+              "default": "37.7749",
+              "description": "centerLat property."
+            },
+            {
+              "name": "center-lng",
+              "fieldName": "centerLng",
+              "type": {
+                "text": "number"
+              },
+              "default": "-122.4194",
+              "description": "centerLng property."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "11",
+              "description": "zoom property."
+            },
+            {
+              "name": "min-zoom",
+              "fieldName": "minZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "minZoom property."
+            },
+            {
+              "name": "max-zoom",
+              "fieldName": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "22",
+              "description": "maxZoom property."
+            },
+            {
+              "name": "bearing",
+              "fieldName": "bearing",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "bearing property."
+            },
+            {
+              "name": "pitch",
+              "fieldName": "pitch",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "pitch property."
+            },
+            {
+              "name": "interactive",
+              "fieldName": "interactive",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "interactive property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-map-move",
+              "type": {
+                "text": "CustomEvent<{ center: readonly [number, number]; zoom: number }>"
+              },
+              "description": "Emitted event mth-map-move."
+            },
+            {
+              "name": "mth-marker-select",
+              "type": {
+                "text": "CustomEvent<{ id: string; lng: number; lat: number; label: string }>"
+              },
+              "description": "Emitted event mth-marker-select."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Overlay widgets placed inside the map viewport."
+            },
+            {
+              "name": "fallback",
+              "description": "SSR or non-WebGL fallback content displayed when WebGL is unavailable."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre WebGL canvas host element."
+            },
+            {
+              "name": "controls",
+              "description": "Zoom and reset controls group."
+            },
+            {
+              "name": "marker",
+              "description": "Interactive marker button."
+            },
+            {
+              "name": "status",
+              "description": "Accessible coordinate and zoom readout."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "interactive",
+              "description": "Custom element state :state(interactive)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-map",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [
+              "interactive"
+            ],
+            "props": [
+              {
+                "name": "centerLat",
+                "attr": "center-lat",
+                "type": "number",
+                "default": 37.7749
+              },
+              {
+                "name": "centerLng",
+                "attr": "center-lng",
+                "type": "number",
+                "default": -122.4194
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 11
+              },
+              {
+                "name": "minZoom",
+                "attr": "min-zoom",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "maxZoom",
+                "attr": "max-zoom",
+                "type": "number",
+                "default": 22
+              },
+              {
+                "name": "bearing",
+                "attr": "bearing",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "pitch",
+                "attr": "pitch",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "interactive",
+                "attr": "interactive",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "markers",
+                "attr": false,
+                "type": "ReadonlyArray<MapMarker>"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-map-move",
+                "cancelable": false,
+                "detailType": "{ center: readonly [number, number]; zoom: number }"
+              },
+              {
+                "name": "mth-marker-select",
+                "cancelable": false,
+                "detailType": "{ id: string; lng: number; lat: number; label: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Overlay widgets placed inside the map viewport."
+              },
+              {
+                "name": "fallback",
+                "description": "SSR or non-WebGL fallback content displayed when WebGL is unavailable."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre WebGL canvas host element."
+              },
+              {
+                "name": "controls",
+                "description": "Zoom and reset controls group."
+              },
+              {
+                "name": "marker",
+                "description": "Interactive marker button."
+              },
+              {
+                "name": "status",
+                "description": "Accessible coordinate and zoom readout."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "viewport focused",
+                "expect": "Pans map west"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "rtl",
+                "when": "viewport focused",
+                "expect": "Pans map west in RTL"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "viewport focused",
+                "expect": "Pans map north"
+              },
+              {
+                "key": "ArrowDown",
+                "when": "viewport focused",
+                "expect": "Pans map south"
+              },
+              {
+                "key": "+",
+                "when": "viewport focused",
+                "expect": "Zooms in by 1 level"
+              },
+              {
+                "key": "-",
+                "when": "viewport focused",
+                "expect": "Zooms out by 1 level"
+              },
+              {
+                "key": "Home",
+                "when": "viewport focused",
+                "expect": "Resets map view"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Interactive map",
+              "zoomIn": "Zoom in",
+              "zoomOut": "Zoom out",
+              "resetView": "Reset map view",
+              "controlsLabel": "Map controls",
+              "statusSummary": "Center {lat}, {lng} at zoom {zoom}",
+              "markerLabel": "Marker: {label}",
+              "unnamedMarker": "Map marker {id}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMap",
+          "declaration": {
+            "name": "MthMap",
+            "module": "src/components/map/map.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map",
+          "declaration": {
+            "name": "MthMap",
+            "module": "src/components/map/map.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-cluster/map-cluster.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapCluster",
+          "tagName": "mth-map-cluster",
+          "customElement": true,
+          "description": "Methane MthMapCluster custom element (<mth-map-cluster>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "points",
+              "type": {
+                "text": "ReadonlyArray<ClusterPoint>"
+              },
+              "description": "points property."
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "attribute": "radius",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "radius property."
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "attribute": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "zoom property."
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "attribute": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "18",
+              "description": "maxZoom property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "radius",
+              "fieldName": "radius",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "radius property."
+            },
+            {
+              "name": "zoom",
+              "fieldName": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "4",
+              "description": "zoom property."
+            },
+            {
+              "name": "max-zoom",
+              "fieldName": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "default": "18",
+              "description": "maxZoom property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-cluster-expand",
+              "type": {
+                "text": "CustomEvent<{ clusterId: string; count: number; center: readonly [number, number]; zoom: number }>"
+              },
+              "description": "Emitted event mth-cluster-expand."
+            },
+            {
+              "name": "mth-cluster-select",
+              "type": {
+                "text": "CustomEvent<{ point: ClusterPoint }>"
+              },
+              "description": "Emitted event mth-cluster-select."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region container."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "clusters",
+              "description": "Accessible cluster list."
+            },
+            {
+              "name": "cluster-item",
+              "description": "Interactive cluster or point button."
+            },
+            {
+              "name": "summary",
+              "description": "Cluster count summary."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-map-cluster",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [],
+            "props": [
+              {
+                "name": "points",
+                "attr": false,
+                "type": "ReadonlyArray<ClusterPoint>"
+              },
+              {
+                "name": "radius",
+                "attr": "radius",
+                "type": "number",
+                "default": 48
+              },
+              {
+                "name": "zoom",
+                "attr": "zoom",
+                "type": "number",
+                "default": 4
+              },
+              {
+                "name": "maxZoom",
+                "attr": "max-zoom",
+                "type": "number",
+                "default": 18
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-cluster-expand",
+                "cancelable": false,
+                "detailType": "{ clusterId: string; count: number; center: readonly [number, number]; zoom: number }"
+              },
+              {
+                "name": "mth-cluster-select",
+                "cancelable": false,
+                "detailType": "{ point: ClusterPoint }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region container."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "clusters",
+                "description": "Accessible cluster list."
+              },
+              {
+                "name": "cluster-item",
+                "description": "Interactive cluster or point button."
+              },
+              {
+                "name": "summary",
+                "description": "Cluster count summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "cluster toolbar focused",
+                "expect": "Moves focus to previous cluster item"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "cluster toolbar focused",
+                "expect": "Moves focus to next cluster item"
+              },
+              {
+                "key": "Enter",
+                "when": "cluster item focused",
+                "expect": "Expands focused cluster or selects point"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Clustered map layer",
+              "clusterListLabel": "Map clusters",
+              "clusterItemLabel": "Cluster of {count} locations",
+              "pointItemLabel": "Location: {label}",
+              "summaryText": "{clusters} clusters from {total} points at zoom {zoom}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapCluster",
+          "declaration": {
+            "name": "MthMapCluster",
+            "module": "src/components/map-cluster/map-cluster.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-cluster",
+          "declaration": {
+            "name": "MthMapCluster",
+            "module": "src/components/map-cluster/map-cluster.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-draw/map-draw.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapDraw",
+          "tagName": "mth-map-draw",
+          "customElement": true,
+          "description": "Methane MthMapDraw custom element (<mth-map-draw>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "attribute": "mode",
+              "reflect": true,
+              "type": {
+                "text": "'select' | 'point' | 'line' | 'polygon'"
+              },
+              "default": "\"point\"",
+              "description": "mode property."
+            },
+            {
+              "kind": "field",
+              "name": "features",
+              "type": {
+                "text": "MapGeoJsonFeatureCollection"
+              },
+              "description": "features property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "mode",
+              "fieldName": "mode",
+              "type": {
+                "text": "'select' | 'point' | 'line' | 'polygon'"
+              },
+              "default": "\"point\"",
+              "description": "mode property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "disabled property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-draw-change",
+              "type": {
+                "text": "CustomEvent<{ features: MapGeoJsonFeatureCollection }>"
+              },
+              "description": "Emitted event mth-draw-change."
+            },
+            {
+              "name": "mth-draw-mode",
+              "type": {
+                "text": "CustomEvent<{ mode: DrawMode }>"
+              },
+              "description": "Emitted event mth-draw-mode."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "toolbar",
+              "description": "Drawing mode and history toolbar."
+            },
+            {
+              "name": "surface",
+              "description": "Interactive SVG drawing surface."
+            },
+            {
+              "name": "status",
+              "description": "Feature count and vertex summary."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-map-draw",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "disabled"
+            ],
+            "props": [
+              {
+                "name": "mode",
+                "attr": "mode",
+                "type": "'select' | 'point' | 'line' | 'polygon'",
+                "default": "point"
+              },
+              {
+                "name": "features",
+                "attr": false,
+                "type": "MapGeoJsonFeatureCollection"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-draw-change",
+                "cancelable": false,
+                "detailType": "{ features: MapGeoJsonFeatureCollection }"
+              },
+              {
+                "name": "mth-draw-mode",
+                "cancelable": false,
+                "detailType": "{ mode: DrawMode }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "toolbar",
+                "description": "Drawing mode and history toolbar."
+              },
+              {
+                "name": "surface",
+                "description": "Interactive SVG drawing surface."
+              },
+              {
+                "name": "status",
+                "description": "Feature count and vertex summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "toolbar focused",
+                "expect": "Moves focus to previous tool"
+              },
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "toolbar focused",
+                "expect": "Moves focus to next tool"
+              },
+              {
+                "key": "Enter",
+                "when": "tool focused",
+                "expect": "Activates focused drawing tool"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Map drawing editor",
+              "toolbarLabel": "Drawing tools",
+              "modeSelect": "Select",
+              "modePoint": "Point",
+              "modeLine": "Line",
+              "modePolygon": "Polygon",
+              "finishDraft": "Finish shape",
+              "undoAction": "Undo",
+              "redoAction": "Redo",
+              "clearAction": "Clear",
+              "surfaceLabel": "Drawing canvas",
+              "statusSummary": "{count} features drawn ({vertices} draft vertices)"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapDraw",
+          "declaration": {
+            "name": "MthMapDraw",
+            "module": "src/components/map-draw/map-draw.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-draw",
+          "declaration": {
+            "name": "MthMapDraw",
+            "module": "src/components/map-draw/map-draw.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/map-route/map-route.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthMapRoute",
+          "tagName": "mth-map-route",
+          "customElement": true,
+          "description": "Methane MthMapRoute custom element (<mth-map-route>).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "origin",
+              "type": {
+                "text": "RouteWaypoint | null"
+              },
+              "default": "null",
+              "description": "origin property."
+            },
+            {
+              "kind": "field",
+              "name": "destination",
+              "type": {
+                "text": "RouteWaypoint | null"
+              },
+              "default": "null",
+              "description": "destination property."
+            },
+            {
+              "kind": "field",
+              "name": "waypoints",
+              "type": {
+                "text": "ReadonlyArray<RouteWaypoint>"
+              },
+              "description": "waypoints property."
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "attribute": "unit",
+              "type": {
+                "text": "'km' | 'mi'"
+              },
+              "default": "\"km\"",
+              "description": "unit property."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "unit",
+              "fieldName": "unit",
+              "type": {
+                "text": "'km' | 'mi'"
+              },
+              "default": "\"km\"",
+              "description": "unit property."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "label property."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-route-fit",
+              "type": {
+                "text": "CustomEvent<{ bounds: BoundsTuple; distanceKm: number }>"
+              },
+              "description": "Emitted event mth-route-fit."
+            },
+            {
+              "name": "mth-waypoint-select",
+              "type": {
+                "text": "CustomEvent<{ waypoint: RouteWaypoint; index: number }>"
+              },
+              "description": "Emitted event mth-waypoint-select."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Fallback content for SSR or non-WebGL environments."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer region wrapper."
+            },
+            {
+              "name": "canvas",
+              "description": "MapLibre canvas host."
+            },
+            {
+              "name": "polyline",
+              "description": "SVG route visualization."
+            },
+            {
+              "name": "stops",
+              "description": "Accessible ordered stop list."
+            },
+            {
+              "name": "summary",
+              "description": "Total route distance summary."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [],
+          "x-methane-spec": {
+            "tag": "mth-map-route",
+            "package": "@methane/maps",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [],
+            "focusModel": "host",
+            "states": [],
+            "props": [
+              {
+                "name": "origin",
+                "attr": false,
+                "type": "RouteWaypoint | null",
+                "default": null
+              },
+              {
+                "name": "destination",
+                "attr": false,
+                "type": "RouteWaypoint | null",
+                "default": null
+              },
+              {
+                "name": "waypoints",
+                "attr": false,
+                "type": "ReadonlyArray<RouteWaypoint>"
+              },
+              {
+                "name": "unit",
+                "attr": "unit",
+                "type": "'km' | 'mi'",
+                "default": "km"
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-route-fit",
+                "cancelable": false,
+                "detailType": "{ bounds: BoundsTuple; distanceKm: number }"
+              },
+              {
+                "name": "mth-waypoint-select",
+                "cancelable": false,
+                "detailType": "{ waypoint: RouteWaypoint; index: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Fallback content for SSR or non-WebGL environments."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer region wrapper."
+              },
+              {
+                "name": "canvas",
+                "description": "MapLibre canvas host."
+              },
+              {
+                "name": "polyline",
+                "description": "SVG route visualization."
+              },
+              {
+                "name": "stops",
+                "description": "Accessible ordered stop list."
+              },
+              {
+                "name": "summary",
+                "description": "Total route distance summary."
+              }
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "stop button focused",
+                "expect": "Centers map on selected route stop"
+              }
+            ],
+            "messages": {
+              "regionLabel": "Map route",
+              "fitBounds": "Fit route",
+              "stopsLabel": "Route stops",
+              "originDefault": "Origin",
+              "destinationDefault": "Destination",
+              "waypointDefault": "Stop {index}",
+              "distanceKm": "{distance} km ({stops} stops)",
+              "distanceMi": "{distance} mi ({stops} stops)",
+              "emptyRoute": "No route configured"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthMapRoute",
+          "declaration": {
+            "name": "MthMapRoute",
+            "module": "src/components/map-route/map-route.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-map-route",
+          "declaration": {
+            "name": "MthMapRoute",
+            "module": "src/components/map-route/map-route.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
