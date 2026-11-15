@@ -184,4 +184,38 @@ jobs:
     expect(audit.passed).toBe(false);
     expect(audit.findings.map((f) => f.rule)).toContain('release-nested-package-filter');
   });
+
+  it('rejects unmasked OIDC exchanged npm token in release.yml', () => {
+    const dir = makeTempDir();
+    writeFileSync(
+      join(dir, 'release.yml'),
+      `name: Release
+permissions:
+  contents: write
+  id-token: write
+env:
+  NPM_CONFIG_PROVENANCE: 'true'
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+jobs:
+  release:
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
+      - run: METHANE_EXPECTED_VERSION="\${GITHUB_REF_NAME#v}" node -e "auditWorkspacePackages()"
+      - run: pnpm exec playwright install --with-deps chromium webkit && pnpm test:e2e
+      - run: echo "bundle-budget"
+      - run: pnpm -r --filter "./packages/**" --filter "./tooling/*" --dry-run publish --provenance --access public
+      - run: TOKEN="$(curl https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/x)" && npm deprecate x "y" --//registry.npmjs.org/:_authToken="$TOKEN"
+`,
+      'utf8',
+    );
+    const audit = auditWorkflowFiles(dir);
+    expect(audit.passed).toBe(false);
+    expect(audit.findings.map((f) => f.rule)).toContain('release-mask-exchanged-token');
+  });
 });

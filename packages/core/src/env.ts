@@ -6,7 +6,7 @@ declare const __DEV__: boolean | undefined;
  * Compile-time / export-condition constant folded to `false` in production builds
  * via `@methane-ui/core`'s `"default"` export condition.
  */
-export const IS_DEV = true;
+export const IS_DEV: boolean = true;
 
 const ARIA_IDREF_ATTRS: ReadonlyArray<string> = [
   'aria-labelledby',

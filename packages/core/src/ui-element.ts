@@ -308,6 +308,8 @@ export class UIElement extends LitElement {
   }
 
   protected runDevDiagnostics(): void {
-    runElementDevDiagnostics(this, this.internals, this.labels);
+    if (IS_DEV) {
+      runElementDevDiagnostics(this, this.internals, this.labels);
+    }
   }
 }

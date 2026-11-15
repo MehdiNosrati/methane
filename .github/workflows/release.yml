@@ -140,11 +140,15 @@ jobs:
                 "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=npm:registry.npmjs.org" \
                 | node -e "const d = JSON.parse(require('fs').readFileSync(0, 'utf8')); process.stdout.write(d.value || '');")"
               if [ -n "$ID_TOKEN" ]; then
+                echo "::add-mask::$ID_TOKEN"
                 TOKEN="$(curl -sfSL -X POST \
                   -H "Authorization: Bearer ${ID_TOKEN}" \
                   -H "Accept: application/json" \
                   "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/${ENCODED}" \
                   | node -e "const d = JSON.parse(require('fs').readFileSync(0, 'utf8')); process.stdout.write(d.token || '');" || true)"
+                if [ -n "$TOKEN" ]; then
+                  echo "::add-mask::$TOKEN"
+                fi
               fi
             fi
 

@@ -205,6 +205,17 @@ export function auditWorkflowFiles(workflowsDir = findWorkflowsDir()): WorkflowA
             'release.yml must verify `GITHUB_REF_NAME` tag parity against package manifest versions via `METHANE_EXPECTED_VERSION` and `auditWorkspacePackages`.',
         });
       }
+      if (
+        content.includes('oidc/token/exchange') &&
+        !content.includes('::add-mask::$TOKEN')
+      ) {
+        findings.push({
+          file: fileName,
+          rule: 'release-mask-exchanged-token',
+          message:
+            'release.yml must mask dynamically exchanged npm tokens with `echo "::add-mask::$TOKEN"` immediately after obtaining them.',
+        });
+      }
     }
 
     if (fileName === 'pages.yml') {

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as esbuild from 'esbuild';
@@ -72,5 +73,23 @@ describe('Lazy-loaded satellite shell bundle budgets', () => {
         `${target.name} entry shell brotli (${metrics.brotliBytes} B) exceeded ${SHELL_ENTRY_MAX_BROTLI_BYTES} B`,
       ).toBeLessThan(SHELL_ENTRY_MAX_BROTLI_BYTES);
     }
+  });
+
+  it('strips IS_DEV dead code and ./env.js imports from @methane-ui/core production dist via esbuild define', () => {
+    const prodRuntime = readFileSync(resolve(REPO_ROOT, 'packages/core/dist/runtime.js'), 'utf8');
+    const prodUiElement = readFileSync(
+      resolve(REPO_ROOT, 'packages/core/dist/ui-element.js'),
+      'utf8',
+    );
+    const devEnv = readFileSync(
+      resolve(REPO_ROOT, 'packages/core/dist/development/env.js'),
+      'utf8',
+    );
+
+    expect(prodRuntime).not.toContain('env.js');
+    expect(prodRuntime).not.toContain('Duplicate @methane-ui/core bundle');
+    expect(prodUiElement).not.toContain('env.js');
+    expect(prodUiElement).not.toContain('runElementDevDiagnostics');
+    expect(devEnv).toContain('IS_DEV = true');
   });
 });
