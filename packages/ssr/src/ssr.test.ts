@@ -1,4 +1,7 @@
 // @vitest-environment node
+import { execFileSync } from 'node:child_process';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import './dom-shim.js';
 import { LitElement, css, html } from 'lit';
@@ -202,5 +205,36 @@ describe('@methane/ssr', () => {
     const second = await transformHtmlDsd(first.html);
     expect(second.expandedTags).toEqual([]);
     expect(second.html.split('<template shadowroot=').length - 1).toBe(1);
+  });
+
+  it('retroactively patches LitElement when lit evaluates before @methane/ssr/client and enableHydrationSupport() is called with no args', () => {
+    const ssrPkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+    const clientUrl = pathToFileURL(resolve(ssrPkgRoot, 'dist/client.js')).href;
+    const script = `
+      import { LitElement } from 'lit';
+      const before = Object.getOwnPropertyDescriptor(LitElement, 'observedAttributes');
+      const { enableHydrationSupport, isHydrationSupported } = await import(${JSON.stringify(clientUrl)});
+      const zeroArgResult = enableHydrationSupport();
+      const after = Object.getOwnPropertyDescriptor(LitElement, 'observedAttributes');
+      process.stdout.write(JSON.stringify({
+        patchedBefore: Boolean(before && !before.configurable),
+        isSupported: isHydrationSupported(),
+        zeroArgResult,
+        patchedAfter: Boolean(after && !after.configurable),
+        createRenderRootPatched: String(LitElement.prototype.createRenderRoot).includes('_$AG'),
+      }));
+    `;
+    const stdout = execFileSync(process.execPath, ['--input-type=module', '-'], {
+      cwd: ssrPkgRoot,
+      input: script,
+      encoding: 'utf8',
+    });
+    expect(JSON.parse(stdout)).toEqual({
+      patchedBefore: false,
+      isSupported: true,
+      zeroArgResult: true,
+      patchedAfter: true,
+      createRenderRootPatched: true,
+    });
   });
 });

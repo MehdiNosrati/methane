@@ -398,4 +398,38 @@ describe('@methane/sanitize DOMPurify parity & XSS/mXSS defense', () => {
     const frag = parseSafeFragment('probe');
     expect(frag.querySelector('a')?.hasAttribute('href')).toBe(false);
   });
+
+  it('safely handles minimal SSR dom-shim stub ownerDocument without crashing in getPurifyInstance/sanitizeToTrustedHTML/renderMarkdownToSafeHTML', () => {
+    const unsupportedDoc = { defaultView: {} } as unknown as Document;
+    const payload = '<script>alert(1)</script><b>hi</b> [q](https://example.com/?a=1&b=2)';
+
+    const mdFalse = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: false,
+      ownerDocument: unsupportedDoc,
+    });
+    expect(mdFalse).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+    expect(mdFalse).toContain('href="https://example.com/?a=1&amp;b=2"');
+    expect(mdFalse).not.toContain('<script');
+
+    // Without DOMPurify support, allowRawHtml: true falls back to escaped HTML rather than returning unsanitized markup
+    const mdTrue = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: true,
+      ownerDocument: unsupportedDoc,
+    });
+    expect(mdTrue).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+    expect(mdTrue).not.toContain('<script');
+
+    const trustedFallback = sanitizeToTrustedHTML('<script>alert(1)</script><b>hi</b>', {
+      ownerDocument: unsupportedDoc,
+    });
+    expect(trustedFallback).toBe('&lt;script&gt;alert(1)&lt;/script&gt;&lt;b&gt;hi&lt;/b&gt;');
+
+    // Also verify a stub Document with no defaultView falls back safely in browser/jsdom environments
+    const viewlessDoc = {} as Document;
+    const mdViewless = renderMarkdownToSafeHTML(payload, {
+      allowRawHtml: true,
+      ownerDocument: viewlessDoc,
+    });
+    expect(mdViewless).toBe('<b>hi</b> <a href="https://example.com/?a=1&amp;b=2">q</a>');
+  });
 });

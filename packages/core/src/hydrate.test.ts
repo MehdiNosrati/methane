@@ -24,14 +24,17 @@ describe('@methane/core/hydrate opt-in SSR hydration', () => {
     expect(JSON.parse(stdout)).toEqual({ hasSupport: false });
   });
 
-  it('installs litElementHydrateSupport when importing @methane/core/hydrate before lit', () => {
+  it('installs litElementHydrateSupport and patches LitElement when importing @methane/core/hydrate before lit', () => {
     const hydrateDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/hydrate.js')).href;
     const coreDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/index.js')).href;
     const script = `
       import ${JSON.stringify(hydrateDistUrl)};
+      import { LitElement } from 'lit';
       import ${JSON.stringify(coreDistUrl)};
+      const desc = Object.getOwnPropertyDescriptor(LitElement, 'observedAttributes');
       process.stdout.write(JSON.stringify({
         hasSupport: typeof globalThis.litElementHydrateSupport === 'function',
+        patched: Boolean(desc && !desc.configurable),
       }));
     `;
     const stdout = execFileSync(process.execPath, ['--input-type=module', '-'], {
@@ -39,6 +42,33 @@ describe('@methane/core/hydrate opt-in SSR hydration', () => {
       input: script,
       encoding: 'utf8',
     });
-    expect(JSON.parse(stdout)).toEqual({ hasSupport: true });
+    expect(JSON.parse(stdout)).toEqual({ hasSupport: true, patched: true });
+  });
+
+  it('retroactively patches LitElement when @methane/core is imported BEFORE @methane/core/hydrate', () => {
+    const hydrateDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/hydrate.js')).href;
+    const coreDistUrl = pathToFileURL(resolve(PKG_ROOT, 'dist/index.js')).href;
+    const script = `
+      import { LitElement } from 'lit';
+      import ${JSON.stringify(coreDistUrl)};
+      const before = Object.getOwnPropertyDescriptor(LitElement, 'observedAttributes');
+      await import(${JSON.stringify(hydrateDistUrl)});
+      const after = Object.getOwnPropertyDescriptor(LitElement, 'observedAttributes');
+      process.stdout.write(JSON.stringify({
+        patchedBefore: Boolean(before && !before.configurable),
+        patchedAfter: Boolean(after && !after.configurable),
+        createRenderRootPatched: String(LitElement.prototype.createRenderRoot).includes('_$AG'),
+      }));
+    `;
+    const stdout = execFileSync(process.execPath, ['--input-type=module', '-'], {
+      cwd: PKG_ROOT,
+      input: script,
+      encoding: 'utf8',
+    });
+    expect(JSON.parse(stdout)).toEqual({
+      patchedBefore: false,
+      patchedAfter: true,
+      createRenderRootPatched: true,
+    });
   });
 });

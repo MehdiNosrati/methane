@@ -132,6 +132,11 @@ function getPurifyInstance(doc: Document): DOMPurify {
   if (existing) return existing;
 
   const instance = createDOMPurify(win);
+  if (!instance.isSupported || typeof instance.addHook !== 'function') {
+    purifyCache.set(cacheKey, instance);
+    return instance;
+  }
+
   instance.addHook('uponSanitizeAttribute', (node, event) => {
     const attrName = event.attrName.toLowerCase();
     if (URL_ATTRIBUTES.has(attrName)) {
@@ -254,8 +259,14 @@ export function sanitizeToTrustedHTML(
   html: string,
   options?: SanitizeOptions,
 ): string | { toString(): string } {
-  const doc = options?.ownerDocument ?? document;
+  const doc = options?.ownerDocument ?? (typeof document !== 'undefined' ? document : undefined);
+  if (!doc) {
+    return escapeHtml(html);
+  }
   const purify = getPurifyInstance(doc);
+  if (!purify.isSupported) {
+    return escapeHtml(html);
+  }
   const config = createStrictPurifyConfig(doc, options);
   if (config.RETURN_TRUSTED_TYPE) {
     return purify.sanitize(html, {
