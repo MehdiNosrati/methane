@@ -1,0 +1,840 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/formula-bar/formula-bar.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthFormulaBar",
+          "tagName": "mth-formula-bar",
+          "customElement": true,
+          "formAssociated": true,
+          "delegatesFocus": true,
+          "description": "Spreadsheet formula bar satellite with FACE form integration, live Formula AST dependency inspection, and IME-safe InputController editing.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted with parent form."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "attribute": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current cell value or formula string."
+            },
+            {
+              "kind": "field",
+              "name": "cellAddress",
+              "attribute": "cell-address",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"A1\"",
+              "description": "Active cell reference displayed in the address box."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "attribute": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional placeholder override."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables editing and excludes control from form submission."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "attribute": "required",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires non-empty formula or value."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents editing while preserving selection and form value."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible formula bar label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Form field name submitted with parent form."
+            },
+            {
+              "name": "value",
+              "fieldName": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Current cell value or formula string."
+            },
+            {
+              "name": "cell-address",
+              "fieldName": "cellAddress",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"A1\"",
+              "description": "Active cell reference displayed in the address box."
+            },
+            {
+              "name": "placeholder",
+              "fieldName": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional placeholder override."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables editing and excludes control from form submission."
+            },
+            {
+              "name": "required",
+              "fieldName": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Requires non-empty formula or value."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents editing while preserving selection and form value."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible formula bar label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-formula-input",
+              "type": {
+                "text": "CustomEvent<{ cellAddress: string; value: string; dependencies: ReadonlyArray<string> }>"
+              },
+              "description": "Fired as the formula text changes."
+            },
+            {
+              "name": "mth-formula-commit",
+              "type": {
+                "text": "CustomEvent<{ cellAddress: string; value: string; valid: boolean }>"
+              },
+              "description": "Fired when the user presses Enter or activates Apply."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback input markup."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer formula bar container."
+            },
+            {
+              "name": "address",
+              "description": "Read-only active cell address indicator."
+            },
+            {
+              "name": "fx",
+              "description": "Formula indicator glyph."
+            },
+            {
+              "name": "input",
+              "description": "Formula text input control."
+            },
+            {
+              "name": "commit",
+              "description": "Apply formula button."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message container."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Formula bar background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Address box background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Input border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Focus and fx badge accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "invalid",
+              "description": "Custom element state :state(invalid)."
+            },
+            {
+              "name": "formula",
+              "description": "Custom element state :state(formula)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-formula-bar",
+            "package": "@methane/spreadsheet",
+            "conformance": [
+              "satellite",
+              "form-control"
+            ],
+            "controllers": [
+              "FormControlController",
+              "InputController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly",
+              "invalid",
+              "formula"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "formula input focused",
+                "expect": "commits formula and emits mth-formula-commit"
+              },
+              {
+                "key": "Escape",
+                "when": "formula input focused",
+                "expect": "reverts formula draft to committed value"
+              }
+            ],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "value",
+                "attr": "value",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "cellAddress",
+                "attr": "cell-address",
+                "type": "string",
+                "default": "A1"
+              },
+              {
+                "name": "placeholder",
+                "attr": "placeholder",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "disabled",
+                "attr": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "required",
+                "attr": "required",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-formula-input",
+                "cancelable": false,
+                "detailType": "{ cellAddress: string; value: string; dependencies: ReadonlyArray<string> }"
+              },
+              {
+                "name": "mth-formula-commit",
+                "cancelable": false,
+                "detailType": "{ cellAddress: string; value: string; valid: boolean }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback input markup."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer formula bar container."
+              },
+              {
+                "name": "address",
+                "description": "Read-only active cell address indicator."
+              },
+              {
+                "name": "fx",
+                "description": "Formula indicator glyph."
+              },
+              {
+                "name": "input",
+                "description": "Formula text input control."
+              },
+              {
+                "name": "commit",
+                "description": "Apply formula button."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message container."
+              }
+            ],
+            "messages": {
+              "toolbarLabel": "Formula bar",
+              "addressBoxLabel": "Active cell address",
+              "formulaInputLabel": "Formula or cell value",
+              "formulaPlaceholder": "Enter value or =SUM(A1:B4)",
+              "commitButtonLabel": "Apply formula",
+              "invalidFormulaError": "Invalid formula syntax.",
+              "valueMissingError": "Formula or cell value is required."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthFormulaBar",
+          "declaration": {
+            "name": "MthFormulaBar",
+            "module": "src/components/formula-bar/formula-bar.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-formula-bar",
+          "declaration": {
+            "name": "MthFormulaBar",
+            "module": "src/components/formula-bar/formula-bar.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/spreadsheet/spreadsheet.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthSpreadsheet",
+          "tagName": "mth-spreadsheet",
+          "customElement": true,
+          "description": "Virtualized spreadsheet satellite with clean-room MIT Formula AST evaluator, A1/R1C1 addressing, cycle detection, keyboard navigation, and TSV clipboard support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rows",
+              "attribute": "rows",
+              "type": {
+                "text": "number"
+              },
+              "default": "20",
+              "description": "Total number of worksheet rows."
+            },
+            {
+              "kind": "field",
+              "name": "cols",
+              "attribute": "cols",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Total number of worksheet columns."
+            },
+            {
+              "kind": "field",
+              "name": "cells",
+              "type": {
+                "text": "Readonly<Record<string, string>>"
+              },
+              "description": "Map of A1 cell addresses to raw scalar or formula strings."
+            },
+            {
+              "kind": "field",
+              "name": "addressMode",
+              "attribute": "address-mode",
+              "reflect": true,
+              "type": {
+                "text": "'A1' | 'R1C1'"
+              },
+              "default": "\"A1\"",
+              "description": "Cell reference display mode (A1 or R1C1)."
+            },
+            {
+              "kind": "field",
+              "name": "activeCell",
+              "attribute": "active-cell",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"A1\"",
+              "description": "Currently focused A1 cell address."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "32",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents cell editing."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible worksheet label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rows",
+              "fieldName": "rows",
+              "type": {
+                "text": "number"
+              },
+              "default": "20",
+              "description": "Total number of worksheet rows."
+            },
+            {
+              "name": "cols",
+              "fieldName": "cols",
+              "type": {
+                "text": "number"
+              },
+              "default": "8",
+              "description": "Total number of worksheet columns."
+            },
+            {
+              "name": "address-mode",
+              "fieldName": "addressMode",
+              "type": {
+                "text": "'A1' | 'R1C1'"
+              },
+              "default": "\"A1\"",
+              "description": "Cell reference display mode (A1 or R1C1)."
+            },
+            {
+              "name": "active-cell",
+              "fieldName": "activeCell",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"A1\"",
+              "description": "Currently focused A1 cell address."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "32",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents cell editing."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible worksheet label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-cell-select",
+              "type": {
+                "text": "CustomEvent<{ address: string; displayAddress: string; raw: string; value: unknown }>"
+              },
+              "description": "Fired when the active cell selection moves."
+            },
+            {
+              "name": "mth-cell-change",
+              "type": {
+                "text": "CustomEvent<{ address: string; raw: string; value: unknown }>"
+              },
+              "description": "Fired when a cell value or formula is committed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback worksheet table."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer spreadsheet container."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable virtualized sheet viewport."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA grid surface."
+            },
+            {
+              "name": "header",
+              "description": "Column header row."
+            },
+            {
+              "name": "row",
+              "description": "Worksheet row."
+            },
+            {
+              "name": "cell",
+              "description": "Worksheet cell button."
+            },
+            {
+              "name": "editor",
+              "description": "Active inline cell editor input."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Worksheet surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Cell grid border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active cell outline accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            },
+            {
+              "name": "editing",
+              "description": "Custom element state :state(editing)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-spreadsheet",
+            "package": "@methane/spreadsheet",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "VirtualizerController",
+              "RovingFocusController",
+              "SelectionController",
+              "InputController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "readonly",
+              "editing"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "cell focused",
+                "expect": "moves active cell one row down"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "cell focused",
+                "expect": "moves active cell one row up"
+              },
+              {
+                "key": "ArrowRight",
+                "when": "cell focused",
+                "expect": "moves active cell inline-end (direction-aware)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "cell focused",
+                "expect": "moves active cell inline-start (direction-aware)"
+              },
+              {
+                "key": "Enter",
+                "when": "cell focused",
+                "expect": "opens inline formula/value editor or commits edit"
+              },
+              {
+                "key": "Escape",
+                "when": "editing cell",
+                "expect": "cancels edit without committing"
+              }
+            ],
+            "props": [
+              {
+                "name": "rows",
+                "attr": "rows",
+                "type": "number",
+                "default": 20
+              },
+              {
+                "name": "cols",
+                "attr": "cols",
+                "type": "number",
+                "default": 8
+              },
+              {
+                "name": "cells",
+                "attr": false,
+                "type": "Readonly<Record<string, string>>"
+              },
+              {
+                "name": "addressMode",
+                "attr": "address-mode",
+                "type": "'A1' | 'R1C1'",
+                "default": "A1"
+              },
+              {
+                "name": "activeCell",
+                "attr": "active-cell",
+                "type": "string",
+                "default": "A1"
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 32
+              },
+              {
+                "name": "readonly",
+                "attr": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-cell-select",
+                "cancelable": false,
+                "detailType": "{ address: string; displayAddress: string; raw: string; value: unknown }"
+              },
+              {
+                "name": "mth-cell-change",
+                "cancelable": false,
+                "detailType": "{ address: string; raw: string; value: unknown }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback worksheet table."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer spreadsheet container."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable virtualized sheet viewport."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA grid surface."
+              },
+              {
+                "name": "header",
+                "description": "Column header row."
+              },
+              {
+                "name": "row",
+                "description": "Worksheet row."
+              },
+              {
+                "name": "cell",
+                "description": "Worksheet cell button."
+              },
+              {
+                "name": "editor",
+                "description": "Active inline cell editor input."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Spreadsheet worksheet",
+              "cornerHeaderLabel": "Row and column selector",
+              "cellEditorLabel": "Edit cell {address}",
+              "rowHeaderLabel": "Row {row}",
+              "columnHeaderLabel": "Column {column}",
+              "fallbackLabel": "Spreadsheet fallback view."
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthSpreadsheet",
+          "declaration": {
+            "name": "MthSpreadsheet",
+            "module": "src/components/spreadsheet/spreadsheet.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-spreadsheet",
+          "declaration": {
+            "name": "MthSpreadsheet",
+            "module": "src/components/spreadsheet/spreadsheet.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1849 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/datagrid/datagrid.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthDatagrid",
+          "tagName": "mth-datagrid",
+          "customElement": true,
+          "description": "Enterprise virtualized data grid wrapping @tanstack/table-core and @tanstack/virtual-core with sorting, filtering, pinning, column resizing, selection, and DataSource<T> streaming.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "ReadonlyArray<Record<string, unknown>>"
+              },
+              "description": "Array of row records displayed in the grid."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "type": {
+                "text": "ReadonlyArray<DatagridColumn>"
+              },
+              "description": "Column definitions with optional accessorKey, sortable, width, and pinned."
+            },
+            {
+              "kind": "field",
+              "name": "dataSource",
+              "type": {
+                "text": "DataSource<Record<string, unknown>, string> | null"
+              },
+              "description": "Optional async DataSource<T, string> controller source."
+            },
+            {
+              "kind": "field",
+              "name": "selectable",
+              "attribute": "selectable",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables multi-row checkbox selection."
+            },
+            {
+              "kind": "field",
+              "name": "multiSort",
+              "attribute": "multi-sort",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows sorting across multiple columns simultaneously."
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "attribute": "filter",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Global search filter string applied across filterable columns."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "40",
+              "description": "Estimated virtual row block size in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible grid label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "selectable",
+              "fieldName": "selectable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables multi-row checkbox selection."
+            },
+            {
+              "name": "multi-sort",
+              "fieldName": "multiSort",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Allows sorting across multiple columns simultaneously."
+            },
+            {
+              "name": "filter",
+              "fieldName": "filter",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Global search filter string applied across filterable columns."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "40",
+              "description": "Estimated virtual row block size in pixels."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible grid label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-sort-change",
+              "type": {
+                "text": "CustomEvent<{ sorting: ReadonlyArray<{ id: string; desc: boolean }> }>"
+              },
+              "description": "Fired when column sorting updates."
+            },
+            {
+              "name": "mth-selection-change",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string> }>"
+              },
+              "description": "Fired when selected row IDs change."
+            },
+            {
+              "name": "mth-column-resize",
+              "type": {
+                "text": "CustomEvent<{ columnId: string; width: number }>"
+              },
+              "description": "Fired when a column width is updated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback table or message."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer grid wrapper."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable virtualized viewport container."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA grid table surface."
+            },
+            {
+              "name": "header",
+              "description": "Sticky column header row."
+            },
+            {
+              "name": "row",
+              "description": "Body data row."
+            },
+            {
+              "name": "cell",
+              "description": "Body grid cell."
+            },
+            {
+              "name": "status",
+              "description": "Loading, empty, or error status region."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Grid surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header and hover row background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Grid border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selection and sort indicator accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "error",
+              "description": "Custom element state :state(error)."
+            },
+            {
+              "name": "selectable",
+              "description": "Custom element state :state(selectable)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-datagrid",
+            "package": "@methane/datagrid",
+            "conformance": [
+              "satellite",
+              "data-consumer"
+            ],
+            "controllers": [
+              "TableCore",
+              "DataController",
+              "RovingFocusController",
+              "SelectionController",
+              "VirtualizerController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "loading",
+              "empty",
+              "error",
+              "selectable"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "grid row focused",
+                "expect": "moves roving focus to next row"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "grid row focused",
+                "expect": "moves roving focus to previous row"
+              },
+              {
+                "key": "Home",
+                "when": "grid row focused",
+                "expect": "moves roving focus to first row"
+              },
+              {
+                "key": "End",
+                "when": "grid row focused",
+                "expect": "moves roving focus to last row"
+              },
+              {
+                "key": "Enter",
+                "when": "column sort header focused",
+                "expect": "toggles sort order for column"
+              }
+            ],
+            "props": [
+              {
+                "name": "rows",
+                "attr": false,
+                "type": "ReadonlyArray<Record<string, unknown>>"
+              },
+              {
+                "name": "columns",
+                "attr": false,
+                "type": "ReadonlyArray<DatagridColumn>"
+              },
+              {
+                "name": "dataSource",
+                "attr": false,
+                "type": "DataSource<Record<string, unknown>, string> | null"
+              },
+              {
+                "name": "selectable",
+                "attr": "selectable",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "multiSort",
+                "attr": "multi-sort",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "filter",
+                "attr": "filter",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 40
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-sort-change",
+                "cancelable": false,
+                "detailType": "{ sorting: ReadonlyArray<{ id: string; desc: boolean }> }"
+              },
+              {
+                "name": "mth-selection-change",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string> }"
+              },
+              {
+                "name": "mth-column-resize",
+                "cancelable": false,
+                "detailType": "{ columnId: string; width: number }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback table or message."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer grid wrapper."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable virtualized viewport container."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA grid table surface."
+              },
+              {
+                "name": "header",
+                "description": "Sticky column header row."
+              },
+              {
+                "name": "row",
+                "description": "Body data row."
+              },
+              {
+                "name": "cell",
+                "description": "Body grid cell."
+              },
+              {
+                "name": "status",
+                "description": "Loading, empty, or error status region."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Data grid",
+              "loadingLabel": "Loading rows…",
+              "emptyLabel": "No rows to display.",
+              "errorLabel": "Unable to load grid data.",
+              "retryLabel": "Retry",
+              "selectAllLabel": "Select all rows",
+              "selectRowLabel": "Select row {id}",
+              "resizeColumnLabel": "Resize {column} column"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthDatagrid",
+          "declaration": {
+            "name": "MthDatagrid",
+            "module": "src/components/datagrid/datagrid.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-datagrid",
+          "declaration": {
+            "name": "MthDatagrid",
+            "module": "src/components/datagrid/datagrid.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/gantt/gantt.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthGantt",
+          "tagName": "mth-gantt",
+          "customElement": true,
+          "description": "Project Gantt timeline satellite wrapping CalendarCore and @tanstack/virtual-core with task progress bars, milestone markers, and SVG dependency lines.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "tasks",
+              "type": {
+                "text": "ReadonlyArray<GanttTask>"
+              },
+              "description": "List of project tasks with start/end dates, progress, milestones, and dependencies."
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
+              "attribute": "start-date",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"2026-01-01\"",
+              "description": "ISO start date (YYYY-MM-DD) of the Gantt horizon."
+            },
+            {
+              "kind": "field",
+              "name": "days",
+              "attribute": "days",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Total timeline days displayed."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "40",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "showDependencies",
+              "attribute": "show-dependencies",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Renders SVG dependency connector paths between tasks."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible Gantt grid label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "start-date",
+              "fieldName": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"2026-01-01\"",
+              "description": "ISO start date (YYYY-MM-DD) of the Gantt horizon."
+            },
+            {
+              "name": "days",
+              "fieldName": "days",
+              "type": {
+                "text": "number"
+              },
+              "default": "14",
+              "description": "Total timeline days displayed."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "40",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "name": "show-dependencies",
+              "fieldName": "showDependencies",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Renders SVG dependency connector paths between tasks."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible Gantt grid label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-task-select",
+              "type": {
+                "text": "CustomEvent<{ task: GanttTask }>"
+              },
+              "description": "Fired when a task bar or milestone is activated."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback task table."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer Gantt container."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable Gantt viewport."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA grid surface."
+            },
+            {
+              "name": "header",
+              "description": "Timeline day header row."
+            },
+            {
+              "name": "row",
+              "description": "Task row."
+            },
+            {
+              "name": "task-bar",
+              "description": "Interactive task duration bar."
+            },
+            {
+              "name": "milestone",
+              "description": "Milestone diamond marker."
+            },
+            {
+              "name": "dependencies",
+              "description": "SVG dependency connector layer."
+            },
+            {
+              "name": "status",
+              "description": "Empty state region."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Gantt surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Grid border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Task bar and dependency connector color."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-gantt",
+            "package": "@methane/datagrid",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "CalendarCore",
+              "RovingFocusController",
+              "VirtualizerController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "task row focused",
+                "expect": "moves roving focus to next task"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "task row focused",
+                "expect": "moves roving focus to previous task"
+              },
+              {
+                "key": "Home",
+                "when": "task row focused",
+                "expect": "moves roving focus to first task"
+              },
+              {
+                "key": "End",
+                "when": "task row focused",
+                "expect": "moves roving focus to last task"
+              },
+              {
+                "key": "Enter",
+                "when": "task bar focused",
+                "expect": "emits mth-task-select"
+              }
+            ],
+            "props": [
+              {
+                "name": "tasks",
+                "attr": false,
+                "type": "ReadonlyArray<GanttTask>"
+              },
+              {
+                "name": "startDate",
+                "attr": "start-date",
+                "type": "string",
+                "default": "2026-01-01"
+              },
+              {
+                "name": "days",
+                "attr": "days",
+                "type": "number",
+                "default": 14
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 40
+              },
+              {
+                "name": "showDependencies",
+                "attr": "show-dependencies",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-task-select",
+                "cancelable": false,
+                "detailType": "{ task: GanttTask }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback task table."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer Gantt container."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable Gantt viewport."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA grid surface."
+              },
+              {
+                "name": "header",
+                "description": "Timeline day header row."
+              },
+              {
+                "name": "row",
+                "description": "Task row."
+              },
+              {
+                "name": "task-bar",
+                "description": "Interactive task duration bar."
+              },
+              {
+                "name": "milestone",
+                "description": "Milestone diamond marker."
+              },
+              {
+                "name": "dependencies",
+                "description": "SVG dependency connector layer."
+              },
+              {
+                "name": "status",
+                "description": "Empty state region."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Project Gantt timeline",
+              "taskColumnLabel": "Task",
+              "emptyLabel": "No Gantt tasks to display.",
+              "taskBarLabel": "Task {title}, {progress}% complete",
+              "milestoneLabel": "Milestone {title}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthGantt",
+          "declaration": {
+            "name": "MthGantt",
+            "module": "src/components/gantt/gantt.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-gantt",
+          "declaration": {
+            "name": "MthGantt",
+            "module": "src/components/gantt/gantt.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pivot-table/pivot-table.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthPivotTable",
+          "tagName": "mth-pivot-table",
+          "customElement": true,
+          "description": "Multi-dimensional pivot table satellite wrapping @tanstack/table-core with row/column dimension grouping, aggregations (sum, count, avg, min, max), expandable groups, and grand totals.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "ReadonlyArray<Record<string, unknown>>"
+              },
+              "description": "Source records to aggregate."
+            },
+            {
+              "kind": "field",
+              "name": "rowDimensions",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Field keys used for row grouping."
+            },
+            {
+              "kind": "field",
+              "name": "columnDimensions",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Field keys used for pivot column buckets."
+            },
+            {
+              "kind": "field",
+              "name": "valueFields",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Numeric field keys to aggregate."
+            },
+            {
+              "kind": "field",
+              "name": "aggregator",
+              "attribute": "aggregator",
+              "reflect": true,
+              "type": {
+                "text": "'sum' | 'count' | 'avg' | 'min' | 'max'"
+              },
+              "default": "\"sum\"",
+              "description": "Aggregation function applied to value fields."
+            },
+            {
+              "kind": "field",
+              "name": "showTotals",
+              "attribute": "show-totals",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to display the grand totals row."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible pivot grid label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "aggregator",
+              "fieldName": "aggregator",
+              "type": {
+                "text": "'sum' | 'count' | 'avg' | 'min' | 'max'"
+              },
+              "default": "\"sum\"",
+              "description": "Aggregation function applied to value fields."
+            },
+            {
+              "name": "show-totals",
+              "fieldName": "showTotals",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Whether to display the grand totals row."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible pivot grid label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-pivot-change",
+              "type": {
+                "text": "CustomEvent<{ aggregator: string; groupCount: number }>"
+              },
+              "description": "Fired when pivot computation or aggregator updates."
+            },
+            {
+              "name": "mth-group-toggle",
+              "type": {
+                "text": "CustomEvent<{ groupKey: string; expanded: boolean }>"
+              },
+              "description": "Fired when a pivot row group is expanded or collapsed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback table or message."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer pivot wrapper."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable pivot viewport."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA grid table."
+            },
+            {
+              "name": "header",
+              "description": "Header row."
+            },
+            {
+              "name": "row",
+              "description": "Pivot group or detail row."
+            },
+            {
+              "name": "cell",
+              "description": "Aggregated value cell."
+            },
+            {
+              "name": "totals",
+              "description": "Grand totals summary row."
+            },
+            {
+              "name": "status",
+              "description": "Empty state region."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Table surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header and totals background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Grid border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Group toggle and focus accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "grouped",
+              "description": "Custom element state :state(grouped)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-pivot-table",
+            "package": "@methane/datagrid",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "TableCore",
+              "SelectionController",
+              "RovingFocusController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "empty",
+              "grouped"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "pivot row focused",
+                "expect": "moves roving focus to next row"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "pivot row focused",
+                "expect": "moves roving focus to previous row"
+              },
+              {
+                "key": "Enter",
+                "when": "group toggle focused",
+                "expect": "toggles group expansion"
+              }
+            ],
+            "props": [
+              {
+                "name": "rows",
+                "attr": false,
+                "type": "ReadonlyArray<Record<string, unknown>>"
+              },
+              {
+                "name": "rowDimensions",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "columnDimensions",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "valueFields",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "aggregator",
+                "attr": "aggregator",
+                "type": "'sum' | 'count' | 'avg' | 'min' | 'max'",
+                "default": "sum"
+              },
+              {
+                "name": "showTotals",
+                "attr": "show-totals",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-pivot-change",
+                "cancelable": false,
+                "detailType": "{ aggregator: string; groupCount: number }"
+              },
+              {
+                "name": "mth-group-toggle",
+                "cancelable": false,
+                "detailType": "{ groupKey: string; expanded: boolean }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback table or message."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer pivot wrapper."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable pivot viewport."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA grid table."
+              },
+              {
+                "name": "header",
+                "description": "Header row."
+              },
+              {
+                "name": "row",
+                "description": "Pivot group or detail row."
+              },
+              {
+                "name": "cell",
+                "description": "Aggregated value cell."
+              },
+              {
+                "name": "totals",
+                "description": "Grand totals summary row."
+              },
+              {
+                "name": "status",
+                "description": "Empty state region."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Pivot table",
+              "rowGroupHeader": "Group",
+              "totalsRowLabel": "Totals",
+              "allGroupLabel": "All",
+              "totalColumnLabel": "Total",
+              "emptyLabel": "No pivot rows to display.",
+              "toggleGroupLabel": "Toggle group {group}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthPivotTable",
+          "declaration": {
+            "name": "MthPivotTable",
+            "module": "src/components/pivot-table/pivot-table.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-pivot-table",
+          "declaration": {
+            "name": "MthPivotTable",
+            "module": "src/components/pivot-table/pivot-table.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/scheduler/scheduler.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthScheduler",
+          "tagName": "mth-scheduler",
+          "customElement": true,
+          "description": "Resource timeline scheduler wrapping CalendarCore and @tanstack/virtual-core with RTL-aware keyboard date navigation and virtualized resource rows.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "resources",
+              "type": {
+                "text": "ReadonlyArray<SchedulerResource>"
+              },
+              "description": "Array of resource swimlanes."
+            },
+            {
+              "kind": "field",
+              "name": "events",
+              "type": {
+                "text": "ReadonlyArray<SchedulerEvent>"
+              },
+              "description": "Scheduled events mapped onto resource rows and date columns."
+            },
+            {
+              "kind": "field",
+              "name": "startDate",
+              "attribute": "start-date",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"2026-01-05\"",
+              "description": "ISO start date (YYYY-MM-DD) of the visible timeline window."
+            },
+            {
+              "kind": "field",
+              "name": "days",
+              "attribute": "days",
+              "type": {
+                "text": "number"
+              },
+              "default": "7",
+              "description": "Number of timeline day columns."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Estimated height of each resource swimlane in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible scheduler grid label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "start-date",
+              "fieldName": "startDate",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"2026-01-05\"",
+              "description": "ISO start date (YYYY-MM-DD) of the visible timeline window."
+            },
+            {
+              "name": "days",
+              "fieldName": "days",
+              "type": {
+                "text": "number"
+              },
+              "default": "7",
+              "description": "Number of timeline day columns."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Estimated height of each resource swimlane in pixels."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible scheduler grid label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-event-select",
+              "type": {
+                "text": "CustomEvent<{ event: SchedulerEvent }>"
+              },
+              "description": "Fired when a scheduled event is activated."
+            },
+            {
+              "name": "mth-date-navigate",
+              "type": {
+                "text": "CustomEvent<{ date: string }>"
+              },
+              "description": "Fired when keyboard navigation moves the active date."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback schedule."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer scheduler frame."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable timeline viewport."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA grid surface."
+            },
+            {
+              "name": "header",
+              "description": "Date header row."
+            },
+            {
+              "name": "resource",
+              "description": "Resource row."
+            },
+            {
+              "name": "slot-cell",
+              "description": "Resource day cell."
+            },
+            {
+              "name": "event-bar",
+              "description": "Scheduled event bar button."
+            },
+            {
+              "name": "status",
+              "description": "Empty status notice."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Scheduler background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Timeline header background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Grid border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Event bar and focus accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-scheduler",
+            "package": "@methane/datagrid",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "CalendarCore",
+              "RovingFocusController",
+              "VirtualizerController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "empty"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "resource row focused",
+                "expect": "moves roving focus to next resource"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "resource row focused",
+                "expect": "moves roving focus to previous resource"
+              },
+              {
+                "key": "ArrowRight",
+                "when": "timeline focused",
+                "expect": "advances focused date by 1 day (direction-aware)"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "timeline focused",
+                "expect": "moves focused date back by 1 day (direction-aware)"
+              },
+              {
+                "key": "Enter",
+                "when": "scheduled event focused",
+                "expect": "emits mth-event-select"
+              }
+            ],
+            "props": [
+              {
+                "name": "resources",
+                "attr": false,
+                "type": "ReadonlyArray<SchedulerResource>"
+              },
+              {
+                "name": "events",
+                "attr": false,
+                "type": "ReadonlyArray<SchedulerEvent>"
+              },
+              {
+                "name": "startDate",
+                "attr": "start-date",
+                "type": "string",
+                "default": "2026-01-05"
+              },
+              {
+                "name": "days",
+                "attr": "days",
+                "type": "number",
+                "default": 7
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 48
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-event-select",
+                "cancelable": false,
+                "detailType": "{ event: SchedulerEvent }"
+              },
+              {
+                "name": "mth-date-navigate",
+                "cancelable": false,
+                "detailType": "{ date: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback schedule."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer scheduler frame."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable timeline viewport."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA grid surface."
+              },
+              {
+                "name": "header",
+                "description": "Date header row."
+              },
+              {
+                "name": "resource",
+                "description": "Resource row."
+              },
+              {
+                "name": "slot-cell",
+                "description": "Resource day cell."
+              },
+              {
+                "name": "event-bar",
+                "description": "Scheduled event bar button."
+              },
+              {
+                "name": "status",
+                "description": "Empty status notice."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Resource timeline scheduler",
+              "resourceColumnLabel": "Resource",
+              "emptyLabel": "No scheduled resources to display.",
+              "selectEventLabel": "Event {title}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthScheduler",
+          "declaration": {
+            "name": "MthScheduler",
+            "module": "src/components/scheduler/scheduler.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-scheduler",
+          "declaration": {
+            "name": "MthScheduler",
+            "module": "src/components/scheduler/scheduler.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/tree-table/tree-table.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthTreeTable",
+          "tagName": "mth-tree-table",
+          "customElement": true,
+          "description": "Hierarchical expandable tree table wrapping @tanstack/table-core getExpandedRowModel and @tanstack/virtual-core with treegrid keyboard navigation.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "rows",
+              "type": {
+                "text": "ReadonlyArray<TreeTableRow>"
+              },
+              "description": "Hierarchical tree row records."
+            },
+            {
+              "kind": "field",
+              "name": "columns",
+              "type": {
+                "text": "ReadonlyArray<TreeTableColumn>"
+              },
+              "description": "Column definitions."
+            },
+            {
+              "kind": "field",
+              "name": "subRowsKey",
+              "attribute": "sub-rows-key",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"children\"",
+              "description": "Property key holding nested child rows."
+            },
+            {
+              "kind": "field",
+              "name": "expandedIds",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Controlled list of expanded row IDs."
+            },
+            {
+              "kind": "field",
+              "name": "selectable",
+              "attribute": "selectable",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables row selection checkboxes."
+            },
+            {
+              "kind": "field",
+              "name": "rowHeight",
+              "attribute": "row-height",
+              "type": {
+                "text": "number"
+              },
+              "default": "38",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible treegrid label."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "sub-rows-key",
+              "fieldName": "subRowsKey",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"children\"",
+              "description": "Property key holding nested child rows."
+            },
+            {
+              "name": "selectable",
+              "fieldName": "selectable",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Enables row selection checkboxes."
+            },
+            {
+              "name": "row-height",
+              "fieldName": "rowHeight",
+              "type": {
+                "text": "number"
+              },
+              "default": "38",
+              "description": "Estimated row height in pixels."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible treegrid label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-expand-change",
+              "type": {
+                "text": "CustomEvent<{ rowId: string; expanded: boolean; expandedIds: ReadonlyArray<string> }>"
+              },
+              "description": "Fired when a row branch expands or collapses."
+            },
+            {
+              "name": "mth-selection-change",
+              "type": {
+                "text": "CustomEvent<{ selectedIds: ReadonlyArray<string> }>"
+              },
+              "description": "Fired when selected row IDs change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "Declarative SSR fallback tree table."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer tree table wrapper."
+            },
+            {
+              "name": "viewport",
+              "description": "Scrollable viewport."
+            },
+            {
+              "name": "grid",
+              "description": "ARIA treegrid surface."
+            },
+            {
+              "name": "header",
+              "description": "Header row."
+            },
+            {
+              "name": "row",
+              "description": "Tree row."
+            },
+            {
+              "name": "cell",
+              "description": "Tree grid cell."
+            },
+            {
+              "name": "toggle",
+              "description": "Expand/collapse disclosure button."
+            },
+            {
+              "name": "status",
+              "description": "Empty state region."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Table surface background."
+            },
+            {
+              "name": "--mth-color-bg-subtle",
+              "description": "Header background."
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Cell border color."
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Selection and focus accent."
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "selectable",
+              "description": "Custom element state :state(selectable)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-tree-table",
+            "package": "@methane/datagrid",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "TableCore",
+              "RovingFocusController",
+              "SelectionController",
+              "VirtualizerController"
+            ],
+            "focusModel": "host",
+            "states": [
+              "empty",
+              "selectable"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowDown",
+                "when": "tree row focused",
+                "expect": "moves roving focus to next visible row"
+              },
+              {
+                "key": "ArrowUp",
+                "when": "tree row focused",
+                "expect": "moves roving focus to previous visible row"
+              },
+              {
+                "key": "ArrowRight",
+                "when": "collapsed parent row focused",
+                "expect": "expands child rows"
+              },
+              {
+                "key": "ArrowLeft",
+                "when": "expanded parent row focused",
+                "expect": "collapses child rows"
+              },
+              {
+                "key": "Home",
+                "when": "tree row focused",
+                "expect": "moves roving focus to first row"
+              },
+              {
+                "key": "End",
+                "when": "tree row focused",
+                "expect": "moves roving focus to last row"
+              }
+            ],
+            "props": [
+              {
+                "name": "rows",
+                "attr": false,
+                "type": "ReadonlyArray<TreeTableRow>"
+              },
+              {
+                "name": "columns",
+                "attr": false,
+                "type": "ReadonlyArray<TreeTableColumn>"
+              },
+              {
+                "name": "subRowsKey",
+                "attr": "sub-rows-key",
+                "type": "string",
+                "default": "children"
+              },
+              {
+                "name": "expandedIds",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "selectable",
+                "attr": "selectable",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "rowHeight",
+                "attr": "row-height",
+                "type": "number",
+                "default": 38
+              },
+              {
+                "name": "label",
+                "attr": "label",
+                "type": "string",
+                "default": ""
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-expand-change",
+                "cancelable": false,
+                "detailType": "{ rowId: string; expanded: boolean; expandedIds: ReadonlyArray<string> }"
+              },
+              {
+                "name": "mth-selection-change",
+                "cancelable": false,
+                "detailType": "{ selectedIds: ReadonlyArray<string> }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "Declarative SSR fallback tree table."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer tree table wrapper."
+              },
+              {
+                "name": "viewport",
+                "description": "Scrollable viewport."
+              },
+              {
+                "name": "grid",
+                "description": "ARIA treegrid surface."
+              },
+              {
+                "name": "header",
+                "description": "Header row."
+              },
+              {
+                "name": "row",
+                "description": "Tree row."
+              },
+              {
+                "name": "cell",
+                "description": "Tree grid cell."
+              },
+              {
+                "name": "toggle",
+                "description": "Expand/collapse disclosure button."
+              },
+              {
+                "name": "status",
+                "description": "Empty state region."
+              }
+            ],
+            "messages": {
+              "gridLabel": "Hierarchical tree grid",
+              "emptyLabel": "No hierarchical rows to display.",
+              "expandRowLabel": "Expand {name}",
+              "collapseRowLabel": "Collapse {name}",
+              "selectRowLabel": "Select row {id}"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthTreeTable",
+          "declaration": {
+            "name": "MthTreeTable",
+            "module": "src/components/tree-table/tree-table.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-tree-table",
+          "declaration": {
+            "name": "MthTreeTable",
+            "module": "src/components/tree-table/tree-table.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

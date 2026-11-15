@@ -593,6 +593,46 @@ importers:
         specifier: workspace:*
         version: link:../../../tooling/test-conformance
 
+  packages/satellites/datagrid:
+    dependencies:
+      '@lit/context':
+        specifier: ^1.1.4
+        version: 1.1.6
+      '@methane/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@methane/primitives':
+        specifier: workspace:*
+        version: link:../../primitives
+      '@methane/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+      '@tanstack/table-core':
+        specifier: ^8.21.3
+        version: 8.21.3
+      '@tanstack/virtual-core':
+        specifier: ^3.19.11
+        version: 3.19.11
+      lit:
+        specifier: ^3.2.1
+        version: 3.3.3
+    devDependencies:
+      '@lit-labs/ssr':
+        specifier: ^4.1.0
+        version: 4.1.0(@types/node@22.20.5)
+      '@lit-labs/ssr-client':
+        specifier: ^1.1.8
+        version: 1.1.8
+      '@lit-labs/ssr-dom-shim':
+        specifier: ^1.6.0
+        version: 1.6.0
+      '@methane/spec-compiler':
+        specifier: workspace:*
+        version: link:../../../tooling/spec-compiler
+      '@methane/test-conformance':
+        specifier: workspace:*
+        version: link:../../../tooling/test-conformance
+
   packages/satellites/editor:
     dependencies:
       '@methane/core':
@@ -831,6 +871,40 @@ importers:
       '@methane/sanitize':
         specifier: workspace:*
         version: link:../../sanitize
+      '@methane/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+      lit:
+        specifier: ^3.2.1
+        version: 3.3.3
+    devDependencies:
+      '@lit-labs/ssr':
+        specifier: ^4.1.0
+        version: 4.1.0(@types/node@22.20.5)
+      '@lit-labs/ssr-client':
+        specifier: ^1.1.8
+        version: 1.1.8
+      '@lit-labs/ssr-dom-shim':
+        specifier: ^1.6.0
+        version: 1.6.0
+      '@methane/spec-compiler':
+        specifier: workspace:*
+        version: link:../../../tooling/spec-compiler
+      '@methane/test-conformance':
+        specifier: workspace:*
+        version: link:../../../tooling/test-conformance
+
+  packages/satellites/spreadsheet:
+    dependencies:
+      '@lit/context':
+        specifier: ^1.1.4
+        version: 1.1.6
+      '@methane/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@methane/primitives':
+        specifier: workspace:*
+        version: link:../../primitives
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../tokens
@@ -4589,6 +4663,13 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
+
+  '@tanstack/virtual-core@3.19.11':
+    resolution: {integrity: sha512-/5iHb0RHBvj8Di59FDs4ESNm45jls33aZAi4zccVXZjc/6ZvwQP6nzEYeT6weXjTf9E6/vrp2JhYWRyO+ZP13A==}
 
   '@tufjs/canonical-json@2.0.0':
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}
@@ -13296,6 +13377,10 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.9.1
+
+  '@tanstack/table-core@8.21.3': {}
+
+  '@tanstack/virtual-core@3.19.11': {}
 
   '@tufjs/canonical-json@2.0.0': {}
 
