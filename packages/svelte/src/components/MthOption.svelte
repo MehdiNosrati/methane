@@ -2,7 +2,7 @@
   import type { MthOptionProps } from '../index.js';
 
   let {
-  value = $bindable(''),
+  value = $bindable(""),
   children,
   ...rest
   }: MthOptionProps = $props();

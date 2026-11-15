@@ -15,15 +15,38 @@ export interface MthCheckboxElement extends HTMLElement {
 }
 
 export interface MthComboboxElement extends HTMLElement {
+  name: string;
   value: string;
+  defaultValue: string;
+  label: string;
+  hint: string;
+  error: string;
+  placeholder: string;
   open: boolean;
+  multiple: boolean;
   disabled: boolean;
+  required: boolean;
+  readonly: boolean;
+  clearable: boolean;
+  filterable: boolean;
+  placement: string;
+  forceFallback: boolean;
+  options: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }> | null;
+  dataSource: { query(request: { cursor?: string; filter?: string; signal: AbortSignal }): Promise<{ items: ReadonlyArray<{ readonly id?: string; readonly value: string; readonly label: string; readonly disabled?: boolean; readonly group?: string }>; total?: number; nextCursor?: string | null }> } | null;
 }
 
 export interface MthDialogElement extends HTMLElement {
   open: boolean;
   modal: boolean;
+  variant: 'default' | 'alert' | 'confirm' | 'prompt';
   label: string;
+  description: string;
+  promptValue: string;
+  closeOnEscape: boolean;
+}
+
+export interface MthErrorBoundaryElement extends HTMLElement {
+  fallbackMessage: string | undefined;
 }
 
 export interface MthFieldElement extends HTMLElement {
@@ -32,22 +55,39 @@ export interface MthFieldElement extends HTMLElement {
   error: string;
   required: boolean;
   disabled: boolean;
+  density: 'compact' | 'default' | 'comfortable';
 }
 
 export interface MthInputElement extends HTMLElement {
   value: string;
   name: string;
-  type: 'text' | 'email' | 'url' | 'search' | 'tel';
+  type: 'text' | 'email' | 'url' | 'search' | 'tel' | 'password';
   label: string;
+  hint: string;
+  error: string;
   placeholder: string;
+  autocomplete: string;
+  inputmode: string;
   disabled: boolean;
   required: boolean;
+  readonly: boolean;
 }
 
 export interface MthOptionElement extends HTMLElement {
   value: string;
+  label: string;
   disabled: boolean;
   selected: boolean;
+  active: boolean;
+}
+
+export interface MthOptionGroupElement extends HTMLElement {
+  label: string;
+  disabled: boolean;
+}
+
+export interface MthSkipLinkElement extends HTMLElement {
+  href: string;
 }
 
 export interface MthSwitchElement extends HTMLElement {
@@ -55,14 +95,23 @@ export interface MthSwitchElement extends HTMLElement {
   disabled: boolean;
 }
 
+export interface MthVisuallyHiddenElement extends HTMLElement {
+
+}
+
 export type MthMthPressEvent = CustomEvent<{ originalEvent: Event }>;
 export type MthMthChangeEvent = CustomEvent<{ checked: boolean; indeterminate: boolean }>;
-export type MthMthOpenEvent = CustomEvent<void>;
-export type MthMthCloseEvent = CustomEvent<void>;
-export type MthMthSelectEvent = CustomEvent<{ value: string; label: string }>;
-export type MthMthAfterOpenEvent = CustomEvent<void>;
-export type MthMthAfterCloseEvent = CustomEvent<{ reason: string }>;
 export type MthMthInputEvent = CustomEvent<{ value: string }>;
+export type MthMthOpenEvent = CustomEvent<void>;
+export type MthMthAfterOpenEvent = CustomEvent<void>;
+export type MthMthCloseEvent = CustomEvent<{ reason: string }>;
+export type MthMthAfterCloseEvent = CustomEvent<{ reason: string }>;
+export type MthMthClearEvent = CustomEvent<void>;
+export type MthMthInvalidEvent = CustomEvent<{ validity: ValidityState }>;
+export type MthMthConfirmEvent = CustomEvent<{ variant: string; value?: string }>;
+export type MthMthCancelEvent = CustomEvent<{ variant: string }>;
+export type MthMthErrorCapturedEvent = CustomEvent<{ error: unknown }>;
+export type MthMthResetEvent = CustomEvent<void>;
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -70,21 +119,30 @@ declare global {
     "mth-checkbox": MthCheckboxElement;
     "mth-combobox": MthComboboxElement;
     "mth-dialog": MthDialogElement;
+    "mth-error-boundary": MthErrorBoundaryElement;
     "mth-field": MthFieldElement;
     "mth-input": MthInputElement;
     "mth-option": MthOptionElement;
+    "mth-option-group": MthOptionGroupElement;
+    "mth-skip-link": MthSkipLinkElement;
     "mth-switch": MthSwitchElement;
+    "mth-visually-hidden": MthVisuallyHiddenElement;
   }
 
   interface HTMLElementEventMap {
     "mth-press": CustomEvent<{ originalEvent: Event }>;
     "mth-change": CustomEvent<{ checked: boolean; indeterminate: boolean }>;
-    "mth-open": CustomEvent<void>;
-    "mth-close": CustomEvent<void>;
-    "mth-select": CustomEvent<{ value: string; label: string }>;
-    "mth-after-open": CustomEvent<void>;
-    "mth-after-close": CustomEvent<{ reason: string }>;
     "mth-input": CustomEvent<{ value: string }>;
+    "mth-open": CustomEvent<void>;
+    "mth-after-open": CustomEvent<void>;
+    "mth-close": CustomEvent<{ reason: string }>;
+    "mth-after-close": CustomEvent<{ reason: string }>;
+    "mth-clear": CustomEvent<void>;
+    "mth-invalid": CustomEvent<{ validity: ValidityState }>;
+    "mth-confirm": CustomEvent<{ variant: string; value?: string }>;
+    "mth-cancel": CustomEvent<{ variant: string }>;
+    "mth-error-captured": CustomEvent<{ error: unknown }>;
+    "mth-reset": CustomEvent<void>;
   }
 }
 

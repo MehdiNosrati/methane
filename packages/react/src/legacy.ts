@@ -6,10 +6,14 @@ import type {
   MthCheckboxElement,
   MthComboboxElement,
   MthDialogElement,
+  MthErrorBoundaryElement,
   MthFieldElement,
   MthInputElement,
   MthOptionElement,
+  MthOptionGroupElement,
+  MthSkipLinkElement,
   MthSwitchElement,
+  MthVisuallyHiddenElement,
 } from './index.js';
 
 function resolveElementClass<T extends HTMLElement>(tagName: string): { new (): T } {
@@ -52,9 +56,14 @@ export const MthCombobox = createComponent({
   elementClass: resolveElementClass<MthComboboxElement>("mth-combobox"),
   displayName: "MthCombobox",
   events: {
+    onMthInput: "mth-input" as EventName<CustomEvent<{ value: string }>>,
+    onMthChange: "mth-change" as EventName<CustomEvent<{ value: string; selectedValues: ReadonlyArray<string> }>>,
     onMthOpen: "mth-open" as EventName<CustomEvent<void>>,
-    onMthClose: "mth-close" as EventName<CustomEvent<void>>,
-    onMthSelect: "mth-select" as EventName<CustomEvent<{ value: string; label: string }>>,
+    onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
+    onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthClear: "mth-clear" as EventName<CustomEvent<void>>,
+    onMthInvalid: "mth-invalid" as EventName<CustomEvent<{ validity: ValidityState }>>,
   },
 });
 
@@ -68,6 +77,19 @@ export const MthDialog = createComponent({
     onMthAfterOpen: "mth-after-open" as EventName<CustomEvent<void>>,
     onMthClose: "mth-close" as EventName<CustomEvent<{ reason: string }>>,
     onMthAfterClose: "mth-after-close" as EventName<CustomEvent<{ reason: string }>>,
+    onMthConfirm: "mth-confirm" as EventName<CustomEvent<{ variant: string; value?: string }>>,
+    onMthCancel: "mth-cancel" as EventName<CustomEvent<{ variant: string }>>,
+  },
+});
+
+export const MthErrorBoundary = createComponent({
+  react: React,
+  tagName: "mth-error-boundary",
+  elementClass: resolveElementClass<MthErrorBoundaryElement>("mth-error-boundary"),
+  displayName: "MthErrorBoundary",
+  events: {
+    onMthErrorCaptured: "mth-error-captured" as EventName<CustomEvent<{ error: unknown }>>,
+    onMthReset: "mth-reset" as EventName<CustomEvent<void>>,
   },
 });
 
@@ -102,6 +124,26 @@ export const MthOption = createComponent({
   },
 });
 
+export const MthOptionGroup = createComponent({
+  react: React,
+  tagName: "mth-option-group",
+  elementClass: resolveElementClass<MthOptionGroupElement>("mth-option-group"),
+  displayName: "MthOptionGroup",
+  events: {
+
+  },
+});
+
+export const MthSkipLink = createComponent({
+  react: React,
+  tagName: "mth-skip-link",
+  elementClass: resolveElementClass<MthSkipLinkElement>("mth-skip-link"),
+  displayName: "MthSkipLink",
+  events: {
+
+  },
+});
+
 export const MthSwitch = createComponent({
   react: React,
   tagName: "mth-switch",
@@ -109,5 +151,15 @@ export const MthSwitch = createComponent({
   displayName: "MthSwitch",
   events: {
     onMthChange: "mth-change" as EventName<CustomEvent<{ checked: boolean }>>,
+  },
+});
+
+export const MthVisuallyHidden = createComponent({
+  react: React,
+  tagName: "mth-visually-hidden",
+  elementClass: resolveElementClass<MthVisuallyHiddenElement>("mth-visually-hidden"),
+  displayName: "MthVisuallyHidden",
+  events: {
+
   },
 });
