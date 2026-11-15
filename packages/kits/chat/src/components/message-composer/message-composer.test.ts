@@ -103,4 +103,33 @@ describe('<mth-message-composer>', () => {
     });
     expect(purity.passed).toBe(true);
   });
+
+  it('preserves dirty state on reparent and surfaces validation error immediately on empty submit', async () => {
+    const el = document.createElement('mth-message-composer') as MthMessageComposer;
+    el.defaultValue = 'initial';
+    el.value = 'initial';
+    el.required = true;
+    document.body.append(el);
+    await el.updateComplete;
+
+    const textarea = el.shadowRoot!.querySelector<HTMLTextAreaElement>('[part="textarea"]')!;
+    textarea.value = 'edited draft';
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.dirty).toBe(true);
+
+    // Reparenting must not overwrite defaultValue or clear dirty
+    el.remove();
+    document.body.append(el);
+    await el.updateComplete;
+    expect(el.dirty).toBe(true);
+    expect(el.defaultValue).toBe('initial');
+
+    textarea.value = '';
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.submitMessage()).toBe(false);
+    await el.updateComplete;
+    expect(textarea.getAttribute('aria-invalid')).toBe('true');
+  });
 });

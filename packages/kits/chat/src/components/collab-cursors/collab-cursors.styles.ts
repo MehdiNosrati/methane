@@ -27,7 +27,7 @@ export const collabCursorsStyles = css`
     flex-direction: column;
     align-items: flex-start;
     gap: var(--mth-space-px, 2px);
-    color: var(--_cursor-color, var(--mth-color-accent, oklch(0.55 0.22 260)));
+    color: var(--_cursor-color, var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260))));
   }
 
   .pointer {
@@ -41,8 +41,8 @@ export const collabCursorsStyles = css`
     padding-inline: var(--mth-space-2, 0.5rem);
     padding-block: var(--mth-space-px, 2px);
     border-radius: var(--mth-radius-sm, 0.25rem);
-    background-color: var(--_cursor-color, var(--mth-color-accent, oklch(0.55 0.22 260)));
-    color: var(--mth-color-accent-fg, oklch(1 0 0));
+    background-color: var(--_cursor-color, var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.68 0.18 260))));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
     font-size: var(--mth-font-size-xs, 0.75rem);
     font-weight: var(--mth-font-weight-medium, 500);
     line-height: var(--mth-line-height-tight, 1.25);
@@ -60,10 +60,10 @@ export const collabCursorsStyles = css`
     block-size: var(--_sel-h, 0px);
     background-color: color-mix(
       in oklch,
-      var(--_cursor-color, var(--mth-color-accent, oklch(0.55 0.22 260))) 22%,
+      var(--_cursor-color, var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)))) 22%,
       transparent
     );
-    border-inline-start: 2px solid var(--_cursor-color, var(--mth-color-accent, oklch(0.55 0.22 260)));
+    border-inline-start: 2px solid var(--_cursor-color, var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260))));
   }
 
   @media (forced-colors: active) {

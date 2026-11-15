@@ -10,6 +10,7 @@ import {
 import { registerMthBadge } from '@methane/ui/badge';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { renderSafeMarkdown } from '../../shared/safe-markdown.js';
 import { notificationBellMessages } from './notification-bell.messages.js';
 import { notificationBellStyles } from './notification-bell.styles.js';
@@ -264,13 +265,33 @@ export class MthNotificationBell extends UIElement {
     return count > cap ? `${cap}+` : String(count);
   }
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.hasUpdated && this.open) {
+      this.ensurePositionSheet();
+      this.positioningCtrl.reposition();
+    }
+  }
+
+  protected override onMoveBefore(): void {
+    super.onMoveBefore();
+    if (this.hasUpdated && this.open) {
+      this.ensurePositionSheet();
+      this.positioningCtrl.reposition();
+    }
+  }
+
   private ensurePositionSheet(): CSSStyleSheet | null {
-    if (this.positionSheet) return this.positionSheet;
     if (typeof CSSStyleSheet === 'undefined' || !this.shadowRoot) return null;
     try {
-      const sheet = new CSSStyleSheet();
-      this.shadowRoot.adoptedStyleSheets = [...this.shadowRoot.adoptedStyleSheets, sheet];
+      const sheet = this.positionSheet ?? new CSSStyleSheet();
       this.positionSheet = sheet;
+      if (
+        'adoptedStyleSheets' in this.shadowRoot &&
+        !this.shadowRoot.adoptedStyleSheets.includes(sheet)
+      ) {
+        this.shadowRoot.adoptedStyleSheets = [...this.shadowRoot.adoptedStyleSheets, sheet];
+      }
       return sheet;
     } catch {
       return null;
@@ -310,7 +331,7 @@ export class MthNotificationBell extends UIElement {
     const popoverAttr = this.forceFallback ? nothing : 'manual';
 
     return html`
-      <div class="root" part="base" dir=${this.resolvedDir}>
+      <div class="root" part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)}>
         <button
           id="mth-notification-trigger"
           class="trigger"
@@ -367,8 +388,9 @@ export class MthNotificationBell extends UIElement {
                       <li class=${item.read ? 'item' : 'item unread'} part="item">
                         <span
                           class=${item.read ? 'dot read' : 'dot'}
-                          aria-label=${item.read ? '' : this.t('unreadIndicator')}
-                          aria-hidden=${item.read ? 'true' : 'false'}
+                          role=${item.read ? nothing : 'img'}
+                          aria-label=${item.read ? nothing : this.t('unreadIndicator')}
+                          aria-hidden=${item.read ? 'true' : nothing}
                         ></span>
                         <button
                           class="item-body"

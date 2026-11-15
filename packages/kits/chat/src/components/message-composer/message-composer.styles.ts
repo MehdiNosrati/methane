@@ -30,13 +30,13 @@ export const messageComposerStyles = css`
   }
 
   .shell:focus-within {
-    border-color: var(--mth-color-border-focus, oklch(0.55 0.22 260));
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    border-color: var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 1px;
   }
 
   :host(:state(invalid)) .shell {
-    border-color: var(--mth-color-danger, oklch(0.58 0.22 25));
+    border-color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
   }
 
   .textarea {
@@ -91,19 +91,19 @@ export const messageComposerStyles = css`
   }
 
   .send-btn {
-    background-color: var(--mth-color-accent, oklch(0.55 0.22 260));
-    border-color: var(--mth-color-accent, oklch(0.55 0.22 260));
-    color: var(--mth-color-accent-fg, oklch(1 0 0));
+    background-color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.68 0.18 260)));
+    border-color: var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.68 0.18 260)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
   }
 
   .stop-btn {
-    background-color: var(--mth-color-danger, oklch(0.58 0.22 25));
-    border-color: var(--mth-color-danger, oklch(0.58 0.22 25));
-    color: var(--mth-color-accent-fg, oklch(1 0 0));
+    background-color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.66 0.2 25)));
+    border-color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.66 0.2 25)));
+    color: var(--mth-color-accent-fg, light-dark(oklch(0.99 0 0), oklch(0.99 0 0)));
   }
 
   .action-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 
@@ -120,7 +120,7 @@ export const messageComposerStyles = css`
 
   .error {
     font-size: var(--mth-font-size-xs, 0.75rem);
-    color: var(--mth-color-danger, oklch(0.58 0.22 25));
+    color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
   }
 
   @media (forced-colors: active) {

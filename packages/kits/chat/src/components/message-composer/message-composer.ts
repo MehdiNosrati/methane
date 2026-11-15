@@ -2,6 +2,7 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController, InputController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { messageComposerMessages } from './message-composer.messages.js';
 import { messageComposerStyles } from './message-composer.styles.js';
 
@@ -141,6 +142,8 @@ export class MthMessageComposer extends UIElement {
       this.formCtrl.markTouched();
       this.formCtrl.markDirty();
       this.formCtrl.validate();
+      this.syncStates();
+      this.requestUpdate();
       return false;
     }
     const allowed = this.emitEvent<{ value: string }>('mth-submit', {
@@ -165,12 +168,16 @@ export class MthMessageComposer extends UIElement {
     this.formCtrl.handleFormStateRestore(state, mode);
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
+  protected override onFirstConnect(): void {
+    super.onFirstConnect();
     this.formCtrl.setDefaultValue(this.defaultValue || this.value);
     if (this.value) {
       this.formCtrl.setValue(this.value, { markDirty: false });
     }
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
     this.syncStates();
   }
 
@@ -262,7 +269,7 @@ export class MthMessageComposer extends UIElement {
       [effHint ? hintId : '', effectiveError ? errorId : ''].filter(Boolean).join(' ') || undefined;
 
     return html`
-      <div class="base" part="base">
+      <div class="base" part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)}>
         ${effLabel
           ? html`<label class="label" part="label" id=${labelId} for=${textareaId}>
               <slot name="label">${effLabel}</slot>

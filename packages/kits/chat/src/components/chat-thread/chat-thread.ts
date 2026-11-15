@@ -8,6 +8,7 @@ import '@methane/ui/avatar';
 import '@methane/ui/badge';
 import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { renderSafeMarkdown } from '../../shared/safe-markdown.js';
 import { chatThreadMessages } from './chat-thread.messages.js';
 import { chatThreadStyles } from './chat-thread.styles.js';
@@ -77,7 +78,8 @@ export class MthChatThread extends UIElement {
   private scrollerEl!: HTMLElement;
 
   private padSheet: CSSStyleSheet | null = null;
-  private readonly virtualizerCtrl: VirtualizerController;
+  private appliedOverscan = 4;
+  private virtualizerCtrl: VirtualizerController;
   private readonly dataCtrl: DataController<ChatMessage>;
 
   constructor() {
@@ -91,10 +93,16 @@ export class MthChatThread extends UIElement {
       },
     });
 
-    this.virtualizerCtrl = new VirtualizerController(this, {
-      count: 0,
+    this.virtualizerCtrl = this.createVirtualizer(this.overscan);
+  }
+
+  private createVirtualizer(overscan: number): VirtualizerController {
+    const safeOverscan = Number.isFinite(overscan) ? Math.max(0, Math.floor(overscan)) : 4;
+    this.appliedOverscan = safeOverscan;
+    return new VirtualizerController(this, {
+      count: this.activeMessages.length,
       estimateSize: () => Math.max(24, this.estimateHeight || 72),
-      overscan: 4,
+      overscan: safeOverscan,
       getScrollElement: () => this.scrollerEl,
     });
   }
@@ -118,10 +126,31 @@ export class MthChatThread extends UIElement {
     super.connectedCallback();
     this.syncCount();
     this.syncStates();
+    if (this.hasUpdated) {
+      this.syncPaddingSheet();
+    }
+  }
+
+  protected override onMoveBefore(): void {
+    super.onMoveBefore();
+    if (this.hasUpdated) {
+      this.syncPaddingSheet();
+    }
   }
 
   override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
+    if (changed.has('overscan')) {
+      const nextOverscan = Number.isFinite(this.overscan) ? Math.max(0, Math.floor(this.overscan)) : 4;
+      if (nextOverscan !== this.appliedOverscan) {
+        this.virtualizerCtrl.hostDisconnected();
+        this.removeController(this.virtualizerCtrl);
+        this.virtualizerCtrl = this.createVirtualizer(nextOverscan);
+        if (this.isConnected) {
+          this.virtualizerCtrl.hostConnected();
+        }
+      }
+    }
     if (changed.has('dataSource')) {
       this.dataCtrl.setDataSource(this.dataSource ?? null, { load: Boolean(this.dataSource) });
     }
@@ -185,7 +214,7 @@ export class MthChatThread extends UIElement {
     const locale = this.resolvedLocale;
 
     return html`
-      <section class="base" part="base" aria-label=${this.label || this.t('threadLabel')}>
+      <section class="base" part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)} aria-label=${this.label || this.t('threadLabel')}>
         ${isLoading
           ? html`<div class="state-box" role="status">${this.t('loadingLabel')}</div>`
           : isError

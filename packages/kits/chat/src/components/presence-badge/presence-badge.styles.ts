@@ -13,17 +13,17 @@ export const presenceBadgeStyles = css`
   }
 
   :host(:state(online)) {
-    --_pb-color: var(--mth-color-success, oklch(0.62 0.18 145));
+    --_pb-color: var(--mth-color-success, light-dark(oklch(0.56 0.18 145), oklch(0.72 0.16 145)));
     --_pb-bg: var(--mth-color-success-subtle, light-dark(oklch(0.95 0.04 145), oklch(0.24 0.05 145)));
   }
 
   :host(:state(away)) {
-    --_pb-color: var(--mth-color-warning, oklch(0.72 0.16 75));
+    --_pb-color: var(--mth-color-warning, light-dark(oklch(0.68 0.16 75), oklch(0.78 0.14 75)));
     --_pb-bg: var(--mth-color-warning-subtle, light-dark(oklch(0.96 0.04 75), oklch(0.25 0.05 75)));
   }
 
   :host(:state(busy)) {
-    --_pb-color: var(--mth-color-danger, oklch(0.58 0.22 25));
+    --_pb-color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
     --_pb-bg: var(--mth-color-danger-subtle, light-dark(oklch(0.95 0.04 25), oklch(0.24 0.05 25)));
   }
 
@@ -64,6 +64,10 @@ export const presenceBadgeStyles = css`
   }
 
   @media (forced-colors: active) {
+    :host {
+      --_pb-bg: Canvas;
+    }
+
     .base {
       border-color: CanvasText;
       color: CanvasText;

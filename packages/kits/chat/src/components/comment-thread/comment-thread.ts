@@ -3,6 +3,7 @@ import '@methane/ui/avatar';
 import '@methane/ui/badge';
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { renderSafeMarkdown } from '../../shared/safe-markdown.js';
 import { commentThreadMessages } from './comment-thread.messages.js';
 import { commentThreadStyles } from './comment-thread.styles.js';
@@ -206,7 +207,7 @@ export class MthCommentThread extends UIElement {
     const items = this.comments ?? [];
 
     return html`
-      <section class="base" part="base" aria-label=${this.label || this.t('threadLabel')}>
+      <section class="base" part="base" dir=${resolveEffectiveDir(this, this.resolvedDir)} aria-label=${this.label || this.t('threadLabel')}>
         ${items.length === 0
           ? html`<div class="empty">${this.t('emptyLabel')}</div>`
           : items.map((comment) => this.renderCommentNode(comment, 0))}

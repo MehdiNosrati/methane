@@ -67,7 +67,7 @@ export const commentThreadStyles = css`
 
   .action-btn:focus-visible,
   .reply-input:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 

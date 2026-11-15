@@ -45,9 +45,9 @@ export const chatThreadStyles = css`
   }
 
   .unread-divider {
-    color: var(--mth-color-danger, oklch(0.58 0.22 25));
+    color: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
     font-weight: var(--mth-font-weight-semibold, 600);
-    border-block-start: 1px solid var(--mth-color-danger, oklch(0.58 0.22 25));
+    border-block-start: 1px solid var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)));
     padding-block-start: var(--mth-space-1, 0.25rem);
   }
 
@@ -130,7 +130,7 @@ export const chatThreadStyles = css`
 
   .scroll-bottom:focus-visible,
   .retry-btn:focus-visible {
-    outline: 2px solid var(--mth-color-border-focus, oklch(0.55 0.22 260));
+    outline: 2px solid var(--mth-color-border-focus, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)));
     outline-offset: 2px;
   }
 

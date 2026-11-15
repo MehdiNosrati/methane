@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { presenceBadgeMessages } from './presence-badge.messages.js';
 import { presenceBadgeStyles } from './presence-badge.styles.js';
 
@@ -79,7 +80,7 @@ export class MthPresenceBadge extends UIElement {
         return html`
           <svg viewBox="0 0 12 12" aria-hidden="true">
             <circle cx="6" cy="6" r="4.5" fill="currentColor"></circle>
-            <rect x="3" y="5" width="6" height="2" rx="1" fill="Canvas"></rect>
+            <rect x="3" y="5" width="6" height="2" rx="1" fill="var(--_pb-bg, Canvas)"></rect>
           </svg>
         `;
       case 'offline':
@@ -100,6 +101,7 @@ export class MthPresenceBadge extends UIElement {
       <span
         class="base"
         part="base"
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
         role="status"
         aria-label=${!this.showLabel ? accessibleLabel : nothing}
       >

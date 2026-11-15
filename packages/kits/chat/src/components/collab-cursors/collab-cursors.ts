@@ -1,6 +1,7 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { collabCursorsMessages } from './collab-cursors.messages.js';
 import { collabCursorsStyles } from './collab-cursors.styles.js';
 
@@ -21,11 +22,11 @@ export interface CollabCursor {
 }
 
 const FALLBACK_CURSOR_PALETTE = [
-  'var(--mth-color-accent, oklch(0.55 0.22 260))',
-  'var(--mth-color-success, oklch(0.58 0.18 145))',
-  'var(--mth-color-warning, oklch(0.68 0.16 75))',
-  'var(--mth-color-danger, oklch(0.56 0.22 25))',
-  'var(--mth-color-info, oklch(0.58 0.18 220))',
+  'var(--mth-color-accent, light-dark(oklch(0.55 0.22 260), oklch(0.72 0.18 260)))',
+  'var(--mth-color-success, light-dark(oklch(0.56 0.18 145), oklch(0.72 0.16 145)))',
+  'var(--mth-color-warning, light-dark(oklch(0.68 0.16 75), oklch(0.78 0.14 75)))',
+  'var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.72 0.18 25)))',
+  'var(--mth-color-info, light-dark(oklch(0.58 0.18 220), oklch(0.72 0.16 220)))',
 ] as const;
 
 const SAFE_OKLCH_RE = /^oklch\(\s*\d+(?:\.\d+)?%?\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?(?:\s*\/\s*(?:\d+(?:\.\d+)?%?))?\s*\)$/;
@@ -71,6 +72,11 @@ export class MthCollabCursors extends UIElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.syncDynamicSheet();
+  }
+
+  protected override onMoveBefore(): void {
+    super.onMoveBefore();
     this.syncDynamicSheet();
   }
 
@@ -138,6 +144,7 @@ export class MthCollabCursors extends UIElement {
       <div
         class="base"
         part="base"
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
         role="region"
         aria-label=${this.label || this.t('overlayLabel')}
       >

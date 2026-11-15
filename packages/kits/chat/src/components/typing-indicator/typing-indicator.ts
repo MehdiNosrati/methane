@@ -2,6 +2,7 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { MotionController } from '@methane/primitives';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { typingIndicatorMessages } from './typing-indicator.messages.js';
 import { typingIndicatorStyles } from './typing-indicator.styles.js';
 
@@ -86,6 +87,7 @@ export class MthTypingIndicator extends UIElement {
       <div
         class="base"
         part="base"
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
         role="status"
         aria-live="polite"
         aria-atomic="true"

@@ -2,6 +2,7 @@ import { UIElement, type PropertyValues } from '@methane/core';
 import { RovingFocusController, SelectionController } from '@methane/primitives';
 import { html, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
+import { resolveEffectiveDir } from '../../shared/dir.js';
 import { reactionBarMessages } from './reaction-bar.messages.js';
 import { reactionBarStyles } from './reaction-bar.styles.js';
 
@@ -78,7 +79,7 @@ export class MthReactionBar extends UIElement {
   override willUpdate(changed: PropertyValues<this>): void {
     super.willUpdate(changed);
     this.rovingCtrl.updateOptions({
-      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+      dir: resolveEffectiveDir(this, this.resolvedDir),
     });
     if (changed.has('multiple')) {
       this.selectionCtrl.mode = this.multiple ? 'multiple' : 'single';
@@ -149,6 +150,7 @@ export class MthReactionBar extends UIElement {
       <div
         class="base"
         part="base"
+        dir=${resolveEffectiveDir(this, this.resolvedDir)}
         role="toolbar"
         aria-label=${this.label || this.t('barLabel')}
         aria-disabled=${this.disabled ? 'true' : 'false'}

@@ -123,4 +123,30 @@ describe('<mth-notification-bell>', () => {
     await el.updateComplete;
     expect(scanSameRootAria(el.shadowRoot!).issues).toEqual([]);
   });
+
+  it('uses accessible role="img" only on unread indicator dot and preserves position sheet across reconnect', async () => {
+    const el = document.createElement('mth-notification-bell') as MthNotificationBell;
+    el.forceFallback = true;
+    el.items = [
+      { id: 'u1', message: 'Unread alert', read: false },
+      { id: 'r1', message: 'Read alert', read: true },
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+    await el.show();
+    await el.updateComplete;
+
+    const dots = Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.dot'));
+    expect(dots[0]!.getAttribute('role')).toBe('img');
+    expect(dots[0]!.getAttribute('aria-label')).toBeTruthy();
+    expect(dots[1]!.getAttribute('role')).toBeNull();
+    expect(dots[1]!.getAttribute('aria-label')).toBeNull();
+    expect(dots[1]!.getAttribute('aria-hidden')).toBe('true');
+
+    const sheetsBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBeGreaterThanOrEqual(sheetsBefore);
+  });
 });

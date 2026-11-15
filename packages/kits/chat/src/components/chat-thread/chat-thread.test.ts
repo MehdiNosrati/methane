@@ -86,4 +86,30 @@ describe('<mth-chat-thread>', () => {
     });
     expect(purity.passed).toBe(true);
   });
+
+  it('preserves asterisks in inline code and link URLs and retains adopted padSheet on reconnect', async () => {
+    const el = document.createElement('mth-chat-thread') as MthChatThread;
+    el.overscan = 2;
+    el.messages = [
+      {
+        id: 'c1',
+        author: 'Lin',
+        body: 'Code `a * b * c` and [docs](https://example.com/a*b*c)',
+      },
+    ];
+    document.body.append(el);
+    await el.updateComplete;
+
+    const body = el.shadowRoot!.querySelector('[part="message-body"]')!;
+    expect(body.querySelector('code')?.textContent).toBe('a * b * c');
+    expect(body.querySelector('em')).toBeNull();
+    const link = body.querySelector('a')!;
+    expect(link.getAttribute('href')).toBe('https://example.com/a*b*c');
+
+    const sheetsBefore = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.append(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBeGreaterThanOrEqual(sheetsBefore);
+  });
 });
