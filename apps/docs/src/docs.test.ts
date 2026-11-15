@@ -515,6 +515,7 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
     scanPackages(resolve(repoRoot, 'packages'));
     scanPackages(resolve(repoRoot, 'packages/kits'));
     scanPackages(resolve(repoRoot, 'packages/satellites'));
+    scanPackages(resolve(repoRoot, 'tooling'));
 
     const resolveExportTarget = (
       specifier: string,
@@ -633,6 +634,7 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
       const docFiles = [
         resolve(docsRoot, 'src/pages/guides/ssr.astro'),
         resolve(docsRoot, 'src/pages/quickstart.astro'),
+        ...collectFiles(resolve(repoRoot, 'skills'), '.md'),
       ];
 
       for (const file of docFiles) {
@@ -641,27 +643,34 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
         for (const namedMatch of source.matchAll(
           /import\s*\{([^}]+)\}\s*from\s*['"](@methane-ui\/[^'"]+)['"]/g,
         )) {
-          const names = namedMatch[1]!
+          const parsedNames = namedMatch[1]!
             .split(',')
-            .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]!.trim())
-            .filter(Boolean);
+            .map((raw) => {
+              const trimmed = raw.trim();
+              const typeOnly = /^type\s+/.test(trimmed);
+              const symbol = trimmed.replace(/^type\s+/, '').split(/\s+as\s+/)[0]!.trim();
+              return { symbol, typeOnly };
+            })
+            .filter((entry) => entry.symbol.length > 0);
           const specifier = namedMatch[2]!;
           const resolved = resolveExportTarget(specifier);
 
           if (resolved.defaultPath.endsWith('.js')) {
+            const declSource = collectExportedSource(
+              resolved.typesPath ?? resolved.defaultPath.replace(/\.js$/, '.d.ts'),
+              '.d.ts',
+            );
             if (isAngularRuntimeSpecifier(specifier)) {
               const jsSource = collectExportedSource(resolved.defaultPath, '.js');
-              const declSource = collectExportedSource(
-                resolved.typesPath ?? resolved.defaultPath.replace(/\.js$/, '.d.ts'),
-                '.d.ts',
-              );
-              for (const symbol of names) {
+              for (const { symbol, typeOnly } of parsedNames) {
                 const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 const symbolRegex = new RegExp(`\\b${escaped}\\b`);
-                expect(
-                  symbolRegex.test(jsSource),
-                  `Missing built JS export "${symbol}" in "${specifier}" (referenced in ${file})`,
-                ).toBe(true);
+                if (!typeOnly) {
+                  expect(
+                    symbolRegex.test(jsSource),
+                    `Missing built JS export "${symbol}" in "${specifier}" (referenced in ${file})`,
+                  ).toBe(true);
+                }
                 expect(
                   symbolRegex.test(declSource),
                   `Missing declaration for "${symbol}" in "${specifier}" (referenced in ${file})`,
@@ -672,11 +681,19 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
                 string,
                 unknown
               >;
-              for (const symbol of names) {
-                expect(
-                  Object.prototype.hasOwnProperty.call(mod, symbol),
-                  `Missing runtime export "${symbol}" in "${specifier}" (referenced in ${file})`,
-                ).toBe(true);
+              for (const { symbol, typeOnly } of parsedNames) {
+                if (typeOnly) {
+                  const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                  expect(
+                    new RegExp(`\\b${escaped}\\b`).test(declSource),
+                    `Missing type declaration "${symbol}" in "${specifier}" (referenced in ${file})`,
+                  ).toBe(true);
+                } else {
+                  expect(
+                    Object.prototype.hasOwnProperty.call(mod, symbol),
+                    `Missing runtime export "${symbol}" in "${specifier}" (referenced in ${file})`,
+                  ).toBe(true);
+                }
               }
             }
           }
@@ -707,6 +724,15 @@ describe('@methane-ui/docs catalog, loaders, theme builder, and built Astro site
       .map((c) => c.tagName)
       .filter((tag) => !Object.prototype.hasOwnProperty.call(ALL_DEMO_SPECS, tag));
     expect(missingTags).toEqual([]);
+
+    const skillComponentsRef = readFileSync(
+      resolve(docsRoot, '../../skills/methane-ui/references/components.md'),
+      'utf8',
+    );
+    const missingFromSkillRef = components
+      .map((c) => c.tagName)
+      .filter((tag) => !new RegExp(`\\b${tag}\\b`).test(skillComponentsRef));
+    expect(missingFromSkillRef).toEqual([]);
 
     const escaped = renderDemoHtml('mth-test-widget', {
       attrs: { label: 'A & "B" <C> \'D\'' },
