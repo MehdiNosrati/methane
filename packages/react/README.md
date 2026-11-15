@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Auto-generated React 19 native Custom Elements JSX type definitions and React 18 `@lit/react` wrapper components covering **all 251 `@methane/*` custom elements** (`@methane/ui`, domain kits, primitives, and satellites).
+Typed React 19 native Custom Elements JSX definitions and React 18 `@lit/react` wrapper components covering all `@methane/*` custom elements (`@methane/ui`, domain kits, primitives, and satellites).
 
 ## Installation
 
@@ -19,7 +19,7 @@ npm install @methane/react @methane/ui @methane/core
 | Entrypoint | Target | Description |
 | --- | --- | --- |
 | `@methane/react` | React 19+ | Augments React's `JSX.IntrinsicElements` (`declare module 'react'`) with typed properties, DOM element interfaces (`MthButtonElement`), custom event callbacks (`onmth-change`), and `MethaneReactTagNameMap` |
-| `@methane/react/legacy` | React 18 | Exports 251 `@lit/react` `createComponent()` React components (`MthButton`, `MthDialog`, `MthChart`, etc.) mapping `mth-*` custom events to camelCase React handlers |
+| `@methane/react/legacy` | React 18 | Exports `@lit/react` `createComponent()` React components (`MthButton`, `MthDialog`, `MthChart`, etc.) mapping `mth-*` custom events to camelCase React handlers |
 
 ## Usage Examples
 

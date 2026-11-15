@@ -35,7 +35,7 @@ npm install @methane/ssr @methane/core
 
 ## Usage Examples
 
-### Server Rendering with Hybrid Linked Styles (`ADR-008`)
+### Server Rendering with Hybrid Linked Styles
 
 ```ts
 import '@methane/ssr/dom-shim';

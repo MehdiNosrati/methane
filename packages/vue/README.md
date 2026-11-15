@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Typed Vue 3 `defineComponent` wrappers, `v-model` / `v-model:open` bindings, global `ComponentCustomProperties` / `GlobalComponents` typing, and Vite compiler helper options for **all 251 `@methane/*` custom elements**.
+Typed Vue 3 `defineComponent` wrappers, `v-model` / `v-model:open` bindings, global `ComponentCustomProperties` / `GlobalComponents` typing, and Vite compiler helper options for `@methane/*` custom elements.
 
 ## Installation
 
@@ -18,7 +18,7 @@ npm install @methane/vue @methane/ui @methane/core
 
 | Export | Description |
 | --- | --- |
-| `MthAccordion`, `MthButton`, `MthDialog`, ... (251 components) | Typed Vue 3 functional wrapper components supporting `v-model`, named `emits`, and slot forwarding |
+| `MthAccordion`, `MthButton`, `MthDialog`, ... | Typed Vue 3 functional wrapper components supporting `v-model`, named `emits`, and slot forwarding |
 | `METHANE_VUE_COMPILER_OPTIONS` | Vue compiler `isCustomElement: (tag) => tag.startsWith('mth-')` helper for `@vitejs/plugin-vue` |
 | `isMethaneVueTag(tag)` | Predicate returning `true` for `mth-*` custom element tags |
 | `Mth*Props` interfaces | Typed prop interfaces exported for every component |

@@ -24,6 +24,7 @@ test.describe('@methane/docs visual, custom-element & interactive QA', () => {
   const routes = [
     '/methane/',
     '/methane/css/',
+    '/methane/guides/skills/',
     '/methane/theme-builder/',
     '/methane/components/',
     '/methane/components/mth-button/',

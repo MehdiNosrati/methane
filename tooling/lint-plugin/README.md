@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-ESLint and Stylelint architectural invariant rules for **Methane UI** — enforcing package layer boundaries (`ADR-002`), Shadow DOM logical CSS rules, `:host` token encapsulation, and accessibility safety invariants across component authoring.
+ESLint and Stylelint architectural invariant rules for **Methane UI** — enforcing package layer boundaries, Shadow DOM logical CSS rules, `:host` token encapsulation, and accessibility safety invariants across component authoring.
 
 ## Installation
 

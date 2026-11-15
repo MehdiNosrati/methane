@@ -2,10 +2,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Zero-JS-byte Light-DOM CSS architecture for **Methane UI**: ordered CSS `@layer` stack, CSS logical-property reset, fail-open `:not(:defined)` FOUC guard, and pure-CSS layout, prose, and marketing primitives.
+Pure-CSS layout, typography, form, and marketing styles for **Methane UI** — built with ordered CSS `@layer` rules, logical properties, and fail-open `:not(:defined)` FOUC protection.
 
-- **0 B client JavaScript** when using stylesheet imports directly.
-- Pure CSS rules apply immediately to un-upgraded semantic custom tags (`<mth-stack>`, `<mth-grid>`, `<mth-hero>`, `<mth-prose>`, etc.) with zero Web Component hydration overhead.
+- **No client JavaScript required** when using stylesheet imports directly.
+- Rules apply immediately to both standard HTML elements (`.mth-stack`, `.mth-btn`, `.mth-select`) and un-upgraded semantic custom tags (`<mth-stack>`, `<mth-grid>`, `<mth-hero>`, `<mth-prose>`) with zero hydration overhead.
 
 ## Installation
 
@@ -24,9 +24,9 @@ npm install @methane/css @methane/tokens
 | `@methane/css/layers.css` | Declares cascade order: `@layer mth.reset, mth.tokens, mth.primitives, mth.utilities;` |
 | `@methane/css/reset.css` | Logical-property reset (`box-sizing`, margins, typographic rhythm, focus-visible defaults) inside `@layer mth.reset` |
 | `@methane/css/defined-guard.css` | Fail-open `:not(:defined)` animation guard (`mth-defined-fallback`) preventing permanent FOUC if JS fails to load |
-| `@methane/css/layout.css` | 11 layout primitives (`mth-stack`, `mth-grid`, `mth-flex`, `mth-container`, `mth-aspect-ratio`, `mth-sticky`, `mth-divider`, `mth-spacer`, `mth-app-shell`, `mth-sidebar-layout`, `mth-bento-grid`) |
-| `@methane/css/prose.css` | Rich typography primitives (`mth-prose`, `mth-dl`) |
-| `@methane/css/marketing.css` | 10 landing & editorial primitives (`mth-hero`, `mth-feature-grid`, `mth-testimonial`, `mth-logo-cloud`, `mth-footer`, `mth-faq`, `mth-article-layout`, `mth-pricing-table`, `mth-cta`, `mth-announcement-bar`) |
+| `@methane/css/layout.css` | Layout utilities (`mth-stack`, `mth-grid`, `mth-flex`, `mth-container`, `mth-aspect-ratio`, `mth-sticky`, `mth-divider`, `mth-spacer`, `mth-app-shell`, `mth-sidebar-layout`, `mth-bento-grid`) |
+| `@methane/css/prose.css` | Rich typography styles (`mth-prose`, `mth-dl`) |
+| `@methane/css/marketing.css` | Landing & editorial section styles (`mth-hero`, `mth-feature-grid`, `mth-testimonial`, `mth-logo-cloud`, `mth-footer`, `mth-faq`, `mth-article-layout`, `mth-pricing-table`, `mth-cta`, `mth-announcement-bar`) |
 | `@methane/css` (JS/TS) | Typed metadata arrays (`MTH_CASCADE_LAYERS`, `MTH_CSS_PRIMITIVES`, `MTH_LAYOUT_PRIMITIVES`, `MTH_TYPOGRAPHY_PRIMITIVES`, `MTH_MARKETING_PRIMITIVES`, `MTH_UNUPGRADED_TAG_PRIMITIVES`, `LAYER_ORDER_DECLARATION`) |
 
 ## Usage Examples

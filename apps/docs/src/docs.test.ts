@@ -254,6 +254,7 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
       'architecture/index.html',
       'quickstart/index.html',
       'adrs/index.html',
+      'guides/skills/index.html',
       'guides/ssr/index.html',
       'guides/theming/index.html',
       'guides/forms-a11y/index.html',
@@ -380,5 +381,84 @@ describe('@methane/docs catalog, loaders, theme builder, and built Astro site', 
     expect(buttonHtml).toContain('data-variants-showcase');
     expect(buttonHtml).toContain('data-preview-prop="loading"');
     expect(buttonHtml).toContain('data-preview-prop-name="variant"');
+  });
+
+  it('ships valid .agents/skills.json and skills/*/SKILL.md frontmatter and relative links', () => {
+    const repoRoot = resolve(docsRoot, '../..');
+    const skillsConfigPath = resolve(repoRoot, '.agents/skills.json');
+    expect(existsSync(skillsConfigPath)).toBe(true);
+
+    const skillsConfig = JSON.parse(readFileSync(skillsConfigPath, 'utf8')) as {
+      entries?: Array<{ path?: string }>;
+    };
+    expect(skillsConfig.entries).toEqual([{ path: 'skills' }]);
+
+    const skillsDir = resolve(repoRoot, 'skills');
+    const skillDirs = readdirSync(skillsDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+
+    expect(skillDirs).toEqual([
+      'methane-contribute',
+      'methane-ssr',
+      'methane-theming',
+      'methane-ui',
+    ]);
+
+    for (const dirName of skillDirs) {
+      const skillDir = resolve(skillsDir, dirName);
+      const skillMdPath = resolve(skillDir, 'SKILL.md');
+      expect(existsSync(skillMdPath), `Missing ${skillMdPath}`).toBe(true);
+
+      const content = readFileSync(skillMdPath, 'utf8');
+      const lines = content.split('\n');
+      expect(lines.length).toBeLessThanOrEqual(150);
+
+      const fmMatch = /^---\n([\s\S]*?)\n---\n/.exec(content);
+      expect(fmMatch, `Missing YAML frontmatter in ${skillMdPath}`).not.toBeNull();
+
+      const frontmatter = fmMatch![1]!;
+      const nameMatch = /^name:\s*(.+)$/m.exec(frontmatter);
+      const descMatch = /^description:\s*(.+)$/m.exec(frontmatter);
+      expect(nameMatch?.[1]?.trim()).toBe(dirName);
+      expect((descMatch?.[1]?.trim() ?? '').length).toBeGreaterThan(20);
+
+      for (const linkMatch of content.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+        const target = linkMatch[1]!;
+        if (/^(?:https?:|mailto:|#)/.test(target)) continue;
+        const cleanTarget = target.split('#')[0]!;
+        const resolved = resolve(skillDir, cleanTarget);
+        expect(existsSync(resolved), `Broken relative link "${target}" in ${skillMdPath}`).toBe(
+          true,
+        );
+      }
+    }
+  });
+
+  it('uses natural product copy without internal spec-sheet jargon on home page and navbar', () => {
+    const indexHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
+    const forbidden = [
+      '23 CSS Primitives',
+      'UI deliverables',
+      '0 B JS',
+      'strictly acyclic',
+    ];
+
+    for (const phrase of forbidden) {
+      expect(indexHtml.toLowerCase()).not.toContain(phrase.toLowerCase());
+    }
+
+    expect(indexHtml).toContain('Accessible UI components that work in every framework.');
+    expect(indexHtml).toContain('CSS Layouts');
+    expect(indexHtml).toContain('Browse Components');
+    expect(indexHtml).toContain('/methane/guides/skills');
+
+    const skillsGuideHtml = readFileSync(resolve(distDir, 'guides/skills/index.html'), 'utf8');
+    expect(skillsGuideHtml).toContain('npx skills add MehdiNosrati/methane');
+    expect(skillsGuideHtml).toContain('methane-ui');
+    expect(skillsGuideHtml).toContain('methane-theming');
+    expect(skillsGuideHtml).toContain('methane-ssr');
+    expect(skillsGuideHtml).toContain('methane-contribute');
   });
 });

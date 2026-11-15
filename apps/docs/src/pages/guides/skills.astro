@@ -1,0 +1,86 @@
+---
+import DocsLayout from '../../components/DocsLayout.astro';
+import { withBase } from '../../lib/links.js';
+
+const skills = [
+  {
+    name: 'methane-ui',
+    title: 'Components, Layouts & Frameworks',
+    summary:
+      'Helps assistants choose between pure CSS layouts and custom elements, import tree-shakeable @methane/ui/* entrypoints, wire native FormData, and use React, Vue, Angular, or Svelte integrations.',
+    includes: 'Includes references/components.md and references/frameworks.md',
+  },
+  {
+    name: 'methane-theming',
+    title: 'OKLCH Themes & Design Tokens',
+    summary:
+      'Covers --mth-color-seed-brand customization, data-mth-theme and data-mth-density switching, forced-colors support, W3C DTCG tokens.json compilation, and ::part() / :state() styling.',
+    includes: 'Includes load order and registerStyles() escape hatch',
+  },
+  {
+    name: 'methane-ssr',
+    title: 'Server Rendering & Hydration',
+    summary:
+      'Guides Declarative Shadow DOM setup, hydration import ordering, linked vs. inline style delivery, FOUC protection, and lazy satellite engine boundaries across Next.js, Nuxt, SvelteKit, Astro, and Angular.',
+    includes: 'Covers @methane/ssr-* and @methane/core/hydrate',
+  },
+  {
+    name: 'methane-contribute',
+    title: 'Component Authoring & Verification',
+    summary:
+      'Monorepo contributor runbook for specs, same-root ARIA, Form-Associated Custom Elements, logical CSS tokens, wrapper codegen, conformance suites, and Playwright E2E checks.',
+    includes: 'Enforces @methane/lint-plugin and codegen checks',
+  },
+] as const;
+---
+
+<DocsLayout title="Agent Skills">
+  <mth-stack data-gap="6">
+    <div class="mth-prose">
+      <h1>Agent Skills</h1>
+      <p>
+        Methane ships a curated set of agent skills so AI coding assistants understand our
+        component APIs, CSS layout classes, OKLCH theming tokens, and SSR hydration order without
+        guessing.
+      </p>
+
+      <h2>Install in Any Project</h2>
+      <p>
+        Compatible with <strong>Antigravity</strong>, <strong>Claude Code</strong>,{' '}
+        <strong>Cursor</strong>, <strong>Codex</strong>, and <strong>Gemini CLI</strong>:
+      </p>
+      <pre class="docs-code"><code>npx skills add MehdiNosrati/methane</code></pre>
+
+      <h2>Automatic Workspace Discovery</h2>
+      <p>
+        Inside the Methane repository, <code>.agents/skills.json</code> points directly to{' '}
+        <code>skills/</code> so workspace agents discover all four skills automatically.
+      </p>
+    </div>
+
+    <div class="mth-grid" style="--mth-grid-min:18rem">
+      {
+        skills.map((skill) => (
+          <article class="docs-card">
+            <mth-stack data-gap="3">
+              <mth-flex data-justify="between" data-align="center" data-gap="2">
+                <code>{skill.name}</code>
+                <span class="docs-badge">SKILL.md</span>
+              </mth-flex>
+              <h2 style="margin-block:0;font-size:var(--mth-font-size-lg)">{skill.title}</h2>
+              <p style="margin-block:0;color:var(--mth-color-fg-muted);font-size:var(--mth-font-size-sm)">
+                {skill.summary}
+              </p>
+              <span class="docs-badge">{skill.includes}</span>
+            </mth-stack>
+          </article>
+        ))
+      }
+    </div>
+
+    <mth-flex data-gap="3">
+      <a class="docs-btn docs-btn-primary" href={withBase('/quickstart')}>Quickstart Guide →</a>
+      <a class="docs-btn" href={withBase('/components')}>Browse Components</a>
+    </mth-flex>
+  </mth-stack>
+</DocsLayout>

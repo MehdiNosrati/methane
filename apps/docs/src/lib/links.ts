@@ -16,27 +16,28 @@ export const DOCS_NAV: ReadonlyArray<NavSection> = [
     title: 'Overview',
     items: [
       { label: 'Introduction', href: withBase('/') },
-      { label: 'Architecture', href: withBase('/architecture') },
       { label: 'Quickstart', href: withBase('/quickstart') },
-      { label: 'ADRs (001–015)', href: withBase('/adrs') },
+      { label: 'Architecture', href: withBase('/architecture') },
+      { label: 'Design Decisions', href: withBase('/adrs') },
     ],
   },
   {
     title: 'Guides',
     items: [
-      { label: 'SSR & Adapters', href: withBase('/guides/ssr') },
-      { label: 'Theming & 4-Tier CSS', href: withBase('/guides/theming') },
+      { label: 'Agent Skills', href: withBase('/guides/skills') },
+      { label: 'Server Rendering', href: withBase('/guides/ssr') },
+      { label: 'Theming & Tokens', href: withBase('/guides/theming') },
       { label: 'Forms & Accessibility', href: withBase('/guides/forms-a11y') },
-      { label: 'Security & Sanitize', href: withBase('/guides/security') },
+      { label: 'Security', href: withBase('/guides/security') },
     ],
   },
   {
-    title: 'Catalogs & Tools',
+    title: 'Reference',
     items: [
+      { label: 'Components', href: withBase('/components') },
+      { label: 'CSS Layouts', href: withBase('/css') },
       { label: 'Design Tokens', href: withBase('/tokens') },
-      { label: '23 CSS Primitives', href: withBase('/css') },
-      { label: 'Component Reference', href: withBase('/components') },
-      { label: 'OKLCH Theme Builder', href: withBase('/theme-builder') },
+      { label: 'Theme Builder', href: withBase('/theme-builder') },
     ],
   },
 ];

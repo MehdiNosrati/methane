@@ -2,30 +2,45 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Standards-first, framework-universal Web Components design system (**251+ custom elements** across core UI, domain kits, and wrap-first satellites), zero-JS Light-DOM CSS primitives, streaming Declarative Shadow DOM SSR, and W3C DTCG `oklch()` theming — built on **Lit 3**, **ElementInternals**, and **`@lit/context`**.
+Accessible UI components, pure CSS layouts, adaptive OKLCH themes, and streaming Declarative Shadow DOM SSR that work across **HTML**, **React**, **Vue**, **Angular**, and **Svelte** — built on **Lit 3**, **ElementInternals**, and **`@lit/context`**.
 
 **Live Documentation & Theme Studio:** [https://mahdins.dev/methane/](https://mahdins.dev/methane/)
 
 ## Why Methane UI?
 
 - **Universal & Standards-First**: Built once on Web Components + Lit 3, with first-class typed integrations for **HTML**, **React 19 / React 18**, **Vue 3**, **Angular 17+**, and **Svelte 5** generated from a single `custom-elements.json` + `ComponentBehaviorSpec` source of truth.
-- **Per-Component Tree Shaking**: Import `@methane/ui/button` (auto-registers `<mth-button>`) or `@methane/ui/button/element` (`registerMthButton('acme')` for white-label prefixes via `ADR-015`).
+- **Per-Component Tree Shaking**: Import `@methane/ui/button` (auto-registers `<mth-button>`) or `@methane/ui/button/element` (`registerMthButton('acme')` for custom white-label tag prefixes).
 - **True Form Participation & Same-Root ARIA**: Native Form-Associated Custom Elements (`ElementInternals`), `CustomStateSet` (`:state(...)`), and `FIELD_CONTEXT` / `FORM_CONTEXT` so labels, hints, errors, and validation remain in the same accessibility tree.
-- **Zero-JS CSS Layer & Progressive Enhancement**: `@methane/css` delivers ordered `@layer` rules, fail-open `:not(:defined)` FOUC protection, and pure-CSS layout, prose, and marketing primitives (`0 B` JS).
-- **Streaming DSD SSR Across Every Meta-Framework**: Wraps `@lit-labs/ssr` with hybrid linked + `< 1 KB` critical inline style delivery and adapters for **Next.js**, **Nuxt**, **SvelteKit**, **Astro**, and **Angular SSR**.
-- **Perceptual `oklch()` 4-Tier Theming**: Single-seed brand overrides, automatic `light-dark()`, density presets (`compact`, `default`, `comfortable`), `prefers-reduced-motion`, and Windows `forced-colors` support.
+- **Pure CSS Layouts & Progressive Enhancement**: `@methane/css` delivers ordered `@layer` rules, fail-open `:not(:defined)` FOUC protection, and lightweight CSS layout, prose, form, and marketing classes without JavaScript overhead.
+- **Streaming DSD SSR Across Every Meta-Framework**: Wraps `@lit-labs/ssr` with hybrid linked + compact critical inline style delivery and adapters for **Next.js**, **Nuxt**, **SvelteKit**, **Astro**, and **Angular SSR**.
+- **Perceptual `oklch()` Theming**: Single-seed brand overrides, automatic `light-dark()`, density presets (`compact`, `default`, `comfortable`), `prefers-reduced-motion`, and Windows `forced-colors` support.
 - **Defense-in-Depth Security**: `@methane/sanitize` combines native `Element.prototype.setHTML` with DOMPurify parity, URL protocol allowlisting, Trusted Types compatibility, and strict CSP auditing.
 
-## Layered Architecture
+## AI Agent Skills
+
+Methane includes curated agent skills under [`skills/`](./skills) (with workspace discovery via [`.agents/skills.json`](./.agents/skills.json)) for **Antigravity**, **Claude Code**, **Cursor**, **Codex**, and **Gemini CLI**:
+
+```bash
+npx skills add MehdiNosrati/methane
+```
+
+| Skill | Focus |
+| --- | --- |
+| [`methane-ui`](./skills/methane-ui/SKILL.md) | Pure CSS layouts vs. custom elements, domain kits, satellites, `FormData`, and framework patterns |
+| [`methane-theming`](./skills/methane-theming/SKILL.md) | OKLCH brand seeds, light/dark & density presets, `forced-colors`, DTCG `tokens.json`, and `::part()` / `:state()` |
+| [`methane-ssr`](./skills/methane-ssr/SKILL.md) | Declarative Shadow DOM SSR, FOUC protection, lazy satellite engines, and client hydration order |
+| [`methane-contribute`](./skills/methane-contribute/SKILL.md) | Contributor runbook for component specs, same-root ARIA, logical CSS, codegen, and E2E tests |
+
+## Architecture
 
 ```mermaid
 flowchart TB
-  L3A["Layer 3a: SSR & Wrappers\n@methane/ssr, @methane/ssr-{next,nuxt,sveltekit,astro,angular}\n@methane/{react,vue,angular,svelte}, @methane/codemod"]
-  L3B["Layer 3b: Wrap-First Satellites (11 packages)\n@methane/{charts,pdf,3d,maps,rtc,flow,media,editor,code,datagrid,spreadsheet}"]
-  L3K["Layer 3a: Domain Kits (5 packages)\n@methane/{ai,auth,admin,chat,commerce}"]
-  L2["Layer 2: Core UI Library\n@methane/ui (167 custom elements)"]
-  L1["Layer 1: Styling & Headless Primitives\n@methane/css | @methane/primitives | @methane/locales"]
-  L0["Layer 0: Foundation\n@methane/core | @methane/tokens | @methane/sanitize"]
+  L3A["SSR & Framework Wrappers\n@methane/ssr, @methane/ssr-{next,nuxt,sveltekit,astro,angular}\n@methane/{react,vue,angular,svelte}, @methane/codemod"]
+  L3B["Wrap-First Satellites\n@methane/{charts,pdf,3d,maps,rtc,flow,media,editor,code,datagrid,spreadsheet}"]
+  L3K["Domain Kits\n@methane/{ai,auth,admin,chat,commerce}"]
+  L2["Core UI Library\n@methane/ui"]
+  L1["Styling & Headless Primitives\n@methane/css | @methane/primitives | @methane/locales"]
+  L0["Foundation\n@methane/core | @methane/tokens | @methane/sanitize"]
   TL["Tooling (CI, Spec, Codegen, Security, Figma)\n@methane/{lint-plugin,spec-compiler,test-conformance,bundle-budget,security-gate,wrapper-codegen,figma-sync}"]
 
   L3A --> L3K
@@ -38,9 +53,9 @@ flowchart TB
   TL -. enforces & compiles .-> L2
 ```
 
-## Package Catalog (41 Packages)
+## Packages
 
-### Foundation & Styling (Layer 0–1)
+### Foundation & Styling
 
 | Package | Path | Description |
 | --- | --- | --- |
@@ -48,24 +63,24 @@ flowchart TB
 | [`@methane/sanitize`](./packages/sanitize/README.md) | `packages/sanitize` | Native `setHTML` + DOMPurify parity HTML/Markdown/streaming sanitizer & URL validator |
 | [`@methane/core`](./packages/core/README.md) | `packages/core` | Lit 3 `UIElement` base class, versioned `globalThis` runtime coordinator, i18n, and `@lit/context` tokens |
 | [`@methane/primitives`](./packages/primitives/README.md) | `packages/primitives` | ReactiveControllers (overlay, positioning, focus trap, roving focus, masks, virtualizer), `AutoLoader`, utility elements |
-| [`@methane/css`](./packages/css/README.md) | `packages/css` | Ordered `@layer` reset, fail-open `:not(:defined)` guard, and 0 B JS layout, prose, and marketing primitives |
+| [`@methane/css`](./packages/css/README.md) | `packages/css` | Ordered `@layer` reset, fail-open `:not(:defined)` guard, and pure-CSS layout, prose, form, and marketing classes |
 | [`@methane/locales`](./packages/locales/README.md) | `packages/locales` | Code-split lazy locale packs (`en`, `es`, `fr`, `de`, `ja`, `zh-CN`, `ar`, `he`) with `Intl.PluralRules` & RTL |
 
-### Core UI (Layer 2)
+### Core UI
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/ui`](./packages/ui/README.md) | `packages/ui` | 167 accessible, form-associated, tree-shakeable Lit 3 core UI Web Components |
+| [`@methane/ui`](./packages/ui/README.md) | `packages/ui` | Accessible, form-associated, tree-shakeable Lit 3 core UI Web Components |
 
-### Domain Kits (Layer 3a)
+### Domain Kits
 
 | Package | Path | Description |
 | --- | --- | --- |
-| [`@methane/ai`](./packages/kits/ai/README.md) | `packages/kits/ai` | 8 AI/LLM UX components (`mth-prompt-input`, `mth-ai-message`, `mth-thinking-indicator`, `mth-tool-call`, `mth-artifact-pane`, …) |
-| [`@methane/auth`](./packages/kits/auth/README.md) | `packages/kits/auth` | 7 authentication & RBAC components (`mth-auth-form`, `mth-mfa-challenge`, `mth-passkey-prompt`, `mth-sso-buttons`, …) |
-| [`@methane/admin`](./packages/kits/admin/README.md) | `packages/kits/admin` | 13 enterprise dashboard components (`mth-kanban`, `mth-audit-log`, `mth-filter-builder`, `mth-csv-importer`, `mth-settings-shell`, …) |
-| [`@methane/chat`](./packages/kits/chat/README.md) | `packages/kits/chat` | 8 real-time collaboration components (`mth-chat-thread`, `mth-message-composer`, `mth-notification-bell`, `mth-reaction-bar`, …) |
-| [`@methane/commerce`](./packages/kits/commerce/README.md) | `packages/kits/commerce` | 10 storefront & billing components (`mth-product-card`, `mth-cart`, `mth-payment-form`, `mth-plan-picker`, `mth-invoice`, …) |
+| [`@methane/ai`](./packages/kits/ai/README.md) | `packages/kits/ai` | AI/LLM UX components (`mth-prompt-input`, `mth-ai-message`, `mth-thinking-indicator`, `mth-tool-call`, `mth-artifact-pane`, …) |
+| [`@methane/auth`](./packages/kits/auth/README.md) | `packages/kits/auth` | Authentication & RBAC components (`mth-auth-form`, `mth-mfa-challenge`, `mth-passkey-prompt`, `mth-sso-buttons`, …) |
+| [`@methane/admin`](./packages/kits/admin/README.md) | `packages/kits/admin` | Enterprise dashboard components (`mth-kanban`, `mth-audit-log`, `mth-filter-builder`, `mth-csv-importer`, `mth-settings-shell`, …) |
+| [`@methane/chat`](./packages/kits/chat/README.md) | `packages/kits/chat` | Real-time collaboration components (`mth-chat-thread`, `mth-message-composer`, `mth-notification-bell`, `mth-reaction-bar`, …) |
+| [`@methane/commerce`](./packages/kits/commerce/README.md) | `packages/kits/commerce` | Storefront & billing components (`mth-product-card`, `mth-cart`, `mth-payment-form`, `mth-plan-picker`, `mth-invoice`, …) |
 
 ### Wrap-First Satellites (Layer 3b)
 

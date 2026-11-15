@@ -1,12 +1,6 @@
 ---
 import DocsLayout from '../components/DocsLayout.astro';
-import { loadComponentDocs } from '../lib/component-loader.js';
-import { CSS_PRIMITIVE_CATALOG } from '../lib/css-catalog.js';
 import { withBase } from '../lib/links.js';
-
-const components = await loadComponentDocs();
-const totalDeliverables = components.length + CSS_PRIMITIVE_CATALOG.length;
-const packageCount = new Set(components.map((c) => c.packageName)).size;
 ---
 
 <DocsLayout title="Introduction">
@@ -14,20 +8,17 @@ const packageCount = new Set(components.map((c) => c.packageName)).size;
     <section class="docs-hero-grid" aria-label="Methane Design System introduction">
       <div class="mth-hero" style="padding-block:var(--mth-space-4);padding-inline:0;text-align:start">
         <div class="mth-hero-content" style="margin-inline:0;align-items:flex-start">
-          <span class="mth-hero-eyebrow">Methane Design System · @methane/*</span>
-          <h1 class="mth-hero-title">Spec-first Web Components &amp; 0 B JS CSS Primitives</h1>
+          <span class="mth-hero-eyebrow">Methane UI</span>
+          <h1 class="mth-hero-title">Accessible UI components that work in every framework.</h1>
           <p class="mth-hero-lead">
-            {totalDeliverables} UI deliverables ({components.length} custom elements across {packageCount}{' '}
-            component packages plus {CSS_PRIMITIVE_CATALOG.length} zero-JS Light-DOM CSS primitives)
-            with Precision Atmospheric OKLCH tokens, streaming DSD SSR across 6 frameworks, and
-            typed framework wrappers.
+            Buttons, forms, overlays, data grids, charts, and rich editors — styled with adaptive
+            OKLCH themes, server-rendered without layout shift, and ready for HTML, React, Vue,
+            Angular, and Svelte.
           </p>
           <div class="mth-hero-actions" style="justify-content:flex-start">
             <a class="docs-btn docs-btn-primary" href={withBase('/quickstart')}>Get Started</a>
-            <a class="docs-btn" href={withBase('/components')}>
-              Browse {components.length} Components
-            </a>
-            <a class="docs-btn" href={withBase('/css')}>23 CSS Primitives</a>
+            <a class="docs-btn" href={withBase('/components')}>Browse Components</a>
+            <a class="docs-btn" href={withBase('/css')}>CSS Layouts</a>
             <a class="docs-btn" href={withBase('/theme-builder')}>Theme Builder</a>
           </div>
         </div>
@@ -82,47 +73,46 @@ const packageCount = new Set(components.map((c) => c.packageName)).size;
 
     <section class="mth-feature-grid">
       <article class="mth-feature-card">
-        <span class="mth-feature-icon">0B</span>
-        <h2>Earned Shadow DOM</h2>
+        <span class="mth-feature-icon">CSS</span>
+        <h2>Pure CSS Layouts</h2>
         <p>
-          Structural, typographic, and static marketing blocks ship in <code>@methane/css</code> as
-          23 pure Light-DOM CSS primitives using CSS Logical Properties and <code>@layer mth.primitives</code>.
+          Compose stacks, responsive grids, app shells, and editorial typography using lightweight
+          CSS classes in <code>@methane/css</code> — no JavaScript required.
         </p>
       </article>
       <article class="mth-feature-card">
         <span class="mth-feature-icon">OKLCH</span>
-        <h2>Adaptive Token Engine</h2>
+        <h2>Adaptive OKLCH Themes</h2>
         <p>
-          W3C DTCG JSON compiled via <code>@methane/tokens</code> into <code>light-dark()</code>,
-          <code>oklch()</code> relative ramps, density multipliers, and <code>forced-colors: active</code>.
+          Set a single brand color seed and get perceptual color ramps, automatic light and dark
+          modes, density presets, and Windows high-contrast support.
         </p>
       </article>
       <article class="mth-feature-card">
-        <span class="mth-feature-icon">DSD</span>
-        <h2>Hybrid Streaming SSR</h2>
+        <span class="mth-feature-icon">SSR</span>
+        <h2>Streaming Server Rendering</h2>
         <p>
-          <code>@methane/ssr</code> + Next, Nuxt, SvelteKit, Astro, and Angular adapters emit cached
-          stylesheet links with &lt;1 KB critical inline shells and zero hydration replacement.
+          Render components on the server with Declarative Shadow DOM across Next.js, Nuxt,
+          SvelteKit, Astro, and Angular with zero layout shift.
         </p>
       </article>
     </section>
 
     <section class="mth-bento-grid">
       <div class="mth-bento-item" data-span="2">
-        <h3>Strictly Acyclic Package DAG</h3>
+        <h3>Built-In Agent Skills</h3>
         <p>
-          <code>tokens / sanitize → core → primitives → ui → kits → satellites</code>.
-          Components compose shared controllers from <code>@methane/primitives</code> and never import
-          sibling internals.
+          Install Methane's curated skills for Antigravity, Claude Code, Cursor, Codex, and Gemini
+          CLI so AI assistants use the right tokens, components, and SSR setup out of the box.
         </p>
         <mth-flex data-gap="2">
-          <a class="docs-btn" href={withBase('/architecture')}>Architecture Overview</a>
-          <a class="docs-btn" href={withBase('/adrs')}>Read ADRs 001–015</a>
+          <a class="docs-btn" href={withBase('/guides/skills')}>Agent Skills Guide</a>
+          <a class="docs-btn" href={withBase('/architecture')}>Architecture</a>
         </mth-flex>
       </div>
       <div class="mth-bento-item">
         <h3>Interactive Theme Studio</h3>
-        <p>Tune OKLCH brand seeds, radius scale, and density, then export CSS or DTCG JSON.</p>
+        <p>Tune your brand accent, corner radius, and density live, then export CSS or tokens.json.</p>
         <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>Open Theme Builder</a>
       </div>
     </section>

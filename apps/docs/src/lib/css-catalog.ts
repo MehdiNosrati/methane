@@ -210,12 +210,12 @@ const RAW_ENTRIES: ReadonlyArray<RawSpec> = [
       'Do not use inside dense admin dashboards; reserve .mth-hero for landing and product pages.',
     previewHtml: `<section class="mth-hero" style="padding-block:1rem;border:1px solid var(--mth-color-border);border-radius:var(--mth-radius-lg)">
   <div class="mth-hero-content">
-    <span class="mth-hero-eyebrow">Layer 0 CSS</span>
+    <span class="mth-hero-eyebrow">Pure CSS Hero</span>
     <h3 class="mth-hero-title" style="font-size:var(--mth-font-size-xl)">Zero-JS Hero Block</h3>
     <p class="mth-hero-lead" style="font-size:var(--mth-font-size-sm)">Instant SSR with container-query scale.</p>
   </div>
 </section>`,
-    htmlSnippet: `<section class="mth-hero" data-align="center">\n  <div class="mth-hero-content">\n    <span class="mth-hero-eyebrow">Methane UI</span>\n    <h1 class="mth-hero-title">Build Fast</h1>\n    <p class="mth-hero-lead">23 zero-JS CSS primitives.</p>\n  </div>\n</section>`,
+    htmlSnippet: `<section class="mth-hero" data-align="center">\n  <div class="mth-hero-content">\n    <span class="mth-hero-eyebrow">Methane UI</span>\n    <h1 class="mth-hero-title">Build Fast</h1>\n    <p class="mth-hero-lead">Pure CSS layouts and typography.</p>\n  </div>\n</section>`,
   },
   {
     id: 'mth-feature-grid',
