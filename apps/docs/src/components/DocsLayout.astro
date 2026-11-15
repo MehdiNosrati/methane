@@ -21,11 +21,22 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · Methane UI</title>
     <meta name="description" content={description} />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolygon points='12 2 20.66 7 20.66 17 12 22 3.34 17 3.34 7 12 2' fill='oklch(0.55 0.23 264)'/%3E%3Ccircle cx='12' cy='12' r='3.5' fill='oklch(1 0 0)'/%3E%3C/svg%3E"
+    />
   </head>
   <body>
     <div class="mth-app-shell">
       <header class="mth-app-shell-header docs-header">
         <a class="docs-brand" href={withBase('/')}>
+          <span class="docs-brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 20.66 7 20.66 17 12 22 3.34 17 3.34 7 12 2"></polygon>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </span>
           <span>Methane</span>
           <span class="docs-brand-badge">@methane/*</span>
         </a>
@@ -33,13 +44,21 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
           <a class="docs-btn" href={withBase('/css')}>23 CSS Primitives</a>
           <a class="docs-btn" href={withBase('/components')}>Components</a>
           <a class="docs-btn docs-btn-primary" href={withBase('/theme-builder')}>Theme Builder</a>
-          <select id="docs-theme-select" class="docs-btn" aria-label="Color theme">
+          <a
+            class="docs-btn"
+            href="https://github.com/MehdiNosrati/methane"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+          <select id="docs-theme-select" class="mth-select docs-select" aria-label="Color theme">
             <option value="auto">Theme: Auto</option>
             <option value="light">Theme: Light</option>
             <option value="dark">Theme: Dark</option>
             <option value="high-contrast">Theme: High Contrast</option>
           </select>
-          <select id="docs-density-select" class="docs-btn" aria-label="UI density">
+          <select id="docs-density-select" class="mth-select docs-select" aria-label="UI density">
             <option value="default">Density: Default</option>
             <option value="compact">Density: Compact</option>
             <option value="comfortable">Density: Comfortable</option>
@@ -48,30 +67,59 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
       </header>
 
       <aside class="mth-app-shell-sidebar docs-sidebar" aria-label="Documentation navigation">
-        {
-          DOCS_NAV.map((section) => (
-            <div class="docs-nav-group">
-              <h2 class="docs-nav-heading">{section.title}</h2>
-              <ul class="docs-nav-list">
-                {section.items.map((item) => {
-                  const itemNorm = item.href.replace(/\/+$/, '') || '/';
-                  const isActive = currentPath === itemNorm;
-                  return (
-                    <li>
-                      <a
-                        class="docs-nav-link"
-                        href={item.href}
-                        aria-current={isActive ? 'page' : undefined}
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))
-        }
+        <details class="docs-nav-drawer" data-docs-nav-drawer open>
+          <summary class="docs-nav-summary">
+            <span>Documentation Menu</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m4 6 4 4 4-4"></path>
+            </svg>
+          </summary>
+
+          <div class="docs-nav-filter-wrap">
+            <input
+              type="search"
+              class="mth-input docs-nav-filter"
+              placeholder="Filter navigation..."
+              aria-label="Filter documentation links"
+              data-docs-nav-filter
+            />
+          </div>
+
+          {
+            DOCS_NAV.map((section) => (
+              <div class="docs-nav-group" data-docs-nav-group>
+                <h2 class="docs-nav-heading">{section.title}</h2>
+                <ul class="docs-nav-list">
+                  {section.items.map((item) => {
+                    const itemNorm = item.href.replace(/\/+$/, '') || '/';
+                    const isActive = currentPath === itemNorm;
+                    return (
+                      <li data-docs-nav-item={item.label.toLowerCase()}>
+                        <a
+                          class="docs-nav-link"
+                          href={item.href}
+                          aria-current={isActive ? 'page' : undefined}
+                        >
+                          {item.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))
+          }
+        </details>
       </aside>
 
       <main class="mth-app-shell-main docs-main">
@@ -96,6 +144,9 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
       const root = document.documentElement;
       const themeSelect = document.getElementById('docs-theme-select') as HTMLSelectElement | null;
       const densitySelect = document.getElementById('docs-density-select') as HTMLSelectElement | null;
+      const navDrawer = document.querySelector<HTMLDetailsElement>('[data-docs-nav-drawer]');
+      const navFilter = document.querySelector<HTMLInputElement>('[data-docs-nav-filter]');
+      const navGroups = document.querySelectorAll<HTMLElement>('[data-docs-nav-group]');
 
       function applyTheme(value: string) {
         root.removeAttribute('data-mth-theme');
@@ -126,6 +177,30 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
       densitySelect?.addEventListener('change', () => {
         localStorage.setItem('mth-docs-density', densitySelect.value);
         applyDensity(densitySelect.value);
+      });
+
+      if (navDrawer && typeof window.matchMedia === 'function') {
+        const desktopMq = window.matchMedia('(min-width: 60rem)');
+        const syncDrawer = () => {
+          navDrawer.open = desktopMq.matches;
+        };
+        syncDrawer();
+        desktopMq.addEventListener('change', syncDrawer);
+      }
+
+      navFilter?.addEventListener('input', () => {
+        const query = navFilter.value.trim().toLowerCase();
+        for (const group of navGroups) {
+          let visibleCount = 0;
+          const items = group.querySelectorAll<HTMLElement>('[data-docs-nav-item]');
+          for (const item of items) {
+            const label = item.dataset.docsNavItem ?? '';
+            const match = query.length === 0 || label.includes(query);
+            item.hidden = !match;
+            if (match) visibleCount += 1;
+          }
+          group.hidden = visibleCount === 0;
+        }
       });
     </script>
   </body>

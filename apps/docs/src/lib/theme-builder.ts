@@ -12,18 +12,20 @@ export interface ThemeBuilderConfig {
 }
 
 export const DEFAULT_THEME_CONFIG: ThemeBuilderConfig = {
-  brandLightness: 0.56,
-  brandChroma: 0.21,
-  brandHue: 255,
+  brandLightness: 0.55,
+  brandChroma: 0.23,
+  brandHue: 264,
   radiusPreset: 'default',
   density: 'default',
 };
 
-const RADIUS_PRESET_MAP: Readonly<Record<RadiusPreset, { sm: string; md: string; lg: string; xl: string }>> = {
+export const RADIUS_PRESET_MAP: Readonly<
+  Record<RadiusPreset, { sm: string; md: string; lg: string; xl: string }>
+> = {
   none: { sm: '0px', md: '0px', lg: '0px', xl: '0px' },
   sharp: { sm: '0.125rem', md: '0.25rem', lg: '0.375rem', xl: '0.5rem' },
-  default: { sm: '0.25rem', md: '0.375rem', lg: '0.5rem', xl: '0.75rem' },
-  rounded: { sm: '0.375rem', md: '0.625rem', lg: '0.875rem', xl: '1.25rem' },
+  default: { sm: '0.375rem', md: '0.5rem', lg: '0.75rem', xl: '1rem' },
+  rounded: { sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem' },
   pill: { sm: '0.75rem', md: '1rem', lg: '1.5rem', xl: '2rem' },
 };
 
