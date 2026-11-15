@@ -69,6 +69,13 @@ export const drawingPadStyles = css`
     cursor: not-allowed;
   }
 
+  .tool-button:focus-visible,
+  .action-button:focus-visible,
+  .canvas:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .base,
     .tool-button,
@@ -80,6 +87,7 @@ export const drawingPadStyles = css`
     .tool-button[aria-pressed='true'] {
       background: Highlight;
       color: HighlightText;
+      forced-color-adjust: none;
     }
   }
 `;

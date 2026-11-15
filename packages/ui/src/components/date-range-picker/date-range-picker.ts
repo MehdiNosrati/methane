@@ -164,11 +164,25 @@ export class MthDateRangePicker extends UIElement {
     this.formCtrl.setDefaultValue(initialDefault);
     this.formCtrl.setValue(this.value, { markDirty: false });
     this.calendar.setLocale(this.resolvedLocale);
-    this.syncFromRangeValue(this.value);
+    if (this.value) {
+      this.syncFromRangeValue(this.value);
+    } else if (this.startDate || this.endDate) {
+      const nextValue =
+        this.startDate && this.endDate
+          ? `${this.startDate}/${this.endDate}`
+          : this.startDate || '';
+      this.value = nextValue;
+      this.formCtrl.setDefaultValue(nextValue);
+      this.formCtrl.setValue(nextValue, { markDirty: false });
+      this.syncCalendarRange(this.startDate, this.endDate);
+    } else {
+      this.syncFromRangeValue('');
+    }
   }
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+    this.calendar.setLocale(this.resolvedLocale);
     if (changed.has('disabled')) {
       this.formCtrl.hostDisabled = this.disabled;
     }
@@ -178,9 +192,20 @@ export class MthDateRangePicker extends UIElement {
     if (changed.has('readonly')) {
       this.formCtrl.hostReadOnly = this.readonly;
     }
-    if (changed.has('value')) {
+    const hasStartOrEndChange = changed.has('startDate') || changed.has('endDate');
+    if (changed.has('value') && (this.value !== '' || !hasStartOrEndChange)) {
       this.formCtrl.setValue(this.value, { markDirty: false });
       this.syncFromRangeValue(this.value);
+    } else if (hasStartOrEndChange) {
+      const nextValue =
+        this.startDate && this.endDate
+          ? `${this.startDate}/${this.endDate}`
+          : this.startDate || '';
+      if (nextValue !== this.value) {
+        this.value = nextValue;
+        this.formCtrl.setValue(nextValue, { markDirty: false });
+      }
+      this.syncCalendarRange(this.startDate, this.endDate);
     }
   }
 
@@ -209,7 +234,20 @@ export class MthDateRangePicker extends UIElement {
     const e = parseIsoDate(rawEnd);
     this.startDate = s ? formatIsoDate(s) : '';
     this.endDate = e ? formatIsoDate(e) : '';
+    this.syncCalendarRange(this.startDate, this.endDate);
+  }
+
+  private syncCalendarRange(startStr: string, endStr: string): void {
+    const s = parseIsoDate(startStr);
+    const e = parseIsoDate(endStr);
     if (s) {
+      if (this.calendar.rangeStart && !this.calendar.rangeEnd) {
+        this.calendar.selectDate(s);
+      }
+      this.calendar.selectDate(s);
+      if (e) {
+        this.calendar.selectDate(e);
+      }
       this.calendar.setFocusedDate(s);
       this.viewYear = s.year;
       this.viewMonth = s.month;
@@ -231,8 +269,10 @@ export class MthDateRangePicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -268,6 +308,29 @@ export class MthDateRangePicker extends UIElement {
     }
   };
 
+  private readonly handleGridKeyDown = (event: KeyboardEvent): void => {
+    const isRtl =
+      (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
+    let deltaDays = 0;
+    if (event.key === 'ArrowLeft') deltaDays = isRtl ? 1 : -1;
+    else if (event.key === 'ArrowRight') deltaDays = isRtl ? -1 : 1;
+    else if (event.key === 'ArrowUp') deltaDays = -7;
+    else if (event.key === 'ArrowDown') deltaDays = 7;
+
+    if (deltaDays !== 0) {
+      event.preventDefault();
+      const next = this.calendar.navigateByDays(deltaDays);
+      this.viewYear = next.year;
+      this.viewMonth = next.month;
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.handleDayClick(this.calendar.focusedDate);
+    }
+  };
+
   private readonly handleDayClick = (date: CalendarDate): void => {
     if (this.effectivelyDisabled || this.readonly) return;
     this.calendar.selectDate(date);
@@ -295,6 +358,7 @@ export class MthDateRangePicker extends UIElement {
     const isDisabled = this.effectivelyDisabled;
     const weeks = this.calendar.getMonthGrid(this.viewYear, this.viewMonth);
     const weekdays = this.calendar.getWeekdayHeaders('short');
+    const focusedIso = formatIsoDate(this.calendar.focusedDate);
     const monthTitle = FormattingUtils.formatDate(
       new Date(Date.UTC(this.viewYear, this.viewMonth - 1, 1)),
       this.resolvedLocale,
@@ -358,7 +422,7 @@ export class MthDateRangePicker extends UIElement {
               &rsaquo;
             </button>
           </div>
-          <div role="grid">
+          <div part="grid" role="grid" @keydown=${this.handleGridKeyDown}>
             <div class="weekdays" role="row">
               ${weekdays.map((wd) => html`<span class="weekday" role="columnheader">${wd}</span>`)}
             </div>
@@ -377,6 +441,7 @@ export class MthDateRangePicker extends UIElement {
                         part="day"
                         type="button"
                         role="gridcell"
+                        tabindex=${cell.iso === focusedIso ? '0' : '-1'}
                         data-iso=${cell.iso}
                         data-outside=${cell.inMonth ? 'false' : 'true'}
                         data-in-range=${inSpan ? 'true' : 'false'}

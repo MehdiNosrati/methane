@@ -2,10 +2,12 @@ import type { MessageCatalog } from '@methane/core';
 
 export const colorPickerMessages: MessageCatalog = {
   openPicker: 'Open color picker',
+  pickButton: 'Pick',
   hue: 'Hue',
   saturation: 'Saturation',
   lightness: 'Lightness',
   eyedropper: 'Pick color from screen',
+  dropperButton: 'Dropper',
   swatchesLabel: 'Color presets',
   invalidColor: 'Enter a valid hex color (e.g. #2563eb)',
 };

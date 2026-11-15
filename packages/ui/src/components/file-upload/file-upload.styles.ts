@@ -108,6 +108,12 @@ export const fileUploadStyles = css`
     color: var(--mth-color-danger);
   }
 
+  .browse-button:focus-visible,
+  .remove-button:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .drop-area,
     .browse-button,

@@ -115,4 +115,29 @@ describe('<mth-time-picker>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('navigates time options via roving ArrowDown/ArrowUp/End/Home keys', async () => {
+    const tp = document.createElement('mth-time-picker') as MthTimePicker;
+    document.body.appendChild(tp);
+    await tp.updateComplete;
+    await tp.show();
+    await tp.updateComplete;
+
+    const popover = tp.shadowRoot!.querySelector<HTMLElement>('[part="popover"]')!;
+    const options = Array.from(popover.querySelectorAll<HTMLButtonElement>('[part="option"]'));
+    expect(options.length).toBeGreaterThan(2);
+    expect(options[0]?.tabIndex).toBe(0);
+    expect(options[1]?.tabIndex).toBe(-1);
+
+    options[0]?.focus();
+    popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    expect(options[1]?.tabIndex).toBe(0);
+    expect(options[0]?.tabIndex).toBe(-1);
+
+    popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, composed: true }));
+    expect(options.at(-1)?.tabIndex).toBe(0);
+
+    popover.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, composed: true }));
+    expect(options[0]?.tabIndex).toBe(0);
+  });
 });

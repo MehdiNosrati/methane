@@ -80,6 +80,12 @@ export const imageCropperStyles = css`
     color: var(--mth-color-fg);
   }
 
+  .action-btn:focus-visible,
+  .viewport:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .base,
     .viewport,

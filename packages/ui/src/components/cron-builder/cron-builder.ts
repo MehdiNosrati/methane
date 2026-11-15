@@ -15,6 +15,13 @@ const DEFAULT_PRESETS: ReadonlyArray<CronPreset> = [
   { label: 'Weekdays 09:00', value: '0 9 * * 1-5' },
 ];
 
+const DEFAULT_PRESET_KEYS: Readonly<Record<string, string>> = {
+  '*/15 * * * *': 'presetEvery15Min',
+  '0 * * * *': 'presetHourly',
+  '0 0 * * *': 'presetDaily',
+  '0 9 * * 1-5': 'presetWeekdays',
+};
+
 const SEGMENT_TOKEN_RE = /^(\*|\d+|\*\/\d+|\d+-\d+(?:\/\d+)?|\d+(?:,\d+)+)$/;
 
 type CronParts = [string, string, string, string, string];
@@ -39,16 +46,6 @@ function isValidCronExpression(value: string): boolean {
   const tokens = trimmed.split(/\s+/);
   if (tokens.length !== 5) return false;
   return tokens.every((token) => SEGMENT_TOKEN_RE.test(token));
-}
-
-function describeCron(value: string, prefix: string): string {
-  const trimmed = value.trim();
-  if (trimmed === '*/15 * * * *') return `${prefix} Every 15 minutes`;
-  if (trimmed === '0 * * * *') return `${prefix} Every hour at minute 0`;
-  if (trimmed === '0 0 * * *') return `${prefix} Daily at 00:00`;
-  if (trimmed === '0 9 * * 1-5') return `${prefix} Weekdays at 09:00`;
-  const [m, h, dom, mon, dow] = parseCronParts(trimmed);
-  return `${prefix} minute ${m}, hour ${h}, day ${dom}, month ${mon}, weekday ${dow}`;
 }
 
 /**
@@ -192,6 +189,17 @@ export class MthCronBuilder extends UIElement {
     this.applyValue(parts.map((p) => p || '*').join(' '));
   }
 
+  private describeCurrentCron(value: string): string {
+    const trimmed = value.trim();
+    const prefix = this.t('summaryPrefix');
+    if (trimmed === '*/15 * * * *') return this.t('summaryEvery15Min', { prefix });
+    if (trimmed === '0 * * * *') return this.t('summaryHourly', { prefix });
+    if (trimmed === '0 0 * * *') return this.t('summaryDaily', { prefix });
+    if (trimmed === '0 9 * * 1-5') return this.t('summaryWeekdays', { prefix });
+    const [minute, hour, day, month, weekday] = parseCronParts(trimmed);
+    return this.t('summaryCustom', { prefix, minute, hour, day, month, weekday });
+  }
+
   private handlePresetClick(presetValue: string): void {
     this.applyValue(presetValue);
   }
@@ -209,13 +217,21 @@ export class MthCronBuilder extends UIElement {
     const labelId = this.label ? 'cron-label' : undefined;
 
     return html`
-      <div part="base" class="base" role="group" aria-labelledby=${labelId ?? nothing}>
+      <div
+        part="base"
+        class="base"
+        role="group"
+        aria-labelledby=${labelId ?? nothing}
+        aria-label=${labelId ? nothing : this.t('builderLabel')}
+      >
         ${this.label
           ? html`<div id="cron-label" part="label" class="label">${this.label}</div>`
           : nothing}
         <div part="presets" class="presets" role="group" aria-label=${this.t('presetsLabel')}>
-          ${this.presets.map(
-            (preset) => html`
+          ${this.presets.map((preset) => {
+            const presetKey = this.presets === DEFAULT_PRESETS ? DEFAULT_PRESET_KEYS[preset.value] : undefined;
+            const displayLabel = presetKey ? this.t(presetKey) : preset.label;
+            return html`
               <button
                 type="button"
                 part="preset"
@@ -224,10 +240,10 @@ export class MthCronBuilder extends UIElement {
                 ?disabled=${isDisabled || this.readonly}
                 @click=${() => this.handlePresetClick(preset.value)}
               >
-                ${preset.label}
+                ${displayLabel}
               </button>
-            `,
-          )}
+            `;
+          })}
         </div>
         <div part="fields" class="fields">
           ${parts.map((segment, index) => {
@@ -253,7 +269,7 @@ export class MthCronBuilder extends UIElement {
         </div>
         <div part="summary" class="summary" aria-live="polite">
           ${isValidCronExpression(this.value)
-            ? describeCron(this.value, this.t('summaryPrefix'))
+            ? this.describeCurrentCron(this.value)
             : this.t('invalidExpression')}
         </div>
       </div>

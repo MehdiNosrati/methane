@@ -185,9 +185,13 @@ export class MthImageCropper extends UIElement {
         this.dynamicSheet,
       ];
     }
-    const aspectRule = this.aspectRatio > 0 ? `aspect-ratio: ${this.aspectRatio};` : '';
+    const safeAspect = Number.isFinite(this.aspectRatio) && this.aspectRatio > 0 ? this.aspectRatio : 0;
+    const safeOffsetX = Number.isFinite(this.offsetX) ? this.offsetX : 0;
+    const safeOffsetY = Number.isFinite(this.offsetY) ? this.offsetY : 0;
+    const safeZoom = Number.isFinite(this.zoom) && this.zoom > 0 ? this.zoom : 1;
+    const aspectRule = safeAspect > 0 ? `aspect-ratio: ${safeAspect};` : '';
     this.dynamicSheet.replaceSync(
-      `[part="image"] { transform: translate3d(${this.offsetX}%, ${this.offsetY}%, 0) scale(${this.zoom}); }\n` +
+      `[part="image"] { transform: translate3d(${safeOffsetX}%, ${safeOffsetY}%, 0) scale(${safeZoom}); }\n` +
         `[part="frame"] { ${aspectRule} }`,
     );
   }

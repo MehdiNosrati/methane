@@ -108,6 +108,12 @@ export const monthPickerStyles = css`
   }
 
   .grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mth-space-1);
+  }
+
+  .month-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--mth-space-1);

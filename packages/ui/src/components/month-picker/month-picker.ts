@@ -177,6 +177,9 @@ export class MthMonthPicker extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+    this.rovingCtrl.updateOptions({
+      dir: this.closest('[dir]') ? 'auto' : this.resolvedDir,
+    });
     if (changed.has('disabled')) {
       this.formCtrl.hostDisabled = this.disabled;
     }
@@ -197,9 +200,6 @@ export class MthMonthPicker extends UIElement {
     super.updated(changed);
     if (changed.has('readonly')) {
       this.setCustomState('readonly', this.readonly);
-    }
-    if (changed.has('dir')) {
-      this.rovingCtrl.updateOptions({ dir: this.resolvedDir });
     }
     if (changed.has('open') && this.open) {
       this.positioningCtrl.reposition();
@@ -231,8 +231,10 @@ export class MthMonthPicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -340,18 +342,25 @@ export class MthMonthPicker extends UIElement {
             </button>
           </div>
           <div class="grid" role="grid">
-            ${months.map(
-              (m) => html`
-                <button
-                  part="month"
-                  type="button"
-                  role="gridcell"
-                  data-iso=${m.iso}
-                  aria-selected=${m.iso === this.value ? 'true' : 'false'}
-                  @click=${() => this.handleMonthClick(m.monthNum)}
-                >
-                  ${m.label}
-                </button>
+            ${[0, 3, 6, 9].map(
+              (startIdx) => html`
+                <div class="month-row" role="row">
+                  ${months.slice(startIdx, startIdx + 3).map(
+                    (m, colIdx) => html`
+                      <button
+                        part="month"
+                        type="button"
+                        role="gridcell"
+                        tabindex=${startIdx + colIdx === 0 ? '0' : '-1'}
+                        data-iso=${m.iso}
+                        aria-selected=${m.iso === this.value ? 'true' : 'false'}
+                        @click=${() => this.handleMonthClick(m.monthNum)}
+                      >
+                        ${m.label}
+                      </button>
+                    `,
+                  )}
+                </div>
               `,
             )}
           </div>

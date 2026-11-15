@@ -254,10 +254,8 @@ export class MthSignaturePad extends UIElement {
     if (this.effectivelyDisabled || this.readonly) return;
     if (this.activePointerId !== event.pointerId || !this.currentStroke) return;
     this.currentStroke.push(this.getCanvasPoint(event));
-    this.strokes = [...this.strokes.slice(0, -0), this.currentStroke];
-    // Render incrementally without duplicating completed strokes.
-    this.strokes = this.strokes.slice(0, -1);
-    this.strokes = [...this.strokes, this.currentStroke];
+    const base = this.strokes.filter((s) => s !== this.currentStroke);
+    this.strokes = [...base, this.currentStroke];
     this.redrawCanvas();
   };
 

@@ -21,7 +21,7 @@ export const timezonePickerSpec: ComponentBehaviorSpec = {
     { name: 'value', attr: 'value', type: 'string', default: '' },
     { name: 'name', attr: 'name', type: 'string', default: '' },
     { name: 'label', attr: 'label', type: 'string', default: '' },
-    { name: 'placeholder', attr: 'placeholder', type: 'string', default: 'Select timezone' },
+    { name: 'placeholder', attr: 'placeholder', type: 'string', default: '' },
     { name: 'open', attr: 'open', type: 'boolean', default: false },
     { name: 'disabled', attr: 'disabled', type: 'boolean', default: false },
     { name: 'readonly', attr: 'readonly', type: 'boolean', default: false },

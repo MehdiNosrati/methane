@@ -94,6 +94,12 @@ export const cronBuilderStyles = css`
     color: var(--mth-color-fg-muted);
   }
 
+  .preset:focus-visible,
+  .field-input:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .base,
     .preset,
@@ -104,6 +110,7 @@ export const cronBuilderStyles = css`
     .preset[aria-pressed='true'] {
       background: Highlight;
       color: HighlightText;
+      forced-color-adjust: none;
     }
   }
 `;

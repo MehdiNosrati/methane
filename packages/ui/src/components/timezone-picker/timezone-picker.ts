@@ -29,7 +29,7 @@ function resolveZones(): string[] {
     try {
       const list = supported('timeZone');
       if (Array.isArray(list) && list.length > 0) {
-        return ['UTC', ...list.filter((z) => z !== 'UTC')].slice(0, 60);
+        return ['UTC', ...list.filter((z) => z !== 'UTC')];
       }
     } catch {
       // Fallback below.
@@ -74,7 +74,7 @@ export class MthTimezonePicker extends UIElement {
   label = '';
 
   @property({ type: String })
-  placeholder = 'Select timezone';
+  placeholder = '';
 
   @property({ type: Boolean, reflect: true })
   open = false;
@@ -283,8 +283,10 @@ export class MthTimezonePicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -307,11 +309,7 @@ export class MthTimezonePicker extends UIElement {
 
   private readonly handleInputChange = (): void => {
     const next = this.inputEl?.value.trim() ?? '';
-    if (!next || this.zones.includes(next)) {
-      this.commitZone(next);
-    } else if (next) {
-      this.commitZone(next);
-    }
+    this.commitZone(next);
   };
 
   private readonly handleTriggerClick = (): void => {
@@ -393,7 +391,7 @@ export class MthTimezonePicker extends UIElement {
                   @click=${() => this.handleOptionClick(zone)}
                 >
                   <span>${zone}</span>
-                  <span class="offset">${formatOffset(zone, this.resolvedLocale)}</span>
+                  <span class="offset">${this.open ? formatOffset(zone, this.resolvedLocale) : ''}</span>
                 </div>
               `;
             })}

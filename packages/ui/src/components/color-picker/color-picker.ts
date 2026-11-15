@@ -439,7 +439,7 @@ export class MthColorPicker extends UIElement {
             ?disabled=${isDisabled || this.readonly}
             @click=${() => void this.handleTriggerClick()}
           >
-            Pick
+            ${this.t('pickButton')}
           </button>
           ${this.eyeDropperSupported
             ? html`
@@ -451,7 +451,7 @@ export class MthColorPicker extends UIElement {
                   ?disabled=${isDisabled || this.readonly}
                   @click=${() => void this.pickFromScreen()}
                 >
-                  Dropper
+                  ${this.t('dropperButton')}
                 </button>
               `
             : nothing}

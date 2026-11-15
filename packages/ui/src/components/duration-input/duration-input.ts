@@ -216,7 +216,7 @@ export class MthDurationInput extends UIElement {
               ?readonly=${this.readonly}
               @change=${(e: Event) => this.handleSegmentInput('hours', e)}
             />
-            <span class="unit">h</span>
+            <span class="unit">${this.t('hoursUnit')}</span>
           </label>
           <label class="segment">
             <input
@@ -231,7 +231,7 @@ export class MthDurationInput extends UIElement {
               ?readonly=${this.readonly}
               @change=${(e: Event) => this.handleSegmentInput('minutes', e)}
             />
-            <span class="unit">m</span>
+            <span class="unit">${this.t('minutesUnit')}</span>
           </label>
           ${this.showSeconds
             ? html`
@@ -248,7 +248,7 @@ export class MthDurationInput extends UIElement {
                     ?readonly=${this.readonly}
                     @change=${(e: Event) => this.handleSegmentInput('seconds', e)}
                   />
-                  <span class="unit">s</span>
+                  <span class="unit">${this.t('secondsUnit')}</span>
                 </label>
               `
             : nothing}

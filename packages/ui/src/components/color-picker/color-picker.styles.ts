@@ -119,6 +119,15 @@ export const colorPickerStyles = css`
     background: var(--_mth-swatch-color, currentColor);
   }
 
+  .trigger:focus-visible,
+  .eyedropper:focus-visible,
+  .swatch:focus-visible,
+  .input:focus-visible,
+  .slider:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .control,
     .popover,

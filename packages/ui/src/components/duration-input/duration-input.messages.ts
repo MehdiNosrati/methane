@@ -5,4 +5,7 @@ export const durationInputMessages: MessageCatalog = {
   hours: 'Hours',
   minutes: 'Minutes',
   seconds: 'Seconds',
+  hoursUnit: 'h',
+  minutesUnit: 'm',
+  secondsUnit: 's',
 };

@@ -78,6 +78,13 @@ export const signaturePadStyles = css`
     cursor: not-allowed;
   }
 
+  .canvas:focus-visible,
+  .typed-input:focus-visible,
+  .action-btn:focus-visible {
+    outline: 2px solid var(--mth-color-border-focus);
+    outline-offset: 2px;
+  }
+
   @media (forced-colors: active) {
     .canvas,
     .typed-input,

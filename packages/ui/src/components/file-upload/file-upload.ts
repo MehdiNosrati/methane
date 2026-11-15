@@ -46,12 +46,6 @@ function createSafePreviewUrl(file: File): string | null {
   }
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 /**
  * Form-associated file upload control with advisory MIME/size validation and safe <img> previews.
  */
@@ -320,6 +314,12 @@ export class MthFileUpload extends UIElement {
     }
   };
 
+  private formatFileSize(bytes: number): string {
+    if (bytes < 1024) return this.t('unitBytes', { size: bytes });
+    if (bytes < 1024 * 1024) return this.t('unitKilobytes', { size: (bytes / 1024).toFixed(1) });
+    return this.t('unitMegabytes', { size: (bytes / (1024 * 1024)).toFixed(1) });
+  }
+
   protected override render() {
     const isDisabled = this.effectivelyDisabled;
     const labelId = this.label ? 'upload-label' : undefined;
@@ -342,10 +342,11 @@ export class MthFileUpload extends UIElement {
             part="input"
             class="native-input"
             type="file"
+            tabindex="-1"
+            aria-hidden="true"
             accept=${this.accept || nothing}
             ?multiple=${this.multiple}
             ?disabled=${isDisabled}
-            aria-labelledby=${labelId ?? nothing}
             @change=${this.handleInputChange}
           />
           <button
@@ -353,6 +354,7 @@ export class MthFileUpload extends UIElement {
             part="browse-button"
             class="browse-button"
             ?disabled=${isDisabled || this.readonly}
+            aria-labelledby=${labelId ?? nothing}
             @click=${this.handleBrowseClick}
           >
             ${this.t('browse')}
@@ -372,12 +374,12 @@ export class MthFileUpload extends UIElement {
                             alt=${entry.file.name}
                           />`
                         : nothing}
-                      <span class="meta">${entry.file.name} (${formatBytes(entry.file.size)})</span>
+                      <span class="meta">${entry.file.name} (${this.formatFileSize(entry.file.size)})</span>
                       <button
                         type="button"
                         part="remove-button"
                         class="remove-button"
-                        aria-label=${`${this.t('removeFile')} ${entry.file.name}`}
+                        aria-label=${this.t('removeFileLabel', { name: entry.file.name })}
                         ?disabled=${isDisabled || this.readonly}
                         @click=${() => this.removeFile(index)}
                       >

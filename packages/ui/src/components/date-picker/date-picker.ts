@@ -163,6 +163,19 @@ export class MthDatePicker extends UIElement {
     return this.formCtrl.reportValidity();
   }
 
+  override connectedCallback(): void {
+    if (!this.value && this.shadowRoot && !this.hasUpdated) {
+      const midIso = this.shadowRoot.querySelectorAll('[part="day"]')[15]?.getAttribute('data-iso') ?? '';
+      const parsed = parseIsoDate(midIso);
+      if (parsed) {
+        this.viewYear = parsed.year;
+        this.viewMonth = parsed.month;
+        this.calendar.setFocusedDate(parsed);
+      }
+    }
+    super.connectedCallback();
+  }
+
   protected override onFirstConnect(): void {
     const initialDefault = this.getAttribute('value') ?? this.value ?? '';
     this.formCtrl.setDefaultValue(initialDefault);
@@ -173,6 +186,7 @@ export class MthDatePicker extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+    this.calendar.setLocale(this.resolvedLocale);
     if (changed.has('disabled')) {
       this.formCtrl.hostDisabled = this.disabled;
     }
@@ -231,8 +245,10 @@ export class MthDatePicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -272,7 +288,8 @@ export class MthDatePicker extends UIElement {
   };
 
   private readonly handleGridKeyDown = (event: KeyboardEvent): void => {
-    const isRtl = this.resolvedDir === 'rtl';
+    const isRtl =
+      (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
     let deltaDays = 0;
     if (event.key === 'ArrowLeft') deltaDays = isRtl ? 1 : -1;
     else if (event.key === 'ArrowRight') deltaDays = isRtl ? -1 : 1;

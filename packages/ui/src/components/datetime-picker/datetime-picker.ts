@@ -175,6 +175,7 @@ export class MthDatetimePicker extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+    this.calendar.setLocale(this.resolvedLocale);
     if (changed.has('disabled')) {
       this.formCtrl.hostDisabled = this.disabled;
     }
@@ -236,8 +237,10 @@ export class MthDatetimePicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -272,6 +275,32 @@ export class MthDatetimePicker extends UIElement {
     }
   };
 
+  private readonly handleGridKeyDown = (event: KeyboardEvent): void => {
+    const isRtl =
+      (this.closest('[dir]')?.getAttribute('dir')?.toLowerCase() ?? this.resolvedDir) === 'rtl';
+    let deltaDays = 0;
+    if (event.key === 'ArrowLeft') deltaDays = isRtl ? 1 : -1;
+    else if (event.key === 'ArrowRight') deltaDays = isRtl ? -1 : 1;
+    else if (event.key === 'ArrowUp') deltaDays = -7;
+    else if (event.key === 'ArrowDown') deltaDays = 7;
+
+    if (deltaDays !== 0) {
+      event.preventDefault();
+      const next = this.calendar.navigateByDays(deltaDays);
+      this.viewYear = next.year;
+      this.viewMonth = next.month;
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      const focused = this.calendar.focusedDate;
+      const iso = formatIsoDate(focused);
+      this.calendar.selectDate(focused);
+      this.commitCombined(iso, this.selectedTimePart);
+    }
+  };
+
   private readonly handleDayClick = (date: CalendarDate, iso: string): void => {
     this.calendar.setFocusedDate(date);
     this.calendar.selectDate(date);
@@ -300,6 +329,7 @@ export class MthDatetimePicker extends UIElement {
     const isDisabled = this.effectivelyDisabled;
     const weeks = this.calendar.getMonthGrid(this.viewYear, this.viewMonth);
     const weekdays = this.calendar.getWeekdayHeaders('short');
+    const focusedIso = formatIsoDate(this.calendar.focusedDate);
     const monthTitle = FormattingUtils.formatDate(
       new Date(Date.UTC(this.viewYear, this.viewMonth - 1, 1)),
       this.resolvedLocale,
@@ -363,7 +393,7 @@ export class MthDatetimePicker extends UIElement {
               &rsaquo;
             </button>
           </div>
-          <div role="grid">
+          <div part="grid" role="grid" @keydown=${this.handleGridKeyDown}>
             <div class="weekdays" role="row">
               ${weekdays.map((wd) => html`<span class="weekday" role="columnheader">${wd}</span>`)}
             </div>
@@ -377,6 +407,7 @@ export class MthDatetimePicker extends UIElement {
                       role="gridcell"
                       data-iso=${cell.iso}
                       data-outside=${cell.inMonth ? 'false' : 'true'}
+                      tabindex=${cell.iso === focusedIso ? '0' : '-1'}
                       aria-selected=${cell.iso === this.selectedDatePart ? 'true' : 'false'}
                       ?disabled=${cell.isDisabled}
                       @click=${() => this.handleDayClick(cell.date, cell.iso)}

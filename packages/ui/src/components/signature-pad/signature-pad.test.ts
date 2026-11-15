@@ -81,9 +81,15 @@ describe('<mth-signature-pad>', () => {
     const canvas = pad.shadowRoot!.querySelector<HTMLCanvasElement>('[part="canvas"]')!;
     const PointerEvt = globalThis.PointerEvent ?? MouseEvent;
     canvas.dispatchEvent(new PointerEvt('pointerdown', { clientX: 10, clientY: 10, bubbles: true }));
+    canvas.dispatchEvent(new PointerEvt('pointermove', { clientX: 20, clientY: 15, bubbles: true }));
     canvas.dispatchEvent(new PointerEvt('pointermove', { clientX: 30, clientY: 20, bubbles: true }));
+    canvas.dispatchEvent(new PointerEvt('pointermove', { clientX: 35, clientY: 22, bubbles: true }));
+    const strokesDuringMove = (pad as unknown as { strokes: Array<Array<unknown>> }).strokes;
+    expect(strokesDuringMove.length).toBe(1);
+    expect(strokesDuringMove[0]?.length).toBe(4);
     canvas.dispatchEvent(new PointerEvt('pointerup', { clientX: 40, clientY: 25, bubbles: true }));
     await pad.updateComplete;
+    expect((pad as unknown as { strokes: unknown[] }).strokes.length).toBe(1);
 
     expect(pad.isEmpty).toBe(false);
     expect(pad.value).not.toBe('');

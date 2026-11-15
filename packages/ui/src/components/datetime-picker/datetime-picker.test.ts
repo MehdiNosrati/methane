@@ -114,4 +114,27 @@ describe('<mth-datetime-picker>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('supports RTL-aware grid keyboard navigation and selects focused day with Enter', async () => {
+    const dtp = document.createElement('mth-datetime-picker') as MthDatetimePicker;
+    dtp.value = '2026-01-10T09:00';
+    dtp.setAttribute('dir', 'rtl');
+    document.body.appendChild(dtp);
+    await dtp.updateComplete;
+    await dtp.show();
+    await dtp.updateComplete;
+
+    const grid = dtp.shadowRoot!.querySelector<HTMLElement>('[part="grid"]')!;
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+    await dtp.updateComplete;
+    expect(dtp.shadowRoot!.querySelector('[data-iso="2026-01-11"]')?.getAttribute('tabindex')).toBe('0');
+
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    await dtp.updateComplete;
+    expect(dtp.shadowRoot!.querySelector('[data-iso="2026-01-18"]')?.getAttribute('tabindex')).toBe('0');
+
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    await dtp.updateComplete;
+    expect(dtp.value).toBe('2026-01-18T09:00');
+  });
 });

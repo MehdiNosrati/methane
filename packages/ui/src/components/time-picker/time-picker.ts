@@ -4,6 +4,7 @@ import {
   FormattingUtils,
   OverlayController,
   PositioningController,
+  RovingFocusController,
 } from '@methane/primitives';
 import { timePickerMessages } from './time-picker.messages.js';
 import { timePickerStyles } from './time-picker.styles.js';
@@ -71,6 +72,7 @@ export class MthTimePicker extends UIElement {
   private readonly formCtrl: FormControlController;
   private readonly overlayCtrl: OverlayController;
   private readonly positioningCtrl: PositioningController;
+  private readonly rovingCtrl: RovingFocusController;
   private positionSheet: CSSStyleSheet | null = null;
 
   constructor() {
@@ -104,6 +106,7 @@ export class MthTimePicker extends UIElement {
         this.open = open;
         if (open) {
           this.positioningCtrl.reposition();
+          this.rovingCtrl.syncTabIndices();
         }
       },
     });
@@ -117,6 +120,15 @@ export class MthTimePicker extends UIElement {
       onPosition: (res) => {
         this.applyPopoverPosition(res.x, res.y);
       },
+    });
+
+    this.rovingCtrl = new RovingFocusController(this, {
+      orientation: 'vertical',
+      loop: true,
+      getItems: () =>
+        this.open && this.popoverEl
+          ? Array.from(this.popoverEl.querySelectorAll<HTMLElement>('[part="option"]'))
+          : [],
     });
   }
 
@@ -173,6 +185,7 @@ export class MthTimePicker extends UIElement {
     }
     if (changed.has('open') && this.open) {
       this.positioningCtrl.reposition();
+      this.rovingCtrl.syncTabIndices();
     }
   }
 
@@ -200,8 +213,10 @@ export class MthTimePicker extends UIElement {
         this.positionSheet,
       ];
     }
+    const safeX = Number.isFinite(x) ? Math.round(x) : 0;
+    const safeY = Number.isFinite(y) ? Math.round(y) : 0;
     this.positionSheet.replaceSync(
-      `[part="popover"] { transform: translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0); }`,
+      `[part="popover"] { transform: translate3d(${safeX}px, ${safeY}px, 0); }`,
     );
   }
 
@@ -296,11 +311,12 @@ export class MthTimePicker extends UIElement {
           ?hidden=${!this.open}
         >
           ${options.map(
-            (opt) => html`
+            (opt, idx) => html`
               <button
                 part="option"
                 type="button"
                 role="option"
+                tabindex=${idx === 0 ? '0' : '-1'}
                 data-value=${opt.value}
                 aria-selected=${opt.value === this.value ? 'true' : 'false'}
                 @click=${() => this.handleOptionClick(opt.value)}

@@ -120,4 +120,32 @@ describe('<mth-date-range-picker>', () => {
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
   });
+
+  it('syncs startDate/endDate changes and supports RTL-aware grid keyboard navigation', async () => {
+    const drp = document.createElement('mth-date-range-picker') as MthDateRangePicker;
+    drp.startDate = '2026-05-03';
+    drp.endDate = '2026-05-07';
+    document.body.appendChild(drp);
+    await drp.updateComplete;
+    expect(drp.value).toBe('2026-05-03/2026-05-07');
+
+    drp.setAttribute('dir', 'rtl');
+    await drp.show();
+    await drp.updateComplete;
+
+    const grid = drp.shadowRoot!.querySelector<HTMLElement>('[part="grid"]')!;
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+    await drp.updateComplete;
+    expect(drp.shadowRoot!.querySelector('[data-iso="2026-05-04"]')?.getAttribute('tabindex')).toBe('0');
+
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    await drp.updateComplete;
+    expect(drp.startDate).toBe('2026-05-04');
+
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+    await drp.updateComplete;
+    grid.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+    await drp.updateComplete;
+    expect(drp.value).toBe('2026-05-04/2026-05-11');
+  });
 });
