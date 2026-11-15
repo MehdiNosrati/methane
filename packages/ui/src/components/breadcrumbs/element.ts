@@ -1,0 +1,14 @@
+import { defineComponents } from '@methane/core';
+import { MthBreadcrumbs } from './breadcrumbs.js';
+
+export { MthBreadcrumbs } from './breadcrumbs.js';
+export { breadcrumbsMessages } from './breadcrumbs.messages.js';
+export { breadcrumbsSpec } from './breadcrumbs.spec.js';
+export { breadcrumbsStyles } from './breadcrumbs.styles.js';
+
+export function registerMthBreadcrumbs(prefix?: string): ReadonlyArray<string> {
+  return defineComponents({
+    ...(prefix !== undefined ? { prefix } : {}),
+    components: { 'mth-breadcrumbs': MthBreadcrumbs },
+  });
+}
