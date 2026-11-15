@@ -1,0 +1,932 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/chart/chart.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthChart",
+          "tagName": "mth-chart",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Wrap-first Apache ECharts `<mth-chart>` visualization element supporting 19 chart types, declarative `<mth-chart-series>` children, `--mth-*` token palette sync, SSR `<table slot=\"fallback\">`, and RTL/reduced-motion support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "chartTitle",
+              "attribute": "chart-title",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible chart heading displayed in the header and used as default ARIA label."
+            },
+            {
+              "kind": "field",
+              "name": "subtitle",
+              "attribute": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional descriptive subtitle under the chart heading."
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "attribute": "type",
+              "reflect": true,
+              "type": {
+                "text": "MthChartType"
+              },
+              "default": "\"line\"",
+              "description": "Default chart visualization type when providing direct `data` / `data-json` on `<mth-chart>`."
+            },
+            {
+              "kind": "field",
+              "name": "renderer",
+              "attribute": "renderer",
+              "reflect": true,
+              "type": {
+                "text": "'canvas' | 'svg'"
+              },
+              "default": "\"canvas\"",
+              "description": "ECharts rendering backend (`canvas` or `svg`)."
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "attribute": "size",
+              "reflect": true,
+              "type": {
+                "text": "'sm' | 'md' | 'lg' | 'full'"
+              },
+              "default": "\"md\"",
+              "description": "Preset block-size height (`sm`, `md`, `lg`, `full`)."
+            },
+            {
+              "kind": "field",
+              "name": "showLegend",
+              "attribute": "show-legend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of the ECharts legend component."
+            },
+            {
+              "kind": "field",
+              "name": "showTooltip",
+              "attribute": "show-tooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of interactive chart tooltips."
+            },
+            {
+              "kind": "field",
+              "name": "showFallback",
+              "attribute": "show-fallback",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, visually reveals the slotted `<table slot=\"fallback\">` content."
+            },
+            {
+              "kind": "field",
+              "name": "categoriesJson",
+              "attribute": "categories-json",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded category axis labels array."
+            },
+            {
+              "kind": "field",
+              "name": "categories",
+              "type": {
+                "text": "ReadonlyArray<string>"
+              },
+              "description": "Structured JS category axis labels array."
+            },
+            {
+              "kind": "field",
+              "name": "dataJson",
+              "attribute": "data-json",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded data array for single-series declarative usage."
+            },
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "ReadonlyArray<unknown>"
+              },
+              "description": "Structured JS data array for single-series usage."
+            },
+            {
+              "kind": "field",
+              "name": "series",
+              "type": {
+                "text": "ReadonlyArray<MthChartSeriesInput>"
+              },
+              "description": "Programmatic series array supporting all 19 chart types."
+            },
+            {
+              "kind": "field",
+              "name": "option",
+              "type": {
+                "text": "Record<string, unknown>"
+              },
+              "description": "Optional raw ECharts option overrides merged onto the generated configuration."
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "attribute": "loading",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible loading state."
+            },
+            {
+              "kind": "field",
+              "name": "empty",
+              "attribute": "empty",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible empty state."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "chart-title",
+              "fieldName": "chartTitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible chart heading displayed in the header and used as default ARIA label."
+            },
+            {
+              "name": "subtitle",
+              "fieldName": "subtitle",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional descriptive subtitle under the chart heading."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "MthChartType"
+              },
+              "default": "\"line\"",
+              "description": "Default chart visualization type when providing direct `data` / `data-json` on `<mth-chart>`."
+            },
+            {
+              "name": "renderer",
+              "fieldName": "renderer",
+              "type": {
+                "text": "'canvas' | 'svg'"
+              },
+              "default": "\"canvas\"",
+              "description": "ECharts rendering backend (`canvas` or `svg`)."
+            },
+            {
+              "name": "size",
+              "fieldName": "size",
+              "type": {
+                "text": "'sm' | 'md' | 'lg' | 'full'"
+              },
+              "default": "\"md\"",
+              "description": "Preset block-size height (`sm`, `md`, `lg`, `full`)."
+            },
+            {
+              "name": "show-legend",
+              "fieldName": "showLegend",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of the ECharts legend component."
+            },
+            {
+              "name": "show-tooltip",
+              "fieldName": "showTooltip",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Controls visibility of interactive chart tooltips."
+            },
+            {
+              "name": "show-fallback",
+              "fieldName": "showFallback",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When true, visually reveals the slotted `<table slot=\"fallback\">` content."
+            },
+            {
+              "name": "categories-json",
+              "fieldName": "categoriesJson",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded category axis labels array."
+            },
+            {
+              "name": "data-json",
+              "fieldName": "dataJson",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded data array for single-series declarative usage."
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible loading state."
+            },
+            {
+              "name": "empty",
+              "fieldName": "empty",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Displays accessible empty state."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-chart-ready",
+              "type": {
+                "text": "CustomEvent<{ renderer: 'canvas' | 'svg'; mode: 'echarts' | 'headless' }>"
+              },
+              "description": "Emitted when the ECharts engine handle initializes."
+            },
+            {
+              "name": "mth-chart-render",
+              "type": {
+                "text": "CustomEvent<{ seriesCount: number }>"
+              },
+              "description": "Emitted after chart options are applied to the engine."
+            },
+            {
+              "name": "mth-point-select",
+              "type": {
+                "text": "CustomEvent<{ seriesName: string; dataIndex: number; name: string; value: unknown }>"
+              },
+              "description": "Emitted when a data point is clicked in the chart."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Declarative `<mth-chart-series>` child elements."
+            },
+            {
+              "name": "fallback",
+              "description": "SSR and screen-reader accessible data table fallback (`<table slot=\"fallback\">`)."
+            },
+            {
+              "name": "empty",
+              "description": "Optional custom empty state."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer chart container."
+            },
+            {
+              "name": "header",
+              "description": "Chart title, subtitle, and fallback table toggle toolbar."
+            },
+            {
+              "name": "title",
+              "description": "Chart title text."
+            },
+            {
+              "name": "subtitle",
+              "description": "Chart subtitle text."
+            },
+            {
+              "name": "toggle",
+              "description": "Accessible button to toggle the data table fallback."
+            },
+            {
+              "name": "canvas",
+              "description": "ECharts canvas/SVG mount container."
+            },
+            {
+              "name": "fallback",
+              "description": "Container for the slotted data table fallback."
+            },
+            {
+              "name": "status",
+              "description": "Loading or empty overlay status region."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "loading",
+              "description": "Custom element state :state(loading)."
+            },
+            {
+              "name": "empty",
+              "description": "Custom element state :state(empty)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-chart",
+            "package": "@methane/charts",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "MotionController",
+              "ObserverPoolController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "loading",
+              "empty",
+              "reduced-motion"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "focus is on the data table toggle button",
+                "expect": "toggles visibility of the accessible data table fallback"
+              }
+            ],
+            "props": [
+              {
+                "name": "chartTitle",
+                "attr": "chart-title",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "subtitle",
+                "attr": "subtitle",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "type",
+                "attr": "type",
+                "type": "MthChartType",
+                "default": "line"
+              },
+              {
+                "name": "renderer",
+                "attr": "renderer",
+                "type": "'canvas' | 'svg'",
+                "default": "canvas"
+              },
+              {
+                "name": "size",
+                "attr": "size",
+                "type": "'sm' | 'md' | 'lg' | 'full'",
+                "default": "md"
+              },
+              {
+                "name": "showLegend",
+                "attr": "show-legend",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "showTooltip",
+                "attr": "show-tooltip",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "showFallback",
+                "attr": "show-fallback",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "categoriesJson",
+                "attr": "categories-json",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "categories",
+                "attr": false,
+                "type": "ReadonlyArray<string>"
+              },
+              {
+                "name": "dataJson",
+                "attr": "data-json",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "data",
+                "attr": false,
+                "type": "ReadonlyArray<unknown>"
+              },
+              {
+                "name": "series",
+                "attr": false,
+                "type": "ReadonlyArray<MthChartSeriesInput>"
+              },
+              {
+                "name": "option",
+                "attr": false,
+                "type": "Record<string, unknown>"
+              },
+              {
+                "name": "loading",
+                "attr": "loading",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "empty",
+                "attr": "empty",
+                "type": "boolean",
+                "default": false
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-chart-ready",
+                "cancelable": false,
+                "detailType": "{ renderer: 'canvas' | 'svg'; mode: 'echarts' | 'headless' }"
+              },
+              {
+                "name": "mth-chart-render",
+                "cancelable": false,
+                "detailType": "{ seriesCount: number }"
+              },
+              {
+                "name": "mth-point-select",
+                "cancelable": false,
+                "detailType": "{ seriesName: string; dataIndex: number; name: string; value: unknown }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Declarative `<mth-chart-series>` child elements."
+              },
+              {
+                "name": "fallback",
+                "description": "SSR and screen-reader accessible data table fallback (`<table slot=\"fallback\">`)."
+              },
+              {
+                "name": "empty",
+                "description": "Optional custom empty state."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer chart container."
+              },
+              {
+                "name": "header",
+                "description": "Chart title, subtitle, and fallback table toggle toolbar."
+              },
+              {
+                "name": "title",
+                "description": "Chart title text."
+              },
+              {
+                "name": "subtitle",
+                "description": "Chart subtitle text."
+              },
+              {
+                "name": "toggle",
+                "description": "Accessible button to toggle the data table fallback."
+              },
+              {
+                "name": "canvas",
+                "description": "ECharts canvas/SVG mount container."
+              },
+              {
+                "name": "fallback",
+                "description": "Container for the slotted data table fallback."
+              },
+              {
+                "name": "status",
+                "description": "Loading or empty overlay status region."
+              }
+            ],
+            "messages": {
+              "chartLabel": "Data visualization chart",
+              "loadingLabel": "Loading chart data",
+              "emptyLabel": "No chart data available",
+              "fallbackToggleShow": "Show data table",
+              "fallbackToggleHide": "Hide data table"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthChart",
+          "declaration": {
+            "name": "MthChart",
+            "module": "src/components/chart/chart.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-chart",
+          "declaration": {
+            "name": "MthChart",
+            "module": "src/components/chart/chart.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/chart-series/chart-series.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthChartSeries",
+          "tagName": "mth-chart-series",
+          "customElement": true,
+          "description": "Declarative chart data series child element for `<mth-chart>`, supporting all 19 ECharts visualization types (`line`, `bar`, `area`, `pie`, `donut`, `scatter`, `bubble`, `heatmap`, `treemap`, `sunburst`, `sankey`, `radar`, `gauge`, `funnel`, `candlestick`, `histogram`, `boxplot`, `graph`, `choropleth`).",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "attribute": "name",
+              "reflect": true,
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Series display name shown in legend and tooltips."
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "attribute": "type",
+              "reflect": true,
+              "type": {
+                "text": "MthChartType"
+              },
+              "default": "\"line\"",
+              "description": "One of the 19 supported chart visualization types."
+            },
+            {
+              "kind": "field",
+              "name": "dataJson",
+              "attribute": "data-json",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded data array attribute for declarative HTML usage."
+            },
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "ReadonlyArray<unknown>"
+              },
+              "description": "Structured JS series data array."
+            },
+            {
+              "kind": "field",
+              "name": "stack",
+              "attribute": "stack",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional stacking group key for bar/line/area charts."
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "attribute": "color",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional explicit series color token or CSS color."
+            },
+            {
+              "kind": "field",
+              "name": "smooth",
+              "attribute": "smooth",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Applies curve smoothing to line and area series."
+            },
+            {
+              "kind": "field",
+              "name": "hidden",
+              "attribute": "hidden",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the series from rendering while keeping its definition."
+            },
+            {
+              "kind": "field",
+              "name": "xAxisIndex",
+              "attribute": "x-axis-index",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Target X-axis index for multi-axis charts."
+            },
+            {
+              "kind": "field",
+              "name": "yAxisIndex",
+              "attribute": "y-axis-index",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Target Y-axis index for multi-axis charts."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "name",
+              "fieldName": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Series display name shown in legend and tooltips."
+            },
+            {
+              "name": "type",
+              "fieldName": "type",
+              "type": {
+                "text": "MthChartType"
+              },
+              "default": "\"line\"",
+              "description": "One of the 19 supported chart visualization types."
+            },
+            {
+              "name": "data-json",
+              "fieldName": "dataJson",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "JSON-encoded data array attribute for declarative HTML usage."
+            },
+            {
+              "name": "stack",
+              "fieldName": "stack",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional stacking group key for bar/line/area charts."
+            },
+            {
+              "name": "color",
+              "fieldName": "color",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Optional explicit series color token or CSS color."
+            },
+            {
+              "name": "smooth",
+              "fieldName": "smooth",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Applies curve smoothing to line and area series."
+            },
+            {
+              "name": "hidden",
+              "fieldName": "hidden",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Hides the series from rendering while keeping its definition."
+            },
+            {
+              "name": "x-axis-index",
+              "fieldName": "xAxisIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Target X-axis index for multi-axis charts."
+            },
+            {
+              "name": "y-axis-index",
+              "fieldName": "yAxisIndex",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Target Y-axis index for multi-axis charts."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-series-change",
+              "type": {
+                "text": "CustomEvent<{ name: string; type: MthChartType }>"
+              },
+              "description": "Emitted when series data or configuration updates."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Optional declarative fallback content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Non-visual metadata slot container."
+            }
+          ],
+          "cssProperties": [],
+          "cssStates": [
+            {
+              "name": "hidden",
+              "description": "Custom element state :state(hidden)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-chart-series",
+            "package": "@methane/charts",
+            "conformance": [],
+            "controllers": [],
+            "focusModel": "none",
+            "states": [
+              "hidden"
+            ],
+            "keyboard": [],
+            "props": [
+              {
+                "name": "name",
+                "attr": "name",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "type",
+                "attr": "type",
+                "type": "MthChartType",
+                "default": "line"
+              },
+              {
+                "name": "dataJson",
+                "attr": "data-json",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "data",
+                "attr": false,
+                "type": "ReadonlyArray<unknown>"
+              },
+              {
+                "name": "stack",
+                "attr": "stack",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "color",
+                "attr": "color",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "smooth",
+                "attr": "smooth",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "hidden",
+                "attr": "hidden",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "xAxisIndex",
+                "attr": "x-axis-index",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "yAxisIndex",
+                "attr": "y-axis-index",
+                "type": "number",
+                "default": 0
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-series-change",
+                "cancelable": false,
+                "detailType": "{ name: string; type: MthChartType }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "",
+                "description": "Optional declarative fallback content."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Non-visual metadata slot container."
+              }
+            ],
+            "messages": {
+              "seriesLabel": "Chart data series"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthChartSeries",
+          "declaration": {
+            "name": "MthChartSeries",
+            "module": "src/components/chart-series/chart-series.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-chart-series",
+          "declaration": {
+            "name": "MthChartSeries",
+            "module": "src/components/chart-series/chart-series.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
