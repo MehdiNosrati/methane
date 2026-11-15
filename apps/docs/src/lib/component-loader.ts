@@ -49,6 +49,134 @@ const WHEN_NOT_TO_USE_MAP: Readonly<Record<string, string>> = {
   'mth-checkbox': 'Do not use <mth-checkbox> for immediate live-toggling settings without form submit; use <mth-switch>.',
   'mth-dialog': 'Do not use <mth-dialog> for non-modal contextual hints; use <mth-popover> or <mth-tooltip>.',
   'mth-combobox': 'Do not use <mth-combobox> for 2–4 static choices without search; use <mth-radio-group> or native <select>.',
+  'mth-visually-hidden':
+    'Do not use <mth-visually-hidden> on interactive elements that must stay visible when focused; use <mth-skip-link> or native focusable controls.',
+  'mth-skip-link':
+    'Do not use <mth-skip-link> for ordinary page navigation links; reserve it for keyboard bypass links to landmark regions.',
+  'mth-error-boundary':
+    'Do not use <mth-error-boundary> for expected inline field validation errors; use <mth-field> error messages.',
+};
+
+const PRIMITIVES_UTILITY_SPECS: ReadonlyArray<ComponentBehaviorSpec> = [
+  {
+    tag: 'mth-visually-hidden',
+    package: '@methane/primitives',
+    conformance: [],
+    controllers: [],
+    focusModel: 'none',
+    states: [],
+    keyboard: [],
+    props: [],
+    events: [],
+    slots: [{ name: '', description: 'Screen-reader-only accessible text.' }],
+    parts: [],
+    messages: {},
+  },
+  {
+    tag: 'mth-skip-link',
+    package: '@methane/primitives',
+    conformance: [],
+    controllers: [],
+    focusModel: 'delegates-focus',
+    states: [],
+    keyboard: [
+      { key: 'Enter', when: 'focused', expect: 'Jumps focus to target landmark element' },
+    ],
+    props: [{ name: 'href', attr: 'href', type: 'string', default: '#main' }],
+    events: [],
+    slots: [{ name: '', description: 'Skip link label' }],
+    parts: [],
+    messages: { skipToMain: 'Skip to main content' },
+  },
+  {
+    tag: 'mth-error-boundary',
+    package: '@methane/primitives',
+    conformance: [],
+    controllers: [],
+    focusModel: 'none',
+    states: [],
+    keyboard: [],
+    props: [{ name: 'fallbackMessage', attr: 'fallback-message', type: 'string' }],
+    events: [
+      { name: 'mth-error-captured', cancelable: false, detailType: '{ error: unknown }' },
+      { name: 'mth-reset', cancelable: false, detailType: 'void' },
+    ],
+    slots: [
+      { name: '', description: 'Protected subtree content.' },
+      { name: 'fallback', description: 'Optional custom fallback UI.' },
+    ],
+    parts: [],
+    messages: { errorFallback: 'Something went wrong.', retry: 'Retry' },
+  },
+];
+
+const PRIMITIVES_UTILITY_MANIFEST: ExtendedCustomElementsManifest = {
+  schemaVersion: '1.0.0',
+  modules: [
+    {
+      path: 'src/auto-loader.ts',
+      declarations: [
+        {
+          name: 'MthVisuallyHidden',
+          tagName: 'mth-visually-hidden',
+          customElement: true,
+          description:
+            'Screen-reader-only Light-DOM wrapper using CSS logical properties.',
+          slots: [{ name: '', description: 'Screen-reader-only accessible text.' }],
+        },
+        {
+          name: 'MthSkipLink',
+          tagName: 'mth-skip-link',
+          customElement: true,
+          description:
+            'Focus-revealed skip link for keyboard navigation to landmark targets.',
+          members: [
+            {
+              kind: 'field',
+              name: 'href',
+              attribute: 'href',
+              type: { text: 'string' },
+              default: "'#main'",
+              description: 'Target hash fragment or URL for the skip link anchor.',
+            },
+          ],
+          slots: [{ name: '', description: 'Skip link label (defaults to localized skipToMain).' }],
+        },
+        {
+          name: 'MthErrorBoundary',
+          tagName: 'mth-error-boundary',
+          customElement: true,
+          description:
+            'Captures subtree errors and mth-error events to render a localized declarative fallback.',
+          members: [
+            {
+              kind: 'field',
+              name: 'fallbackMessage',
+              attribute: 'fallback-message',
+              type: { text: 'string' },
+              description: 'Optional fallback error message override.',
+            },
+          ],
+          events: [
+            {
+              name: 'mth-error-captured',
+              type: { text: 'CustomEvent<{ error: unknown }>' },
+              description: 'Dispatched when a subtree error is captured.',
+            },
+            {
+              name: 'mth-reset',
+              type: { text: 'CustomEvent<void>' },
+              description: 'Dispatched when the error boundary resets.',
+            },
+          ],
+          slots: [
+            { name: '', description: 'Protected subtree content.' },
+            { name: 'fallback', description: 'Optional custom fallback UI.' },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 function findRepoRoot(): string {
@@ -167,7 +295,7 @@ async function discoverWorkspaceSpecs(
   return specByTag;
 }
 
-function buildComponentSnippets(model: NormalizedComponentModel) {
+function buildComponentSnippets(model: NormalizedComponentModel, packageName: string) {
   const sampleAttrs = model.props
     .filter((p) => p.attr !== null)
     .slice(0, 2)
@@ -179,11 +307,15 @@ function buildComponentSnippets(model: NormalizedComponentModel) {
     .join(' ');
   const attrStr = sampleAttrs ? ` ${sampleAttrs}` : '';
   const body = model.slots.some((s) => s.name === '') ? 'Example' : '';
+  const importPath =
+    packageName === '@methane/primitives'
+      ? '@methane/primitives'
+      : `@methane/ui/${model.tagName.replace(/^mth-/, '')}`;
 
   return {
-    html: `<script type="module" src="@methane/ui/${model.tagName.replace(/^mth-/, '')}"></script>\n<${model.tagName}${attrStr}>${body}</${model.tagName}>`,
-    react: `import '@methane/ui/${model.tagName.replace(/^mth-/, '')}';\nimport '@methane/react';\n\nexport function Example() {\n  return <${model.tagName}${attrStr}>${body}</${model.tagName}>;\n}`,
-    vue: `<script setup lang="ts">\nimport '@methane/ui/${model.tagName.replace(/^mth-/, '')}';\n</script>\n\n<template>\n  <${model.tagName}${attrStr}>${body}</${model.tagName}>\n</template>`,
+    html: `<script type="module" src="${importPath}"></script>\n<${model.tagName}${attrStr}>${body}</${model.tagName}>`,
+    react: `import '${importPath}';\nimport '@methane/react';\n\nexport function Example() {\n  return <${model.tagName}${attrStr}>${body}</${model.tagName}>;\n}`,
+    vue: `<script setup lang="ts">\nimport '${importPath}';\n</script>\n\n<template>\n  <${model.tagName}${attrStr}>${body}</${model.tagName}>\n</template>`,
     angular: `import { ${model.className}Directive } from '@methane/angular';\n\n@Component({\n  standalone: true,\n  imports: [${model.className}Directive],\n  template: \`<${model.tagName}${attrStr}>${body}</${model.tagName}>\`,\n})\nexport class ExampleComponent {}`,
     svelte: `<script lang="ts">\n  import ${model.className} from '@methane/svelte/${model.className}.svelte';\n</script>\n\n<${model.className}${attrStr}>${body}</${model.className}>`,
   };
@@ -196,9 +328,19 @@ export async function loadComponentDocs(
   const packageDirs = getWorkspacePackageDirs(repoRoot);
   const discovered = discoverWorkspaceCems(packageDirs);
   const manifests: ExtendedCustomElementsManifest[] =
-    discovered.length > 0 ? discovered : [DEFAULT_CEM_FIXTURE];
+    discovered.length > 0 ? [...discovered] : [DEFAULT_CEM_FIXTURE];
+  if (existsSync(resolve(repoRoot, 'packages/primitives/src/auto-loader.ts'))) {
+    manifests.push(PRIMITIVES_UTILITY_MANIFEST);
+  }
 
   const specByTag = await discoverWorkspaceSpecs(packageDirs, manifests);
+  if (existsSync(resolve(repoRoot, 'packages/primitives/src/auto-loader.ts'))) {
+    for (const utilitySpec of PRIMITIVES_UTILITY_SPECS) {
+      if (!specByTag.has(utilitySpec.tag)) {
+        specByTag.set(utilitySpec.tag, utilitySpec);
+      }
+    }
+  }
   const allSpecs = [...specByTag.values()];
 
   const byTag = new Map<string, NormalizedComponentModel>();
@@ -212,6 +354,7 @@ export async function loadComponentDocs(
     .sort((a, b) => a.tagName.localeCompare(b.tagName))
     .map((model) => {
       const spec = specByTag.get(model.tagName) ?? null;
+      const packageName = spec?.package ?? '@methane/ui';
       const specMarkdown = spec ? compileSpecDocs(spec) : null;
       const a11yChecklist = spec ? compileA11yChecklist(spec) : null;
       const controllerCount = spec?.controllers.length ?? 0;
@@ -219,7 +362,7 @@ export async function loadComponentDocs(
       return {
         tagName: model.tagName,
         className: model.className,
-        packageName: spec?.package ?? '@methane/ui',
+        packageName,
         description: model.description || `Methane ${model.tagName} custom element.`,
         model,
         spec,
@@ -232,7 +375,7 @@ export async function loadComponentDocs(
           coldLabel: `~${(6.8 + controllerCount * 1.1).toFixed(1)} KB brotli (cold + Lit)`,
           marginalLabel: `~${(1.4 + controllerCount * 0.6).toFixed(1)} KB marginal`,
         },
-        snippets: buildComponentSnippets(model),
+        snippets: buildComponentSnippets(model, packageName),
       };
     });
 }

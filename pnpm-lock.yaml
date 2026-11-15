@@ -53,6 +53,9 @@ importers:
       '@methane/css':
         specifier: workspace:*
         version: link:../../packages/css
+      '@methane/primitives':
+        specifier: workspace:*
+        version: link:../../packages/primitives
       '@methane/spec-compiler':
         specifier: workspace:*
         version: link:../../tooling/spec-compiler
@@ -62,6 +65,9 @@ importers:
       '@methane/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
+      '@methane/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@methane/wrapper-codegen':
         specifier: workspace:*
         version: link:../../tooling/wrapper-codegen

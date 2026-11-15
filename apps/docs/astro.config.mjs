@@ -7,7 +7,7 @@ const serverEntrypoint = fileURLToPath(new URL('./src/lib/astro-renderer.ts', im
 const clientEntrypoint = fileURLToPath(new URL('./src/lib/astro-client.ts', import.meta.url));
 
 export default defineConfig({
-  site: 'https://mehdinosrati.github.io',
+  site: 'https://mahdins.dev',
   base: '/methane',
   outDir: './dist',
   output: 'static',

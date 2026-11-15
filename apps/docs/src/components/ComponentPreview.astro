@@ -1,0 +1,556 @@
+---
+import type { ComponentDocEntry } from '../lib/component-loader.js';
+
+interface Props {
+  entry: ComponentDocEntry;
+}
+
+const { entry } = Astro.props;
+const stageId = `preview-${entry.tagName}`;
+
+const PHASE1_UPCOMING_TAGS = new Set(['mth-button', 'mth-checkbox', 'mth-switch']);
+const isUpcoming = PHASE1_UPCOMING_TAGS.has(entry.tagName);
+
+interface PropControl {
+  name: string;
+  attr: string;
+  kind: 'boolean' | 'enum' | 'text';
+  options?: string[];
+  defaultValue: string;
+}
+
+function buildControls(): PropControl[] {
+  const controls: PropControl[] = [];
+  for (const prop of entry.model.props.slice(0, 4)) {
+    const attr = prop.attr ?? prop.name;
+    const rawType = prop.type.trim();
+    const cleanDefault = (prop.defaultValue ?? '').replace(/^['"]|['"]$/g, '');
+    if (rawType === 'boolean') {
+      controls.push({
+        name: prop.name,
+        attr,
+        kind: 'boolean',
+        defaultValue: cleanDefault === 'true' ? 'true' : 'false',
+      });
+    } else if (rawType.includes('|') && rawType.includes("'")) {
+      const options = rawType
+        .split('|')
+        .map((part) => part.trim().replace(/^['"]|['"]$/g, ''))
+        .filter((part) => part.length > 0 && part !== 'undefined');
+      if (options.length > 0) {
+        controls.push({
+          name: prop.name,
+          attr,
+          kind: 'enum',
+          options,
+          defaultValue: cleanDefault || options[0] || '',
+        });
+      }
+    } else if (rawType === 'string') {
+      controls.push({
+        name: prop.name,
+        attr,
+        kind: 'text',
+        defaultValue: cleanDefault,
+      });
+    }
+  }
+  return controls;
+}
+
+const propControls = buildControls();
+---
+
+<section
+  class="docs-preview docs-preview-stage"
+  id={stageId}
+  data-preview-stage
+  data-preview-tag={entry.tagName}
+  data-preview-upcoming={isUpcoming ? 'true' : 'false'}
+  aria-label={`Live interactive preview for ${entry.tagName}`}
+>
+  <div class="docs-preview-toolbar">
+    <mth-flex data-gap="2" data-align="center">
+      <strong>Interactive Stage</strong>
+      <span class="docs-badge" data-preview-status>
+        {
+          isUpcoming
+            ? `Token-Styled Preview · Phase 1 <${entry.tagName}> upcoming`
+            : `Live Custom Element · <${entry.tagName}>`
+        }
+      </span>
+    </mth-flex>
+
+    <div class="docs-preview-controls">
+      <label class="docs-preview-control">
+        <span>Theme</span>
+        <select data-preview-theme aria-label="Preview stage theme">
+          <option value="auto">Auto</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="high-contrast">High Contrast</option>
+        </select>
+      </label>
+
+      <label class="docs-preview-control">
+        <span>Direction</span>
+        <select data-preview-dir aria-label="Preview text direction">
+          <option value="ltr">LTR</option>
+          <option value="rtl">RTL</option>
+        </select>
+      </label>
+
+      {
+        propControls.map((ctrl) =>
+          ctrl.kind === 'boolean' ? (
+            <label class="docs-preview-control">
+              <input
+                type="checkbox"
+                data-preview-prop={ctrl.attr}
+                checked={ctrl.defaultValue === 'true'}
+              />
+              <span>{ctrl.name}</span>
+            </label>
+          ) : ctrl.kind === 'enum' ? (
+            <label class="docs-preview-control">
+              <span>{ctrl.name}</span>
+              <select data-preview-prop={ctrl.attr} aria-label={`Prop ${ctrl.name}`}>
+                {(ctrl.options ?? []).map((opt) => (
+                  <option value={opt} selected={opt === ctrl.defaultValue}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <label class="docs-preview-control">
+              <span>{ctrl.name}</span>
+              <input
+                type="text"
+                value={ctrl.defaultValue}
+                placeholder={ctrl.name}
+                data-preview-prop={ctrl.attr}
+              />
+            </label>
+          ),
+        )
+      }
+    </div>
+  </div>
+
+  <div class="docs-preview-canvas" data-preview-canvas dir="ltr">
+    {/* 9 Shipped Live Custom Elements (@methane/ui + @methane/primitives) */}
+    {
+      entry.tagName === 'mth-input' && (
+        <mth-input
+          label="Email address"
+          placeholder="you@methane.dev"
+          hint="Work or personal email"
+          data-preview-target
+        />
+      )
+    }
+
+    {
+      entry.tagName === 'mth-field' && (
+        <mth-field label="Workspace slug" hint="Used in project URLs" data-preview-target>
+          <mth-input value="methane-ui" />
+        </mth-field>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-combobox' && (
+        <mth-combobox
+          label="Framework wrapper"
+          placeholder="Filter frameworks..."
+          clearable
+          data-preview-target
+        >
+          <mth-option-group label="SSR & Meta-Frameworks">
+            <mth-option value="astro" label="Astro SSR (DSD)">
+              Astro SSR (DSD)
+            </mth-option>
+            <mth-option value="next" label="Next.js 15 RSC">
+              Next.js 15 RSC
+            </mth-option>
+            <mth-option value="nuxt" label="Nuxt 3 Nitro">
+              Nuxt 3 Nitro
+            </mth-option>
+          </mth-option-group>
+          <mth-option-group label="Client Wrappers">
+            <mth-option value="react" label="React 19 Wrapper">
+              React 19 Wrapper
+            </mth-option>
+            <mth-option value="svelte" label="Svelte 5 Runes">
+              Svelte 5 Runes
+            </mth-option>
+          </mth-option-group>
+        </mth-combobox>
+      )
+    }
+
+    {
+      (entry.tagName === 'mth-option' || entry.tagName === 'mth-option-group') && (
+        <div class="mth-preview-listbox" role="listbox" aria-label="Architecture options">
+          <mth-option-group
+            label="Architecture Pillars"
+            data-preview-target={entry.tagName === 'mth-option-group' ? '' : undefined}
+          >
+            <mth-option
+              value="oklch"
+              label="OKLCH Perceptual Ramp"
+              selected
+              data-preview-target={entry.tagName === 'mth-option' ? '' : undefined}
+            >
+              OKLCH Perceptual Ramp
+            </mth-option>
+            <mth-option value="logical" label="CSS Logical Properties">
+              CSS Logical Properties
+            </mth-option>
+            <mth-option value="dsd" label="Declarative Shadow DOM">
+              Declarative Shadow DOM
+            </mth-option>
+          </mth-option-group>
+        </div>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-dialog' && (
+        <mth-stack data-gap="3" style="align-items:center">
+          <button type="button" class="mth-preview-btn" data-dialog-open>
+            Open Live &lt;mth-dialog&gt;
+          </button>
+          <mth-dialog
+            label="Confirm Release Action"
+            description="Top-layer modal focus trap and Escape dismissal."
+            variant="confirm"
+            data-preview-target
+          >
+            <p style="margin-block:0">
+              Publish <code>@methane/ui</code> release artifacts with Sigstore provenance?
+            </p>
+          </mth-dialog>
+        </mth-stack>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-visually-hidden' && (
+        <button type="button" class="mth-preview-btn" data-vh-trigger>
+          <span aria-hidden="true">★</span>
+          <span>Bookmark</span>
+          <mth-visually-hidden data-preview-target>
+            Save Methane component documentation bookmark
+          </mth-visually-hidden>
+        </button>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-skip-link' && (
+        <mth-stack data-gap="3" style="align-items:center">
+          <button type="button" class="mth-preview-btn" data-variant="secondary" data-skip-focus>
+            Focus Skip Link
+          </button>
+          <mth-skip-link href="#preview-skip-destination" data-preview-target>
+            Skip to preview destination
+          </mth-skip-link>
+          <div id="preview-skip-destination" class="docs-card" tabindex="-1">
+            Skip link destination region
+          </div>
+        </mth-stack>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-error-boundary' && (
+        <mth-stack data-gap="3" style="inline-size:min(100%,24rem)">
+          <mth-flex data-gap="2">
+            <button type="button" class="mth-preview-btn" data-variant="danger" data-eb-trigger>
+              Simulate Error
+            </button>
+            <button type="button" class="mth-preview-btn" data-variant="secondary" data-eb-reset>
+              Reset
+            </button>
+          </mth-flex>
+          <mth-error-boundary
+            fallback-message="Recovered cleanly from subtree failure."
+            data-preview-target
+          >
+            <div class="docs-card" data-eb-child>
+              Protected subtree healthy · click Simulate Error to test declarative fallback.
+            </div>
+          </mth-error-boundary>
+        </mth-stack>
+      )
+    }
+
+    {/* 3 Phase 1 Upcoming Token-Styled Previews */}
+    {
+      entry.tagName === 'mth-button' && (
+        <button
+          type="button"
+          class="mth-preview-btn"
+          data-preview-target
+          data-variant="primary"
+          data-size="md"
+        >
+          Continue Action
+        </button>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-checkbox' && (
+        <label class="mth-flex" data-gap="2" data-align="center" style="cursor:pointer">
+          <input type="checkbox" data-preview-target />
+          <span>Accept Methane Design System terms</span>
+        </label>
+      )
+    }
+
+    {
+      entry.tagName === 'mth-switch' && (
+        <div class="mth-preview-switch-wrap">
+          <button
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="Enable automatic OKLCH dark mode"
+            class="mth-preview-switch"
+            data-preview-target
+          >
+            <span class="mth-preview-switch-thumb" />
+          </button>
+          <span>Automatic OKLCH dark mode</span>
+        </div>
+      )
+    }
+
+    {
+      ![
+        'mth-input',
+        'mth-field',
+        'mth-combobox',
+        'mth-option',
+        'mth-option-group',
+        'mth-dialog',
+        'mth-visually-hidden',
+        'mth-skip-link',
+        'mth-error-boundary',
+        'mth-button',
+        'mth-checkbox',
+        'mth-switch',
+      ].includes(entry.tagName) && (
+        <div class="docs-card" data-preview-target>
+          <code>&lt;{entry.tagName}&gt;</code> live preview surface
+        </div>
+      )
+    }
+  </div>
+
+  <div class="docs-preview-output" data-preview-readout>
+    Ready · toggle Theme, Direction (LTR/RTL), or props above to inspect live behavior.
+  </div>
+</section>
+
+<script>
+  const stages = document.querySelectorAll<HTMLElement>('[data-preview-stage]');
+
+  for (const stage of stages) {
+    const tag = stage.dataset.previewTag ?? '';
+    const canvas = stage.querySelector<HTMLElement>('[data-preview-canvas]');
+    const readoutEl = stage.querySelector<HTMLElement>('[data-preview-readout]');
+    const themeSelect = stage.querySelector<HTMLSelectElement>('[data-preview-theme]');
+    const dirSelect = stage.querySelector<HTMLSelectElement>('[data-preview-dir]');
+    const targetEl = stage.querySelector<HTMLElement>('[data-preview-target]');
+    const propControls = stage.querySelectorAll<HTMLElement>('[data-preview-prop]');
+
+    function setReadout(msg: string) {
+      if (readoutEl) readoutEl.textContent = msg;
+    }
+
+    function applyCanvasTheme(val: string) {
+      if (!canvas) return;
+      canvas.removeAttribute('data-mth-theme');
+      canvas.removeAttribute('data-mth-contrast');
+      if (val === 'light' || val === 'dark') {
+        canvas.setAttribute('data-mth-theme', val);
+      } else if (val === 'high-contrast') {
+        canvas.setAttribute('data-mth-contrast', 'high');
+      }
+      setReadout(`Stage theme="${val}" · dir="${canvas.getAttribute('dir') ?? 'ltr'}"`);
+    }
+
+    themeSelect?.addEventListener('change', () => applyCanvasTheme(themeSelect.value));
+    dirSelect?.addEventListener('change', () => {
+      if (!canvas) return;
+      canvas.setAttribute('dir', dirSelect.value);
+      setReadout(`Stage dir="${dirSelect.value}" · CSS logical properties flipped automatically.`);
+    });
+
+    function syncPropsToElement(el: HTMLElement | null) {
+      if (!el) return;
+      for (const ctrl of propControls) {
+        const attr = ctrl.dataset.previewProp;
+        if (!attr) continue;
+        if (ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox') {
+          if (ctrl.checked) {
+            el.setAttribute(attr, '');
+            if (el instanceof HTMLInputElement || el instanceof HTMLButtonElement) {
+              if (attr === 'disabled') el.disabled = true;
+              if (attr === 'checked' && el instanceof HTMLInputElement) el.checked = true;
+            }
+            if (attr === 'checked' && el.getAttribute('role') === 'switch') {
+              el.setAttribute('aria-checked', 'true');
+            }
+          } else {
+            el.removeAttribute(attr);
+            if (el instanceof HTMLInputElement || el instanceof HTMLButtonElement) {
+              if (attr === 'disabled') el.disabled = false;
+              if (attr === 'checked' && el instanceof HTMLInputElement) el.checked = false;
+            }
+            if (attr === 'checked' && el.getAttribute('role') === 'switch') {
+              el.setAttribute('aria-checked', 'false');
+            }
+          }
+        } else if (ctrl instanceof HTMLSelectElement || ctrl instanceof HTMLInputElement) {
+          el.setAttribute(`data-${attr}`, ctrl.value);
+          el.setAttribute(attr, ctrl.value);
+          if (attr === 'placeholder' && el instanceof HTMLInputElement) {
+            el.placeholder = ctrl.value;
+          } else if (attr === 'value' && el instanceof HTMLInputElement) {
+            el.value = ctrl.value;
+          }
+        }
+      }
+    }
+
+    for (const ctrl of propControls) {
+      const eventName =
+        ctrl instanceof HTMLInputElement && ctrl.type === 'text' ? 'input' : 'change';
+      ctrl.addEventListener(eventName, () => {
+        syncPropsToElement(targetEl);
+        const attr = ctrl.dataset.previewProp ?? 'prop';
+        const val =
+          ctrl instanceof HTMLInputElement && ctrl.type === 'checkbox'
+            ? String(ctrl.checked)
+            : (ctrl as HTMLInputElement | HTMLSelectElement).value;
+        setReadout(`Updated ${attr}="${val}" on <${tag}>.`);
+      });
+    }
+
+    // Interactive wiring for shipped custom elements
+    if (tag === 'mth-input' && targetEl) {
+      targetEl.addEventListener('mth-input', (ev) => {
+        const detail = (ev as CustomEvent<{ value?: string }>).detail;
+        setReadout(`mth-input event: { value: ${JSON.stringify(detail?.value ?? '')} }`);
+      });
+      targetEl.addEventListener('mth-change', (ev) => {
+        const detail = (ev as CustomEvent<{ value?: string }>).detail;
+        setReadout(`mth-change event: { value: ${JSON.stringify(detail?.value ?? '')} }`);
+      });
+    } else if (tag === 'mth-field' && canvas) {
+      canvas.addEventListener('mth-input', (ev) => {
+        const detail = (ev as CustomEvent<{ value?: string }>).detail;
+        setReadout(`<mth-field> slotted input: { value: ${JSON.stringify(detail?.value ?? '')} }`);
+      });
+      canvas.addEventListener('mth-change', (ev) => {
+        const detail = (ev as CustomEvent<{ value?: string }>).detail;
+        setReadout(`<mth-field> mth-change: { value: ${JSON.stringify(detail?.value ?? '')} }`);
+      });
+    } else if (tag === 'mth-combobox' && targetEl) {
+      for (const evName of ['mth-open', 'mth-after-open', 'mth-close', 'mth-clear']) {
+        targetEl.addEventListener(evName, () => setReadout(`<mth-combobox> ${evName}`));
+      }
+      targetEl.addEventListener('mth-change', (ev) => {
+        const detail = (ev as CustomEvent<{ value?: string }>).detail;
+        setReadout(`mth-change event: ${JSON.stringify(detail ?? {})}`);
+      });
+    } else if ((tag === 'mth-option' || tag === 'mth-option-group') && canvas) {
+      const options = canvas.querySelectorAll<HTMLElement>('mth-option');
+      for (const opt of options) {
+        opt.addEventListener('click', () => {
+          if (opt.hasAttribute('disabled')) return;
+          for (const sibling of options) sibling.removeAttribute('selected');
+          opt.setAttribute('selected', '');
+          setReadout(`Selected <mth-option value="${opt.getAttribute('value') ?? ''}">`);
+        });
+      }
+    } else if (tag === 'mth-dialog' && canvas && targetEl) {
+      const openBtn = canvas.querySelector<HTMLButtonElement>('[data-dialog-open]');
+      openBtn?.addEventListener('click', () => {
+        const dlg = targetEl as HTMLElement & { show?: () => Promise<boolean> };
+        if (typeof dlg.show === 'function') {
+          void dlg.show();
+        } else {
+          dlg.setAttribute('open', '');
+        }
+      });
+      for (const evName of ['mth-open', 'mth-confirm', 'mth-cancel', 'mth-close']) {
+        targetEl.addEventListener(evName, (ev) => {
+          const detail = (ev as CustomEvent<unknown>).detail;
+          setReadout(
+            `<mth-dialog> ${evName}${detail !== undefined ? `: ${JSON.stringify(detail)}` : ''}`,
+          );
+        });
+      }
+    } else if (tag === 'mth-visually-hidden' && canvas && targetEl) {
+      const trigger = canvas.querySelector<HTMLButtonElement>('[data-vh-trigger]');
+      trigger?.addEventListener('click', () => {
+        setReadout(
+          `Screen-reader text inside <mth-visually-hidden>: "${targetEl.textContent?.trim() ?? ''}"`,
+        );
+      });
+    } else if (tag === 'mth-skip-link' && canvas && targetEl) {
+      const focusBtn = canvas.querySelector<HTMLButtonElement>('[data-skip-focus]');
+      focusBtn?.addEventListener('click', () => {
+        const anchor = targetEl.shadowRoot?.querySelector('a');
+        if (anchor instanceof HTMLElement) {
+          anchor.focus();
+          setReadout('Focused <mth-skip-link> anchor in shadow root (press Enter to jump).');
+        }
+      });
+    } else if (tag === 'mth-error-boundary' && canvas && targetEl) {
+      const errBtn = canvas.querySelector<HTMLButtonElement>('[data-eb-trigger]');
+      const resetBtn = canvas.querySelector<HTMLButtonElement>('[data-eb-reset]');
+      const child = canvas.querySelector<HTMLElement>('[data-eb-child]');
+      errBtn?.addEventListener('click', () => {
+        (child ?? targetEl).dispatchEvent(
+          new CustomEvent('mth-error', {
+            bubbles: true,
+            detail: { error: new Error('Simulated preview subtree error') },
+          }),
+        );
+      });
+      resetBtn?.addEventListener('click', () => {
+        const eb = targetEl as HTMLElement & { reset?: () => void };
+        eb.reset?.();
+      });
+      targetEl.addEventListener('mth-error-captured', () => {
+        setReadout('<mth-error-boundary> mth-error-captured: displaying declarative fallback');
+      });
+      targetEl.addEventListener('mth-reset', () => {
+        setReadout('<mth-error-boundary> mth-reset: restored protected subtree');
+      });
+    } else if (tag === 'mth-button' && targetEl) {
+      let clicks = 0;
+      targetEl.addEventListener('click', () => {
+        clicks++;
+        setReadout(`<mth-button> preview activated (${clicks} click${clicks === 1 ? '' : 's'})`);
+      });
+    } else if (tag === 'mth-switch' && targetEl) {
+      targetEl.addEventListener('click', () => {
+        const next = targetEl.getAttribute('aria-checked') !== 'true';
+        targetEl.setAttribute('aria-checked', String(next));
+        setReadout(`mth-change preview: { checked: ${next} }`);
+      });
+    } else if (tag === 'mth-checkbox' && targetEl instanceof HTMLInputElement) {
+      targetEl.addEventListener('change', () => {
+        setReadout(`mth-change preview: { checked: ${targetEl.checked} }`);
+      });
+    }
+  }
+</script>
