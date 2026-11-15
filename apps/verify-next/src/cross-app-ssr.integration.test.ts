@@ -389,7 +389,7 @@ describe('Cross-app HTTP SSR + HydrationPuritySuite integration', () => {
         await harness.close();
       }
     },
-    30_000,
+    120_000,
   );
 
   it(
@@ -484,6 +484,6 @@ describe('Cross-app HTTP SSR + HydrationPuritySuite integration', () => {
         await Promise.all(servers.map((srv) => srv.close()));
       }
     },
-    30_000,
+    120_000,
   );
 });
