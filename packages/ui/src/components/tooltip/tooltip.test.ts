@@ -1,5 +1,5 @@
 import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
-import { HydrationPuritySuite, scanSameRootAria } from '@methane/test-conformance';
+import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane/test-conformance';
 import { html as litHtml } from 'lit';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
@@ -38,6 +38,29 @@ describe('<mth-tooltip>', () => {
     });
     expect(report.failures).toEqual([]);
     expect(report.passed).toBe(true);
+
+    const fallbackReport = await OverlaySuite.run({
+      mount: async () => {
+        const trigger = document.createElement('button');
+        trigger.textContent = 'Fallback trigger';
+        const overlay = document.createElement('mth-tooltip') as MthTooltip;
+        overlay.forceFallback = true;
+        overlay.content = 'Fallback tooltip';
+        overlay.anchor = trigger;
+        return { overlay, trigger };
+      },
+      open: async (overlay) => {
+        await (overlay as MthTooltip).show();
+      },
+      close: async (overlay) => {
+        await (overlay as MthTooltip).hide('programmatic');
+      },
+      isOpen: (overlay) => (overlay as MthTooltip).open,
+      supportsCancelableOpen: true,
+      supportsLightDismiss: true,
+    });
+    expect(fallbackReport.failures).toEqual([]);
+    expect(fallbackReport.passed).toBe(true);
   });
 
   it('triggers via hover/focus/long-press/interestfor and dismisses on Escape without stealing focus', async () => {

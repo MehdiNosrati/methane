@@ -53,9 +53,18 @@ export class MthMenuItem extends UIElement {
   @query('slot[name="submenu"]')
   private submenuSlotEl!: HTMLSlotElement | null;
 
+  private pendingSubmenuFocus: MthMenuItem | null = null;
+
   override connectedCallback(): void {
     super.connectedCallback();
+    this.removeEventListener('keydown', this.handleKeyDown);
+    this.addEventListener('keydown', this.handleKeyDown);
     this.syncAccessibilityState();
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.removeEventListener('keydown', this.handleKeyDown);
   }
 
   protected override willUpdate(changedProperties: PropertyValues): void {
@@ -73,6 +82,17 @@ export class MthMenuItem extends UIElement {
     }
   }
 
+  protected override updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+    if (changedProperties.has('submenuOpen') && this.submenuOpen && this.pendingSubmenuFocus) {
+      const target = this.pendingSubmenuFocus;
+      this.pendingSubmenuFocus = null;
+      if (document.activeElement !== target) {
+        target.focus();
+      }
+    }
+  }
+
   getResolvedLabel(): string {
     return this.textContent?.trim() ?? '';
   }
@@ -87,20 +107,30 @@ export class MthMenuItem extends UIElement {
   openSubmenu(focusFirst = true): boolean {
     if (this.disabled || !this.hasSubmenu) return false;
     this.submenuOpen = true;
-    if (focusFirst) {
-      const items = this.getSubmenuItems();
-      const firstEnabled = items.find((item) => !item.disabled);
-      if (firstEnabled) {
-        firstEnabled.tabIndex = 0;
-        firstEnabled.focus();
-      }
+    const items = this.getSubmenuItems();
+    const firstEnabled = items.find((item) => !item.disabled);
+    items.forEach((item) => {
+      const isTarget = focusFirst && item === firstEnabled;
+      item.tabIndex = isTarget ? 0 : -1;
+      item.active = isTarget;
+    });
+    if (focusFirst && firstEnabled) {
+      this.pendingSubmenuFocus = firstEnabled;
+      firstEnabled.focus();
+    } else {
+      this.pendingSubmenuFocus = null;
     }
     return true;
   }
 
   closeSubmenu(restoreFocus = false): void {
+    this.pendingSubmenuFocus = null;
     if (!this.submenuOpen) return;
     this.submenuOpen = false;
+    for (const item of this.getSubmenuItems()) {
+      item.active = false;
+      item.closeSubmenu(false);
+    }
     if (restoreFocus) {
       this.focus();
     }
@@ -210,21 +240,64 @@ export class MthMenuItem extends UIElement {
     const openKey = rtl ? 'ArrowLeft' : 'ArrowRight';
     const closeKey = rtl ? 'ArrowRight' : 'ArrowLeft';
 
-    if (event.key === openKey && this.hasSubmenu) {
+    const submenuItems = this.submenuOpen && this.hasSubmenu ? this.getSubmenuItems() : [];
+    const target = event.target as Node | null;
+    const targetSubmenuIdx =
+      submenuItems.length > 0 && target !== null && target !== this
+        ? submenuItems.findIndex((item) => item === target || item.contains(target))
+        : -1;
+
+    if (targetSubmenuIdx >= 0) {
+      if (
+        event.key === 'ArrowDown' ||
+        event.key === 'ArrowUp' ||
+        event.key === 'Home' ||
+        event.key === 'End'
+      ) {
+        const enabledIndices = submenuItems
+          .map((item, idx) => (!item.disabled ? idx : -1))
+          .filter((idx) => idx >= 0);
+        if (enabledIndices.length > 0) {
+          let nextIndex = targetSubmenuIdx;
+          if (event.key === 'Home') {
+            nextIndex = enabledIndices[0]!;
+          } else if (event.key === 'End') {
+            nextIndex = enabledIndices[enabledIndices.length - 1]!;
+          } else {
+            const pos = enabledIndices.indexOf(targetSubmenuIdx);
+            const delta = event.key === 'ArrowDown' ? 1 : -1;
+            const base = pos >= 0 ? pos : 0;
+            nextIndex =
+              enabledIndices[(base + delta + enabledIndices.length) % enabledIndices.length]!;
+          }
+          submenuItems.forEach((item, idx) => {
+            const isNext = idx === nextIndex;
+            item.tabIndex = isNext ? 0 : -1;
+            item.active = isNext;
+          });
+          submenuItems[nextIndex]!.focus();
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
+      if (event.key === closeKey || event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        this.closeSubmenu(true);
+        return;
+      }
+    }
+
+    if (event.key === openKey && this.hasSubmenu && !this.submenuOpen) {
       event.preventDefault();
       event.stopPropagation();
       this.openSubmenu(true);
       return;
     }
 
-    if (event.key === closeKey && this.submenuOpen) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.closeSubmenu(true);
-      return;
-    }
-
-    if (event.key === 'Escape' && this.submenuOpen) {
+    if ((event.key === closeKey || event.key === 'Escape') && this.submenuOpen) {
       event.preventDefault();
       event.stopPropagation();
       this.closeSubmenu(true);
@@ -232,10 +305,14 @@ export class MthMenuItem extends UIElement {
     }
 
     if (event.key === 'Enter' || event.key === ' ') {
-      if (this.hasSubmenu && event.target === this) {
+      if (event.target === this) {
         event.preventDefault();
         event.stopPropagation();
-        this.openSubmenu(true);
+        if (this.hasSubmenu) {
+          this.openSubmenu(true);
+        } else {
+          this.activate();
+        }
       }
     }
   };
@@ -252,7 +329,7 @@ export class MthMenuItem extends UIElement {
 
   override render() {
     return html`
-      <div part="base" class="base" @click=${this.handleClick} @keydown=${this.handleKeyDown}>
+      <div part="base" class="base" @click=${this.handleClick}>
         <span part="check" class="check" aria-hidden="true">${this.renderCheckGlyph()}</span>
         <slot name="prefix"></slot>
         <span part="label" class="label"><slot></slot></span>

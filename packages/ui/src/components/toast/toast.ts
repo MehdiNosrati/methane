@@ -1,4 +1,4 @@
-import { UIElement, type NotificationItem, type PropertyValues } from '@methane/core';
+import { getRuntime, UIElement, type NotificationItem, type PropertyValues } from '@methane/core';
 import {
   LiveAnnouncer,
   NotificationStoreController,
@@ -27,7 +27,17 @@ export interface MthToastNotifyOptions extends Omit<NotifyOptions, 'tone' | 'dur
   readonly duration?: number;
 }
 
-const sharedStoreController = new NotificationStoreController(null);
+const TOAST_CONTROLLER_SYMBOL = Symbol.for('@methane/ui/toast-controller');
+
+function getSharedStoreController(): NotificationStoreController {
+  const runtime = getRuntime() as unknown as Record<symbol, NotificationStoreController | undefined>;
+  let controller = runtime[TOAST_CONTROLLER_SYMBOL];
+  if (!controller) {
+    controller = new NotificationStoreController(null);
+    runtime[TOAST_CONTROLLER_SYMBOL] = controller;
+  }
+  return controller;
+}
 
 /**
  * `<mth-toast>`: accessible toast notification surface & `NotificationStore` viewport
@@ -48,7 +58,7 @@ export class MthToast extends UIElement {
     const tone = normalized.variant ?? 'info';
     const durationMs = normalized.duration ?? 5000;
 
-    const item = sharedStoreController.notify({
+    const item = getSharedStoreController().notify({
       ...(normalized.id ? { id: normalized.id } : {}),
       ...(normalized.dedupeKey ? { dedupeKey: normalized.dedupeKey } : {}),
       ...(normalized.title !== undefined ? { title: normalized.title } : {}),
@@ -63,11 +73,11 @@ export class MthToast extends UIElement {
   }
 
   static dismiss(id: string): void {
-    sharedStoreController.dismiss(id);
+    getSharedStoreController().dismiss(id);
   }
 
   static clear(): void {
-    sharedStoreController.clear();
+    getSharedStoreController().clear();
   }
 
   @property({ type: Boolean, reflect: true })
@@ -291,17 +301,17 @@ export class MthToast extends UIElement {
   };
 
   private readonly handleStoreItemPause = (id: string): void => {
-    sharedStoreController.pause(id);
+    getSharedStoreController().pause(id);
     this.setPausedState(true);
   };
 
   private readonly handleStoreItemResume = (id: string): void => {
-    sharedStoreController.resume(id);
+    getSharedStoreController().resume(id);
     this.setPausedState(false);
   };
 
   private readonly handleStoreItemDismiss = (id: string): void => {
-    sharedStoreController.dismiss(id);
+    getSharedStoreController().dismiss(id);
   };
 
   private renderStoreItem(item: NotificationItem) {

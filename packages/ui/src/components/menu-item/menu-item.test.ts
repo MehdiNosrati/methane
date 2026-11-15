@@ -40,28 +40,71 @@ describe('<mth-menu-item>', () => {
     expect(selected).toEqual([{ value: 'autosave', checked: true }]);
     expect(checkbox.shadowRoot!.querySelector('[part="check"]')?.textContent).toBe('✓');
 
-    // Nested submenu open/close via ArrowRight / ArrowLeft
+    // Host Enter and Space activate leaf/checkbox items directly
+    checkbox.tabIndex = 0;
+    checkbox.focus();
+    checkbox.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+    await checkbox.updateComplete;
+    expect(checkbox.checked).toBe(false);
+
+    checkbox.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
+    await checkbox.updateComplete;
+    expect(checkbox.checked).toBe(true);
+    expect(selected).toEqual([
+      { value: 'autosave', checked: true },
+      { value: 'autosave', checked: false },
+      { value: 'autosave', checked: true },
+    ]);
+
+    // Nested submenu open/close and roving ArrowDown/ArrowUp/Home/End on host
     const parent = document.createElement('mth-menu-item') as MthMenuItem;
+    parent.tabIndex = 0;
     parent.value = 'share';
     parent.textContent = 'Share';
-    const child = document.createElement('mth-menu-item') as MthMenuItem;
-    child.setAttribute('slot', 'submenu');
-    child.value = 'email';
-    child.textContent = 'Email';
-    parent.appendChild(child);
+    const child1 = document.createElement('mth-menu-item') as MthMenuItem;
+    child1.setAttribute('slot', 'submenu');
+    child1.value = 'email';
+    child1.textContent = 'Email';
+    const child2 = document.createElement('mth-menu-item') as MthMenuItem;
+    child2.setAttribute('slot', 'submenu');
+    child2.value = 'copy';
+    child2.textContent = 'Copy Link';
+    parent.append(child1, child2);
     document.body.appendChild(parent);
     await parent.updateComplete;
     await Promise.resolve();
     await parent.updateComplete;
 
-    const base = parent.shadowRoot!.querySelector<HTMLElement>('[part="base"]')!;
-    base.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    parent.focus();
+    parent.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await parent.updateComplete;
     expect(parent.submenuOpen).toBe(true);
+    expect(document.activeElement).toBe(child1);
 
-    base.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    child1.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    await parent.updateComplete;
+    expect(document.activeElement).toBe(child2);
+
+    child2.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    await parent.updateComplete;
+    expect(document.activeElement).toBe(child1);
+
+    child1.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(document.activeElement).toBe(child2);
+    child2.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(document.activeElement).toBe(child1);
+
+    const childSelected: string[] = [];
+    child1.addEventListener('mth-select', (e) => {
+      childSelected.push((e as CustomEvent<{ value: string }>).detail.value);
+    });
+    child1.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(childSelected).toEqual(['email']);
+
+    child1.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
     await parent.updateComplete;
     expect(parent.submenuOpen).toBe(false);
+    expect(document.activeElement).toBe(parent);
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {

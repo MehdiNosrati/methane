@@ -69,8 +69,8 @@ export const CEM_METADATA = {
     'mth-after-close': 'Fired once tooltip is hidden.',
   },
   cssProperties: [
-    { name: '--mth-color-surface-inverse', description: 'Tooltip surface background.' },
-    { name: '--mth-color-fg-inverse', description: 'Tooltip text color.' },
+    { name: '--mth-color-neutral-900', description: 'Tooltip surface background.' },
+    { name: '--mth-color-neutral-50', description: 'Tooltip text color.' },
     { name: '--mth-radius-sm', description: 'Tooltip corner radius.' },
     { name: '--mth-shadow-md', description: 'Tooltip elevation shadow.' },
   ],

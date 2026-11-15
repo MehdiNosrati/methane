@@ -10,8 +10,8 @@ import {
   type PositioningAnchor,
   type PositioningResult,
 } from '@methane/primitives';
-import { html } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { html, nothing } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
 import { dropdownMenuMessages } from './dropdown-menu.messages.js';
 import { dropdownMenuStyles } from './dropdown-menu.styles.js';
 
@@ -62,6 +62,9 @@ export class MthDropdownMenu extends UIElement {
   @property({ attribute: false })
   anchor: PositioningAnchor | null = null;
 
+  @state()
+  private fallbackActive = false;
+
   @query('#mth-dropdown-menu-anchor')
   private anchorWrapperEl!: HTMLElement | null;
 
@@ -110,6 +113,7 @@ export class MthDropdownMenu extends UIElement {
       onOpenChange: (nextOpen) => {
         this.syncingFromController = true;
         this.open = nextOpen;
+        this.fallbackActive = nextOpen && !this.overlayCtrl.isUsingNativeTopLayer;
         this.syncingFromController = false;
         this.setCustomState('open', nextOpen);
 
@@ -299,7 +303,14 @@ export class MthDropdownMenu extends UIElement {
     void this.toggle();
   };
 
+  private isSubmenuEventTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof Element)) return false;
+    const submenuRoot = target.closest('[slot="submenu"]');
+    return submenuRoot !== null && this.contains(submenuRoot);
+  }
+
   private readonly handleListFocusIn = (event: FocusEvent): void => {
+    if (this.isSubmenuEventTarget(event.target)) return;
     const items = this.getSlottedMenuItems();
     const target = event.target as Node | null;
     const idx = items.findIndex((item) => item === target || item.contains(target));
@@ -314,6 +325,7 @@ export class MthDropdownMenu extends UIElement {
   };
 
   private readonly handleListKeyDown = (event: KeyboardEvent): void => {
+    if (this.isSubmenuEventTarget(event.target)) return;
     const items = this.getSlottedMenuItems();
     if (this.listboxCtrl.activeIndex === -1 && event.target instanceof Element) {
       const idx = items.findIndex((item) => item === event.target);
@@ -433,7 +445,7 @@ export class MthDropdownMenu extends UIElement {
         id="mth-dropdown-menu-surface"
         part="base"
         class="surface"
-        popover="manual"
+        popover=${this.fallbackActive ? nothing : 'manual'}
         ?hidden=${!this.open}
       >
         <div

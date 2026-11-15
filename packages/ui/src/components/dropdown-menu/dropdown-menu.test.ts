@@ -228,6 +228,100 @@ describe('<mth-dropdown-menu>', () => {
     ]);
   });
 
+  it('activates leaf items via host Enter/Space and roves nested submenus without outer menu hijacking', async () => {
+    const menu = document.createElement('mth-dropdown-menu') as MthDropdownMenu;
+    const trigger = document.createElement('button');
+    trigger.setAttribute('slot', 'trigger');
+    trigger.textContent = 'File';
+
+    const save = document.createElement('mth-menu-item') as MthMenuItem;
+    save.type = 'checkbox';
+    save.value = 'save';
+    save.textContent = 'Auto Save';
+
+    const exportItem = document.createElement('mth-menu-item') as MthMenuItem;
+    exportItem.value = 'export';
+    exportItem.textContent = 'Export';
+
+    const pdf = document.createElement('mth-menu-item') as MthMenuItem;
+    pdf.setAttribute('slot', 'submenu');
+    pdf.value = 'pdf';
+    pdf.textContent = 'PDF';
+
+    const csv = document.createElement('mth-menu-item') as MthMenuItem;
+    csv.setAttribute('slot', 'submenu');
+    csv.value = 'csv';
+    csv.textContent = 'CSV';
+
+    exportItem.append(pdf, csv);
+    menu.append(trigger, save, exportItem);
+    document.body.appendChild(menu);
+    await menu.updateComplete;
+    await exportItem.updateComplete;
+    await Promise.resolve();
+    await exportItem.updateComplete;
+
+    await menu.show();
+    await menu.updateComplete;
+
+    const selected: string[] = [];
+    menu.addEventListener('mth-select', (e) => {
+      selected.push((e as CustomEvent<{ value: string }>).detail.value);
+    });
+
+    // Host Space toggles checkbox leaf item without closing menu
+    save.focus();
+    save.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
+    await menu.updateComplete;
+    expect(save.checked).toBe(true);
+    expect(menu.open).toBe(true);
+
+    // ArrowRight on parent item opens submenu and focuses first child
+    exportItem.focus();
+    exportItem.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }),
+    );
+    await exportItem.updateComplete;
+    expect(exportItem.submenuOpen).toBe(true);
+    expect(document.activeElement).toBe(pdf);
+
+    // ArrowDown inside submenu moves to CSV without changing outer menu active item
+    pdf.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }),
+    );
+    await exportItem.updateComplete;
+    expect(document.activeElement).toBe(csv);
+    expect(exportItem.active).toBe(true);
+    expect(save.active).toBe(false);
+
+    // Escape closes submenu back to exportItem without closing outer menu
+    csv.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }),
+    );
+    await exportItem.updateComplete;
+    expect(exportItem.submenuOpen).toBe(false);
+    expect(menu.open).toBe(true);
+    expect(document.activeElement).toBe(exportItem);
+
+    // Re-open submenu and activate CSV via Enter on focused host -> bubbles mth-select & closes menu
+    exportItem.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+    );
+    await exportItem.updateComplete;
+    expect(document.activeElement).toBe(pdf);
+    pdf.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }),
+    );
+    expect(document.activeElement).toBe(csv);
+    csv.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+    );
+    await Promise.resolve();
+    await menu.updateComplete;
+    expect(selected).toEqual(['save', 'csv']);
+    expect(menu.open).toBe(false);
+  });
+
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {
     const rawSsr = await renderLitDsdHtml(
       litHtml`<mth-dropdown-menu label="Edit"><button slot="trigger">Menu</button><mth-menu-item value="undo">Undo</mth-menu-item></mth-dropdown-menu>`,

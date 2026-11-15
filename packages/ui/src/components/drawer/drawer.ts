@@ -169,6 +169,7 @@ export class MthDrawer extends UIElement {
 
   async show(): Promise<boolean> {
     await this.updateComplete;
+    this.syncMotionKeyframes();
     const opened = await this.overlayCtrl.show();
     if (!opened) {
       this.syncingFromController = true;
@@ -179,6 +180,7 @@ export class MthDrawer extends UIElement {
   }
 
   async hide(reason: OverlayCloseReason = 'programmatic'): Promise<boolean> {
+    this.syncMotionKeyframes();
     const closed = await this.overlayCtrl.hide(reason);
     if (!closed) {
       this.syncingFromController = true;
@@ -186,6 +188,15 @@ export class MthDrawer extends UIElement {
       this.syncingFromController = false;
     }
     return closed;
+  }
+
+  private syncMotionKeyframes(): void {
+    this.overlayCtrl.updateOptions({
+      motion: {
+        enterKeyframes: this.getEnterKeyframes(),
+        exitKeyframes: this.getExitKeyframes(),
+      },
+    });
   }
 
   private syncHostRole(): void {
@@ -198,32 +209,54 @@ export class MthDrawer extends UIElement {
     }
   }
 
-  private getEnterKeyframes(): Keyframe[] {
+  private isRtl(): boolean {
+    const dirHost = typeof this.closest === 'function' ? (this.closest('[dir]') as HTMLElement | null) : null;
+    if (dirHost) {
+      return dirHost.getAttribute('dir')?.toLowerCase() === 'rtl';
+    }
+    if (typeof getComputedStyle === 'function' && this.isConnected) {
+      try {
+        if (getComputedStyle(this).direction === 'rtl') return true;
+      } catch {
+        // Ignore in SSR or non-CSS environments.
+      }
+    }
+    return this.ownerDocument?.documentElement?.getAttribute('dir')?.toLowerCase() === 'rtl';
+  }
+
+  private getOffscreenTransform(): string {
+    const rtl = this.isRtl();
     switch (this.placement) {
       case 'start':
-        return [{ transform: 'translateX(-100%)', opacity: 0.4 }, { transform: 'translateX(0)', opacity: 1 }];
+        return rtl ? 'translateX(100%)' : 'translateX(-100%)';
       case 'top':
-        return [{ transform: 'translateY(-100%)', opacity: 0.4 }, { transform: 'translateY(0)', opacity: 1 }];
+        return 'translateY(-100%)';
       case 'bottom':
-        return [{ transform: 'translateY(100%)', opacity: 0.4 }, { transform: 'translateY(0)', opacity: 1 }];
+        return 'translateY(100%)';
       case 'end':
       default:
-        return [{ transform: 'translateX(100%)', opacity: 0.4 }, { transform: 'translateX(0)', opacity: 1 }];
+        return rtl ? 'translateX(-100%)' : 'translateX(100%)';
     }
   }
 
+  private getRestingTransform(): string {
+    return this.placement === 'top' || this.placement === 'bottom'
+      ? 'translateY(0)'
+      : 'translateX(0)';
+  }
+
+  private getEnterKeyframes(): Keyframe[] {
+    return [
+      { transform: this.getOffscreenTransform(), opacity: 0.4 },
+      { transform: this.getRestingTransform(), opacity: 1 },
+    ];
+  }
+
   private getExitKeyframes(): Keyframe[] {
-    switch (this.placement) {
-      case 'start':
-        return [{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(-100%)', opacity: 0.4 }];
-      case 'top':
-        return [{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-100%)', opacity: 0.4 }];
-      case 'bottom':
-        return [{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(100%)', opacity: 0.4 }];
-      case 'end':
-      default:
-        return [{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(100%)', opacity: 0.4 }];
-    }
+    return [
+      { transform: this.getRestingTransform(), opacity: 1 },
+      { transform: this.getOffscreenTransform(), opacity: 0.4 },
+    ];
   }
 
   private readonly handleHeaderSlotChange = (event: Event): void => {

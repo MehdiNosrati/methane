@@ -33,6 +33,10 @@ export const dropdownMenuStyles = css`
     box-sizing: border-box;
   }
 
+  .surface[data-mth-open='true']:not([hidden]) {
+    display: block;
+  }
+
   .surface[hidden],
   .surface:not([data-mth-open='true']) {
     display: none;

@@ -1,7 +1,7 @@
 import { compileSpec, runBehaviorSpecAssertions } from '@methane/spec-compiler';
 import { HydrationPuritySuite, OverlaySuite, scanSameRootAria } from '@methane/test-conformance';
 import { html as litHtml } from 'lit';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderLitDsdHtml } from '../shared/ssr-hydrate-test.js';
 import { MthDrawer, drawerSpec, registerMthDrawer } from './index.js';
 
@@ -109,6 +109,43 @@ describe('<mth-drawer>', () => {
     await drawer.updateComplete;
     expect(drawer.open).toBe(false);
     expect(cancelReasons).toEqual(['outside', 'escape']);
+  });
+
+  it('reverses start/end slide keyframes when ancestor has dir="rtl"', async () => {
+    const rtlContainer = document.createElement('div');
+    rtlContainer.setAttribute('dir', 'rtl');
+    const drawer = document.createElement('mth-drawer') as MthDrawer;
+    drawer.label = 'Settings';
+    drawer.placement = 'start';
+    rtlContainer.appendChild(drawer);
+    document.body.appendChild(rtlContainer);
+    await drawer.updateComplete;
+
+    const surface = drawer.shadowRoot!.querySelector<HTMLElement>('#mth-drawer-surface')!;
+    const calls: Keyframe[][] = [];
+    surface.animate = vi.fn((keyframes: Keyframe[] | PropertyIndexedKeyframes | null) => {
+      if (Array.isArray(keyframes)) {
+        calls.push(keyframes);
+      }
+      return {
+        finished: Promise.resolve(),
+        cancel: vi.fn(),
+        finish: vi.fn(),
+      } as unknown as Animation;
+    }) as unknown as HTMLElement['animate'];
+
+    await drawer.show();
+    await drawer.hide('programmatic');
+
+    drawer.placement = 'end';
+    await drawer.updateComplete;
+    await drawer.show();
+    await drawer.hide('programmatic');
+
+    expect(calls[0]?.[0]).toMatchObject({ transform: 'translateX(100%)' });
+    expect(calls[1]?.[1]).toMatchObject({ transform: 'translateX(100%)' });
+    expect(calls[2]?.[0]).toMatchObject({ transform: 'translateX(-100%)' });
+    expect(calls[3]?.[1]).toMatchObject({ transform: 'translateX(-100%)' });
   });
 
   it('passes HydrationPuritySuite on Declarative Shadow DOM payload', async () => {
