@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/lint-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ESLint and Stylelint architectural invariant rules for Methane UI (ADR-002, ADR-012, ADR-014)",
   "license": "MIT",
   "type": "module",

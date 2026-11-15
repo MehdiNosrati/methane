@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "W3C DTCG design tokens, oklch color ramps, light-dark themes, density, and forced-colors support for Methane UI",
   "license": "MIT",
   "type": "module",

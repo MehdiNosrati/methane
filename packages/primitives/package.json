@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/primitives",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared headless Lit ReactiveControllers, state engines, and runtime utilities for Methane UI",
   "license": "MIT",
   "type": "module",
@@ -31,7 +31,7 @@
     "test": "vitest run"
   },
   "peerDependencies": {
-    "@methane-ui/core": "^0.1.0"
+    "@methane-ui/core": "^0.1.1"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@methane-ui/css",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cascade layers, CSS logical-property reset, fail-open :not(:defined) guard, and 0 B JS Light-DOM CSS primitives for Methane UI",
   "license": "MIT",
   "type": "module",
