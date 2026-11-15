@@ -3,6 +3,7 @@ import 'zone.js/node';
 import { renderApplication } from '@angular/platform-server';
 import { registerUtilityElements } from '@methane/primitives';
 import { serializeAngularSsrHtml, type AngularSsrOptions, type AngularSsrResult } from '@methane/ssr-angular';
+import { registerAllComponents } from '@methane/ui';
 import { bootstrap } from './main.server.js';
 
 const BASE_DOCUMENT = `<!doctype html>
@@ -26,6 +27,7 @@ export async function renderVerifyAngularSsr(
   options: RenderVerifyAngularOptions = {},
 ): Promise<AngularSsrResult> {
   registerUtilityElements();
+  registerAllComponents();
 
   const { url = 'http://localhost/', ...ssrOptions } = options;
   const rawAngularHtml = await renderApplication(bootstrap, {

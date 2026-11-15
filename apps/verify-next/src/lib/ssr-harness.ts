@@ -5,6 +5,7 @@ import {
   type NextSsrOptions,
   type NextSsrResult,
 } from '@methane/ssr-next';
+import { registerAllComponents } from '@methane/ui';
 
 function ensureServerWindowLocation(): void {
   const g = globalThis as unknown as { window?: { location?: unknown } };
@@ -36,8 +37,16 @@ export function buildVerifyNextMarkup(): string {
         </header>
         <mth-error-boundary fallback-message="Next.js SSR harness boundary fallback">
           <section data-methane-canary-slot="true" aria-label="Canary mount harness">
-            <p>Ready for @methane/ui canaries</p>
-            <mth-input name="canary-input" label="Canary Input" value="next-rsc"></mth-input>
+            <mth-field label="Canary Email Field" hint="Work or personal email" required>
+              <mth-input name="canary-input" type="email" label="Canary Input" value="next-rsc@methane.dev" placeholder="you@methane.dev"></mth-input>
+            </mth-field>
+            <mth-combobox name="canary-framework" label="Framework Target" value="lit" clearable>
+              <mth-option-group label="Web Standards">
+                <mth-option value="lit">Lit 3</mth-option>
+                <mth-option value="wc">Custom Elements</mth-option>
+              </mth-option-group>
+            </mth-combobox>
+            <mth-dialog label="Canary Dialog" description="Next.js top-layer modal verification" variant="confirm">Confirm canary verification</mth-dialog>
           </section>
         </mth-error-boundary>
       </mth-stack>
@@ -51,6 +60,7 @@ export async function renderVerifyNextDocument(
 ): Promise<NextSsrResult> {
   ensureServerWindowLocation();
   registerUtilityElements();
+  registerAllComponents();
   return renderNextHtml(buildVerifyNextMarkup(), {
     assetBase: '/methane/styles',
     hydrationModuleUrl: '/_next/static/methane-hydrate.js',
@@ -63,6 +73,7 @@ export async function createVerifyNextResponse(
 ): Promise<Response> {
   ensureServerWindowLocation();
   registerUtilityElements();
+  registerAllComponents();
   const baseResponse = new Response(buildVerifyNextMarkup(), {
     status: 200,
     headers: { 'content-type': 'text/html; charset=utf-8' },

@@ -142,6 +142,7 @@ export class MthCombobox extends UIElement {
 
   private syncingOpenFromOverlay = false;
   private isHydratingSync = false;
+  private pendingLazyOptionReconcile = false;
   private customValidityMessage = '';
   private visualViewportCleanup: (() => void) | null = null;
   private viewportMaxHeightPx: number | null = null;
@@ -200,6 +201,9 @@ export class MthCombobox extends UIElement {
       observeSubtree: true,
       attributeFilter: ['value', 'label', 'disabled'],
       onItemsChange: () => {
+        if (this.pendingLazyOptionReconcile && !this.open) {
+          return;
+        }
         if (!this.dataSource && this.options === null) {
           this.reconcileOptions();
         }
@@ -276,12 +280,20 @@ export class MthCombobox extends UIElement {
 
   protected override onFirstConnect(): void {
     this.isHydratingSync = true;
+    this.pendingLazyOptionReconcile =
+      Boolean(this.shadowRoot) &&
+      !this.hasUpdated &&
+      !this.open &&
+      !this.dataSource &&
+      this.options === null;
     const initialDefault = this.defaultValue || this.getAttribute('value') || this.value || '';
     this.formCtrl.setDefaultValue(initialDefault);
     this.formCtrl.setValue(this.value, { markDirty: false });
     this.attachVisualViewportListener();
     this.syncSelectedFromValue(this.value);
-    this.reconcileOptions();
+    if (!this.pendingLazyOptionReconcile) {
+      this.reconcileOptions();
+    }
     this.isHydratingSync = false;
   }
 
@@ -300,6 +312,7 @@ export class MthCombobox extends UIElement {
     this.formCtrl.handleFormReset();
     this.filterQuery = '';
     this.showingAllOptions = true;
+    this.pendingLazyOptionReconcile = false;
     this.syncSelectedFromValue(this.value);
     this.reconcileOptions();
   }
@@ -342,12 +355,18 @@ export class MthCombobox extends UIElement {
         this.formCtrl.setValue(this.value, { markDirty: false });
       }
     }
-    if (changedProperties.has('options')) {
+    if (changedProperties.has('options') && (this.options !== null || this.hasUpdated)) {
+      this.pendingLazyOptionReconcile = false;
       this.slotCtrl.setPropertyItems(this.options);
       this.reconcileOptions();
     }
-    if (changedProperties.has('dataSource')) {
+    if (changedProperties.has('dataSource') && (this.dataSource !== null || this.hasUpdated)) {
+      this.pendingLazyOptionReconcile = false;
       this.dataCtrl.setDataSource(this.dataSource);
+      this.reconcileOptions();
+    }
+    if (changedProperties.has('open') && this.open && this.pendingLazyOptionReconcile) {
+      this.pendingLazyOptionReconcile = false;
       this.reconcileOptions();
     }
     if (changedProperties.has('placement') || changedProperties.has('forceFallback')) {
@@ -412,6 +431,7 @@ export class MthCombobox extends UIElement {
 
   async show(): Promise<void> {
     if (this.isEffectivelyDisabled) return;
+    this.pendingLazyOptionReconcile = false;
     this.showingAllOptions = true;
     this.reconcileOptions();
     await this.overlayCtrl.show();
@@ -422,6 +442,7 @@ export class MthCombobox extends UIElement {
   }
 
   async query(filterText: string): Promise<void> {
+    this.pendingLazyOptionReconcile = false;
     this.filterQuery = filterText;
     this.displayText = filterText;
     this.showingAllOptions = false;
@@ -434,6 +455,7 @@ export class MthCombobox extends UIElement {
 
   clear(): void {
     if (this.isEffectivelyDisabled || this.readonly) return;
+    this.pendingLazyOptionReconcile = false;
     this.value = '';
     this.displayText = '';
     this.filterQuery = '';
@@ -581,7 +603,7 @@ export class MthCombobox extends UIElement {
       });
     };
 
-    for (const child of Array.from(this.children)) {
+    for (const child of Array.from(this.children ?? [])) {
       if (!(child instanceof HTMLElement)) continue;
       const tag = child.tagName.toLowerCase();
       if (tag === 'mth-option') {
@@ -594,7 +616,7 @@ export class MthCombobox extends UIElement {
         const groupDisabled =
           child.hasAttribute('disabled') ||
           Boolean((child as unknown as { disabled?: boolean }).disabled);
-        for (const nested of Array.from(child.children)) {
+        for (const nested of Array.from(child.children ?? [])) {
           if (nested instanceof HTMLElement && nested.tagName.toLowerCase() === 'mth-option') {
             pushOptionEl(nested, groupLabel, groupDisabled);
           }
@@ -719,6 +741,7 @@ export class MthCombobox extends UIElement {
 
   private handleUserTextCommit(nextText: string): void {
     if (this.isEffectivelyDisabled || this.readonly) return;
+    this.pendingLazyOptionReconcile = false;
     this.displayText = nextText;
     this.filterQuery = nextText;
     this.showingAllOptions = false;
@@ -736,6 +759,13 @@ export class MthCombobox extends UIElement {
     this.emitEvent('mth-input', { detail: { value: nextText } });
     this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
   }
+
+  private readonly handleInputFocus = (): void => {
+    if (this.pendingLazyOptionReconcile) {
+      this.pendingLazyOptionReconcile = false;
+      this.reconcileOptions();
+    }
+  };
 
   private readonly handleInputKeyDown = (event: KeyboardEvent): void => {
     if (this.isEffectivelyDisabled || this.readonly) return;
@@ -952,6 +982,7 @@ export class MthCombobox extends UIElement {
           ?disabled=${isDisabled}
           ?readonly=${isReadonly}
           ?required=${isRequired}
+          @focus=${this.handleInputFocus}
           @keydown=${this.handleInputKeyDown}
         />
         ${showClear

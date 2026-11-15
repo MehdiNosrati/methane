@@ -6,7 +6,7 @@ describe('@methane/verify-sveltekit', () => {
     const result = await renderVerifySvelteKitSsr();
 
     expect(result.html).toContain('Methane SvelteKit SSR + Svelte 5 Binding Verification');
-    expect(result.html).toContain('sveltekit-ssr|true|false');
+    expect(result.html).toContain('sveltekit-ssr@methane.dev|lit|true|false');
     expect(result.html).toContain('data-methane-canary-slot="true"');
     expect(result.html).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);
     expect(result.html).toContain('/assets/methane-sveltekit-hydrate.js');
@@ -14,6 +14,12 @@ describe('@methane/verify-sveltekit', () => {
     expect(result.expandedTags).toContain('mth-skip-link');
     expect(result.expandedTags).toContain('mth-visually-hidden');
     expect(result.expandedTags).toContain('mth-error-boundary');
+    expect(result.expandedTags).toContain('mth-field');
+    expect(result.expandedTags).toContain('mth-input');
+    expect(result.expandedTags).toContain('mth-dialog');
+    expect(result.expandedTags).toContain('mth-combobox');
+    expect(result.expandedTags).toContain('mth-option-group');
+    expect(result.expandedTags).toContain('mth-option');
 
     const headEnd = result.html.indexOf('</head>');
     const firstLinkIndex = result.html.indexOf('<link rel="preload" as="style"');

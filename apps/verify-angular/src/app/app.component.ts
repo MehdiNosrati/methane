@@ -4,7 +4,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {
   MthButtonDirective,
   MthCheckboxDirective,
+  MthComboboxDirective,
+  MthDialogDirective,
+  MthFieldDirective,
   MthInputDirective,
+  MthOptionDirective,
+  MthOptionGroupDirective,
 } from '@methane/angular';
 import {
   MthErrorBoundaryHostDirective,
@@ -23,6 +28,7 @@ function ensureJitDirectiveFactoryMetadata(directiveClass: object): void {
 
 ensureJitDirectiveFactoryMetadata(MthInputDirective);
 ensureJitDirectiveFactoryMetadata(MthCheckboxDirective);
+ensureJitDirectiveFactoryMetadata(MthComboboxDirective);
 
 @Component({
   selector: 'app-root',
@@ -32,7 +38,12 @@ ensureJitDirectiveFactoryMetadata(MthCheckboxDirective);
     ReactiveFormsModule,
     MthButtonDirective,
     MthCheckboxDirective,
+    MthComboboxDirective,
+    MthDialogDirective,
+    MthFieldDirective,
     MthInputDirective,
+    MthOptionDirective,
+    MthOptionGroupDirective,
     MthSkipLinkHostDirective,
     MthVisuallyHiddenHostDirective,
     MthErrorBoundaryHostDirective,
@@ -48,16 +59,37 @@ ensureJitDirectiveFactoryMetadata(MthCheckboxDirective);
         <mth-error-boundary fallback-message="Angular SSR harness boundary fallback">
           <section data-methane-canary-slot="true">
             <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
-              <mth-input
-                formControlName="email"
-                name="canary-email"
-                label="Verification Email"
-                placeholder="engineer@methane.dev"
-                [required]="true"
-              ></mth-input>
+              <mth-field label="Verification Email Field" hint="Work or personal email" [required]="true">
+                <mth-input
+                  formControlName="email"
+                  name="canary-email"
+                  type="email"
+                  label="Verification Email"
+                  placeholder="engineer@methane.dev"
+                  [required]="true"
+                ></mth-input>
+              </mth-field>
+              <mth-combobox
+                formControlName="framework"
+                name="canary-framework"
+                label="Framework Target"
+                [clearable]="true"
+              >
+                <mth-option-group label="Web Standards">
+                  <mth-option value="lit">Lit 3</mth-option>
+                  <mth-option value="wc">Custom Elements</mth-option>
+                </mth-option-group>
+              </mth-combobox>
               <mth-checkbox formControlName="accepted">Accept Methane verification terms</mth-checkbox>
               <mth-button variant="solid" type="submit">Verify Angular</mth-button>
             </form>
+            <mth-dialog
+              label="Canary Dialog"
+              description="Angular top-layer modal verification"
+              variant="confirm"
+            >
+              Confirm Angular verification
+            </mth-dialog>
             <p data-testid="form-snapshot">{{ snapshot }}</p>
           </section>
         </mth-error-boundary>
@@ -71,6 +103,10 @@ export class AppComponent {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
+    framework: new FormControl('lit', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     accepted: new FormControl(true, { nonNullable: true }),
   });
 
@@ -78,7 +114,7 @@ export class AppComponent {
 
   get snapshot(): string {
     const raw = this.verifyForm.getRawValue();
-    return `${raw.email}|${String(raw.accepted)}|${String(this.verifyForm.valid)}`;
+    return `${raw.email}|${raw.framework}|${String(raw.accepted)}|${String(this.verifyForm.valid)}`;
   }
 
   onSubmit(): void {

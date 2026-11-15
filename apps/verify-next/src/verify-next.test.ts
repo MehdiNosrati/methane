@@ -10,6 +10,7 @@ const ssrNextUrl = pathToFileURL(resolve(appRoot, '../../packages/ssr-next/dist/
 const primitivesUrl = pathToFileURL(
   resolve(appRoot, '../../packages/primitives/dist/index.js'),
 ).href;
+const uiUrl = pathToFileURL(resolve(appRoot, '../../packages/ui/dist/index.js')).href;
 
 function runNextSsrInNode(): {
   html: string;
@@ -18,9 +19,11 @@ function runNextSsrInNode(): {
 } {
   const script = `
     import { registerUtilityElements } from ${JSON.stringify(primitivesUrl)};
+    import { registerAllComponents } from ${JSON.stringify(uiUrl)};
     import { renderNextHtml, transformNextResponse } from ${JSON.stringify(ssrNextUrl)};
 
     registerUtilityElements();
+    registerAllComponents();
     const rawHtml = \`<!DOCTYPE html>
 <html lang="en">
   <head><title>Next SSR</title></head>
@@ -29,7 +32,18 @@ function runNextSsrInNode(): {
     <main id="main">
       <mth-visually-hidden>Screen reader verification landmark</mth-visually-hidden>
       <mth-error-boundary fallback-message="Next.js SSR harness boundary fallback">
-        <section data-methane-canary-slot="true">Ready</section>
+        <section data-methane-canary-slot="true">
+          <mth-field label="Canary Email Field" hint="Work or personal email" required>
+            <mth-input name="canary-input" type="email" label="Canary Input" value="next-rsc@methane.dev"></mth-input>
+          </mth-field>
+          <mth-combobox name="canary-framework" label="Framework Target" value="lit" clearable>
+            <mth-option-group label="Web Standards">
+              <mth-option value="lit">Lit 3</mth-option>
+              <mth-option value="wc">Custom Elements</mth-option>
+            </mth-option-group>
+          </mth-combobox>
+          <mth-dialog label="Canary Dialog" description="Next.js top-layer modal verification" variant="confirm">Confirm</mth-dialog>
+        </section>
       </mth-error-boundary>
     </main>
   </body>
@@ -80,6 +94,12 @@ describe('@methane/verify-next', () => {
     expect(result.expandedTags).toContain('mth-skip-link');
     expect(result.expandedTags).toContain('mth-visually-hidden');
     expect(result.expandedTags).toContain('mth-error-boundary');
+    expect(result.expandedTags).toContain('mth-field');
+    expect(result.expandedTags).toContain('mth-input');
+    expect(result.expandedTags).toContain('mth-dialog');
+    expect(result.expandedTags).toContain('mth-combobox');
+    expect(result.expandedTags).toContain('mth-option-group');
+    expect(result.expandedTags).toContain('mth-option');
     expect(result.linkHeader).toContain('rel=preload; as=style');
   });
 });

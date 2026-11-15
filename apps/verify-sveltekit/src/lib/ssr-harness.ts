@@ -4,6 +4,7 @@ import {
   transformSvelteKitHtml,
   type SvelteKitSsrOptions,
 } from '@methane/ssr-sveltekit';
+import { registerAllComponents } from '@methane/ui';
 import { render } from 'svelte/server';
 import Page from '../routes/+page.svelte';
 
@@ -19,6 +20,7 @@ export function renderVerifySvelteKitDocument(): {
   readonly rawBodyHtml: string;
 } {
   registerUtilityElements();
+  registerAllComponents();
   const rendered = render(Page);
   const rawHtml = [
     '<!doctype html>',

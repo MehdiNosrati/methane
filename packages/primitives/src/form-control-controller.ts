@@ -357,8 +357,10 @@ export class FormControlController implements ReactiveController {
       const resolvedLocale =
         this.optionsLocale ??
         this.host.getAttribute('lang') ??
-        this.host.closest('[lang]')?.getAttribute('lang') ??
-        (typeof document !== 'undefined' ? document.documentElement.lang : '') ??
+        (typeof this.host.closest === 'function'
+          ? this.host.closest('[lang]')?.getAttribute('lang')
+          : undefined) ??
+        (typeof document !== 'undefined' ? document.documentElement?.lang : '') ??
         'en';
       const message = translateMessage('mth-form-control', 'valueMissing', {
         locale: resolvedLocale || 'en',

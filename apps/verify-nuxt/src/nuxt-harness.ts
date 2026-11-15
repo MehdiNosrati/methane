@@ -5,7 +5,16 @@ import {
   type NitroRenderHtmlContext,
   type NuxtSsrOptions,
 } from '@methane/ssr-nuxt';
-import { MthButton, MthInput } from '@methane/vue';
+import { registerAllComponents } from '@methane/ui';
+import {
+  MthButton,
+  MthCombobox,
+  MthDialog,
+  MthField,
+  MthInput,
+  MthOption,
+  MthOptionGroup,
+} from '@methane/vue';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 
@@ -18,6 +27,7 @@ export async function renderVerifyNuxtSsr(
   options: NuxtSsrOptions = {},
 ): Promise<VerifyNuxtRenderOutput> {
   registerUtilityElements();
+  registerAllComponents();
 
   const app = createSSRApp({
     render: () =>
@@ -27,7 +37,51 @@ export async function renderVerifyNuxtSsr(
           h('mth-visually-hidden', null, 'Nuxt screen reader landmark'),
           h('mth-error-boundary', { 'fallback-message': 'Nuxt boundary fallback' }, [
             h('section', { 'data-methane-canary-slot': 'true' }, [
-              h(MthInput, { modelValue: 'nuxt-ssr', name: 'canary-input', label: 'Canary Input' }),
+              h(
+                MthField,
+                { label: 'Canary Email Field', hint: 'Work or personal email', required: true },
+                {
+                  default: () =>
+                    h(MthInput, {
+                      modelValue: 'nuxt-ssr@methane.dev',
+                      name: 'canary-input',
+                      type: 'email',
+                      label: 'Canary Input',
+                    }),
+                },
+              ),
+              h(
+                MthCombobox,
+                {
+                  modelValue: 'lit',
+                  name: 'canary-framework',
+                  label: 'Framework Target',
+                  clearable: true,
+                },
+                {
+                  default: () =>
+                    h(
+                      MthOptionGroup,
+                      { label: 'Web Standards' },
+                      {
+                        default: () => [
+                          h(MthOption, { value: 'lit' }, { default: () => 'Lit 3' }),
+                          h(MthOption, { value: 'wc' }, { default: () => 'Custom Elements' }),
+                        ],
+                      },
+                    ),
+                },
+              ),
+              h(
+                MthDialog,
+                {
+                  open: false,
+                  label: 'Canary Dialog',
+                  description: 'Nuxt top-layer modal verification',
+                  variant: 'confirm',
+                },
+                { default: () => 'Confirm Nuxt verification' },
+              ),
               h(MthButton, { variant: 'solid' }, { default: () => 'Verify Nuxt' }),
             ]),
           ]),

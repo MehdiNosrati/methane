@@ -21,7 +21,36 @@ const sveltePluginUrl = pathToFileURL(
 const jsdomUrl = pathToFileURL(rootRequire.resolve('jsdom')).href;
 const ssrClientUrl = pathToFileURL(resolve(repoRoot, 'packages/ssr/dist/client.js')).href;
 const primitivesUrl = pathToFileURL(resolve(repoRoot, 'packages/primitives/dist/index.js')).href;
+const uiComponentsDir = resolve(repoRoot, 'packages/ui/dist/components');
+const uiElementUrls = {
+  'mth-field': pathToFileURL(resolve(uiComponentsDir, 'field/element.js')).href,
+  'mth-input': pathToFileURL(resolve(uiComponentsDir, 'input/element.js')).href,
+  'mth-dialog': pathToFileURL(resolve(uiComponentsDir, 'dialog/element.js')).href,
+  'mth-combobox': pathToFileURL(resolve(uiComponentsDir, 'combobox/element.js')).href,
+  'mth-option-group': pathToFileURL(resolve(uiComponentsDir, 'option-group/element.js')).href,
+  'mth-option': pathToFileURL(resolve(uiComponentsDir, 'option/element.js')).href,
+} as const;
 const conformanceUrl = pathToFileURL(appRequire.resolve('@methane/test-conformance')).href;
+
+const VERIFIED_TAGS = [
+  'mth-skip-link',
+  'mth-visually-hidden',
+  'mth-error-boundary',
+  'mth-field',
+  'mth-input',
+  'mth-dialog',
+  'mth-combobox',
+  'mth-option-group',
+  'mth-option',
+] as const;
+
+function collectTagSnippets(html: string): Record<string, string> {
+  const snippets: Record<string, string> = {};
+  for (const tag of VERIFIED_TAGS) {
+    snippets[tag] = extractFirstElementSnippet(html, tag);
+  }
+  return snippets;
+}
 
 interface StartedHttpHarness {
   readonly baseUrl: string;
@@ -243,9 +272,10 @@ async function startMultiFrameworkSsrHttpServer(): Promise<StartedHttpHarness> {
 }
 
 function extractFirstElementSnippet(html: string, tagName: string): string {
-  const start = html.indexOf(`<${tagName}`);
+  const match = new RegExp(`<${tagName}(?=[\\s>])`).exec(html);
+  const start = match ? match.index : -1;
   const endTag = `</${tagName}>`;
-  const end = html.indexOf(endTag, start);
+  const end = start === -1 ? -1 : html.indexOf(endTag, start);
   if (start === -1 || end === -1) {
     throw new Error(`Could not find <${tagName}> in HTTP SSR HTML`);
   }
@@ -260,20 +290,50 @@ function verifyHydrationPurityInFreshJsdom(snippetsByTag: Record<string, string>
       Object.defineProperty(globalThis, key, { value: dom.window[key], configurable: true, writable: true });
     }
     const { enableHydrationSupport, isHydrationSupported } = await import(${JSON.stringify(ssrClientUrl)});
+    enableHydrationSupport();
+    if (!isHydrationSupported()) {
+      throw new Error('Hydration support was not enabled');
+    }
     const primitives = await import(${JSON.stringify(primitivesUrl)});
-    const { HydrationPuritySuite } = await import(${JSON.stringify(conformanceUrl)});
+    const [fieldMod, inputMod, dialogMod, comboboxMod, optionGroupMod, optionMod] = await Promise.all([
+      import(${JSON.stringify(uiElementUrls['mth-field'])}),
+      import(${JSON.stringify(uiElementUrls['mth-input'])}),
+      import(${JSON.stringify(uiElementUrls['mth-dialog'])}),
+      import(${JSON.stringify(uiElementUrls['mth-combobox'])}),
+      import(${JSON.stringify(uiElementUrls['mth-option-group'])}),
+      import(${JSON.stringify(uiElementUrls['mth-option'])}),
+    ]);
+    const { HydrationPuritySuite, scanSameRootAria } = await import(${JSON.stringify(conformanceUrl)});
 
     const classes = {
       'mth-skip-link': primitives.MthSkipLinkElement,
       'mth-visually-hidden': primitives.MthVisuallyHiddenElement,
       'mth-error-boundary': primitives.MthErrorBoundaryElement,
+      'mth-field': fieldMod.MthField,
+      'mth-input': inputMod.MthInput,
+      'mth-dialog': dialogMod.MthDialog,
+      'mth-combobox': comboboxMod.MthCombobox,
+      'mth-option-group': optionGroupMod.MthOptionGroup,
+      'mth-option': optionMod.MthOption,
     };
+
+    function materializeDescendantDsd(root) {
+      for (const template of Array.from(root.querySelectorAll('template[shadowrootmode]'))) {
+        const host = template.parentElement;
+        if (!host || host === root || host.shadowRoot) continue;
+        const mode = template.getAttribute('shadowrootmode') === 'closed' ? 'closed' : 'open';
+        const shadow = host.attachShadow({ mode });
+        shadow.appendChild(template.content.cloneNode(true));
+        template.remove();
+      }
+    }
 
     const snippets = ${JSON.stringify(snippetsByTag)};
     for (const [tagName, snippet] of Object.entries(snippets)) {
       const report = await HydrationPuritySuite.run({
         ssrHtml: snippet,
         async upgradeElement(host) {
+          materializeDescendantDsd(host);
           enableHydrationSupport();
           if (!isHydrationSupported()) {
             throw new Error('Hydration support was not enabled');
@@ -283,6 +343,10 @@ function verifyHydrationPurityInFreshJsdom(snippetsByTag: Record<string, string>
           }
           customElements.upgrade(host);
           await host.updateComplete;
+          const ariaResult = scanSameRootAria(host);
+          if (ariaResult.issues.length > 0) {
+            throw new Error(tagName + ' ARIA issues: ' + JSON.stringify(ariaResult.issues));
+          }
         },
       });
       if (!report.passed) {
@@ -306,8 +370,8 @@ describe('Cross-app HTTP SSR + HydrationPuritySuite integration', () => {
         const expectations = [
           { path: '/next', marker: 'Methane Next.js 15 RSC + React 19 Verification' },
           { path: '/nuxt', marker: 'Verify Nuxt' },
-          { path: '/angular', marker: 'angular-ssr@methane.dev|true|true' },
-          { path: '/sveltekit', marker: 'sveltekit-ssr|true|false' },
+          { path: '/angular', marker: 'angular-ssr@methane.dev|lit|true|true' },
+          { path: '/sveltekit', marker: 'sveltekit-ssr@methane.dev|lit|true|false' },
         ] as const;
 
         for (const target of expectations) {
@@ -319,12 +383,7 @@ describe('Cross-app HTTP SSR + HydrationPuritySuite integration', () => {
           expect(html, target.path).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);
           expect(html, target.path).toContain('<link rel="preload" as="style"');
 
-          const snippetsByTag = {
-            'mth-skip-link': extractFirstElementSnippet(html, 'mth-skip-link'),
-            'mth-visually-hidden': extractFirstElementSnippet(html, 'mth-visually-hidden'),
-            'mth-error-boundary': extractFirstElementSnippet(html, 'mth-error-boundary'),
-          };
-          verifyHydrationPurityInFreshJsdom(snippetsByTag);
+          verifyHydrationPurityInFreshJsdom(collectTagSnippets(html));
         }
       } finally {
         await harness.close();
@@ -419,11 +478,7 @@ describe('Cross-app HTTP SSR + HydrationPuritySuite integration', () => {
           expect(html, target.url).toContain(target.marker);
           expect(html, target.url).toMatch(/<template\b[^>]*\bshadowrootmode="open"/);
 
-          verifyHydrationPurityInFreshJsdom({
-            'mth-skip-link': extractFirstElementSnippet(html, 'mth-skip-link'),
-            'mth-visually-hidden': extractFirstElementSnippet(html, 'mth-visually-hidden'),
-            'mth-error-boundary': extractFirstElementSnippet(html, 'mth-error-boundary'),
-          });
+          verifyHydrationPurityInFreshJsdom(collectTagSnippets(html));
         }
       } finally {
         await Promise.all(servers.map((srv) => srv.close()));
