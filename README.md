@@ -21,15 +21,19 @@ Accessible UI components, pure CSS layouts, adaptive OKLCH themes, and streaming
 Methane includes curated agent skills under [`skills/`](./skills) (with workspace discovery via [`.agents/skills.json`](./.agents/skills.json)) for **Antigravity**, **Claude Code**, **Cursor**, **Codex**, and **Gemini CLI**:
 
 ```bash
-npx skills add MehdiNosrati/methane
+# Install the 3 consumer skills non-interactively in an application repo:
+npx -y skills add MehdiNosrati/methane --skill methane-ui methane-theming methane-ssr -y
+
+# Or install all 4 skills (including monorepo contributor runbook):
+npx -y skills add MehdiNosrati/methane -y
 ```
 
 | Skill | Focus |
 | --- | --- |
-| [`methane-ui`](./skills/methane-ui/SKILL.md) | Pure CSS layouts vs. custom elements, domain kits, satellites, `FormData`, and framework patterns |
-| [`methane-theming`](./skills/methane-theming/SKILL.md) | OKLCH brand seeds, light/dark & density presets, `forced-colors`, DTCG `tokens.json`, and `::part()` / `:state()` |
-| [`methane-ssr`](./skills/methane-ssr/SKILL.md) | Declarative Shadow DOM SSR, FOUC protection, lazy satellite engines, and client hydration order |
-| [`methane-contribute`](./skills/methane-contribute/SKILL.md) | Contributor runbook for component specs, same-root ARIA, logical CSS, codegen, and E2E tests |
+| [`methane-ui`](./skills/methane-ui/SKILL.md) | 251 custom elements + 5 CSS layout tags, Kits, Satellites, 64 `FACE` form controls, `@methane-ui/sanitize`, `@methane-ui/locales` RTL, `@methane-ui/codemod`, and framework wrappers |
+| [`methane-theming`](./skills/methane-theming/SKILL.md) | OKLCH brand seeds, light/dark & density presets, `forced-colors`, DTCG `tokens.json`, RTL logical CSS, and `::part()` / `:state()` |
+| [`methane-ssr`](./skills/methane-ssr/SKILL.md) | Standalone `@methane-ui/ssr` & meta-framework Declarative Shadow DOM SSR, `dom-shim`, linked vs. inline styles, and hydration order |
+| [`methane-contribute`](./skills/methane-contribute/SKILL.md) | Monorepo contributor runbook for component specs, CEM parity, SSR-safe authoring, same-root ARIA, logical CSS, codegen, and E2E tests |
 
 ## Architecture
 
