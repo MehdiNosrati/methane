@@ -82,10 +82,19 @@ describe('<mth-spreadsheet>', () => {
     expect(el.engine!.getCell('B5').value).toBe(200);
 
     el.setAttribute('dir', 'rtl');
+    await el.updateComplete;
     const firstBtn = el.shadowRoot!.querySelector<HTMLButtonElement>('.cell-btn[data-address="B1"]')!;
+    firstBtn.focus();
     firstBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await el.updateComplete;
     expect(el.activeCell).toBe('A1');
+    expect((el.shadowRoot!.activeElement as HTMLElement | null)?.dataset.address).toBe('A1');
+
+    el.rows = 60;
+    await el.updateComplete;
+    const renderedRows = el.shadowRoot!.querySelectorAll('.row:not(.header-row)').length;
+    expect(renderedRows).toBeLessThan(60);
+    expect(renderedRows).toBeGreaterThan(0);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

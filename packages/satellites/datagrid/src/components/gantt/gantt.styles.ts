@@ -9,11 +9,11 @@ export const ganttStyles = css`
     --_gt-bg: var(--mth-color-surface, Canvas);
     --_gt-subtle: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_gt-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_gt-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
-    --_gt-accent: var(--mth-color-accent, oklch(0.55 0.2 250));
-    --_gt-accent-fg: var(--mth-color-accent-fg, oklch(0.99 0.005 250));
-    --_gt-success: var(--mth-color-success, oklch(0.6 0.16 145));
-    --_gt-warning: var(--mth-color-warning, oklch(0.75 0.16 75));
+    --_gt-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
+    --_gt-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.2 250), oklch(0.68 0.18 250)));
+    --_gt-accent-fg: var(--mth-color-accent-fg, light-dark(oklch(0.99 0.005 250), oklch(0.15 0.02 250)));
+    --_gt-success: var(--mth-color-success, light-dark(oklch(0.6 0.16 145), oklch(0.72 0.15 145)));
+    --_gt-warning: var(--mth-color-warning, light-dark(oklch(0.75 0.16 75), oklch(0.8 0.15 75)));
     --_gt-muted: var(--mth-color-fg-muted, GrayText);
     --_gt-radius: var(--mth-radius-md, 0.375rem);
   }
@@ -45,6 +45,11 @@ export const ganttStyles = css`
     inline-size: calc(100% - 11rem);
     pointer-events: none;
     overflow: visible;
+    z-index: 1;
+  }
+
+  .dependencies-layer[data-dir='rtl'] {
+    transform: scaleX(-1);
   }
 
   .dependency-path {

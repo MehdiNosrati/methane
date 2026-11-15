@@ -123,6 +123,16 @@ describe('<mth-datagrid>', () => {
     const sheets = el.shadowRoot!.adoptedStyleSheets;
     const dynamic = sheets[sheets.length - 1]!;
     expect(dynamic.cssRules.length).toBe(2);
+
+    const sheetCount = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCount);
+    expect(el.engine!.virtualizer.getVirtualItems().length).toBeGreaterThan(0);
+    const viewport = el.shadowRoot!.querySelector<HTMLElement>('.viewport')!;
+    viewport.scrollTop = 40;
+    viewport.dispatchEvent(new Event('scroll'));
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

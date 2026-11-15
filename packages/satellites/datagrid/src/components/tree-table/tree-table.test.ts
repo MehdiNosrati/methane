@@ -60,6 +60,21 @@ describe('<mth-tree-table>', () => {
     firstRow.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
     await el.updateComplete;
     expect(el.engine!.getVisibleRows().length).toBe(1);
+
+    el.expandedIds = ['src'];
+    await el.updateComplete;
+    expect(el.engine!.getVisibleRows().length).toBe(2);
+
+    el.expandedIds = [];
+    await el.updateComplete;
+    expect(el.engine!.getVisibleRows().length).toBe(1);
+
+    const sheetCount = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCount);
+    expect(el.engine!.getVisibleRows().length).toBe(1);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

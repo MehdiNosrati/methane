@@ -50,6 +50,9 @@ describe('<mth-scheduler>', () => {
 
     expect(scanSameRootAria(el).issues).toEqual([]);
     expect(el.engine!.getTimelineColumns().length).toBe(5);
+    expect(el.shadowRoot!.querySelector('.header-row .track')?.getAttribute('role')).toBe('presentation');
+    expect(el.shadowRoot!.querySelector('.body-row .track')?.getAttribute('role')).toBe('gridcell');
+    expect(el.shadowRoot!.querySelector('.body-row .day-cell')?.getAttribute('aria-hidden')).toBe('true');
 
     const selected: unknown[] = [];
     el.addEventListener('mth-event-select', (ev) => selected.push((ev as CustomEvent).detail));
@@ -64,6 +67,13 @@ describe('<mth-scheduler>', () => {
     const row = el.shadowRoot!.querySelector<HTMLElement>('.body-row')!;
     row.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     expect(navDates).toEqual(['2026-01-04']);
+
+    const sheetCount = el.shadowRoot!.adoptedStyleSheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCount);
+    expect(el.engine!.getTimelineColumns().length).toBe(5);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

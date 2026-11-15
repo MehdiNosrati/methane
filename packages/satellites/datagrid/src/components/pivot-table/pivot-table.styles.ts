@@ -9,8 +9,8 @@ export const pivotTableStyles = css`
     --_pt-bg: var(--mth-color-surface, Canvas);
     --_pt-subtle: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_pt-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_pt-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
-    --_pt-accent: var(--mth-color-accent, oklch(0.55 0.2 250));
+    --_pt-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
+    --_pt-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.2 250), oklch(0.68 0.18 250)));
     --_pt-accent-subtle: var(--mth-color-accent-subtle, light-dark(oklch(0.94 0.04 250), oklch(0.25 0.06 250)));
     --_pt-muted: var(--mth-color-fg-muted, GrayText);
     --_pt-radius: var(--mth-radius-md, 0.375rem);
@@ -50,6 +50,14 @@ export const pivotTableStyles = css`
   .row[data-kind='totals'] {
     background: var(--_pt-subtle);
     font-weight: var(--mth-font-weight-semibold, 600);
+  }
+
+  .detail-row {
+    background: var(--_pt-subtle);
+  }
+
+  .detail-cell:first-child {
+    padding-inline-start: var(--mth-space-6, 1.5rem);
   }
 
   .header-row {

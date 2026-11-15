@@ -41,6 +41,7 @@ export const formulaBarSpec: ComponentBehaviorSpec = {
     { name: 'fx', description: 'Formula indicator glyph.' },
     { name: 'input', description: 'Formula text input control.' },
     { name: 'commit', description: 'Apply formula button.' },
+    { name: 'error', description: 'Validation error message container.' },
   ],
   messages: { ...formulaBarMessages },
 };

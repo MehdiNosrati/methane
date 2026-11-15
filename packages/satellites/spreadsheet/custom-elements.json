@@ -221,6 +221,10 @@
             {
               "name": "commit",
               "description": "Apply formula button."
+            },
+            {
+              "name": "error",
+              "description": "Validation error message container."
             }
           ],
           "cssProperties": [
@@ -377,6 +381,10 @@
               {
                 "name": "commit",
                 "description": "Apply formula button."
+              },
+              {
+                "name": "error",
+                "description": "Validation error message container."
               }
             ],
             "messages": {

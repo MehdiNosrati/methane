@@ -9,9 +9,9 @@ export const schedulerStyles = css`
     --_sc-bg: var(--mth-color-surface, Canvas);
     --_sc-subtle: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_sc-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_sc-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
-    --_sc-accent: var(--mth-color-accent, oklch(0.55 0.2 250));
-    --_sc-accent-fg: var(--mth-color-accent-fg, oklch(0.99 0.005 250));
+    --_sc-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
+    --_sc-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.2 250), oklch(0.68 0.18 250)));
+    --_sc-accent-fg: var(--mth-color-accent-fg, light-dark(oklch(0.99 0.005 250), oklch(0.15 0.02 250)));
     --_sc-muted: var(--mth-color-fg-muted, GrayText);
     --_sc-radius: var(--mth-radius-md, 0.375rem);
   }

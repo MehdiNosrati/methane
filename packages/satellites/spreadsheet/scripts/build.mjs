@@ -1,5 +1,5 @@
 import '@lit-labs/ssr-dom-shim';
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -43,8 +43,26 @@ async function main() {
   const registerTags = [];
   const cemModules = [];
   const specs = [];
+  const seenBarrelExports = new Map();
 
   for (const dirName of components) {
+    const elemSource = readFileSync(resolve(srcComponentsDir, dirName, 'element.ts'), 'utf8');
+    if (/\bCEM_METADATA\b/.test(elemSource)) {
+      throw new Error(`CEM_METADATA must not appear in ${dirName}/element.ts`);
+    }
+
+    const indexModUrl = pathToFileURL(resolve(distComponentsDir, dirName, 'index.js')).href;
+    const indexMod = await import(indexModUrl);
+    for (const exportName of Object.keys(indexMod)) {
+      const prevDir = seenBarrelExports.get(exportName);
+      if (prevDir) {
+        throw new Error(
+          `Duplicate barrel export "${exportName}" in ${dirName}/index.ts (already exported by ${prevDir}/index.ts)`,
+        );
+      }
+      seenBarrelExports.set(exportName, dirName);
+    }
+
     const specModUrl = pathToFileURL(resolve(distComponentsDir, dirName, `${dirName}.spec.js`)).href;
     const elemModUrl = pathToFileURL(resolve(distComponentsDir, dirName, 'element.js')).href;
 

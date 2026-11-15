@@ -9,7 +9,7 @@ export const treeTableStyles = css`
     --_tt-bg: var(--mth-color-surface, Canvas);
     --_tt-subtle: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_tt-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_tt-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
+    --_tt-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
     --_tt-accent-subtle: var(--mth-color-accent-subtle, light-dark(oklch(0.94 0.04 250), oklch(0.25 0.06 250)));
     --_tt-muted: var(--mth-color-fg-muted, GrayText);
     --_tt-radius: var(--mth-radius-md, 0.375rem);

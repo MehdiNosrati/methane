@@ -9,9 +9,9 @@ export const formulaBarStyles = css`
     --_fb-bg: var(--mth-color-surface, Canvas);
     --_fb-subtle: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_fb-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_fb-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
-    --_fb-accent: var(--mth-color-accent, oklch(0.55 0.2 250));
-    --_fb-danger: var(--mth-color-danger, oklch(0.55 0.22 25));
+    --_fb-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
+    --_fb-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.2 250), oklch(0.68 0.18 250)));
+    --_fb-danger: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.68 0.2 25)));
     --_fb-muted: var(--mth-color-fg-muted, GrayText);
     --_fb-radius: var(--mth-radius-md, 0.375rem);
   }
@@ -86,6 +86,12 @@ export const formulaBarStyles = css`
     padding-block: var(--mth-space-1, 0.25rem);
     padding-inline: var(--mth-space-3, 0.75rem);
     cursor: pointer;
+  }
+
+  .error-message {
+    color: var(--_fb-danger);
+    font-size: var(--mth-font-size-xs, 0.75rem);
+    margin-block-start: var(--mth-space-1, 0.25rem);
   }
 
   .fallback-slot {

@@ -92,6 +92,26 @@ describe('<mth-formula-bar>', () => {
     el.addEventListener('mth-formula-commit', (ev) => commits.push((ev as CustomEvent).detail));
     el.shadowRoot!.querySelector<HTMLButtonElement>('.commit-btn')!.click();
     expect(commits).toEqual([{ cellAddress: 'C4', value: '=SUM(A1:A3)', valid: true }]);
+
+    el.value = '=SUM(';
+    await el.updateComplete;
+    expect(el.checkValidity()).toBe(false);
+    await el.updateComplete;
+    const input = el.shadowRoot!.querySelector<HTMLInputElement>('.formula-input')!;
+    const errEl = el.shadowRoot!.querySelector<HTMLElement>('#mth-fb-error')!;
+    expect(errEl).not.toBeNull();
+    expect(errEl.getAttribute('part')).toBe('error');
+    expect(errEl.getAttribute('role')).toBe('alert');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-errormessage')).toBe('mth-fb-error');
+    expect(scanSameRootAria(el).issues).toEqual([]);
+    expect(el.hasCustomState('invalid')).toBe(true);
+
+    el.readonly = true;
+    el.disabled = true;
+    await el.updateComplete;
+    expect(el.hasCustomState('readonly')).toBe(true);
+    expect(el.hasCustomState('disabled')).toBe(true);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

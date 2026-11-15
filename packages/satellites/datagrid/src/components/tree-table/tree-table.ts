@@ -176,6 +176,10 @@ export class MthTreeTable extends UIElement {
     this.syncExpandedFromProp();
     this.syncEngineData();
     this.syncDynamicSheet();
+    if (this.hasUpdated) {
+      attachDynamicSheet(this, this.dynamicSheet);
+      this._engine.virtualizer.attachElement(this.viewportEl);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -216,7 +220,6 @@ export class MthTreeTable extends UIElement {
   }
 
   private syncExpandedFromProp(): void {
-    if (this.expandedIds.length === 0) return;
     const next: Record<string, boolean> = {};
     for (const id of this.expandedIds) {
       next[id] = true;

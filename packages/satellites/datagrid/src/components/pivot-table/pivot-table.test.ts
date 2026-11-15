@@ -57,6 +57,13 @@ describe('<mth-pivot-table>', () => {
     btn.click();
     await el.updateComplete;
     expect(toggles).toEqual([{ groupKey: 'EMEA', expanded: true }]);
+    expect(el.shadowRoot!.querySelectorAll('.detail-row[data-group="EMEA"]').length).toBe(2);
+
+    const pivotChanges: unknown[] = [];
+    el.addEventListener('mth-pivot-change', (ev) => pivotChanges.push((ev as CustomEvent).detail));
+    el.aggregator = 'avg';
+    await el.updateComplete;
+    expect(pivotChanges).toEqual([{ aggregator: 'avg', groupCount: 2 }]);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

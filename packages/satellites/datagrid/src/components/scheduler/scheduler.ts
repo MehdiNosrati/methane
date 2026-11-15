@@ -180,6 +180,10 @@ export class MthScheduler extends UIElement {
     }
     this.syncEngine();
     this.syncDynamicSheet();
+    if (this.hasUpdated) {
+      attachDynamicSheet(this, this.dynamicSheet);
+      this._engine.virtualizer.attachElement(this.viewportEl);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -279,7 +283,7 @@ export class MthScheduler extends UIElement {
           >
             <div part="header" class="row header-row" role="row">
               <div class="resource-cell" role="columnheader">${this.t('resourceColumnLabel')}</div>
-              <div class="track">
+              <div class="track" role="presentation">
                 ${cols.map(
                   (col) =>
                     html`<div class="day-cell" role="columnheader" data-date=${col.iso}>
@@ -307,9 +311,9 @@ export class MthScheduler extends UIElement {
                       @keydown=${(ev: KeyboardEvent) => this.handleRowKeyDown(ev, idx)}
                     >
                       <div class="resource-cell" role="rowheader">${resource.label}</div>
-                      <div class="track">
+                      <div class="track" role="gridcell">
                         ${cols.map(
-                          (col) => html`<div part="slot-cell" class="day-cell" role="gridcell" data-date=${col.iso}></div>`,
+                          (col) => html`<div part="slot-cell" class="day-cell" aria-hidden="true" data-date=${col.iso}></div>`,
                         )}
                         ${rowEvents.map(
                           (evt) => html`

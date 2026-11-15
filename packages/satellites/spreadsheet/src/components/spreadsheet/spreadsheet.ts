@@ -189,6 +189,15 @@ export class MthSpreadsheet extends UIElement {
     }
     this.recalculate();
     this.syncDynamicSheet();
+    if (this.hasUpdated) {
+      attachDynamicSheet(this, this.dynamicSheet);
+    }
+  }
+
+  private resolveEffectiveDir(): 'rtl' | 'ltr' {
+    const dirAttr = this.closest('[dir]')?.getAttribute('dir')?.toLowerCase();
+    const raw = dirAttr === 'rtl' || dirAttr === 'ltr' ? dirAttr : this.resolvedDir;
+    return raw === 'rtl' ? 'rtl' : 'ltr';
   }
 
   override disconnectedCallback(): void {
@@ -210,8 +219,11 @@ export class MthSpreadsheet extends UIElement {
     }
     if (changed.has('cols')) {
       this.virtualizer.setColumns(this.safeCols);
-      this.rovingFocus.updateOptions({ columns: this.safeCols });
     }
+    this.rovingFocus.updateOptions({
+      columns: this.safeCols,
+      dir: this.resolveEffectiveDir(),
+    });
     if (changed.has('cells')) {
       this.recalculate();
     }
@@ -319,7 +331,7 @@ export class MthSpreadsheet extends UIElement {
   private handleCellKeyDown(ev: KeyboardEvent, coord: CellCoord): void {
     const rowCount = this.safeRows;
     const colCount = this.safeCols;
-    const rtl = this.resolvedDir === 'rtl';
+    const rtl = this.resolveEffectiveDir() === 'rtl';
     let nextRow = coord.row;
     let nextCol = coord.col;
     let moved = false;
@@ -338,14 +350,25 @@ export class MthSpreadsheet extends UIElement {
       moved = true;
     } else if (ev.key === 'Enter' || ev.key === 'F2') {
       ev.preventDefault();
+      ev.stopPropagation();
       this.startEditing(formatA1Address(coord));
       return;
     }
 
     if (moved) {
       ev.preventDefault();
+      ev.stopPropagation();
       const targetAddr = formatA1Address({ row: nextRow, col: nextCol });
+      this.rovingFocus.setActiveIndex(nextRow * colCount + nextCol, false);
       this.selectCell(targetAddr);
+      void this.updateComplete.then(() => {
+        const escaped = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+          ? CSS.escape(targetAddr)
+          : targetAddr;
+        this.shadowRoot
+          ?.querySelector<HTMLButtonElement>(`.cell-btn[data-address="${escaped}"]`)
+          ?.focus();
+      });
     }
   }
 
@@ -353,6 +376,13 @@ export class MthSpreadsheet extends UIElement {
     const rowCount = this.safeRows;
     const colCount = this.safeCols;
     const activeKey = this.normalizeAddr(this.activeCell);
+    const virtualItems = this.virtualizer.getVirtualItems();
+    const visibleRowIndices =
+      virtualItems.length > 0 && rowCount > 25
+        ? virtualItems
+            .map((vi) => vi.index)
+            .filter((r) => r >= 0 && r < rowCount)
+        : Array.from({ length: rowCount }, (_, r) => r);
 
     return html`
       <div part="base" class="base">
@@ -382,7 +412,7 @@ export class MthSpreadsheet extends UIElement {
                 `;
               })}
             </div>
-            ${Array.from({ length: rowCount }, (_, r) => {
+            ${visibleRowIndices.map((r) => {
               const rowLabel = this.addressMode === 'R1C1' ? `R${r + 1}` : String(r + 1);
               return html`
                 <div part="row" class="row" role="row">

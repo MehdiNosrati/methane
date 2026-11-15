@@ -59,6 +59,32 @@ describe('<mth-gantt>', () => {
     el.addEventListener('mth-task-select', (ev) => selected.push((ev as CustomEvent).detail));
     el.shadowRoot!.querySelector<HTMLButtonElement>('.task-bar')!.click();
     expect(selected.length).toBe(1);
+
+    const svgEl = el.shadowRoot!.querySelector('.dependencies-layer')!;
+    expect(svgEl.closest('[role="grid"]')).toBeNull();
+    el.setAttribute('dir', 'rtl');
+    el.tasks = [
+      ...el.tasks,
+      {
+        id: 't3',
+        title: 'NaN task',
+        startDate: '2026-01-03',
+        endDate: '2026-01-05',
+        progress: Number.NaN,
+      },
+    ];
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.dependencies-layer')?.getAttribute('data-dir')).toBe('rtl');
+    const sheets = el.shadowRoot!.adoptedStyleSheets;
+    const dynamicRules = Array.from(sheets[sheets.length - 1]!.cssRules).map((r) => r.cssText).join('\n');
+    expect(dynamicRules).not.toContain('NaN');
+
+    const sheetCount = sheets.length;
+    el.remove();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.adoptedStyleSheets.length).toBe(sheetCount);
+    expect(el.engine!.getLayouts().length).toBe(3);
   });
 
   it('passes HydrationPuritySuite on SSR Declarative Shadow DOM markup', async () => {

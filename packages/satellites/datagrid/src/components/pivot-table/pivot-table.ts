@@ -19,6 +19,7 @@ export interface PivotGroupSummary {
   readonly rowCount: number;
   readonly buckets: Readonly<Record<string, number>>;
   readonly total: number;
+  readonly detailRows: ReadonlyArray<Record<string, unknown>>;
 }
 
 export interface PivotMatrix {
@@ -78,6 +79,7 @@ export class MthPivotTable extends UIElement {
 
   private _engine: MthPivotTableEngine | null = null;
   private expandedGroups = new Set<string>();
+  private pendingPivotChange = false;
   private cachedMatrix: PivotMatrix = {
     columnKeys: [],
     groups: [],
@@ -108,10 +110,13 @@ export class MthPivotTable extends UIElement {
 
     const colKeySet = new Set<string>();
     const groupMap = new Map<string, Map<string, number[]>>();
+    const groupRowsMap = new Map<string, Record<string, unknown>[]>();
+    const allGroupLabel = this.t('allGroupLabel');
+    const totalColLabel = this.t('totalColumnLabel');
 
     for (const row of this.rows) {
-      const rKey = rowDim ? String(row[rowDim] ?? '—') : 'All';
-      const cKey = colDim ? String(row[colDim] ?? 'Total') : 'Total';
+      const rKey = rowDim ? String(row[rowDim] ?? '—') : allGroupLabel;
+      const cKey = colDim ? String(row[colDim] ?? totalColLabel) : totalColLabel;
       colKeySet.add(cKey);
       const rawVal = valField ? Number(row[valField] ?? 0) : 1;
       const numeric = Number.isFinite(rawVal) ? rawVal : 0;
@@ -124,6 +129,10 @@ export class MthPivotTable extends UIElement {
       const list = bucketMap.get(cKey) ?? [];
       list.push(numeric);
       bucketMap.set(cKey, list);
+
+      const groupRows = groupRowsMap.get(rKey) ?? [];
+      groupRows.push(row);
+      groupRowsMap.set(rKey, groupRows);
     }
 
     const columnKeys = Array.from(colKeySet).sort((a, b) => a.localeCompare(b));
@@ -148,6 +157,7 @@ export class MthPivotTable extends UIElement {
         rowCount: rowValues.length,
         buckets,
         total: aggregateNumbers(rowValues, this.aggregator),
+        detailRows: groupRowsMap.get(groupKey) ?? [],
       });
     }
 
@@ -228,17 +238,33 @@ export class MthPivotTable extends UIElement {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    if (
+    const pivotChanged =
       changed.has('rows') ||
       changed.has('rowDimensions') ||
       changed.has('columnDimensions') ||
       changed.has('valueFields') ||
-      changed.has('aggregator')
-    ) {
+      changed.has('aggregator');
+    if (pivotChanged) {
       this.syncEngine();
+      if (this.hasUpdated) {
+        this.pendingPivotChange = true;
+      }
     }
     this.setCustomState('empty', this.rows.length === 0);
     this.setCustomState('grouped', this.rowDimensions.length > 0);
+  }
+
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+    if (this.pendingPivotChange) {
+      this.pendingPivotChange = false;
+      this.emitEvent('mth-pivot-change', {
+        detail: {
+          aggregator: this.aggregator,
+          groupCount: this.cachedMatrix.groups.length,
+        },
+      });
+    }
   }
 
   private syncEngine(): void {
@@ -328,6 +354,43 @@ export class MthPivotTable extends UIElement {
                         )}
                         <div part="cell" class="cell" role="gridcell">${String(group.total)}</div>
                       </div>
+                      ${isExpanded
+                        ? group.detailRows.map((detailRow, dIdx) => {
+                            const colDim = this.columnDimensions[0];
+                            const valField = this.valueFields[0];
+                            const totalColLabel = this.t('totalColumnLabel');
+                            const cKey = colDim
+                              ? String(detailRow[colDim] ?? totalColLabel)
+                              : totalColLabel;
+                            const rawVal = valField ? Number(detailRow[valField] ?? 0) : 1;
+                            const cellVal = Number.isFinite(rawVal) ? rawVal : 0;
+                            const detailLabel = colDim
+                              ? String(detailRow[colDim] ?? '')
+                              : `${group.groupKey} #${dIdx + 1}`;
+                            return html`
+                              <div
+                                part="row"
+                                class="row detail-row"
+                                role="row"
+                                data-kind="detail"
+                                data-group=${group.groupKey}
+                              >
+                                <div part="cell" class="cell detail-cell" role="gridcell">
+                                  ${detailLabel}
+                                </div>
+                                ${matrix.columnKeys.map(
+                                  (ck) =>
+                                    html`<div part="cell" class="cell detail-cell" role="gridcell">
+                                      ${ck === cKey ? String(cellVal) : '—'}
+                                    </div>`,
+                                )}
+                                <div part="cell" class="cell detail-cell" role="gridcell">
+                                  ${String(cellVal)}
+                                </div>
+                              </div>
+                            `;
+                          })
+                        : nothing}
                     `;
                   })}
                   ${this.showTotals

@@ -9,11 +9,11 @@ export const datagridStyles = css`
     --_dg-bg: var(--mth-color-surface, Canvas);
     --_dg-header-bg: var(--mth-color-bg-subtle, light-dark(oklch(0.96 0.005 260), oklch(0.22 0.01 260)));
     --_dg-border: var(--mth-color-border, light-dark(oklch(0.86 0.01 260), oklch(0.32 0.01 260)));
-    --_dg-focus: var(--mth-color-border-focus, oklch(0.6 0.2 250));
-    --_dg-accent: var(--mth-color-accent, oklch(0.55 0.2 250));
+    --_dg-focus: var(--mth-color-border-focus, light-dark(oklch(0.6 0.2 250), oklch(0.7 0.18 250)));
+    --_dg-accent: var(--mth-color-accent, light-dark(oklch(0.55 0.2 250), oklch(0.68 0.18 250)));
     --_dg-accent-subtle: var(--mth-color-accent-subtle, light-dark(oklch(0.94 0.04 250), oklch(0.25 0.06 250)));
     --_dg-muted: var(--mth-color-fg-muted, GrayText);
-    --_dg-danger: var(--mth-color-danger, oklch(0.55 0.22 25));
+    --_dg-danger: var(--mth-color-danger, light-dark(oklch(0.55 0.22 25), oklch(0.68 0.2 25)));
     --_dg-radius: var(--mth-radius-md, 0.375rem);
   }
 

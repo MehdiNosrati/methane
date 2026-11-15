@@ -1,6 +1,6 @@
 import { UIElement, type PropertyValues } from '@methane/core';
 import { FormControlController, InputController } from '@methane/primitives';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { captureThemeSnapshot, readCssToken, type BaseSatelliteEngine } from '../../shared/engine.js';
 import { collectAstDependencies, parseFormula } from '../../shared/formula-ast.js';
@@ -116,11 +116,17 @@ export class MthFormulaBar extends UIElement {
   }
 
   checkValidity(): boolean {
-    return this.formCtrl.checkValidity(this.inputEl ?? undefined);
+    const valid = this.formCtrl.checkValidity(this.inputEl ?? undefined);
+    this.setCustomState('invalid', this.formCtrl.invalid);
+    this.requestUpdate();
+    return valid;
   }
 
   reportValidity(): boolean {
-    return this.formCtrl.reportValidity(this.inputEl ?? undefined);
+    const valid = this.formCtrl.reportValidity(this.inputEl ?? undefined);
+    this.setCustomState('invalid', this.formCtrl.invalid);
+    this.requestUpdate();
+    return valid;
   }
 
   override focus(options?: FocusOptions): void {
@@ -190,6 +196,7 @@ export class MthFormulaBar extends UIElement {
 
   protected override onFormDisabled(disabled: boolean): void {
     this.formCtrl.handleFormDisabled(disabled);
+    this.setCustomState('disabled', this.formCtrl.disabled);
     this.requestUpdate();
   }
 
@@ -228,6 +235,9 @@ export class MthFormulaBar extends UIElement {
     this.formCtrl.required = this.required;
     this.formCtrl.hostReadOnly = this.readonly;
     this.formCtrl.setValue(this.value);
+    this.setCustomState('disabled', this.formCtrl.disabled);
+    this.setCustomState('readonly', this.readonly);
+    this.setCustomState('invalid', this.formCtrl.invalid);
     this._engine?.syncTokens(this);
   }
 
@@ -261,6 +271,8 @@ export class MthFormulaBar extends UIElement {
 
   override render() {
     const isDisabled = this.formCtrl.disabled;
+    const isInvalid = this.formCtrl.invalid;
+    const errorMsg = this.formCtrl.validationMessage;
     const effectiveLabel =
       this.label || this.formCtrl.fieldContext?.label || this.t('toolbarLabel');
     const resolvedPlaceholder = this.placeholder || this.t('formulaPlaceholder');
@@ -280,6 +292,8 @@ export class MthFormulaBar extends UIElement {
           type="text"
           class="formula-input"
           aria-label=${this.t('formulaInputLabel')}
+          aria-invalid=${isInvalid ? 'true' : 'false'}
+          aria-errormessage=${isInvalid ? 'mth-fb-error' : nothing}
           placeholder=${resolvedPlaceholder}
           .value=${this.value}
           ?disabled=${isDisabled}
@@ -315,6 +329,13 @@ export class MthFormulaBar extends UIElement {
           ✓
         </button>
       </div>
+      ${isInvalid
+        ? html`
+            <div id="mth-fb-error" part="error" class="error-message" role="alert">
+              ${errorMsg}
+            </div>
+          `
+        : nothing}
       <div class="fallback-slot"><slot name="fallback"></slot></div>
     `;
   }

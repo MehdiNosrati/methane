@@ -1,3 +1,4 @@
+import { getRuntime } from '@methane/core';
 import {
   createTable,
   getCoreRowModel,
@@ -209,19 +210,12 @@ export class HeadlessVirtualizer {
         const h = rect && rect.height > 0 ? rect.height : el.clientHeight || 400;
         cb({ width: w, height: h });
 
-        if (typeof ResizeObserver !== 'undefined') {
-          const ro = new ResizeObserver((entries) => {
-            const entry = entries[0];
-            if (!entry) return;
-            cb({
-              width: entry.contentRect.width || 800,
-              height: entry.contentRect.height || 400,
-            });
+        return getRuntime().observers.observeResize(el, (entry) => {
+          cb({
+            width: entry.contentRect.width || 800,
+            height: entry.contentRect.height || 400,
           });
-          ro.observe(el);
-          return () => ro.disconnect();
-        }
-        return undefined;
+        });
       },
       observeElementOffset: (instance, cb) => {
         const el = instance.scrollElement;
@@ -249,6 +243,7 @@ export class HeadlessVirtualizer {
     try {
       this.cleanupScroll?.();
       this.cleanupScroll = this.instance._didMount();
+      this.scrollEl = this.instance.options.getScrollElement();
       this.instance._willUpdate();
     } finally {
       this.suppressOnChange = false;
@@ -279,6 +274,11 @@ export class HeadlessVirtualizer {
     this.scrollEl = el;
     this.suppressOnChange = true;
     try {
+      this.cleanupScroll?.();
+      this.cleanupScroll = null;
+      if (!this.unmounted && el) {
+        this.cleanupScroll = this.instance._didMount();
+      }
       this.instance._willUpdate();
     } finally {
       this.suppressOnChange = false;

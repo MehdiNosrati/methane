@@ -183,6 +183,10 @@ export class MthGantt extends UIElement {
     }
     this.syncEngine();
     this.syncDynamicSheet();
+    if (this.hasUpdated) {
+      attachDynamicSheet(this, this.dynamicSheet);
+      this._engine.virtualizer.attachElement(this.viewportEl);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -236,7 +240,8 @@ export class MthGantt extends UIElement {
     const rules: string[] = [`:host { --_gt-row-height: ${safeHeight}px; }`];
     for (const layout of this.layouts) {
       const safeId = escapeCssString(layout.task.id);
-      const pct = Math.max(0, Math.min(100, layout.task.progress ?? 0));
+      const rawProgress = layout.task.progress ?? 0;
+      const pct = Math.max(0, Math.min(100, Number.isFinite(rawProgress) ? rawProgress : 0));
       rules.push(
         `[data-task-id="${safeId}"] { inset-inline-start: ${layout.startPct.toFixed(2)}%; ${layout.task.milestone ? '' : `inline-size: ${layout.widthPct.toFixed(2)}%;`} }`,
       );
@@ -249,10 +254,29 @@ export class MthGantt extends UIElement {
     const safeDays = Math.max(1, Math.min(31, Number.isFinite(this.days) ? Math.round(this.days) : 14));
     const safeRowH = Number.isFinite(this.rowHeight) && this.rowHeight > 0 ? this.rowHeight : 40;
     const svgHeight = Math.max(safeRowH, this.layouts.length * safeRowH);
+    const dirAttr = this.closest('[dir]')?.getAttribute('dir')?.toLowerCase();
+    const effectiveDir =
+      (dirAttr === 'rtl' || dirAttr === 'ltr' ? dirAttr : this.resolvedDir) === 'rtl'
+        ? 'rtl'
+        : 'ltr';
 
     return html`
       <div part="base" class="base">
         <div part="viewport" class="viewport">
+          ${this.showDependencies && this.depPaths.length > 0
+            ? html`
+                <svg
+                  part="dependencies"
+                  class="dependencies-layer"
+                  data-dir=${effectiveDir}
+                  viewBox=${`0 0 100 ${svgHeight}`}
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  ${this.depPaths.map((d) => svg`<path class="dependency-path" d=${d} />`)}
+                </svg>
+              `
+            : nothing}
           <div
             part="grid"
             class="grid"
@@ -261,26 +285,12 @@ export class MthGantt extends UIElement {
           >
             <div part="header" class="row header-row" role="row">
               <div class="task-cell" role="columnheader">${this.t('taskColumnLabel')}</div>
-              <div class="timeline-track">
+              <div class="timeline-track" role="presentation">
                 ${Array.from({ length: safeDays }, (_, i) => i + 1).map(
                   (day) => html`<div class="day-header" role="columnheader">${day}</div>`,
                 )}
               </div>
             </div>
-
-            ${this.showDependencies && this.depPaths.length > 0
-              ? html`
-                  <svg
-                    part="dependencies"
-                    class="dependencies-layer"
-                    viewBox=${`0 0 100 ${svgHeight}`}
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                  >
-                    ${this.depPaths.map((d) => svg`<path class="dependency-path" d=${d} />`)}
-                  </svg>
-                `
-              : nothing}
 
             ${this.layouts.length === 0
               ? html`
@@ -290,7 +300,8 @@ export class MthGantt extends UIElement {
                   </div>
                 `
               : this.layouts.map(({ task }, idx) => {
-                  const pct = Math.max(0, Math.min(100, task.progress ?? 0));
+                  const rawProgress = task.progress ?? 0;
+                  const pct = Math.max(0, Math.min(100, Number.isFinite(rawProgress) ? rawProgress : 0));
                   const barLabel = task.milestone
                     ? this.t('milestoneLabel', { title: task.title })
                     : this.t('taskBarLabel', { title: task.title, progress: pct });

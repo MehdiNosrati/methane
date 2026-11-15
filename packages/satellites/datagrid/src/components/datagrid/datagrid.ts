@@ -228,6 +228,10 @@ export class MthDatagrid extends UIElement {
     }
     this.syncEngineData();
     this.syncDynamicSheet();
+    if (this.hasUpdated) {
+      attachDynamicSheet(this, this.dynamicSheet);
+      this._engine.virtualizer.attachElement(this.viewportEl);
+    }
   }
 
   override disconnectedCallback(): void {
