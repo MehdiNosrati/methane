@@ -1,0 +1,1273 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/image-annotator/image-annotator.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthImageAnnotator",
+          "tagName": "mth-image-annotator",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible SVG image annotator supporting rectangle, arrow, text, and freehand vector annotations with undo/redo.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "attribute": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Image source URL validated against the safe URL allowlist."
+            },
+            {
+              "kind": "field",
+              "name": "alt",
+              "attribute": "alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible alternative text for the image."
+            },
+            {
+              "kind": "field",
+              "name": "tool",
+              "attribute": "tool",
+              "reflect": true,
+              "type": {
+                "text": "'rect' | 'arrow' | 'text' | 'freehand'"
+              },
+              "default": "\"rect\"",
+              "description": "Active drawing tool (rect, arrow, text, or freehand)."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all toolbar and annotation interactions."
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "attribute": "readonly",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents mutating or adding annotations while allowing inspection."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "kind": "field",
+              "name": "annotations",
+              "type": {
+                "text": "readonly ImageAnnotation[]"
+              },
+              "description": "Vector annotation list rendered over the image."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Image source URL validated against the safe URL allowlist."
+            },
+            {
+              "name": "alt",
+              "fieldName": "alt",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible alternative text for the image."
+            },
+            {
+              "name": "tool",
+              "fieldName": "tool",
+              "type": {
+                "text": "'rect' | 'arrow' | 'text' | 'freehand'"
+              },
+              "default": "\"rect\"",
+              "description": "Active drawing tool (rect, arrow, text, or freehand)."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables all toolbar and annotation interactions."
+            },
+            {
+              "name": "readonly",
+              "fieldName": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Prevents mutating or adding annotations while allowing inspection."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-annotation-add",
+              "type": {
+                "text": "CustomEvent<{ annotation: ImageAnnotation }>"
+              },
+              "description": "Fired when a new vector annotation is added."
+            },
+            {
+              "name": "mth-annotation-change",
+              "type": {
+                "text": "CustomEvent<{ annotations: ImageAnnotation[] }>"
+              },
+              "description": "Fired when annotations change via add, remove, undo, redo, or clear."
+            },
+            {
+              "name": "mth-annotation-select",
+              "type": {
+                "text": "CustomEvent<{ id: string | null }>"
+              },
+              "description": "Fired when an annotation item is selected."
+            },
+            {
+              "name": "mth-tool-change",
+              "type": {
+                "text": "CustomEvent<{ tool: AnnotationTool }>"
+              },
+              "description": "Fired when the active drawing tool changes."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "SSR or non-interactive fallback view."
+            },
+            {
+              "name": "toolbar",
+              "description": "Optional extra toolbar actions."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root workspace container."
+            },
+            {
+              "name": "toolbar",
+              "description": "Drawing tool and history toolbar."
+            },
+            {
+              "name": "stage",
+              "description": "Image + SVG annotation overlay viewport."
+            },
+            {
+              "name": "image",
+              "description": "Annotated image element."
+            },
+            {
+              "name": "overlay",
+              "description": "SVG vector annotation overlay."
+            },
+            {
+              "name": "annotation-list",
+              "description": "Keyboard-navigable annotation list."
+            },
+            {
+              "name": "annotation-item",
+              "description": "Individual annotation entry."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Annotator container background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Active tool button and stroke accent color"
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Workspace border color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "readonly",
+              "description": "Custom element state :state(readonly)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-image-annotator",
+            "package": "@methane/media",
+            "conformance": [
+              "satellite",
+              "roving-focus"
+            ],
+            "controllers": [
+              "RovingFocusController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "disabled",
+              "readonly"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Focus is on an annotation list item",
+                "expect": "Moves focus to the next annotation item"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "Focus is on an annotation list item",
+                "expect": "Moves focus to the previous annotation item"
+              },
+              {
+                "key": "Delete",
+                "when": "Focus is on an editable annotation item",
+                "expect": "Removes the focused annotation"
+              }
+            ],
+            "props": [
+              {
+                "name": "src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "tool",
+                "type": "'rect' | 'arrow' | 'text' | 'freehand'",
+                "default": "rect"
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "readonly",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "annotations",
+                "attr": false,
+                "type": "readonly ImageAnnotation[]"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-annotation-add",
+                "cancelable": false,
+                "detailType": "{ annotation: ImageAnnotation }"
+              },
+              {
+                "name": "mth-annotation-change",
+                "cancelable": false,
+                "detailType": "{ annotations: ImageAnnotation[] }"
+              },
+              {
+                "name": "mth-annotation-select",
+                "cancelable": false,
+                "detailType": "{ id: string | null }"
+              },
+              {
+                "name": "mth-tool-change",
+                "cancelable": false,
+                "detailType": "{ tool: AnnotationTool }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "SSR or non-interactive fallback view."
+              },
+              {
+                "name": "toolbar",
+                "description": "Optional extra toolbar actions."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root workspace container."
+              },
+              {
+                "name": "toolbar",
+                "description": "Drawing tool and history toolbar."
+              },
+              {
+                "name": "stage",
+                "description": "Image + SVG annotation overlay viewport."
+              },
+              {
+                "name": "image",
+                "description": "Annotated image element."
+              },
+              {
+                "name": "overlay",
+                "description": "SVG vector annotation overlay."
+              },
+              {
+                "name": "annotation-list",
+                "description": "Keyboard-navigable annotation list."
+              },
+              {
+                "name": "annotation-item",
+                "description": "Individual annotation entry."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Image annotation workspace",
+              "toolbarLabel": "Annotation tools",
+              "rectTool": "Rectangle",
+              "arrowTool": "Arrow",
+              "textTool": "Text note",
+              "freehandTool": "Freehand",
+              "undoLabel": "Undo",
+              "redoLabel": "Redo",
+              "clearLabel": "Clear all",
+              "annotationListLabel": "Annotations",
+              "emptyAnnotations": "No annotations yet",
+              "unsafeSourceError": "Blocked unsafe image source URL"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthImageAnnotator",
+          "declaration": {
+            "name": "MthImageAnnotator",
+            "module": "src/components/image-annotator/image-annotator.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-image-annotator",
+          "declaration": {
+            "name": "MthImageAnnotator",
+            "module": "src/components/image-annotator/image-annotator.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/lottie/lottie.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthLottie",
+          "tagName": "mth-lottie",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible DotLottie animation player wrapping @lottiefiles/dotlottie-web with reduced-motion support.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "attribute": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Animation asset URL validated against the safe URL allowlist."
+            },
+            {
+              "kind": "field",
+              "name": "autoplay",
+              "attribute": "autoplay",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Starts animation automatically unless prefers-reduced-motion is active."
+            },
+            {
+              "kind": "field",
+              "name": "loop",
+              "attribute": "loop",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Repeats the animation continuously."
+            },
+            {
+              "kind": "field",
+              "name": "speed",
+              "attribute": "speed",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Playback speed multiplier (> 0)."
+            },
+            {
+              "kind": "field",
+              "name": "playing",
+              "attribute": "playing",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether playback is active."
+            },
+            {
+              "kind": "field",
+              "name": "controls",
+              "attribute": "controls",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays built-in play/pause and stop controls."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables playback controls."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "kind": "field",
+              "name": "animationData",
+              "type": {
+                "text": "DotLottieConfig[\"data\"] | undefined"
+              },
+              "description": "Inline Lottie JSON/buffer payload passed to DotLottie."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Animation asset URL validated against the safe URL allowlist."
+            },
+            {
+              "name": "autoplay",
+              "fieldName": "autoplay",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Starts animation automatically unless prefers-reduced-motion is active."
+            },
+            {
+              "name": "loop",
+              "fieldName": "loop",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Repeats the animation continuously."
+            },
+            {
+              "name": "speed",
+              "fieldName": "speed",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "Playback speed multiplier (> 0)."
+            },
+            {
+              "name": "playing",
+              "fieldName": "playing",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether playback is active."
+            },
+            {
+              "name": "controls",
+              "fieldName": "controls",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "description": "Displays built-in play/pause and stop controls."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables playback controls."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-play",
+              "type": {
+                "text": "CustomEvent<{ speed: number; loop: boolean }>"
+              },
+              "description": "Fired when animation playback starts."
+            },
+            {
+              "name": "mth-pause",
+              "type": {
+                "text": "CustomEvent<{ speed: number }>"
+              },
+              "description": "Fired when animation playback pauses."
+            },
+            {
+              "name": "mth-stop",
+              "type": {
+                "text": "CustomEvent<void>"
+              },
+              "description": "Fired when animation playback stops."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Fired when an invalid source URL is blocked."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "SSR or reduced-motion fallback graphic."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Outer animation container."
+            },
+            {
+              "name": "canvas",
+              "description": "DotLottie rendering canvas."
+            },
+            {
+              "name": "controls",
+              "description": "Playback control bar."
+            },
+            {
+              "name": "play-button",
+              "description": "Play/pause button."
+            },
+            {
+              "name": "stop-button",
+              "description": "Stop button."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Player card background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Primary play button background"
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Container border color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "playing",
+              "description": "Custom element state :state(playing)."
+            },
+            {
+              "name": "frozen",
+              "description": "Custom element state :state(frozen)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-lottie",
+            "package": "@methane/media",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "MotionController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "playing",
+              "frozen",
+              "disabled"
+            ],
+            "keyboard": [
+              {
+                "key": "Enter",
+                "when": "Focus is on the play/pause button",
+                "expect": "Toggles animation playback unless prefers-reduced-motion is active"
+              }
+            ],
+            "props": [
+              {
+                "name": "src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "autoplay",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "loop",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "speed",
+                "type": "number",
+                "default": 1
+              },
+              {
+                "name": "playing",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "controls",
+                "type": "boolean",
+                "default": true
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "animationData",
+                "attr": false,
+                "type": "DotLottieConfig[\"data\"] | undefined"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-play",
+                "cancelable": false,
+                "detailType": "{ speed: number; loop: boolean }"
+              },
+              {
+                "name": "mth-pause",
+                "cancelable": false,
+                "detailType": "{ speed: number }"
+              },
+              {
+                "name": "mth-stop",
+                "cancelable": false,
+                "detailType": "void"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "SSR or reduced-motion fallback graphic."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Outer animation container."
+              },
+              {
+                "name": "canvas",
+                "description": "DotLottie rendering canvas."
+              },
+              {
+                "name": "controls",
+                "description": "Playback control bar."
+              },
+              {
+                "name": "play-button",
+                "description": "Play/pause button."
+              },
+              {
+                "name": "stop-button",
+                "description": "Stop button."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Lottie animation player",
+              "playLabel": "Play animation",
+              "pauseLabel": "Pause animation",
+              "stopLabel": "Stop animation",
+              "reducedMotionLabel": "Animation paused for reduced motion",
+              "unsafeSourceError": "Blocked unsafe Lottie source URL"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthLottie",
+          "declaration": {
+            "name": "MthLottie",
+            "module": "src/components/lottie/lottie.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-lottie",
+          "declaration": {
+            "name": "MthLottie",
+            "module": "src/components/lottie/lottie.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/waveform/waveform.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "MthWaveform",
+          "tagName": "mth-waveform",
+          "customElement": true,
+          "delegatesFocus": true,
+          "description": "Accessible audio waveform visualizer and keyboard-scrubbable seekbar.",
+          "superclass": {
+            "name": "UIElement",
+            "package": "@methane/core"
+          },
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "attribute": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Media audio source URL validated against the safe URL allowlist."
+            },
+            {
+              "kind": "field",
+              "name": "playing",
+              "attribute": "playing",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether audio playback is currently active."
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "attribute": "disabled",
+              "reflect": true,
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interactive scrubbing and playback controls."
+            },
+            {
+              "kind": "field",
+              "name": "currentTime",
+              "attribute": "current-time",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Current playback time in seconds."
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "attribute": "duration",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total media duration in seconds."
+            },
+            {
+              "kind": "field",
+              "name": "barCount",
+              "attribute": "bar-count",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Number of normalized amplitude bars rendered in the waveform."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "attribute": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            },
+            {
+              "kind": "field",
+              "name": "peaks",
+              "type": {
+                "text": "readonly number[]"
+              },
+              "description": "Precomputed amplitude peak array (0..1)."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "src",
+              "fieldName": "src",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Media audio source URL validated against the safe URL allowlist."
+            },
+            {
+              "name": "playing",
+              "fieldName": "playing",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether audio playback is currently active."
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Disables interactive scrubbing and playback controls."
+            },
+            {
+              "name": "current-time",
+              "fieldName": "currentTime",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Current playback time in seconds."
+            },
+            {
+              "name": "duration",
+              "fieldName": "duration",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Total media duration in seconds."
+            },
+            {
+              "name": "bar-count",
+              "fieldName": "barCount",
+              "type": {
+                "text": "number"
+              },
+              "default": "48",
+              "description": "Number of normalized amplitude bars rendered in the waveform."
+            },
+            {
+              "name": "label",
+              "fieldName": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "description": "Accessible region label."
+            }
+          ],
+          "events": [
+            {
+              "name": "mth-play",
+              "type": {
+                "text": "CustomEvent<{ currentTime: number }>"
+              },
+              "description": "Fired when playback starts."
+            },
+            {
+              "name": "mth-pause",
+              "type": {
+                "text": "CustomEvent<{ currentTime: number }>"
+              },
+              "description": "Fired when playback pauses."
+            },
+            {
+              "name": "mth-seek",
+              "type": {
+                "text": "CustomEvent<{ currentTime: number; progress: number }>"
+              },
+              "description": "Fired when the playback position changes."
+            },
+            {
+              "name": "mth-error",
+              "type": {
+                "text": "CustomEvent<{ reason: string }>"
+              },
+              "description": "Fired when an invalid or unsafe source URL is rejected."
+            }
+          ],
+          "slots": [
+            {
+              "name": "fallback",
+              "description": "SSR and non-interactive fallback content."
+            },
+            {
+              "name": "controls",
+              "description": "Optional extra playback controls."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "base",
+              "description": "Root container."
+            },
+            {
+              "name": "controls",
+              "description": "Playback control bar."
+            },
+            {
+              "name": "play-button",
+              "description": "Play/pause toggle button."
+            },
+            {
+              "name": "scrubber",
+              "description": "Keyboard-accessible seekable waveform track."
+            },
+            {
+              "name": "bars",
+              "description": "SVG bar visualization."
+            },
+            {
+              "name": "progress",
+              "description": "Playback progress indicator."
+            },
+            {
+              "name": "time",
+              "description": "Current time and total duration readout."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--mth-color-surface",
+              "description": "Waveform container background"
+            },
+            {
+              "name": "--mth-color-accent",
+              "description": "Played bars and scrubber indicator color"
+            },
+            {
+              "name": "--mth-color-border",
+              "description": "Unplayed bars and container border color"
+            }
+          ],
+          "cssStates": [
+            {
+              "name": "playing",
+              "description": "Custom element state :state(playing)."
+            },
+            {
+              "name": "disabled",
+              "description": "Custom element state :state(disabled)."
+            },
+            {
+              "name": "reduced-motion",
+              "description": "Custom element state :state(reduced-motion)."
+            }
+          ],
+          "x-methane-spec": {
+            "tag": "mth-waveform",
+            "package": "@methane/media",
+            "conformance": [
+              "satellite"
+            ],
+            "controllers": [
+              "MotionController"
+            ],
+            "focusModel": "delegates-focus",
+            "states": [
+              "playing",
+              "disabled",
+              "reduced-motion"
+            ],
+            "keyboard": [
+              {
+                "key": "ArrowRight",
+                "dir": "ltr",
+                "when": "Focus is on the waveform scrubber",
+                "expect": "Seeks forward along the audio timeline"
+              },
+              {
+                "key": "ArrowLeft",
+                "dir": "ltr",
+                "when": "Focus is on the waveform scrubber",
+                "expect": "Seeks backward along the audio timeline"
+              },
+              {
+                "key": "Home",
+                "when": "Focus is on the waveform scrubber",
+                "expect": "Seeks to the start of the waveform"
+              },
+              {
+                "key": "End",
+                "when": "Focus is on the waveform scrubber",
+                "expect": "Seeks to the end of the waveform"
+              },
+              {
+                "key": " ",
+                "when": "Focus is on the waveform scrubber",
+                "expect": "Toggles audio playback"
+              }
+            ],
+            "props": [
+              {
+                "name": "src",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "playing",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "disabled",
+                "type": "boolean",
+                "default": false
+              },
+              {
+                "name": "currentTime",
+                "attr": "current-time",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "duration",
+                "type": "number",
+                "default": 0
+              },
+              {
+                "name": "barCount",
+                "attr": "bar-count",
+                "type": "number",
+                "default": 48
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "default": ""
+              },
+              {
+                "name": "peaks",
+                "attr": false,
+                "type": "readonly number[]"
+              }
+            ],
+            "events": [
+              {
+                "name": "mth-play",
+                "cancelable": false,
+                "detailType": "{ currentTime: number }"
+              },
+              {
+                "name": "mth-pause",
+                "cancelable": false,
+                "detailType": "{ currentTime: number }"
+              },
+              {
+                "name": "mth-seek",
+                "cancelable": false,
+                "detailType": "{ currentTime: number; progress: number }"
+              },
+              {
+                "name": "mth-error",
+                "cancelable": false,
+                "detailType": "{ reason: string }"
+              }
+            ],
+            "slots": [
+              {
+                "name": "fallback",
+                "description": "SSR and non-interactive fallback content."
+              },
+              {
+                "name": "controls",
+                "description": "Optional extra playback controls."
+              }
+            ],
+            "parts": [
+              {
+                "name": "base",
+                "description": "Root container."
+              },
+              {
+                "name": "controls",
+                "description": "Playback control bar."
+              },
+              {
+                "name": "play-button",
+                "description": "Play/pause toggle button."
+              },
+              {
+                "name": "scrubber",
+                "description": "Keyboard-accessible seekable waveform track."
+              },
+              {
+                "name": "bars",
+                "description": "SVG bar visualization."
+              },
+              {
+                "name": "progress",
+                "description": "Playback progress indicator."
+              },
+              {
+                "name": "time",
+                "description": "Current time and total duration readout."
+              }
+            ],
+            "messages": {
+              "regionLabel": "Audio waveform player",
+              "playLabel": "Play audio",
+              "pauseLabel": "Pause audio",
+              "scrubberLabel": "Audio timeline scrubber",
+              "fallbackLabel": "Audio waveform preview unavailable",
+              "unsafeSourceError": "Blocked unsafe media source URL",
+              "reducedMotionBadge": "Reduced motion active"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MthWaveform",
+          "declaration": {
+            "name": "MthWaveform",
+            "module": "src/components/waveform/waveform.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mth-waveform",
+          "declaration": {
+            "name": "MthWaveform",
+            "module": "src/components/waveform/waveform.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
